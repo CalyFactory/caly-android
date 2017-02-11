@@ -28,6 +28,7 @@ dependencies {
     compile 'com.android.support:design:23.2.1'
 
     //external libs
+    compile 'com.github.satyan:sugar:1.5'
     compile 'com.squareup.retrofit2:retrofit:2.1.0'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.google.android.gms:play-services-auth:9.8.0'

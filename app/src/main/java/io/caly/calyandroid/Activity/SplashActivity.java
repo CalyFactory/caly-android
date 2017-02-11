@@ -35,7 +35,6 @@ public class SplashActivity extends AppCompatActivity {
 
     void init(){
 
-        getSupportActionBar().hide();
         Util.setStatusBarColor(this, getColor(R.color.colorPrimaryDark));
 
 
