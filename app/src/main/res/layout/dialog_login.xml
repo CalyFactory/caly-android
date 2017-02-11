@@ -6,7 +6,7 @@
     <LinearLayout
         android:layout_width="300dp"
         android:orientation="vertical"
-        android:layout_height="250dp">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -17,6 +17,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
+                android:id="@+id/tvLoginTitle"
                 android:layout_height="wrap_content"
                 android:textColor="#ffffff"
                 android:textSize="20dp"
@@ -29,33 +30,73 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="5dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:layout_height="wrap_content">
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/edt_login_id"
+                    android:id="@+id/edtLoginId"
                     android:layout_width="match_parent"
+                    android:inputType="textEmailAddress"
                     android:layout_height="wrap_content"
-                    android:hint="Id" />
+                    android:hint="ID" />
 
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_layout_password2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <EditText
-                android:id="@+id/edt_login_pw"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Password" />
+                <EditText
+                    android:inputType="textPassword"
+                    android:id="@+id/edtLoginPw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="PASSWORD" />
 
-        </android.support.design.widget.TextInputLayout>
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+        
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#afafaf"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:layout_height="60dp">
+
+            <Button
+                android:id="@+id/btnLoginCancel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="#ff5f95"
+                android:background="?attr/selectableItemBackground"
+                android:text="CANCEL"/>
+
+            <Button
+                android:id="@+id/btnLoginOk"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="#ff5f95"
+                android:background="?attr/selectableItemBackground"
+                android:text="OK"/>
+
 
         </LinearLayout>
 

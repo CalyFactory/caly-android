@@ -4,7 +4,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.widget.EditText;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import io.caly.calyandroid.Activity.SplashActivity;
 import io.caly.calyandroid.R;
 
 /**
@@ -16,6 +20,16 @@ import io.caly.calyandroid.R;
  */
 
 public class LoginDialog extends Dialog {
+
+
+    //로그에 쓰일 tag
+    private static final String TAG = SplashActivity.class.getSimpleName();
+
+    @Bind(R.id.edtLoginId)
+    EditText edtLoginId;
+
+    @Bind(R.id.edtLoginPw)
+    EditText edtLoginPw;
 
     public LoginDialog(Context context) {
         super(context);
@@ -35,5 +49,14 @@ public class LoginDialog extends Dialog {
 
         setContentView(R.layout.dialog_login);
 
+        init();
+    }
+
+    void init(){
+
+        ButterKnife.bind(this);
+
+        //remove focus
+        edtLoginId.clearFocus();
     }
 }

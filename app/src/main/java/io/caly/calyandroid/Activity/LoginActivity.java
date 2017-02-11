@@ -107,6 +107,7 @@ public class LoginActivity extends AppCompatActivity {
     void onNaverLoginClick(){
         LoginDialog dialog = new LoginDialog(this);
         dialog.show();
+
     }
 
     @OnClick(R.id.btnLoginApple)
