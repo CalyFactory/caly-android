@@ -2,6 +2,8 @@ package io.caly.calyandroid;
 
 import android.app.Application;
 
+import com.orm.SugarApp;
+
 /**
  * Copyright 2017 JSpiner. All rights reserved.
  *
@@ -10,5 +12,5 @@ import android.app.Application;
  * @since 17. 2. 11
  */
 
-public class CalyApplication extends Application {
+public class CalyApplication extends SugarApp {
 }
