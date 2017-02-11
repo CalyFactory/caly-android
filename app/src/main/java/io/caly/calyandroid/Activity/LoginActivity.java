@@ -108,12 +108,15 @@ public class LoginActivity extends AppCompatActivity {
         LoginDialog dialog = new LoginDialog(this, "Naver로 로그인", new LoginDialog.LoginDialogCallback() {
             @Override
             public void onPositive(LoginDialog dialog, String userId, String userPw) {
+                dialog.dismiss();
 
+                Intent intent = new Intent(LoginActivity.this, EventListActivity.class);
+                startActivity(intent);
             }
 
             @Override
             public void onNegative(LoginDialog dialog) {
-
+                dialog.dismiss();
             }
         });
         dialog.show();
@@ -125,12 +128,15 @@ public class LoginActivity extends AppCompatActivity {
         LoginDialog dialog = new LoginDialog(this, "Apple로 로그인", new LoginDialog.LoginDialogCallback() {
             @Override
             public void onPositive(LoginDialog dialog, String userId, String userPw) {
-                
+                dialog.dismiss();
+
+                Intent intent = new Intent(LoginActivity.this, EventListActivity.class);
+                startActivity(intent);
             }
 
             @Override
             public void onNegative(LoginDialog dialog) {
-
+                dialog.dismiss();
             }
         });
         dialog.show();
