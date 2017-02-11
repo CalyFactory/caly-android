@@ -14,6 +14,12 @@
 
         <!-- Splash Activity -->
         <activity android:name=".Activity.SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
         </activity>
 
         <!-- Login Activity -->
@@ -28,12 +34,6 @@
 
         <!-- Guide Activity -->
         <activity android:name=".Activity.GuideActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
         </activity>
 
 
