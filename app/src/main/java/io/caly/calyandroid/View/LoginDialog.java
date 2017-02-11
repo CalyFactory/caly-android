@@ -24,9 +24,8 @@ import io.caly.calyandroid.R;
 
 public class LoginDialog extends Dialog {
 
-
     //로그에 쓰일 tag
-    private static final String TAG = SplashActivity.class.getSimpleName();
+    private static final String TAG = LoginDialog.class.getSimpleName();
 
     @Bind(R.id.tvLoginTitle)
     TextView tvLoginTitle;

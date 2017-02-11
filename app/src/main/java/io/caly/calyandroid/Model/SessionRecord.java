@@ -30,7 +30,7 @@ public class SessionRecord extends SugarRecord {
         return sessionRecord;
     }
 
-    public static void destoryToken(){
+    public static void destorySession(){
         SessionRecord sessionRecord = getSessionRecord();
         if(sessionRecord!=null){
             sessionRecord.delete();

@@ -14,11 +14,6 @@
 
         <!-- Splash Activity -->
         <activity android:name=".Activity.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- Login Activity -->
@@ -31,6 +26,15 @@
 
         </activity>
 
+        <!-- Guide Activity -->
+        <activity android:name=".Activity.GuideActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
 
 
         <meta-data android:name="DATABASE" android:value="caly.db" />

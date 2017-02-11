@@ -2,8 +2,12 @@ package io.caly.calyandroid.Activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import io.caly.calyandroid.Adapter.GuidePagerAdapter;
 import io.caly.calyandroid.R;
 
 /**
@@ -17,7 +21,12 @@ import io.caly.calyandroid.R;
 public class GuideActivity extends AppCompatActivity {
 
     //로그에 쓰일 tag
-    private static final String TAG = SplashActivity.class.getSimpleName();
+    private static final String TAG = GuideActivity.class.getSimpleName();
+
+    @Bind(R.id.pager_guide)
+    ViewPager pagerGuide;
+
+    GuidePagerAdapter guidePagerAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,6 +37,10 @@ public class GuideActivity extends AppCompatActivity {
     }
 
     void init(){
-        
+        ButterKnife.bind(this);
+
+        guidePagerAdapter = new GuidePagerAdapter(getSupportFragmentManager());
+        pagerGuide.setAdapter(guidePagerAdapter);
+
     }
 }
