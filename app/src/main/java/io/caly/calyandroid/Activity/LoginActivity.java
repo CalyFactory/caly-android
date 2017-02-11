@@ -102,11 +102,6 @@ public class LoginActivity extends AppCompatActivity {
         startActivityForResult(signInIntent, codeSignIn);
     }
 
-    @Override
-    protected void onResume() {
-//        this.overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
-        super.onResume();
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
