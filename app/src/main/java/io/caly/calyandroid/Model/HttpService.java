@@ -1,4 +1,4 @@
-package calyfactory.io.caly.Model;
+package io.caly.calyandroid.Model;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

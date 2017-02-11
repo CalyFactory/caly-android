@@ -26,4 +26,10 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
     }
 
+    @Override
+    protected void onPause() {
+        this.overridePendingTransition(0, R.anim.slide_out_up);
+        super.onPause();
+    }
+
 }
