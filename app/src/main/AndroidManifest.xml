@@ -24,6 +24,11 @@
         <activity android:name=".Activity.LoginActivity">
 
         </activity>
+
+        <!-- Event List Activity -->
+        <activity android:name=".Activity.EventListActivity">
+
+        </activity>
     </application>
 
 </manifest>

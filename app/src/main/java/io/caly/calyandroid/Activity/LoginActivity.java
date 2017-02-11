@@ -35,6 +35,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util;
+import io.caly.calyandroid.View.LoginDialog;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -101,6 +102,46 @@ public class LoginActivity extends AppCompatActivity {
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, codeSignIn);
     }
+
+    @OnClick(R.id.btnLoginNaver)
+    void onNaverLoginClick(){
+        LoginDialog dialog = new LoginDialog(this, "Naver로 로그인", new LoginDialog.LoginDialogCallback() {
+            @Override
+            public void onPositive(LoginDialog dialog, String userId, String userPw) {
+                dialog.dismiss();
+
+                Intent intent = new Intent(LoginActivity.this, EventListActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onNegative(LoginDialog dialog) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
+    }
+
+    @OnClick(R.id.btnLoginApple)
+    void onAppleLoginClick(){
+        LoginDialog dialog = new LoginDialog(this, "Apple로 로그인", new LoginDialog.LoginDialogCallback() {
+            @Override
+            public void onPositive(LoginDialog dialog, String userId, String userPw) {
+                dialog.dismiss();
+
+                Intent intent = new Intent(LoginActivity.this, EventListActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onNegative(LoginDialog dialog) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
