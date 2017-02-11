@@ -105,14 +105,35 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.btnLoginNaver)
     void onNaverLoginClick(){
-        LoginDialog dialog = new LoginDialog(this);
+        LoginDialog dialog = new LoginDialog(this, "Naver로 로그인", new LoginDialog.LoginDialogCallback() {
+            @Override
+            public void onPositive(LoginDialog dialog, String userId, String userPw) {
+
+            }
+
+            @Override
+            public void onNegative(LoginDialog dialog) {
+
+            }
+        });
         dialog.show();
 
     }
 
     @OnClick(R.id.btnLoginApple)
     void onAppleLoginClick(){
+        LoginDialog dialog = new LoginDialog(this, "Apple로 로그인", new LoginDialog.LoginDialogCallback() {
+            @Override
+            public void onPositive(LoginDialog dialog, String userId, String userPw) {
+                
+            }
 
+            @Override
+            public void onNegative(LoginDialog dialog) {
+
+            }
+        });
+        dialog.show();
     }
 
 
