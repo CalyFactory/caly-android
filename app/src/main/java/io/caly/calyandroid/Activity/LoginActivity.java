@@ -35,6 +35,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util;
+import io.caly.calyandroid.View.LoginDialog;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -100,6 +101,17 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG,"onclick");
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, codeSignIn);
+    }
+
+    @OnClick(R.id.btnLoginNaver)
+    void onNaverLoginClick(){
+        LoginDialog dialog = new LoginDialog(this);
+        dialog.show();
+    }
+
+    @OnClick(R.id.btnLoginApple)
+    void onAppleLoginClick(){
+
     }
 
 

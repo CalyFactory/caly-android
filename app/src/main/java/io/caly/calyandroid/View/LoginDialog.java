@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import io.caly.calyandroid.R;
+
 /**
  * Copyright 2017 JSpiner. All rights reserved.
  *
@@ -30,5 +32,8 @@ public class LoginDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.dialog_login);
+
     }
 }

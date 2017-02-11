@@ -40,6 +40,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_height="wrap_content">
                 <Button
+                    android:id="@+id/btnLoginNaver"
                     android:layout_width="match_parent"
                     android:background="#1ec800"
                     android:textSize="15dp"
@@ -57,6 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <Button
+                    android:id="@+id/btnLoginApple"
                     android:layout_width="match_parent"
                     android:background="#121d4b"
                     android:textSize="15dp"
