@@ -27,19 +27,19 @@ public class LoginDialog extends Dialog {
     //로그에 쓰일 tag
     private static final String TAG = LoginDialog.class.getSimpleName();
 
-    @Bind(R.id.tvLoginTitle)
+    @Bind(R.id.tv_login_title)
     TextView tvLoginTitle;
 
-    @Bind(R.id.edtLoginId)
+    @Bind(R.id.edt_login_id)
     EditText edtLoginId;
 
-    @Bind(R.id.edtLoginPw)
+    @Bind(R.id.edt_login_pw)
     EditText edtLoginPw;
 
-    @Bind(R.id.btnLoginCancel)
+    @Bind(R.id.btn_login_cancel)
     Button btnLoginCancel;
 
-    @Bind(R.id.btnLoginOk)
+    @Bind(R.id.btn_login_ok)
     Button btnLoginOk;
 
     String loginTitle;
@@ -82,7 +82,7 @@ public class LoginDialog extends Dialog {
 
     }
 
-    @OnClick(R.id.btnLoginOk)
+    @OnClick(R.id.btn_login_ok)
     void onLoginOkClick(){
         dialogCallback.onPositive(
                 this,
@@ -91,7 +91,7 @@ public class LoginDialog extends Dialog {
         );
     }
 
-    @OnClick(R.id.btnLoginCancel)
+    @OnClick(R.id.btn_login_cancel)
     void onLoginCancelClick(){
         dialogCallback.onNegative(this);
     }

@@ -17,7 +17,7 @@
 
             <TextView
                 android:layout_width="wrap_content"
-                android:id="@+id/tvLoginTitle"
+                android:id="@+id/tv_login_title"
                 android:layout_height="wrap_content"
                 android:textColor="#ffffff"
                 android:textSize="20dp"
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content">
 
                 <EditText
-                    android:id="@+id/edtLoginId"
+                    android:id="@+id/edt_login_id"
                     android:layout_width="match_parent"
                     android:inputType="textEmailAddress"
                     android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
 
                 <EditText
                     android:inputType="textPassword"
-                    android:id="@+id/edtLoginPw"
+                    android:id="@+id/edt_login_pw"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="PASSWORD" />
@@ -82,7 +82,7 @@
             android:layout_height="60dp">
 
             <Button
-                android:id="@+id/btnLoginCancel"
+                android:id="@+id/btn_login_cancel"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:textColor="#ff5f95"
@@ -90,7 +90,7 @@
                 android:text="CANCEL"/>
 
             <Button
-                android:id="@+id/btnLoginOk"
+                android:id="@+id/btn_login_ok"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:textColor="#ff5f95"

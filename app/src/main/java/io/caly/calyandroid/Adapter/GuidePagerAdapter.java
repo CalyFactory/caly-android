@@ -27,9 +27,9 @@ public class GuidePagerAdapter extends FragmentStatePagerAdapter {
         this.fragmentManager = fm;
         fragmentList = new Fragment[3];
 
-        fragmentList[0] = new GuideItemFragment();
-        fragmentList[1] = new GuideItemFragment();
-        fragmentList[2] = new GuideItemFragment();
+        fragmentList[0] = new GuideItemFragment().setResourceId(0);
+        fragmentList[1] = new GuideItemFragment().setResourceId(1);
+        fragmentList[2] = new GuideItemFragment().setResourceId(2);
     }
 
     @Override

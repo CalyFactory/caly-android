@@ -1,35 +1,22 @@
 package io.caly.calyandroid.Activity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.common.api.Scope;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -55,7 +42,7 @@ public class LoginActivity extends AppCompatActivity {
 
     GoogleApiClient mGoogleApiClient;
 
-    @Bind(R.id.btnLoginGoogle)
+    @Bind(R.id.btn_login_google)
     SignInButton btnLoginGoogle;
 
     @Override
@@ -98,14 +85,14 @@ public class LoginActivity extends AppCompatActivity {
         }
     };
 
-    @OnClick(R.id.btnLoginGoogle)
+    @OnClick(R.id.btn_login_google)
     void onGoogleLoginClick(){
         Log.d(TAG,"onclick");
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, codeSignIn);
     }
 
-    @OnClick(R.id.btnLoginNaver)
+    @OnClick(R.id.btn_login_naver)
     void onNaverLoginClick(){
         LoginDialog dialog = new LoginDialog(this, "Naver로 로그인", new LoginDialog.LoginDialogCallback() {
             @Override
@@ -125,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    @OnClick(R.id.btnLoginApple)
+    @OnClick(R.id.btn_login_apple)
     void onAppleLoginClick(){
         LoginDialog dialog = new LoginDialog(this, "Apple로 로그인", new LoginDialog.LoginDialogCallback() {
             @Override
