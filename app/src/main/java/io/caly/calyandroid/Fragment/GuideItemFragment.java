@@ -28,6 +28,9 @@ import io.caly.calyandroid.R;
 
 public class GuideItemFragment extends Fragment {
 
+    //로그에 쓰일 tag
+    private static final String TAG = GuideItemFragment.class.getSimpleName();
+
     @Bind(R.id.imv_guide_item)
     ImageView imvGuide;
 

@@ -34,6 +34,12 @@
 
         <!-- Guide Activity -->
         <activity android:name=".Activity.GuideActivity">
+
+        </activity>
+
+        <!-- Setting Activity -->
+        <activity android:name=".Activity.SettingActivity">
+
         </activity>
 
 

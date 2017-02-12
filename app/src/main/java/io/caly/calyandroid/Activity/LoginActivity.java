@@ -101,6 +101,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(LoginActivity.this, EventListActivity.class);
                 startActivity(intent);
+                finish();
             }
 
             @Override
@@ -121,6 +122,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(LoginActivity.this, EventListActivity.class);
                 startActivity(intent);
+                finish();
             }
 
             @Override
