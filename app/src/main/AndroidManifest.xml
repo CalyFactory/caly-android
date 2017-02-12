@@ -6,6 +6,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_event_black_48dp"
         android:label="@string/app_name"
+        android:name=".CalyApplication"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
@@ -18,6 +19,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
 
         <!-- Login Activity -->
@@ -29,6 +31,24 @@
         <activity android:name=".Activity.EventListActivity">
 
         </activity>
+
+        <!-- Guide Activity -->
+        <activity android:name=".Activity.GuideActivity">
+
+        </activity>
+
+        <!-- Setting Activity -->
+        <activity android:name=".Activity.SettingActivity">
+
+        </activity>
+
+
+        <meta-data android:name="DATABASE" android:value="caly.db" />
+        <meta-data android:name="VERSION" android:value="2" />
+        <meta-data android:name="QUERY_LOG" android:value="true" />
+        <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="io.caly.calyandroid" />
+
+
     </application>
 
 </manifest>
