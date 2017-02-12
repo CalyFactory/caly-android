@@ -12,12 +12,28 @@
 
         <LinearLayout
             android:layout_width="100dp"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
             android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text=""
+                android:text="19"
+                android:textColor="#407f9b"
+                android:textStyle="bold"
+                android:textSize="18dp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="금"
+                android:layout_marginTop="2dp"
+                android:textColor="#6f6f6f"
+                android:textStyle="bold"
+                android:textSize="17dp"
                 />
 
         </LinearLayout>
@@ -28,15 +44,80 @@
             android:layout_marginBottom="20dp"
             android:layout_marginRight="20dp"
             android:id="@+id/cardview"
+            card:cardBackgroundColor="#9db5c0"
             card:cardCornerRadius="3dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <Button
-                android:text="Button"
+            <LinearLayout
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="15dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/button2" />
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="소마 센터 멘토링"
+                    android:layout_marginTop="2dp"
+                    android:textColor="#fafafa"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    />
+                <LinearLayout
+                    android:layout_marginTop="3dp"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:gravity="center_vertical"
+                        android:layout_height="14dp"
+                        android:src="@drawable/ic_access_time_white_48dp"
+                        />
+
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="10:00 - 11:00"
+                        android:layout_marginTop="2dp"
+                        android:textColor="#dfdfdf"
+                        android:textSize="14dp"
+                        />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginTop="3dp"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:gravity="center_vertical"
+                        android:layout_height="14dp"
+                        android:src="@drawable/ic_location_on_white_48dp"
+                        />
+
+                    <TextView
+                        android:layout_marginLeft="5dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text="선릉역 아남타워빌딩"
+                        android:layout_marginTop="2dp"
+                        android:textColor="#dfdfdf"
+                        android:textSize="14dp"
+                        />
+
+                </LinearLayout>
+            </LinearLayout>
+
         </android.support.v7.widget.CardView>
     </LinearLayout>
 
