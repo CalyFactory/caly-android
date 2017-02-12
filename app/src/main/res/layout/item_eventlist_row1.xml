@@ -5,6 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#2f2f2f"
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="horizontal"
@@ -17,24 +22,30 @@
             android:orientation="vertical"
             android:layout_height="wrap_content">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="19"
-                android:textColor="#407f9b"
-                android:textStyle="bold"
-                android:textSize="18dp"
-                />
+                android:orientation="vertical"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="금"
-                android:layout_marginTop="2dp"
-                android:textColor="#6f6f6f"
-                android:textStyle="bold"
-                android:textSize="17dp"
-                />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="19"
+                    android:textColor="#407f9b"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="금요일"
+                    android:layout_marginTop="0dp"
+                    android:textColor="#6f6f6f"
+                    android:textStyle="bold"
+                    android:textSize="17dp"
+                    />
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -72,11 +83,11 @@
                     android:layout_marginTop="3dp"
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
+                    android:gravity="center_vertical"
                     android:layout_height="wrap_content">
 
                     <ImageView
                         android:layout_width="14dp"
-                        android:gravity="center_vertical"
                         android:layout_height="14dp"
                         android:src="@drawable/ic_access_time_white_48dp"
                         />
@@ -84,10 +95,9 @@
                     <TextView
                         android:layout_marginLeft="5dp"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:text="10:00 - 11:00"
-                        android:layout_marginTop="2dp"
-                        android:textColor="#dfdfdf"
+                        android:textColor="#eaeaea"
                         android:textSize="14dp"
                         />
 
@@ -95,12 +105,12 @@
                 <LinearLayout
                     android:layout_marginTop="3dp"
                     android:layout_width="match_parent"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal"
                     android:layout_height="wrap_content">
 
                     <ImageView
                         android:layout_width="14dp"
-                        android:gravity="center_vertical"
                         android:layout_height="14dp"
                         android:src="@drawable/ic_location_on_white_48dp"
                         />
@@ -108,10 +118,9 @@
                     <TextView
                         android:layout_marginLeft="5dp"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:text="선릉역 아남타워빌딩"
-                        android:layout_marginTop="2dp"
-                        android:textColor="#dfdfdf"
+                        android:textColor="#eaeaea"
                         android:textSize="14dp"
                         />
 
