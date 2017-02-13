@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -149,12 +150,17 @@ public class LoginActivity extends AppCompatActivity {
                 // Signed in successfully, show authenticated UI.
                 GoogleSignInAccount acct = result.getSignInAccount();
                 Log.d(TAG, acct.getDisplayName());
+                Log.d(TAG, "id token : " + acct.getIdToken());
+                Log.d(TAG, "serverauthcode : " + acct.getServerAuthCode());
+                Log.d(TAG, "id : " + acct.getId());
+                Log.d(TAG, "email : " + acct.getEmail());
 
 
                 Intent intent = new Intent(LoginActivity.this, EventListActivity.class);
                 startActivity(intent);
 
             } else {
+                Toast.makeText(getBaseContext(),"로그인실패",Toast.LENGTH_LONG).show();
                 // Signed out, show unauthenticated UI.
             }
         }
