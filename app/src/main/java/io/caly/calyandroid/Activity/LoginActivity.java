@@ -7,7 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -64,10 +66,10 @@ public class LoginActivity extends AppCompatActivity {
 
         GoogleSignInOptions gso =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestEmail()
+                        .requestServerAuthCode(getString(R.string.google_client_id))
                         .requestScopes(
                                 new Scope("https://www.googleapis.com/auth/calendar"),
-                                new Scope("https://www.googleapis.com/auth/userinfo.email"),
+                                new Scope("https://www.googleapis.com/auth/userinfo.profile"),
                                 new Scope("https://www.googleapis.com/auth/calendar.readonly")
                         )
                         .build();
@@ -143,16 +145,23 @@ public class LoginActivity extends AppCompatActivity {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 
             Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+            Log.d(TAG, "handleSignInResult:" + result.getStatus().getStatus());
+
+
             if (result.isSuccess()) {
                 // Signed in successfully, show authenticated UI.
                 GoogleSignInAccount acct = result.getSignInAccount();
                 Log.d(TAG, acct.getDisplayName());
-
+                Log.d(TAG, "id token : " + acct.getIdToken());
+                Log.d(TAG, "serverauthcode : " + acct.getServerAuthCode());
+                Log.d(TAG, "id : " + acct.getId());
+                Log.d(TAG, "email : " + acct.getEmail());
 
                 Intent intent = new Intent(LoginActivity.this, EventListActivity.class);
                 startActivity(intent);
 
             } else {
+                Toast.makeText(getBaseContext(),"로그인실패",Toast.LENGTH_LONG).show();
                 // Signed out, show unauthenticated UI.
             }
         }
