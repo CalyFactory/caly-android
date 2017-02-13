@@ -16,6 +16,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Activity.EventListActivity;
+import io.caly.calyandroid.Activity.LoginActivity;
 import io.caly.calyandroid.R;
 
 /**
@@ -97,7 +98,7 @@ public class GuideItemFragment extends Fragment {
 
     @OnClick(R.id.btn_guide_start)
     void onGuideStartClick(){
-        Intent intent = new Intent(getActivity(), EventListActivity.class);
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);
 
         getActivity().finish();

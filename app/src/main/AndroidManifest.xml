@@ -43,6 +43,18 @@
         </activity>
 
 
+
+        <!-- Services -->
+
+        <!-- FCM Push Service -->
+
+        <service
+            android:name=".MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </service>
+
         <meta-data android:name="DATABASE" android:value="caly.db" />
         <meta-data android:name="VERSION" android:value="2" />
         <meta-data android:name="QUERY_LOG" android:value="true" />
