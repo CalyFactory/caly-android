@@ -9,4 +9,22 @@ package io.caly.calyandroid.Model;
  */
 
 public class TestModel {
+
+    public int year;
+    public int month;
+    public int day;
+    public String summary;
+    public String time;
+    public String location;
+
+    public TestModel(int year, int month, int day, String summary, String time, String location){
+        this.year = year;
+        this.month = month;
+        this.day = day;
+        this.summary = summary;
+        this.time = time;
+        this.location = location;
+    }
+
+
 }

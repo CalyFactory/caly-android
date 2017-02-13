@@ -19,12 +19,14 @@
             android:layout_height="wrap_content"
             android:text="2월"
             android:textSize="60dp"
+            android:id="@+id/tv_eventlist_month"
             android:textStyle="bold"
             android:textColor="#ffffff"
         />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/tv_eventlist_year"
             android:text="2017"
             android:textStyle="bold"
             android:textColor="#ffffff"

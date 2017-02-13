@@ -143,6 +143,8 @@ public class LoginActivity extends AppCompatActivity {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 
             Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+            Log.d(TAG, "handleSignInResult:" + result.getStatus().getStatus());
+
             if (result.isSuccess()) {
                 // Signed in successfully, show authenticated UI.
                 GoogleSignInAccount acct = result.getSignInAccount();

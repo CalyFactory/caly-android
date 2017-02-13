@@ -7,9 +7,13 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -40,7 +44,13 @@ public class EventListActivity extends AppCompatActivity {
     @Bind(R.id.recycler_eventlist)
     RecyclerView recyclerList;
 
-    RecyclerView.Adapter recyclerAdapter;
+    @Bind(R.id.tv_eventlist_year)
+    TextView tvEventYear;
+
+    @Bind(R.id.tv_eventlist_month)
+    TextView tvEventMonth;
+
+    EventListAdapter recyclerAdapter;
     RecyclerView.LayoutManager layoutManager;
 
     @Override
@@ -71,15 +81,41 @@ public class EventListActivity extends AppCompatActivity {
         //set recyclerview
         recyclerList.setHasFixedSize(true);
 
-        layoutManager = new LinearLayoutManager(this);
+        layoutManager = new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.VERTICAL);
         recyclerList.setLayoutManager(layoutManager);
 
+        // test data
         ArrayList<TestModel> dataList = new ArrayList<>();
-        for(int i=0;i<20;i++) {
-            dataList.add(new TestModel());
+        for(int j=0;j<3;j++) {
+            for (int i = 0; i < 10; i++) {
+                dataList.add(new TestModel(2017+j, 1 + i, 1, "소마 센터 멘토링", "11:00 ~ 12:00", "강남역 아남타워빌딩"));
+                dataList.add(new TestModel(2017+j, 1 + i, 1, "멘토링", "11:00 ~ 12:00", "강남역 아남타워빌딩"));
+                dataList.add(new TestModel(2017+j, 1 + i, 1, "데이트", "11:00 ~ 12:00", "강남역 아남타워빌딩"));
+                dataList.add(new TestModel(2017+j, 1 + i, 5, "소마 센터 멘토링", "11:00 ~ 12:00", "강남역 아남타워빌딩"));
+                dataList.add(new TestModel(2017+j, 1 + i, 5, "삼성면접", "11:00 ~ 12:00", "강남역 아남타워빌딩"));
+                dataList.add(new TestModel(2017+j, 1 + i, 14, "친구 생일", "11:00 ~ 12:00", "강남역 아남타워빌딩"));
+                dataList.add(new TestModel(2017+j, 1 + i, 23, "집보러가는날", "11:00 ~ 12:00", "강남역 아남타워빌딩"));
+                dataList.add(new TestModel(2017+j, 1 + i, 23, "데이트", "11:00 ~ 12:00", "강남역 아남타워빌딩"));
+                dataList.add(new TestModel(2017+j, 1 + i, 23, "영화보는날", "11:00 ~ 12:00", "강남역 아남타워빌딩"));
+            }
         }
         recyclerAdapter = new EventListAdapter(dataList);
         recyclerList.setAdapter(recyclerAdapter);
+
+        recyclerList.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+
+                Log.d(TAG, "scrool : " + i + " / " + i1 + " / " + i2 + " / " + i3);
+                Log.d(TAG,"position : " +         ((StaggeredGridLayoutManager)layoutManager).findFirstVisibleItemPositions(null)[0]);
+
+                int position = ((StaggeredGridLayoutManager)layoutManager).findFirstVisibleItemPositions(null)[0];
+                TestModel testModel = recyclerAdapter.getItem(position);
+
+                tvEventYear.setText(testModel.year+"");
+                tvEventMonth.setText(testModel.month+"월");
+            }
+        });
     }
 
     @Override
