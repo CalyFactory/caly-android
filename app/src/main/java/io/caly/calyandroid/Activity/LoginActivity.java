@@ -70,6 +70,7 @@ public class LoginActivity extends AppCompatActivity {
                         .requestScopes(
                                 new Scope("https://www.googleapis.com/auth/calendar"),
                                 new Scope("https://www.googleapis.com/auth/userinfo.profile"),
+                                new Scope("https://www.googleapis.com/auth/userinfo.email"),
                                 new Scope("https://www.googleapis.com/auth/calendar.readonly")
                         )
                         .build();

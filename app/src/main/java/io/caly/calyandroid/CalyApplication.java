@@ -2,6 +2,7 @@ package io.caly.calyandroid;
 
 import android.app.Application;
 
+import com.google.firebase.FirebaseApp;
 import com.orm.SugarApp;
 
 /**
@@ -13,4 +14,11 @@ import com.orm.SugarApp;
  */
 
 public class CalyApplication extends SugarApp {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+
+        FirebaseApp.initializeApp(this);
+    }
 }

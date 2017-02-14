@@ -1,6 +1,8 @@
 package io.caly.calyandroid.Adapter;
 
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,13 +25,25 @@ import io.caly.calyandroid.R;
 
 public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.ViewHolder> {
 
+    //로그에 쓰일 tag
+    private static final String TAG = SettingListAdapter.class.getSimpleName();
+
     ArrayList<SettingItemModel> dataList = new ArrayList<>();
 
     public SettingListAdapter(ArrayList<SettingItemModel> dataList){
         this.dataList = dataList;
+        Log.d(TAG," size : " +dataList.size());
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        @Nullable
+        @Bind(R.id.tv_setting_title)
+        TextView tvSettingTitle;
+
+        @Nullable
+        @Bind(R.id.tv_setting_desc)
+        TextView tvSettingDesc;
 
         public ViewHolder(View view) {
             super(view);
@@ -40,11 +54,25 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_eventlist_row1, parent, false);
 
-        ViewHolder holder = new ViewHolder(view);
-        return holder;
+        View view = null;
+        ViewHolder viewHolder = null;
+
+        if(viewType==1){
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_setting_title, parent, false);
+        }
+        else if(viewType==2){
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_setting_row1, parent, false);
+        }
+        else{
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_setting_row1, parent, false);
+        }
+
+        viewHolder = new ViewHolder(view);
+        return viewHolder;
     }
 
     @Override
@@ -54,7 +82,13 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        if(dataList.get(position).isTitle){
+            holder.tvSettingTitle.setText(dataList.get(position).title);
+        }
+        else{
+            holder.tvSettingTitle.setText(dataList.get(position).title);
+            holder.tvSettingDesc.setText(dataList.get(position).description);
+        }
     }
 
     @Override

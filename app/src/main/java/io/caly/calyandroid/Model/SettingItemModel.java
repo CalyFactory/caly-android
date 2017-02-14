@@ -11,5 +11,21 @@ package io.caly.calyandroid.Model;
 public class SettingItemModel {
 
     public boolean isTitle;
+    public String title;
+    public String description;
 
+    public SettingItemModel(String title){
+        isTitle = true;
+        this.title = title;
+        this.description = "";
+    }
+
+    public SettingItemModel(String title, String description){
+        isTitle = false;
+        this.title = title;
+        this.description = description;
+
+    }
+
+    
 }
