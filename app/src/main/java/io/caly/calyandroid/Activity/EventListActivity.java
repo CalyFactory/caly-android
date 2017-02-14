@@ -3,6 +3,8 @@ package io.caly.calyandroid.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,8 +15,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
 
@@ -49,6 +54,12 @@ public class EventListActivity extends AppCompatActivity {
 
     @Bind(R.id.tv_eventlist_month)
     TextView tvEventMonth;
+
+    @Bind(R.id.avi_eventlist)
+    AVLoadingIndicatorView aviLoader;
+
+    @Bind(R.id.linear_eventlist_loader)
+    LinearLayout linearLoader;
 
     EventListAdapter recyclerAdapter;
     RecyclerView.LayoutManager layoutManager;
@@ -115,7 +126,18 @@ public class EventListActivity extends AppCompatActivity {
                 tvEventMonth.setText(testModel.month+"월");
             }
         });
+
+        handler.sendEmptyMessageDelayed(0,3000);
     }
+
+    Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            linearLoader.setVisibility(View.GONE);
+//            aviLoader.smoothToHide();
+            super.handleMessage(msg);
+        }
+    };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
