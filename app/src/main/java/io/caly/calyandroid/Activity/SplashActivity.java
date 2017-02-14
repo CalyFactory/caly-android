@@ -8,6 +8,10 @@ import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 import io.caly.calyandroid.Model.SessionRecord;
 import io.caly.calyandroid.Model.SettingRecord;
 import io.caly.calyandroid.R;
@@ -37,7 +41,7 @@ public class SplashActivity extends AppCompatActivity {
 
     void init(){
 
-        Util.setStatusBarColor(this, getColor(R.color.colorPrimaryDark));
+        Util.setStatusBarColor(this, getResources().getColor(R.color.colorPrimaryDark));
 
         SettingRecord currentSetting = SettingRecord.getSettingRecord();
 
@@ -51,6 +55,9 @@ public class SplashActivity extends AppCompatActivity {
         currentSetting.setDidRun(true);
         currentSetting.save();
 
+        //firebase init
+        FirebaseInstanceId.getInstance().getToken();
+        FirebaseMessaging.getInstance().subscribeToTopic("noti");
     }
 
     void startLoginActivity(){

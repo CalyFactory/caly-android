@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
                         .requestServerAuthCode(getString(R.string.google_client_id))
                         .requestScopes(
                                 new Scope("https://www.googleapis.com/auth/calendar"),
-                                new Scope("https://www.googleapis.com/auth/userinfo.profile"),
+                                new Scope("https://www.googleapis.com/auth/userinfo.email"),
                                 new Scope("https://www.googleapis.com/auth/calendar.readonly")
                         )
                         .build();
@@ -140,7 +140,6 @@ public class LoginActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == codeSignIn) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 
@@ -149,7 +148,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
             if (result.isSuccess()) {
-                // Signed in successfully, show authenticated UI.
                 GoogleSignInAccount acct = result.getSignInAccount();
                 Log.d(TAG, acct.getDisplayName());
                 Log.d(TAG, "id token : " + acct.getIdToken());
@@ -162,7 +160,6 @@ public class LoginActivity extends AppCompatActivity {
 
             } else {
                 Toast.makeText(getBaseContext(),"로그인실패",Toast.LENGTH_LONG).show();
-                // Signed out, show unauthenticated UI.
             }
         }
     }
