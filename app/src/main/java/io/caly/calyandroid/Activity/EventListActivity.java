@@ -102,12 +102,11 @@ public class EventListActivity extends AppCompatActivity {
         recyclerAdapter = new EventListAdapter(dataList);
         recyclerList.setAdapter(recyclerAdapter);
 
-        recyclerList.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+        recyclerList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
 
-                Log.d(TAG, "scrool : " + i + " / " + i1 + " / " + i2 + " / " + i3);
-                Log.d(TAG,"position : " +         ((StaggeredGridLayoutManager)layoutManager).findFirstVisibleItemPositions(null)[0]);
 
                 int position = ((StaggeredGridLayoutManager)layoutManager).findFirstVisibleItemPositions(null)[0];
                 TestModel testModel = recyclerAdapter.getItem(position);
