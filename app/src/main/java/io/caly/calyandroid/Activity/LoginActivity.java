@@ -69,7 +69,6 @@ public class LoginActivity extends AppCompatActivity {
                         .requestServerAuthCode(getString(R.string.google_client_id))
                         .requestScopes(
                                 new Scope("https://www.googleapis.com/auth/calendar"),
-                                new Scope("https://www.googleapis.com/auth/userinfo.profile"),
                                 new Scope("https://www.googleapis.com/auth/userinfo.email"),
                                 new Scope("https://www.googleapis.com/auth/calendar.readonly")
                         )

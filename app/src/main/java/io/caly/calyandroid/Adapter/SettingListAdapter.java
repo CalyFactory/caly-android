@@ -1,5 +1,8 @@
 package io.caly.calyandroid.Adapter;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -7,11 +10,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.caly.calyandroid.Model.SettingItemModel;
 import io.caly.calyandroid.R;
 
@@ -45,10 +50,35 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
         @Bind(R.id.tv_setting_desc)
         TextView tvSettingDesc;
 
-        public ViewHolder(View view) {
+        public int position;
+
+        Context context;
+
+        public ViewHolder(View view, Context context) {
             super(view);
 
             ButterKnife.bind(this, view);
+            this.context = context;
+        }
+
+        @Nullable
+        @OnClick(R.id.linear_setting_row)
+        void onSettingRowClick(){
+            switch (position){
+                case 0:
+                    break;
+                case 1:         // 공지사항
+                    break;
+                case 2:         // 문의하기
+                    Uri uri = Uri.parse("mailto:calyfactory@gmail.com");
+                    Intent it = new Intent(Intent.ACTION_SENDTO, uri);
+
+                    context.startActivity(it);
+                    break;
+                default:
+                    Log.d(TAG,"clicked");
+                    break;
+            }
         }
     }
 
@@ -71,7 +101,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                     .inflate(R.layout.item_setting_row1, parent, false);
         }
 
-        viewHolder = new ViewHolder(view);
+        viewHolder = new ViewHolder(view, parent.getContext());
         return viewHolder;
     }
 
@@ -82,6 +112,9 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
+        holder.position = position;
+
         if(dataList.get(position).isTitle){
             holder.tvSettingTitle.setText(dataList.get(position).title);
         }
