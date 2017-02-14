@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/colorPrimary"
+            android:paddingLeft="20dp"
+            android:gravity="center_vertical"
+            android:layout_height="60dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/tv_login_title"
+                android:layout_height="wrap_content"
+                android:textColor="#ffffff"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:text="Naver 계정으로 로그인"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingTop="20dp"
+            android:paddingBottom="5dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <EditText
+                    android:id="@+id/edt_login_id"
+                    android:layout_width="match_parent"
+                    android:inputType="textEmailAddress"
+                    android:layout_height="wrap_content"
+                    android:hint="ID" />
+
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+                <EditText
+                    android:inputType="textPassword"
+                    android:id="@+id/edt_login_pw"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="PASSWORD" />
+
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+        
+        <View
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#afafaf"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="right"
+            android:orientation="horizontal"
+            android:layout_height="60dp">
+
+            <Button
+                android:id="@+id/btn_login_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="#ff5f95"
+                android:background="?attr/selectableItemBackground"
+                android:text="CANCEL"/>
+
+            <Button
+                android:id="@+id/btn_login_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="#ff5f95"
+                android:background="?attr/selectableItemBackground"
+                android:text="OK"/>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

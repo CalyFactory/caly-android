@@ -30,7 +30,7 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.gms.common.SignInButton
-                    android:id="@+id/btnLoginGoogle"
+                    android:id="@+id/btn_login_google"
                     android:layout_width="match_parent"
                     android:layout_height="48dp" />
             </LinearLayout>
@@ -40,6 +40,7 @@
                 android:layout_marginTop="5dp"
                 android:layout_height="wrap_content">
                 <Button
+                    android:id="@+id/btn_login_naver"
                     android:layout_width="match_parent"
                     android:background="#1ec800"
                     android:textSize="15dp"
@@ -57,6 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <Button
+                    android:id="@+id/btn_login_apple"
                     android:layout_width="match_parent"
                     android:background="#121d4b"
                     android:textSize="15dp"
