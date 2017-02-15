@@ -14,11 +14,6 @@
 
         <!-- Splash Activity -->
         <activity android:name=".Activity.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
 
@@ -42,6 +37,14 @@
 
         </activity>
 
+        <!-- Signup Activity -->
+        <activity android:name=".Activity.SignupActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
 
         <!-- Services -->
