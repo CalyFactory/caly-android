@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.os.Build;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -87,5 +88,17 @@ public class Util {
         String versionName = BuildConfig.VERSION_NAME;
         return ("v" + versionName + ":" + versionCode);
     }
+
+    public static String getDeviceInfo(){
+        String os = System.getProperty("os.version");
+        String apiLevel = Build.VERSION.SDK;
+        String device = Build.DEVICE;
+        String model = Build.MODEL;
+        String product = Build.PRODUCT;
+
+        return TextUtils.join(";", new String[]{os, apiLevel, device, model, product});
+
+    }
+
 
 }

@@ -47,13 +47,40 @@ public interface HttpService {
     Call<BasicResponse> signUp(
             @Field("uId") String userId,
             @Field("uPw") String userPw,
-            @Field("gender") String gender,
-            @Field("birth") String birth,
+            @Field("gender") int gender,
+            @Field("birth") int birth,
             @Field("loginPlatform") String loginPlatform,
             @Field("pushToken") String pushToken,
-            @Field("deviceType") String deviceType,
+            @Field("deviceType") int deviceType,
             @Field("appVersion") String appVersion,
             @Field("uuid") String uuid
+    );
+
+    //registerDevice
+    @FormUrlEncoded
+    @POST("/member/registerDevice")
+    Call<BasicResponse> registerDevice(
+            @Field("sessionkey") String sessionKey,
+            @Field("pushToken") String pushToken,
+            @Field("deviceType") int deviceToken,
+            @Field("appVersion") String appVersion,
+            @Field("deviceInfo") String deviceInfo,
+            @Field("uuid") String uuid
+    );
+
+    //updatePushToken
+    @FormUrlEncoded
+    @POST("/member/updatePushTOken")
+    Call<BasicResponse> updatePushToken(
+            @Field("pushToken") String pushToken,
+            @Field("sessionkey") String sessionKey
+    );
+
+    //logout
+    @FormUrlEncoded
+    @POST("/member/logout")
+    Call<BasicResponse> logout(
+            @Field("sessionkey") String sessionKey
     );
 
 
