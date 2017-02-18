@@ -16,7 +16,6 @@
 
         <!-- Splash Activity -->
         <activity android:name=".Activity.SplashActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -77,7 +76,6 @@
 
         <!-- Test Activity -->
         <activity android:name=".Activity.TestActivity">
-
         </activity>
 
 

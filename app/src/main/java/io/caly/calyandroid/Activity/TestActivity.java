@@ -5,11 +5,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 
-import java.net.ConnectException;
-
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.caly.calyandroid.Model.BasicResponse;
+import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util;
 import retrofit2.Call;
@@ -46,25 +44,45 @@ public class TestActivity extends Activity {
 
     @OnClick(R.id.button2)
     void onButtonCLick(){
-        Util.getHttpService().listRepos("dd").enqueue(new Callback<BasicResponse>() {
+
+
+    }
+
+    void test(){
+
+        Util.getHttpService().test(
+                "test"
+        ).enqueue(new Callback<BasicResponse>() {
             @Override
             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                Log.d(TAG, "onResponse code : " + response.code());
+                Log.d(TAG,"onResponse code : " + response.code());
+
+                if(response.code() == 200){
+                    BasicResponse body = response.body();
+
+                }
+                else{
+                    Toast.makeText(
+                            getBaseContext(),
+                            getString(R.string.toast_msg_server_internal_error),
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
             }
 
             @Override
             public void onFailure(Call<BasicResponse> call, Throwable t) {
-                Log.d(TAG, "onFailure msg : " + t.getMessage());
-                Log.d(TAG, "onFailure msg : " + t.getClass().getName());
-                if (t instanceof ConnectException){
-                    Toast.makeText(getBaseContext(), getString(R.string.toast_msg_network_error), Toast.LENGTH_LONG).show();
-                }
+                Log.d(TAG,"onfail : " + t.getMessage());
+                Log.d(TAG, "fail " + t.getClass().getName());
 
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_network_error),
+                        Toast.LENGTH_LONG
+                ).show();
             }
         });
-
     }
-
 
 
 }

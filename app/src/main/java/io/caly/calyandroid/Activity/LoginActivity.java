@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -19,11 +18,15 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.common.api.Scope;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.caly.calyandroid.Model.BasicResponse;
+import io.caly.calyandroid.Model.Response.BasicResponse;
+import io.caly.calyandroid.Model.DeviceType;
+import io.caly.calyandroid.Model.SessionRecord;
+import io.caly.calyandroid.Model.Response.SessionResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util;
 import io.caly.calyandroid.View.LoginDialog;
@@ -148,10 +151,69 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     void registerDeviceInfo(){
-        Util.getHttpService().
+        Util.getHttpService().registerDevice(
+                "null",
+                FirebaseInstanceId.getInstance().getToken(),
+                DeviceType.ANDROID,
+                Util.getAppVersion(),
+                Util.getDeviceInfo(),
+                Util.getUUID()
+        ).enqueue(new Callback<SessionResponse>() {
+            @Override
+            public void onResponse(Call<SessionResponse> call, Response<SessionResponse> response) {
+                Log.d(TAG,"onResponse code : " + response.code());
+
+                if(response.code() == 200){
+                    SessionResponse body = response.body();
+
+                    switch (body.code){
+                        case 200:
+                            SessionRecord session = SessionRecord.getSessionRecord();
+                            session.setSessionKey(body.payload.sessionKey);
+                            session.save();
+                            startEventActivity();
+                            break;
+                        case 400:
+                            Toast.makeText(
+                                    getBaseContext(),
+                                    getString(R.string.toast_msg_login_fail),
+                                    Toast.LENGTH_LONG
+                            ).show();
+                            break;
+                        default:
+                            Toast.makeText(
+                                    getBaseContext(),
+                                    getString(R.string.toast_msg_server_internal_error),
+                                    Toast.LENGTH_LONG
+                            ).show();
+                            break;
+                    }
+
+                }
+                else{
+                    Toast.makeText(
+                            getBaseContext(),
+                            getString(R.string.toast_msg_server_internal_error),
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SessionResponse> call, Throwable t) {
+                Log.d(TAG,"onfail : " + t.getMessage());
+                Log.d(TAG, "fail " + t.getClass().getName());
+
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_network_error),
+                        Toast.LENGTH_LONG
+                ).show();
+            }
+        });
     }
 
-    void procLoginCaldav(String userId, String userPw, String loginPlatform){
+    void procLogin(String userId, String userPw, String loginPlatform, String subject){
         Util.getHttpService().loginCheck(
                 userId,
                 userPw,
@@ -163,7 +225,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
                 Log.d(TAG,"onResponse code : " + response.code());
-
+                Log.d(TAG,"req url : " + call.request().url().toString());
                 if(response.code() == 200){
                     BasicResponse body = response.body();
 
@@ -178,7 +240,13 @@ public class LoginActivity extends AppCompatActivity {
                         case 207:
                             registerDeviceInfo();
                             break;
-
+                        default:
+                            Toast.makeText(
+                                    getBaseContext(),
+                                    getString(R.string.toast_msg_server_internal_error),
+                                    Toast.LENGTH_LONG
+                            ).show();
+                            break;
                     }
 
                 }
@@ -207,6 +275,13 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    void procLoginCaldav(String userId, String userPw, String loginPlatform){
+        procLogin(userId, userPw, loginPlatform, "null");
+    }
+
+    void procLoginGoogle(String subject){
+        procLogin("null", "null", "google", subject);
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -227,11 +302,14 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(TAG, "id : " + acct.getId());
                 Log.d(TAG, "email : " + acct.getEmail());
 
-                Intent intent = new Intent(LoginActivity.this, EventListActivity.class);
-                startActivity(intent);
+                procLoginGoogle(acct.getId());
 
             } else {
-                Toast.makeText(getBaseContext(),"로그인실패",Toast.LENGTH_LONG).show();
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_login_fail),
+                        Toast.LENGTH_LONG
+                ).show();
             }
         }
     }

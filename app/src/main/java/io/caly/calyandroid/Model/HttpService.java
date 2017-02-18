@@ -1,5 +1,7 @@
 package io.caly.calyandroid.Model;
 
+import io.caly.calyandroid.Model.Response.BasicResponse;
+import io.caly.calyandroid.Model.Response.SessionResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -18,7 +20,7 @@ import retrofit2.http.Path;
 public interface HttpService {
 
     @GET("/users/{user}/repos")
-    Call<BasicResponse> listRepos(
+    Call<BasicResponse> test(
             @Path("user") String user
     );
 
@@ -31,7 +33,7 @@ public interface HttpService {
 
     //loginCheck
     @FormUrlEncoded
-    @POST("/member/loginCheck")
+    @POST("member/loginCheck")
     Call<BasicResponse> loginCheck(
             @Field("uId") String userId,
             @Field("uPw") String userPw,
@@ -43,7 +45,7 @@ public interface HttpService {
 
     //signUp
     @FormUrlEncoded
-    @POST("/member/signUp")
+    @POST("member/signUp")
     Call<BasicResponse> signUp(
             @Field("uId") String userId,
             @Field("uPw") String userPw,
@@ -58,11 +60,11 @@ public interface HttpService {
 
     //registerDevice
     @FormUrlEncoded
-    @POST("/member/registerDevice")
-    Call<BasicResponse> registerDevice(
+    @POST("member/registerDevice")
+    Call<SessionResponse> registerDevice(
             @Field("sessionkey") String sessionKey,
             @Field("pushToken") String pushToken,
-            @Field("deviceType") int deviceToken,
+            @Field("deviceType") int deviceType,
             @Field("appVersion") String appVersion,
             @Field("deviceInfo") String deviceInfo,
             @Field("uuid") String uuid
@@ -70,7 +72,7 @@ public interface HttpService {
 
     //updatePushToken
     @FormUrlEncoded
-    @POST("/member/updatePushTOken")
+    @POST("member/updatePushToken")
     Call<BasicResponse> updatePushToken(
             @Field("pushToken") String pushToken,
             @Field("sessionkey") String sessionKey
@@ -78,7 +80,7 @@ public interface HttpService {
 
     //logout
     @FormUrlEncoded
-    @POST("/member/logout")
+    @POST("member/logout")
     Call<BasicResponse> logout(
             @Field("sessionkey") String sessionKey
     );
