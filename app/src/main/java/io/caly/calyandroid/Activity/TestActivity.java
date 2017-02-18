@@ -39,6 +39,9 @@ public class TestActivity extends Activity {
 
     void init(){
         ButterKnife.bind(this);
+
+        Log.d(TAG, "uuid : " +Util.getUUID());
+
     }
 
     @OnClick(R.id.button2)

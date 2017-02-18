@@ -1,5 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.caly.calyandroid">
+
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
@@ -10,11 +13,18 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+
+
         <!-- Main Activity -->
 
         <!-- Splash Activity -->
         <activity android:name=".Activity.SplashActivity">
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!-- Login Activity -->
@@ -70,11 +80,6 @@
 
         <!-- Test Activity -->
         <activity android:name=".Activity.TestActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
 

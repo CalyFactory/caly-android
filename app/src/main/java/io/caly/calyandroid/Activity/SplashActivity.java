@@ -1,11 +1,16 @@
 package io.caly.calyandroid.Activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 
 import com.google.firebase.FirebaseApp;
@@ -31,6 +36,8 @@ public class SplashActivity extends AppCompatActivity {
     //로그에 쓰일 tag
     private static final String TAG = SplashActivity.class.getSimpleName();
 
+    private final int PERMISSION_CODE = 1111;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +50,21 @@ public class SplashActivity extends AppCompatActivity {
 
         Util.setStatusBarColor(this, getResources().getColor(R.color.colorPrimaryDark));
 
+
+        //firebase init
+        FirebaseInstanceId.getInstance().getToken();
+        FirebaseMessaging.getInstance().subscribeToTopic("noti");
+
+        if(isPermissionGranted()){
+            startSplash();
+        }
+        else{
+            requestPermission();
+        }
+    }
+
+    void startSplash(){
+
         SettingRecord currentSetting = SettingRecord.getSettingRecord();
 
         if(currentSetting.isDidRun()){
@@ -54,10 +76,24 @@ public class SplashActivity extends AppCompatActivity {
 
         currentSetting.setDidRun(true);
         currentSetting.save();
+    }
 
-        //firebase init
-        FirebaseInstanceId.getInstance().getToken();
-        FirebaseMessaging.getInstance().subscribeToTopic("noti");
+    void requestPermission(){
+        ActivityCompat.requestPermissions(
+                this,
+                new String[]{
+                        Manifest.permission.READ_PHONE_STATE
+                },
+                PERMISSION_CODE
+        );
+    }
+
+    boolean isPermissionGranted(){
+
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED){
+            return false;
+        }
+        return true;
     }
 
     void startLoginActivity(){
@@ -100,6 +136,22 @@ public class SplashActivity extends AppCompatActivity {
         }
 
     };
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if(requestCode == PERMISSION_CODE){
+
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                startSplash();
+            }
+            else{
+                finish();
+            }
+
+        }
+
+    }
 
     @Override
     protected void onPause() {

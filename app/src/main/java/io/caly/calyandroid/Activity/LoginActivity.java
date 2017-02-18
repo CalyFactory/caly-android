@@ -23,9 +23,13 @@ import com.google.android.gms.common.api.Scope;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.caly.calyandroid.Model.BasicResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util;
 import io.caly.calyandroid.View.LoginDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -133,6 +137,28 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         dialog.show();
+    }
+
+    void procLoginCaldav(String userId, String userPw, String loginPlatform){
+        Util.getHttpService().loginCheck(
+                userId,
+                userPw,
+                Util.getUUID(),
+                "null",
+                loginPlatform,
+                null
+        ).enqueue(new Callback<BasicResponse>() {
+            @Override
+            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                Log.d(TAG,"code : " + response.code());
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponse> call, Throwable t) {
+                Log.d(TAG,"onfail : ");
+
+            }
+        });
     }
 
 
