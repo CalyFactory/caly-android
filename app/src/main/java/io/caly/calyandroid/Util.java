@@ -40,7 +40,7 @@ public class Util {
         if(httpService == null){
             Util.httpService =
                     new Retrofit.Builder()
-                            .baseUrl(CalyApplication.getContext().getString(R.string.app_server) + CalyApplication.getContext().getString(R.string.app_server_version))
+                            .baseUrl(CalyApplication.getContext().getString(R.string.app_server) + CalyApplication.getContext().getString(R.string.app_server_version) + "/")
                             .addConverterFactory(GsonConverterFactory.create())
                             .build()
                             .create(HttpService.class);
