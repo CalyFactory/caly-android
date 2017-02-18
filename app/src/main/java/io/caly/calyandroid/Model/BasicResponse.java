@@ -14,7 +14,10 @@ import com.google.gson.annotations.SerializedName;
 public class BasicResponse {
 
     @SerializedName("code")
-    public String code;
+    public int code;
+
+    @SerializedName("payload")
+    public String payload;
 
 }
 
