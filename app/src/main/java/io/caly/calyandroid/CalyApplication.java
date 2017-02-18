@@ -1,6 +1,7 @@
 package io.caly.calyandroid;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.google.firebase.FirebaseApp;
 import com.orm.SugarApp;
@@ -14,11 +15,18 @@ import com.orm.SugarApp;
  */
 
 public class CalyApplication extends SugarApp {
+
+    private static Context context;
+
     @Override
     public void onCreate() {
         super.onCreate();
 
-
+        context = this;
         FirebaseApp.initializeApp(this);
+    }
+
+    public static Context getContext(){
+        return context;
     }
 }

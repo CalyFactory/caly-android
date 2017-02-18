@@ -14,8 +14,26 @@ import com.google.gson.annotations.SerializedName;
 public class BasicResponse {
 
     @SerializedName("code")
-    public String code;
+    public int code;
 
+    @SerializedName("payload")
+    public String payload;
+
+    public int getCode() {
+        return code;
+    }
+
+    public void setCode(int code) {
+        this.code = code;
+    }
+
+    public String getPayload() {
+        return payload;
+    }
+
+    public void setPayload(String payload) {
+        this.payload = payload;
+    }
 }
 
 

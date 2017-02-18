@@ -1,6 +1,7 @@
 package io.caly.calyandroid;
 
 import android.app.Activity;
+import android.content.res.Resources;
 import android.os.Build;
 import android.view.Window;
 import android.view.WindowManager;
@@ -9,6 +10,7 @@ import java.util.Calendar;
 
 import io.caly.calyandroid.Model.HttpService;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -32,11 +34,12 @@ public class Util {
         if(httpService == null){
             Util.httpService =
                     new Retrofit.Builder()
-                            .baseUrl("http://naver.com")
+                            .baseUrl(CalyApplication.getContext().getString(R.string.app_server))
+                            .addConverterFactory(GsonConverterFactory.create())
                             .build()
                             .create(HttpService.class);
         }
-
+        
         return Util.httpService;
     }
 
