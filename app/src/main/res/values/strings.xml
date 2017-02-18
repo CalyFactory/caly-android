@@ -1,8 +1,10 @@
 <resources>
     <string name="app_name">CalyAndroid</string>
-    <string name="app_server">http://ssoma.xyz:12345</string>
+    <string name="app_server">https://ssoma.xyz:12345/</string>
+    <string name="app_server_version">v1.0</string>
     <string name="google_client_id">881274260597-26b4e9bqah6nbp1katm5qlud3gfitlat.apps.googleusercontent.com</string>
 
     <!-- Toast Msg -->
     <string name="toast_msg_network_error">네트워크 연결을 확인해 주세요</string>
+    <string name="toast_msg_server_internal_error">서버 문제가 발생하였습니다. 담당자에게 문의해주세요.</string>
 </resources>

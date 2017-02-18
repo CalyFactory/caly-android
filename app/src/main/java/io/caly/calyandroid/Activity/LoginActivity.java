@@ -105,9 +105,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onPositive(LoginDialog dialog, String userId, String userPw) {
                 dialog.dismiss();
 
-                Intent intent = new Intent(LoginActivity.this, EventListActivity.class);
-                startActivity(intent);
-                finish();
+                procLoginCaldav(userId, userPw, "naver");
             }
 
             @Override
@@ -126,9 +124,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onPositive(LoginDialog dialog, String userId, String userPw) {
                 dialog.dismiss();
 
-                Intent intent = new Intent(LoginActivity.this, EventListActivity.class);
-                startActivity(intent);
-                finish();
+                procLoginCaldav(userId, userPw, "ical");
             }
 
             @Override
@@ -139,6 +135,22 @@ public class LoginActivity extends AppCompatActivity {
         dialog.show();
     }
 
+    void startEventActivity(){
+        Intent intent = new Intent(LoginActivity.this, EventListActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    void startSignupActivity(){
+        Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+        startActivity(intent);
+        finish();
+    }
+
+    void registerDeviceInfo(){
+        Util.getHttpService().
+    }
+
     void procLoginCaldav(String userId, String userPw, String loginPlatform){
         Util.getHttpService().loginCheck(
                 userId,
@@ -146,17 +158,51 @@ public class LoginActivity extends AppCompatActivity {
                 Util.getUUID(),
                 "null",
                 loginPlatform,
-                null
+                "null"
         ).enqueue(new Callback<BasicResponse>() {
             @Override
             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                Log.d(TAG,"code : " + response.code());
+                Log.d(TAG,"onResponse code : " + response.code());
+
+                if(response.code() == 200){
+                    BasicResponse body = response.body();
+
+                    switch (body.code){
+                        case 200:
+                        case 205:
+                            startEventActivity();
+                            break;
+                        case 201:
+                            startSignupActivity();
+                            break;
+                        case 207:
+                            registerDeviceInfo();
+                            break;
+
+                    }
+
+                }
+                else{
+
+                    Toast.makeText(
+                            getBaseContext(),
+                            getString(R.string.toast_msg_server_internal_error),
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
+
             }
 
             @Override
             public void onFailure(Call<BasicResponse> call, Throwable t) {
-                Log.d(TAG,"onfail : ");
+                Log.d(TAG,"onfail : " + t.getMessage());
+                Log.d(TAG, "fail " + t.getClass().getName());
 
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_network_error),
+                        Toast.LENGTH_LONG
+                ).show();
             }
         });
     }

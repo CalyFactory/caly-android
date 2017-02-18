@@ -30,8 +30,6 @@ public class Util {
     //로그에 쓰일 tag
     private static final String TAG = Util.class.getSimpleName();
 
-    
-
     private static HttpService httpService;
 
     public static String[] dayOfDate = {"일","월","화","수","목","금","토"};
@@ -41,7 +39,7 @@ public class Util {
         if(httpService == null){
             Util.httpService =
                     new Retrofit.Builder()
-                            .baseUrl(CalyApplication.getContext().getString(R.string.app_server))
+                            .baseUrl(CalyApplication.getContext().getString(R.string.app_server) + CalyApplication.getContext().getString(R.string.app_server_version))
                             .addConverterFactory(GsonConverterFactory.create())
                             .build()
                             .create(HttpService.class);
@@ -83,4 +81,11 @@ public class Util {
 
         return cal.get(Calendar.DAY_OF_WEEK) - 1;
     }
+
+    public static String getAppVersion(){
+        int versionCode = BuildConfig.VERSION_CODE;
+        String versionName = BuildConfig.VERSION_NAME;
+        return ("v" + versionName + ":" + versionCode);
+    }
+
 }

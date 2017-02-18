@@ -14,9 +14,6 @@
         android:theme="@style/AppTheme">
 
 
-
-        <!-- Main Activity -->
-
         <!-- Splash Activity -->
         <activity android:name=".Activity.SplashActivity">
 

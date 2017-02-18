@@ -2,6 +2,7 @@ package io.caly.calyandroid.Model;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -22,8 +23,15 @@ public interface HttpService {
     );
 
 
-    //Member
-    @POST("/v1.0/member/loginCheck")
+    /*
+    =============================
+                MEMBER
+    =============================
+     */
+
+    //loginCheck
+    @FormUrlEncoded
+    @POST("/member/loginCheck")
     Call<BasicResponse> loginCheck(
             @Field("uId") String userId,
             @Field("uPw") String userPw,
@@ -32,5 +40,22 @@ public interface HttpService {
             @Field("loginPlatform") String loginPlatform,
             @Field("subject") String subject
     );
+
+    //signUp
+    @FormUrlEncoded
+    @POST("/member/signUp")
+    Call<BasicResponse> signUp(
+            @Field("uId") String userId,
+            @Field("uPw") String userPw,
+            @Field("gender") String gender,
+            @Field("birth") String birth,
+            @Field("loginPlatform") String loginPlatform,
+            @Field("pushToken") String pushToken,
+            @Field("deviceType") String deviceType,
+            @Field("appVersion") String appVersion,
+            @Field("uuid") String uuid
+    );
+
+
 
 }
