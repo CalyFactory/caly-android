@@ -23,5 +23,8 @@ public class SessionResponse {
         @SerializedName("sessionkey")
         public String sessionKey;
 
+        @SerializedName("msg")
+        public String msg;
+
     }
 }

@@ -9,10 +9,13 @@ import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.UUID;
 
 import io.caly.calyandroid.Model.HttpService;
+import okhttp3.RequestBody;
+import okio.Buffer;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -47,6 +50,20 @@ public class Util {
         }
 
         return Util.httpService;
+    }
+
+    public static String requestBodyToString(final RequestBody request) {
+        try {
+            final RequestBody copy = request;
+            final Buffer buffer = new Buffer();
+            if (copy != null)
+                copy.writeTo(buffer);
+            else
+                return "";
+            return buffer.readUtf8();
+        } catch (final IOException e) {
+            return "did not work";
+        }
     }
 
     public static String getUUID(){
@@ -84,19 +101,23 @@ public class Util {
     }
 
     public static String getAppVersion(){
-        int versionCode = BuildConfig.VERSION_CODE;
         String versionName = BuildConfig.VERSION_NAME;
-        return ("v" + versionName + ";" + versionCode);
+        return (versionName);
+    }
+
+    public static String getSdkLevel(){
+        String apiLevel = Build.VERSION.SDK;
+        return apiLevel;
+
     }
 
     public static String getDeviceInfo(){
         String os = System.getProperty("os.version");
-        String apiLevel = Build.VERSION.SDK;
         String device = Build.DEVICE;
         String model = Build.MODEL;
         String product = Build.PRODUCT;
 
-        return TextUtils.join(";", new String[]{os, apiLevel, device, model, product});
+        return TextUtils.join(";", new String[]{os, device, model, product});
 
     }
 

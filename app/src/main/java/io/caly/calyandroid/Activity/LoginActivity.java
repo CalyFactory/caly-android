@@ -145,12 +145,12 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    void startSignupActivity(String userId, String userPw, String loginPlatform, String subject){
+    void startSignupActivity(String userId, String userPw, String loginPlatform, String authCode){
         Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
         intent.putExtra("userId", userId);
         intent.putExtra("userPw", userPw);
         intent.putExtra("loginPlatform", loginPlatform);
-        intent.putExtra("subject", subject);
+        intent.putExtra("authCode", authCode);
         startActivity(intent);
         finish();
     }
@@ -218,14 +218,15 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    void procLogin(final String userId, final String userPw, final String loginPlatform, final String subject){
+    void procLogin(final String userId, final String userPw, final String loginPlatform, final String authCode){
         Util.getHttpService().loginCheck(
                 userId,
                 userPw,
                 Util.getUUID(),
                 "null", //session
                 loginPlatform,
-                subject
+                authCode,
+                Util.getAppVersion()
         ).enqueue(new Callback<SessionResponse>() {
             @Override
             public void onResponse(Call<SessionResponse> call, Response<SessionResponse> response) {
@@ -244,7 +245,7 @@ public class LoginActivity extends AppCompatActivity {
                             startEventActivity();
                             break;
                         case 201:
-                            startSignupActivity(userId, userPw, loginPlatform, subject);
+                            startSignupActivity(userId, userPw, loginPlatform, authCode);
                             break;
                         case 207:
                             sessionRecord.setSessionKey(body.payload.sessionKey);
@@ -291,8 +292,8 @@ public class LoginActivity extends AppCompatActivity {
         procLogin(userId, userPw, loginPlatform, "null");
     }
 
-    void procLoginGoogle(String subject){
-        procLogin("null", "null", "google", subject);
+    void procLoginGoogle(String authCode){
+        procLogin("null", "null", "google", authCode);
     }
 
     @Override
@@ -314,7 +315,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(TAG, "id : " + acct.getId());
                 Log.d(TAG, "email : " + acct.getEmail());
 
-                procLoginGoogle(acct.getId());
+                procLoginGoogle(acct.getServerAuthCode());
 
             } else {
                 Toast.makeText(

@@ -40,7 +40,9 @@ public interface HttpService {
             @Field("uuid") String uuid,
             @Field("sessionkey") String sessionKey,
             @Field("loginPlatform") String loginPlatform,
-            @Field("subject") String subject
+            @Field("subject") String subject,
+            @Field("appVersion") String appVersion/*,
+            @Field("sdkLevel") String sdkLevel*/
     );
 
     //signUp
@@ -49,6 +51,7 @@ public interface HttpService {
     Call<SessionResponse> signUp(
             @Field("uId") String userId,
             @Field("uPw") String userPw,
+            @Field("authCode") String authCode,
             @Field("gender") int gender,
             @Field("birth") int birth,
             @Field("loginPlatform") String loginPlatform,
@@ -56,7 +59,8 @@ public interface HttpService {
             @Field("deviceType") int deviceType,
             @Field("appVersion") String appVersion,
             @Field("deviceInfo") String deviceInfo,
-            @Field("uuid") String uuid
+            @Field("uuid") String uuid,
+            @Field("sdkLevel") String sdkLevel
     );
 
     //registerDevice

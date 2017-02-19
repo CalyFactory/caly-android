@@ -121,6 +121,7 @@ public class SignupActivity extends AppCompatActivity {
         Util.getHttpService().signUp(
                 bundleData.getString("userId"),
                 bundleData.getString("userPw"),
+                bundleData.getString("authCode"),
                 selectedGender,
                 Integer.parseInt(edtBirth.getText().toString()),
                 bundleData.getString("loginPlatform"),
@@ -128,12 +129,13 @@ public class SignupActivity extends AppCompatActivity {
                 DeviceType.ANDROID,
                 Util.getAppVersion(),
                 Util.getDeviceInfo(),
-                Util.getUUID()
+                Util.getUUID(),
+                Util.getSdkLevel()
         ).enqueue(new Callback<SessionResponse>() {
             @Override
             public void onResponse(Call<SessionResponse> call, Response<SessionResponse> response) {
                 Log.d(TAG,"onResponse code : " + response.code());
-
+                Log.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
                 if(response.code() == 200){
                     SessionResponse body = response.body();
 

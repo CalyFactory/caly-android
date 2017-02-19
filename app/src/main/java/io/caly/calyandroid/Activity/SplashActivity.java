@@ -136,6 +136,7 @@ public class SplashActivity extends AppCompatActivity {
             }
             else{
                 SessionRecord sessionRecord = SessionRecord.getSessionRecord();
+
                 //로그인 정보가 없을 경우
                 if(sessionRecord.getSessionKey() == null){
                     Log.d(TAG, "no login");
@@ -150,7 +151,8 @@ public class SplashActivity extends AppCompatActivity {
                             Util.getUUID(),
                             sessionRecord.getSessionKey(),
                             "null",
-                            "null"
+                            "null",
+                            Util.getAppVersion()
                     ).enqueue(new retrofit2.Callback<SessionResponse>() {
                         @Override
                         public void onResponse(Call<SessionResponse> call, Response<SessionResponse> response) {
@@ -161,6 +163,7 @@ public class SplashActivity extends AppCompatActivity {
                                 switch (body.code){
                                     case 200:
                                         startEventActivity();
+                                        break;
                                     default:
                                         Toast.makeText(
                                                 getBaseContext(),
