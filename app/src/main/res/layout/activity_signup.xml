@@ -29,6 +29,8 @@
                 android:orientation="vertical"
                 android:gravity="center_horizontal"
                 android:layout_width="match_parent"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:layout_height="match_parent">
 
                 <TextView
@@ -63,12 +65,28 @@
                         />
                 </LinearLayout>
 
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="50dp"
+                    android:layout_height="wrap_content">
+
+                    <EditText
+                        android:id="@+id/edt_signup_birth"
+                        android:layout_width="match_parent"
+                        android:inputType="date"
+                        android:layout_height="wrap_content"
+                        android:maxLength="4"
+                        android:hint="태어난 연도를 입력해주세요(19xx)" />
+
+                </android.support.design.widget.TextInputLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <CheckBox
                         android:layout_gravity="bottom"
                         android:layout_width="match_parent"
+                        android:id="@+id/cb_signup_policy"
                         android:layout_height="wrap_content"
                         android:text="캘리의 이용 정책에 동의합니다."
                         />
@@ -84,6 +102,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#ffffff"
+            android:id="@+id/btn_signup_proc"
             android:textSize="17dp"
             android:backgroundTint="@color/colorAccent"
             android:text="회원가입"/>

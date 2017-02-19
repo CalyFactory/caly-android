@@ -86,7 +86,7 @@ public class Util {
     public static String getAppVersion(){
         int versionCode = BuildConfig.VERSION_CODE;
         String versionName = BuildConfig.VERSION_NAME;
-        return ("v" + versionName + ":" + versionCode);
+        return ("v" + versionName + ";" + versionCode);
     }
 
     public static String getDeviceInfo(){

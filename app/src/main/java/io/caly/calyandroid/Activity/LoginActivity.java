@@ -19,6 +19,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.common.api.Scope;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.JsonObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -144,8 +145,12 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    void startSignupActivity(){
+    void startSignupActivity(String userId, String userPw, String loginPlatform, String subject){
         Intent intent = new Intent(LoginActivity.this, SignupActivity.class);
+        intent.putExtra("userId", userId);
+        intent.putExtra("userPw", userPw);
+        intent.putExtra("loginPlatform", loginPlatform);
+        intent.putExtra("subject", subject);
         startActivity(intent);
         finish();
     }
@@ -213,31 +218,37 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    void procLogin(String userId, String userPw, String loginPlatform, String subject){
+    void procLogin(final String userId, final String userPw, final String loginPlatform, final String subject){
         Util.getHttpService().loginCheck(
                 userId,
                 userPw,
                 Util.getUUID(),
-                "null",
+                "null", //session
                 loginPlatform,
-                "null"
-        ).enqueue(new Callback<BasicResponse>() {
+                subject
+        ).enqueue(new Callback<SessionResponse>() {
             @Override
-            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+            public void onResponse(Call<SessionResponse> call, Response<SessionResponse> response) {
                 Log.d(TAG,"onResponse code : " + response.code());
                 Log.d(TAG,"req url : " + call.request().url().toString());
-                if(response.code() == 200){
-                    BasicResponse body = response.body();
 
+                if(response.code() == 200){
+                    SessionResponse body = response.body();
+
+                    SessionRecord sessionRecord = SessionRecord.getSessionRecord();
                     switch (body.code){
                         case 200:
                         case 205:
+                            sessionRecord.setSessionKey(body.payload.sessionKey);
+                            sessionRecord.save();
                             startEventActivity();
                             break;
                         case 201:
-                            startSignupActivity();
+                            startSignupActivity(userId, userPw, loginPlatform, subject);
                             break;
                         case 207:
+                            sessionRecord.setSessionKey(body.payload.sessionKey);
+                            sessionRecord.save();
                             registerDeviceInfo();
                             break;
                         default:
@@ -262,8 +273,9 @@ public class LoginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<BasicResponse> call, Throwable t) {
+            public void onFailure(Call<SessionResponse> call, Throwable t) {
                 Log.d(TAG,"onfail : " + t.getMessage());
+                Log.d(TAG,"body" + call.request().body().toString());
                 Log.d(TAG, "fail " + t.getClass().getName());
 
                 Toast.makeText(

@@ -34,7 +34,7 @@ public interface HttpService {
     //loginCheck
     @FormUrlEncoded
     @POST("member/loginCheck")
-    Call<BasicResponse> loginCheck(
+    Call<SessionResponse> loginCheck(
             @Field("uId") String userId,
             @Field("uPw") String userPw,
             @Field("uuid") String uuid,
@@ -46,7 +46,7 @@ public interface HttpService {
     //signUp
     @FormUrlEncoded
     @POST("member/signUp")
-    Call<BasicResponse> signUp(
+    Call<SessionResponse> signUp(
             @Field("uId") String userId,
             @Field("uPw") String userPw,
             @Field("gender") int gender,
@@ -55,6 +55,7 @@ public interface HttpService {
             @Field("pushToken") String pushToken,
             @Field("deviceType") int deviceType,
             @Field("appVersion") String appVersion,
+            @Field("deviceInfo") String deviceInfo,
             @Field("uuid") String uuid
     );
 
@@ -84,6 +85,20 @@ public interface HttpService {
     Call<BasicResponse> logout(
             @Field("sessionkey") String sessionKey
     );
+
+    //checkVersion
+    @FormUrlEncoded
+    @POST("member/checkVersion")
+    Call<BasicResponse> checkVersion(
+            @Field("appVersion") String appVersion,
+            @Field("sessionkey") String sessionKey
+    );
+
+    /*
+    =============================
+                EVENT
+    =============================
+     */
 
 
 
