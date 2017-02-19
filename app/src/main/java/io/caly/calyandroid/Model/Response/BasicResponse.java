@@ -17,7 +17,14 @@ public class BasicResponse {
     public int code;
 
     @SerializedName("payload")
-    public String payload;
+    public SessionResponse.Payload payload;
+
+    public class Payload {
+
+        @SerializedName("msg")
+        public String msg;
+
+    }
 
 }
 

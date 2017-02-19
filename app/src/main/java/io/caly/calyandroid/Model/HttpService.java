@@ -34,28 +34,33 @@ public interface HttpService {
     //loginCheck
     @FormUrlEncoded
     @POST("member/loginCheck")
-    Call<BasicResponse> loginCheck(
+    Call<SessionResponse> loginCheck(
             @Field("uId") String userId,
             @Field("uPw") String userPw,
             @Field("uuid") String uuid,
             @Field("sessionkey") String sessionKey,
             @Field("loginPlatform") String loginPlatform,
-            @Field("subject") String subject
+            @Field("subject") String subject,
+            @Field("appVersion") String appVersion/*,
+            @Field("sdkLevel") String sdkLevel*/
     );
 
     //signUp
     @FormUrlEncoded
     @POST("member/signUp")
-    Call<BasicResponse> signUp(
+    Call<SessionResponse> signUp(
             @Field("uId") String userId,
             @Field("uPw") String userPw,
+            @Field("authCode") String authCode,
             @Field("gender") int gender,
             @Field("birth") int birth,
             @Field("loginPlatform") String loginPlatform,
             @Field("pushToken") String pushToken,
             @Field("deviceType") int deviceType,
             @Field("appVersion") String appVersion,
-            @Field("uuid") String uuid
+            @Field("deviceInfo") String deviceInfo,
+            @Field("uuid") String uuid,
+            @Field("sdkLevel") String sdkLevel
     );
 
     //registerDevice
@@ -85,6 +90,35 @@ public interface HttpService {
             @Field("sessionkey") String sessionKey
     );
 
+    //checkVersion
+    @FormUrlEncoded
+    @POST("member/checkVersion")
+    Call<BasicResponse> checkVersion(
+            @Field("appVersion") String appVersion,
+            @Field("sessionkey") String sessionKey
+    );
+
+    /*
+    =============================
+                EVENT
+    =============================
+     */
+
+
+
+
+    /*
+    =============================
+                SYNC
+    =============================
+     */
+
+    //sync
+    @FormUrlEncoded
+    @POST("sync")
+    Call<BasicResponse> sync(
+            @Field("sessionkey") String sessionkey
+    );
 
 
 }

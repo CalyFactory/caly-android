@@ -1,9 +1,13 @@
 package io.caly.calyandroid.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +21,8 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.caly.calyandroid.Activity.SplashActivity;
+import io.caly.calyandroid.Model.SessionRecord;
 import io.caly.calyandroid.Model.SettingItemModel;
 import io.caly.calyandroid.R;
 
@@ -74,6 +80,29 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                     Intent it = new Intent(Intent.ACTION_SENDTO, uri);
 
                     context.startActivity(it);
+                    break;
+                case 10:
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setMessage("정말 로그아웃하시겠습니까?");
+                    builder.setTitle("로그아웃");
+                    builder.setPositiveButton("로그아웃", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                            SessionRecord.destorySession();
+                            ActivityCompat.finishAffinity((Activity)context);
+
+                            Intent intent = new Intent(context, SplashActivity.class);
+                            context.startActivity(intent);
+                        }
+                    });
+                    builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    builder.show();
                     break;
                 default:
                     Log.d(TAG,"clicked");

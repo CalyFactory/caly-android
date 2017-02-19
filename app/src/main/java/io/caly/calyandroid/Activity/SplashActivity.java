@@ -12,15 +12,23 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import io.caly.calyandroid.Adapter.EventListAdapter;
+import io.caly.calyandroid.Model.Response.BasicResponse;
+import io.caly.calyandroid.Model.Response.SessionResponse;
 import io.caly.calyandroid.Model.SessionRecord;
 import io.caly.calyandroid.Model.SettingRecord;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 /**
@@ -52,7 +60,7 @@ public class SplashActivity extends AppCompatActivity {
 
 
         //firebase init
-        FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG, "push token : " + FirebaseInstanceId.getInstance().getToken());
         FirebaseMessaging.getInstance().subscribeToTopic("noti");
 
         if(isPermissionGranted()){
@@ -110,6 +118,13 @@ public class SplashActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
     }
 
+    void startEventActivity(){
+        Intent intent = new Intent(SplashActivity.this, EventListActivity.class);
+        startActivity(intent);
+        SplashActivity.this.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+    }
+
     Handler timerHandler = new Handler(){
 
         @Override
@@ -121,12 +136,67 @@ public class SplashActivity extends AppCompatActivity {
             }
             else{
                 SessionRecord sessionRecord = SessionRecord.getSessionRecord();
+
                 //로그인 정보가 없을 경우
                 if(sessionRecord.getSessionKey() == null){
+                    Log.d(TAG, "no login");
                     startLoginActivity();
                 }
                 else{
-                    //TODO : 로그인검증로직필요
+                    Log.d(TAG,"session : " + sessionRecord.getSessionKey());
+
+                    Util.getHttpService().loginCheck(
+                            "null",
+                            "null",
+                            Util.getUUID(),
+                            sessionRecord.getSessionKey(),
+                            "null",
+                            "null",
+                            Util.getAppVersion()
+                    ).enqueue(new retrofit2.Callback<SessionResponse>() {
+                        @Override
+                        public void onResponse(Call<SessionResponse> call, Response<SessionResponse> response) {
+                            Log.d(TAG,"onResponse code : " + response.code());
+
+                            if(response.code() == 200){
+                                SessionResponse body = response.body();
+                                switch (body.code){
+                                    case 200:
+                                        startEventActivity();
+                                        break;
+                                    default:
+                                        Toast.makeText(
+                                                getBaseContext(),
+                                                getString(R.string.toast_msg_session_invalid),
+                                                Toast.LENGTH_LONG
+                                        ).show();
+                                        SessionRecord.destorySession();
+                                        startLoginActivity();
+                                }
+                            }
+                            else{
+                                Toast.makeText(
+                                        getBaseContext(),
+                                        getString(R.string.toast_msg_server_internal_error),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<SessionResponse> call, Throwable t) {
+
+                            Log.d(TAG,"onfail : " + t.getMessage());
+                            Log.d(TAG, "fail " + t.getClass().getName());
+
+                            Toast.makeText(
+                                    getBaseContext(),
+                                    getString(R.string.toast_msg_network_error),
+                                    Toast.LENGTH_LONG
+                            ).show();
+                        }
+                    });
+
                 }
 
             }

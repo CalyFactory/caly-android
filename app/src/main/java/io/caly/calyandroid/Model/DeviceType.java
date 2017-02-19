@@ -9,7 +9,6 @@ package io.caly.calyandroid.Model;
  */
 
 public class  DeviceType {
-
     public final static int ANDROID = 1;
     public final static int IPHONE = 2;
     public final static int WEB = 3;
