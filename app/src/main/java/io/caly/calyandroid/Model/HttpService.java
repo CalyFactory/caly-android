@@ -106,4 +106,19 @@ public interface HttpService {
 
 
 
+
+    /*
+    =============================
+                SYNC
+    =============================
+     */
+
+    //sync
+    @FormUrlEncoded
+    @POST("sync")
+    Call<BasicResponse> sync(
+            @Field("sessionkey") String sessionkey
+    );
+
+
 }

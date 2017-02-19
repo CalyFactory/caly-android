@@ -26,8 +26,14 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.Adapter.EventListAdapter;
+import io.caly.calyandroid.Model.Response.BasicResponse;
+import io.caly.calyandroid.Model.SessionRecord;
 import io.caly.calyandroid.Model.TestModel;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -127,7 +133,52 @@ public class EventListActivity extends AppCompatActivity {
             }
         });
 
-        handler.sendEmptyMessageDelayed(0,3000);
+
+        Intent intent = getIntent();
+        if(intent.getBooleanExtra("first", false)){
+            syncCalendar();
+        }
+        else{
+            linearLoader.setVisibility(View.GONE);
+        }
+
+    }
+
+    void syncCalendar(){
+        Util.getHttpService().sync(
+                SessionRecord.getSessionRecord().getSessionKey()
+        ).enqueue(new Callback<BasicResponse>() {
+            @Override
+            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                Log.d(TAG,"onResponse code : " + response.code());
+
+                linearLoader.setVisibility(View.GONE);
+                if(response.code() == 200){
+                    BasicResponse body = response.body();
+                    Toast.makeText(getBaseContext(),"동기화성공",Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Toast.makeText(
+                            getBaseContext(),
+                            getString(R.string.toast_msg_server_internal_error),
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponse> call, Throwable t) {
+                Log.d(TAG,"onfail : " + t.getMessage());
+                Log.d(TAG, "fail " + t.getClass().getName());
+
+                linearLoader.setVisibility(View.GONE);
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_network_error),
+                        Toast.LENGTH_LONG
+                ).show();
+            }
+        });
     }
 
     Handler handler = new Handler(){

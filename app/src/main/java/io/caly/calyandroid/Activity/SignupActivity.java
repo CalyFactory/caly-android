@@ -147,6 +147,7 @@ public class SignupActivity extends AppCompatActivity {
                             session.save();
 
                             Intent intent = new Intent(SignupActivity.this, EventListActivity.class);
+                            intent.putExtra("first", true);
                             startActivity(intent);
                             finish();
                             break;
