@@ -82,7 +82,9 @@ public class LoginActivity extends AppCompatActivity {
                         .requestScopes(
                                 new Scope("https://www.googleapis.com/auth/calendar"),
                                 new Scope("https://www.googleapis.com/auth/userinfo.email"),
-                                new Scope("https://www.googleapis.com/auth/calendar.readonly")
+                                new Scope("https://www.googleapis.com/auth/calendar.readonly"),
+                                new Scope(Scopes.PLUS_ME),
+                                new Scope(Scopes.PLUS_LOGIN)
                         ).build();
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -318,7 +320,6 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i(TAG, "serverauthcode : " + acct.getServerAuthCode());
                 Log.i(TAG, "id : " + acct.getId());
                 Log.d(TAG, "email : " + acct.getEmail());
-
 
                 procLoginGoogle(acct.getServerAuthCode());
 
