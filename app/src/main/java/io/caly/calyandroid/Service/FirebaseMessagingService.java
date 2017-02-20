@@ -4,6 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
@@ -27,6 +28,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     //로그에 쓰일 tag
     private static final String TAG = FirebaseMessagingService.class.getSimpleName();
+
+    public static final String INTENT_ACTION_SYNC_COMPLETE = "INTENT_ACTION_SYNC_COMPLETE";
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -55,6 +58,15 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
+
+        sendMessageToActivity("hello", INTENT_ACTION_SYNC_COMPLETE);
+    }
+
+    void sendMessageToActivity(String message, String action){
+        Intent intent = new Intent();
+        intent.setAction(action);
+        intent.putExtra("message", message);
+        sendBroadcast(intent);
     }
 
 }

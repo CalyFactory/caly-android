@@ -1,6 +1,11 @@
 package io.caly.calyandroid.Activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -9,6 +14,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Service.FirebaseMessagingService;
 import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,6 +52,32 @@ public class TestActivity extends Activity {
     void onButtonCLick(){
 
 
+    }
+
+    PushReceiver pushReceiver;
+
+    @Override
+    protected void onStart() {
+        pushReceiver = new PushReceiver();
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(FirebaseMessagingService.INTENT_ACTION_SYNC_COMPLETE);
+        registerReceiver(pushReceiver, intentFilter);
+
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(pushReceiver);
+    }
+
+    class PushReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "received!");
+            Log.d(TAG, "msg : " + intent.getStringExtra("message"));
+        }
     }
 
     void test(){

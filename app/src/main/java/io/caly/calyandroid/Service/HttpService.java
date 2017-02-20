@@ -73,7 +73,8 @@ public interface HttpService {
             @Field("deviceType") int deviceType,
             @Field("appVersion") String appVersion,
             @Field("deviceInfo") String deviceInfo,
-            @Field("uuid") String uuid
+            @Field("uuid") String uuid,
+            @Field("sdkLevel") String sdkLevel
     );
 
     //updatePushToken

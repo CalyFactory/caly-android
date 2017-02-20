@@ -160,7 +160,8 @@ public class LoginActivity extends AppCompatActivity {
                 DeviceType.ANDROID,
                 Util.getAppVersion(),
                 Util.getDeviceInfo(),
-                Util.getUUID()
+                Util.getUUID(),
+                Util.getSdkLevel()
         ).enqueue(new Callback<SessionResponse>() {
             @Override
             public void onResponse(Call<SessionResponse> call, Response<SessionResponse> response) {
