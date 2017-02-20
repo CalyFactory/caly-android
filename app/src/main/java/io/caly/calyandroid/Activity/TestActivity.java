@@ -9,7 +9,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.Util;
+import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

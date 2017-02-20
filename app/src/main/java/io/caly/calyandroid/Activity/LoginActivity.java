@@ -19,17 +19,15 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.common.api.Scope;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.gson.JsonObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.DeviceType;
 import io.caly.calyandroid.Model.SessionRecord;
 import io.caly.calyandroid.Model.Response.SessionResponse;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.Util;
+import io.caly.calyandroid.Util.Util;
 import io.caly.calyandroid.View.LoginDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -155,9 +153,9 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    void registerDeviceInfo(){
+    void registerDeviceInfo(String sessionKey){
         Util.getHttpService().registerDevice(
-                "null",
+                sessionKey,
                 FirebaseInstanceId.getInstance().getToken(),
                 DeviceType.ANDROID,
                 Util.getAppVersion(),
@@ -250,7 +248,7 @@ public class LoginActivity extends AppCompatActivity {
                         case 207:
                             sessionRecord.setSessionKey(body.payload.sessionKey);
                             sessionRecord.save();
-                            registerDeviceInfo();
+                            registerDeviceInfo(body.payload.sessionKey);
                             break;
                         default:
                             Toast.makeText(

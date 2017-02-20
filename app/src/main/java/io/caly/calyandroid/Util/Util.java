@@ -1,4 +1,4 @@
-package io.caly.calyandroid;
+package io.caly.calyandroid.Util;
 
 import android.app.Activity;
 import android.content.Context;
@@ -15,7 +15,11 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.UUID;
 
+import io.caly.calyandroid.BuildConfig;
+import io.caly.calyandroid.CalyApplication;
+import io.caly.calyandroid.R;
 import io.caly.calyandroid.Service.HttpService;
+import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okio.Buffer;
 import retrofit2.Retrofit;
@@ -48,12 +52,18 @@ public class Util {
                     .setDateFormat("yyyy-MM-dd HH:mm:ss")
                     .create();
 
+            OkHttpClient.Builder client = new OkHttpClient.Builder();
+            client.addInterceptor(new LoggingInterceptor());
+
             Util.httpService =
                     new Retrofit.Builder()
                             .baseUrl(CalyApplication.getContext().getString(R.string.app_server) + CalyApplication.getContext().getString(R.string.app_server_version) + "/")
                             .addConverterFactory(GsonConverterFactory.create(gson))
+                            .client(client.build())
                             .build()
                             .create(HttpService.class);
+
+
         }
 
         return Util.httpService;

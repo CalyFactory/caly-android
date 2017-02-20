@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -23,11 +22,10 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import io.caly.calyandroid.Model.DeviceType;
 import io.caly.calyandroid.Model.Gender;
-import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.SessionResponse;
 import io.caly.calyandroid.Model.SessionRecord;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.Util;
+import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -174,6 +172,7 @@ public class SignupActivity extends AppCompatActivity {
 
                 Log.e(TAG,"onfail : " + t.getMessage());
                 Log.e(TAG, "fail " + t.getClass().getName());
+
 
                 Toast.makeText(
                         getBaseContext(),

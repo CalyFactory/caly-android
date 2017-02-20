@@ -1,14 +1,11 @@
 package io.caly.calyandroid.Adapter;
 
 import android.graphics.Color;
-import android.support.annotation.BinderThread;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import junit.framework.Test;
 
 import java.util.ArrayList;
 
@@ -16,7 +13,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.Model.TestModel;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.Util;
+import io.caly.calyandroid.Util.Util;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.

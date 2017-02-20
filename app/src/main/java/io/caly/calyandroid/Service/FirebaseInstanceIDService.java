@@ -1,16 +1,13 @@
 package io.caly.calyandroid.Service;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
-import io.caly.calyandroid.Activity.EventListActivity;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.SessionRecord;
-import io.caly.calyandroid.R;
-import io.caly.calyandroid.Util;
+import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
