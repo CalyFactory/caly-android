@@ -9,16 +9,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.GoogleAuthException;
+import com.google.android.gms.auth.GoogleAuthUtil;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.common.api.Scope;
 import com.google.firebase.iid.FirebaseInstanceId;
+
+import java.io.IOException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -73,12 +78,13 @@ public class LoginActivity extends AppCompatActivity {
         GoogleSignInOptions gso =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestServerAuthCode(getString(R.string.google_client_id))
+                        .requestIdToken(getString(R.string.google_client_id))
                         .requestScopes(
                                 new Scope("https://www.googleapis.com/auth/calendar"),
                                 new Scope("https://www.googleapis.com/auth/userinfo.email"),
                                 new Scope("https://www.googleapis.com/auth/calendar.readonly")
-                        )
-                        .build();
+                        ).build();
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this , onGoogleConnectionFailedListener)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -89,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
     OnConnectionFailedListener onGoogleConnectionFailedListener = new OnConnectionFailedListener() {
         @Override
         public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+            Log.d(TAG, "onConnectionFailed : " + connectionResult.getErrorMessage());
         }
     };
 
@@ -291,7 +297,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     void procLoginGoogle(String authCode){
-        procLogin("null", "null", "google", authCode);
+        //procLogin("null", "null", "google", authCode);
     }
 
     @Override
@@ -312,6 +318,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i(TAG, "serverauthcode : " + acct.getServerAuthCode());
                 Log.i(TAG, "id : " + acct.getId());
                 Log.d(TAG, "email : " + acct.getEmail());
+
 
                 procLoginGoogle(acct.getServerAuthCode());
 
