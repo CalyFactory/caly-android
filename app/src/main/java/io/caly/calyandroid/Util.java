@@ -2,18 +2,20 @@ package io.caly.calyandroid;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.UUID;
 
-import io.caly.calyandroid.Model.HttpService;
+import io.caly.calyandroid.Service.HttpService;
 import okhttp3.RequestBody;
 import okio.Buffer;
 import retrofit2.Retrofit;
@@ -41,10 +43,15 @@ public class Util {
     // http service
     public static HttpService getHttpService() {
         if(httpService == null){
+
+            Gson gson = new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                    .create();
+
             Util.httpService =
                     new Retrofit.Builder()
                             .baseUrl(CalyApplication.getContext().getString(R.string.app_server) + CalyApplication.getContext().getString(R.string.app_server_version) + "/")
-                            .addConverterFactory(GsonConverterFactory.create())
+                            .addConverterFactory(GsonConverterFactory.create(gson))
                             .build()
                             .create(HttpService.class);
         }
@@ -107,17 +114,17 @@ public class Util {
 
     public static String getSdkLevel(){
         String apiLevel = Build.VERSION.SDK;
-        return apiLevel;
+        String os = System.getProperty("os.version");
+        return TextUtils.join(";", new String[]{apiLevel, os});
 
     }
 
     public static String getDeviceInfo(){
-        String os = System.getProperty("os.version");
         String device = Build.DEVICE;
         String model = Build.MODEL;
         String product = Build.PRODUCT;
 
-        return TextUtils.join(";", new String[]{os, device, model, product});
+        return TextUtils.join(";", new String[]{device, model, product});
 
     }
 

@@ -16,16 +16,6 @@ public class BasicResponse {
     @SerializedName("code")
     public int code;
 
-    @SerializedName("payload")
-    public SessionResponse.Payload payload;
-
-    public class Payload {
-
-        @SerializedName("msg")
-        public String msg;
-
-    }
-
 }
 
 

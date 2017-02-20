@@ -172,8 +172,8 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<SessionResponse> call, Throwable t) {
 
-                Log.d(TAG,"onfail : " + t.getMessage());
-                Log.d(TAG, "fail " + t.getClass().getName());
+                Log.e(TAG,"onfail : " + t.getMessage());
+                Log.e(TAG, "fail " + t.getClass().getName());
 
                 Toast.makeText(
                         getBaseContext(),

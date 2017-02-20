@@ -206,8 +206,8 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<SessionResponse> call, Throwable t) {
-                Log.d(TAG,"onfail : " + t.getMessage());
-                Log.d(TAG, "fail " + t.getClass().getName());
+                Log.e(TAG,"onfail : " + t.getMessage());
+                Log.e(TAG, "fail " + t.getClass().getName());
 
                 Toast.makeText(
                         getBaseContext(),
@@ -275,9 +275,8 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<SessionResponse> call, Throwable t) {
-                Log.d(TAG,"onfail : " + t.getMessage());
-                Log.d(TAG,"body" + call.request().body().toString());
-                Log.d(TAG, "fail " + t.getClass().getName());
+                Log.e(TAG,"onfail : " + t.getMessage());
+                Log.e(TAG, "fail " + t.getClass().getName());
 
                 Toast.makeText(
                         getBaseContext(),
@@ -311,8 +310,8 @@ public class LoginActivity extends AppCompatActivity {
                 GoogleSignInAccount acct = result.getSignInAccount();
                 Log.d(TAG, acct.getDisplayName());
                 Log.d(TAG, "id token : " + acct.getIdToken());
-                Log.d(TAG, "serverauthcode : " + acct.getServerAuthCode());
-                Log.d(TAG, "id : " + acct.getId());
+                Log.i(TAG, "serverauthcode : " + acct.getServerAuthCode());
+                Log.i(TAG, "id : " + acct.getId());
                 Log.d(TAG, "email : " + acct.getEmail());
 
                 procLoginGoogle(acct.getServerAuthCode());

@@ -62,6 +62,7 @@ public class TestActivity extends Activity {
 
                 }
                 else{
+                    Log.e(TAG,"status code : " + response.code());
                     Toast.makeText(
                             getBaseContext(),
                             getString(R.string.toast_msg_server_internal_error),
@@ -72,8 +73,8 @@ public class TestActivity extends Activity {
 
             @Override
             public void onFailure(Call<BasicResponse> call, Throwable t) {
-                Log.d(TAG,"onfail : " + t.getMessage());
-                Log.d(TAG, "fail " + t.getClass().getName());
+                Log.e(TAG,"onfail : " + t.getMessage());
+                Log.e(TAG, "fail " + t.getClass().getName());
 
                 Toast.makeText(
                         getBaseContext(),

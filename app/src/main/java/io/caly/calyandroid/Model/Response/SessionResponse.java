@@ -10,10 +10,7 @@ import com.google.gson.annotations.SerializedName;
  * @since 17. 2. 18
  */
 
-public class SessionResponse {
-
-    @SerializedName("code")
-    public int code;
+public class SessionResponse extends BasicResponse {
 
     @SerializedName("payload")
     public Payload payload;
