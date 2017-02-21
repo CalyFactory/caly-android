@@ -1,19 +1,28 @@
-package io.caly.calyandroid;
+package io.caly.calyandroid.Util;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.UUID;
 
-import io.caly.calyandroid.Model.HttpService;
+import io.caly.calyandroid.BuildConfig;
+import io.caly.calyandroid.CalyApplication;
+import io.caly.calyandroid.Model.EventModel;
+import io.caly.calyandroid.Model.Deserializer.EventInstanceCreator;
+import io.caly.calyandroid.R;
+import io.caly.calyandroid.Service.HttpService;
+import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okio.Buffer;
 import retrofit2.Retrofit;
@@ -36,17 +45,40 @@ public class Util {
 
     private static HttpService httpService;
 
+    private static Gson gsonObject;
+
     public static String[] dayOfDate = {"일","월","화","수","목","금","토"};
+
+
+    //gson
+    public static Gson getGson(){
+        if(gsonObject == null){
+
+            gsonObject = new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                    .registerTypeAdapter(EventModel.class, new EventInstanceCreator())
+                    .create();
+        }
+
+        return gsonObject;
+    }
 
     // http service
     public static HttpService getHttpService() {
         if(httpService == null){
+
+            OkHttpClient.Builder client = new OkHttpClient.Builder();
+            client.addInterceptor(new LoggingInterceptor());
+
             Util.httpService =
                     new Retrofit.Builder()
                             .baseUrl(CalyApplication.getContext().getString(R.string.app_server) + CalyApplication.getContext().getString(R.string.app_server_version) + "/")
-                            .addConverterFactory(GsonConverterFactory.create())
+                            .addConverterFactory(GsonConverterFactory.create(getGson()))
+                            .client(client.build())
                             .build()
                             .create(HttpService.class);
+
+
         }
 
         return Util.httpService;
@@ -107,19 +139,38 @@ public class Util {
 
     public static String getSdkLevel(){
         String apiLevel = Build.VERSION.SDK;
-        return apiLevel;
+        String os = System.getProperty("os.version");
+        return TextUtils.join(";", new String[]{apiLevel, os});
 
     }
 
     public static String getDeviceInfo(){
-        String os = System.getProperty("os.version");
         String device = Build.DEVICE;
         String model = Build.MODEL;
         String product = Build.PRODUCT;
 
-        return TextUtils.join(";", new String[]{os, device, model, product});
+        return TextUtils.join(";", new String[]{device, model, product});
 
     }
 
+    //텍스트 파일 불러오기
+    public static String readTextFile(Context context, String file) {
+        String text;
+        try {
+            InputStream is = context.getAssets().open(file);
+
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+
+            text = new String(buffer);
+        }
+        catch (Exception e){
+            text = "error" + e.getMessage();
+            e.printStackTrace();
+        }
+        return text;
+    }
 
 }

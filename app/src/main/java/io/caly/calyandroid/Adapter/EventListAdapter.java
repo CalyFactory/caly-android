@@ -1,22 +1,21 @@
 package io.caly.calyandroid.Adapter;
 
 import android.graphics.Color;
-import android.support.annotation.BinderThread;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import junit.framework.Test;
-
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.caly.calyandroid.Model.EventModel;
 import io.caly.calyandroid.Model.TestModel;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.Util;
+import io.caly.calyandroid.Util.Util;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -28,7 +27,7 @@ import io.caly.calyandroid.Util;
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder> {
 
-    private ArrayList<TestModel> dataList;
+    private ArrayList<EventModel> dataList;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -57,7 +56,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         }
     }
 
-    public EventListAdapter(ArrayList<TestModel> dataList){
+    public EventListAdapter(ArrayList<EventModel> dataList){
         this.dataList = dataList;
     }
 
@@ -70,15 +69,23 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         return holder;
     }
 
+    public void addTail(EventModel data){
+        dataList.add(data);
+    }
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        TestModel testModel = dataList.get(position);
+        EventModel eventModel = dataList.get(position);
 
         boolean isNewDay = false;
         if(position!=0){
-            TestModel prevModel = dataList.get(position-1);
+            EventModel prevModel = dataList.get(position-1);
 
-            if(prevModel.year == testModel.year && prevModel.month == testModel.month && prevModel.day == testModel.day){
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+            String prevDate = dateFormat.format(prevModel.startDateTime);
+            String nowDate = dateFormat.format(eventModel.startDateTime);
+            if(nowDate.equals(prevDate)){
                 isNewDay = false;
             }
             else{
@@ -99,7 +106,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
             holder.tvEventDayString.setVisibility(View.INVISIBLE);
             holder.tvEventDay.setVisibility(View.INVISIBLE);
         }
-
+/*
         int dayOfDate = Util.dayOfDate(testModel.year, testModel.month, testModel.day);
         if (dayOfDate == 0 || dayOfDate == 6){
             holder.tvEventDayString.setTextColor(Color.rgb(223,115,101));
@@ -112,11 +119,11 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         holder.tvEventDay.setText(String.valueOf(testModel.day));
         holder.tvEventSummary.setText(testModel.summary);
         holder.tvEventDate.setText(testModel.time);
-        holder.tvEventLocation.setText(testModel.location);
+        holder.tvEventLocation.setText(testModel.location);*/
 
     }
 
-    public TestModel getItem(int position){
+    public EventModel getItem(int position){
         return dataList.get(position);
     }
 
