@@ -19,8 +19,6 @@ public abstract class TextViewLinkHandler extends LinkMovementMethod {
 
     @Override
     public boolean onTouchEvent(TextView widget, Spannable buffer, MotionEvent event) {
-//        if (event.getAction() != MotionEvent.ACTION_UP)
-//            return super.onTouchEvent(widget, buffer, event);
 
         int x = (int) event.getX();
         int y = (int) event.getY();
@@ -37,8 +35,11 @@ public abstract class TextViewLinkHandler extends LinkMovementMethod {
 
         URLSpan[] link = buffer.getSpans(off, off, URLSpan.class);
         if (link.length != 0) {
-            onLinkClick(link[0].getURL());
-            return true;
+            widget.setPressed(false);
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                onLinkClick(link[0].getURL());
+                return true;
+            }
         }
         return false;
     }

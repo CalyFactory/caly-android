@@ -62,6 +62,8 @@ public class SignupActivity extends AppCompatActivity {
 
     int selectedGender = -1;
 
+    final int RC_POLICY_RESPONSE = 1121;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,7 +90,8 @@ public class SignupActivity extends AppCompatActivity {
         cbPolicy.setMovementMethod(new TextViewLinkHandler() {
             @Override
             public void onLinkClick(String url) {
-                Toast.makeText(getBaseContext(),"dd",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(SignupActivity.this, PolicyActivity.class);
+                startActivityForResult(intent, RC_POLICY_RESPONSE);
             }
         });
     }
@@ -212,5 +215,22 @@ public class SignupActivity extends AppCompatActivity {
         if(cbPolicy.isChecked()==false) return false;
 
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESULT_OK){
+            switch (requestCode){
+                case RC_POLICY_RESPONSE:
+
+                    Log.d(TAG,"agree : " + data.getBooleanExtra("agree", false));
+                    cbPolicy.setChecked(
+                            data.getBooleanExtra("agree", false)
+                    );
+
+                    break;
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
