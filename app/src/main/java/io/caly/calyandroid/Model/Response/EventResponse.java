@@ -17,6 +17,12 @@ import io.caly.calyandroid.Model.EventModel;
 public class EventResponse extends BasicResponse {
 
     @SerializedName("payload")
-    public List<EventModel> payload;
+    public Payload payload;
 
+    public class Payload {
+
+        @SerializedName("data")
+        public List<EventModel> data;
+
+    }
 }

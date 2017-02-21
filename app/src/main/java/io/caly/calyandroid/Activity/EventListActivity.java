@@ -20,6 +20,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.ArrayList;
@@ -27,7 +28,9 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.Adapter.EventListAdapter;
+import io.caly.calyandroid.Model.EventModel;
 import io.caly.calyandroid.Model.Response.BasicResponse;
+import io.caly.calyandroid.Model.Response.EventResponse;
 import io.caly.calyandroid.Model.SessionRecord;
 import io.caly.calyandroid.Model.TestModel;
 import io.caly.calyandroid.R;
@@ -49,6 +52,7 @@ public class EventListActivity extends AppCompatActivity {
     //로그에 쓰일 tag
     private static final String TAG = EventListActivity.class.getSimpleName();
 
+    private int currentPageNum = 0;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -107,8 +111,8 @@ public class EventListActivity extends AppCompatActivity {
         recyclerList.setLayoutManager(layoutManager);
 
         // test data
-        ArrayList<TestModel> dataList = new ArrayList<>();
-        for(int j=0;j<3;j++) {
+        ArrayList<EventModel> dataList = new ArrayList<>();
+        /*for(int j=0;j<3;j++) {
             for (int i = 0; i < 10; i++) {
                 dataList.add(new TestModel(2017+j, 1 + i, 1, "소마 센터 멘토링", "11:00 ~ 12:00", "강남역 아남타워빌딩"));
                 dataList.add(new TestModel(2017+j, 1 + i, 1, "멘토링", "11:00 ~ 12:00", "강남역 아남타워빌딩"));
@@ -120,7 +124,7 @@ public class EventListActivity extends AppCompatActivity {
                 dataList.add(new TestModel(2017+j, 1 + i, 23, "데이트", "11:00 ~ 12:00", "강남역 아남타워빌딩"));
                 dataList.add(new TestModel(2017+j, 1 + i, 23, "영화보는날", "11:00 ~ 12:00", "강남역 아남타워빌딩"));
             }
-        }
+        }*/
         recyclerAdapter = new EventListAdapter(dataList);
         recyclerList.setAdapter(recyclerAdapter);
 
@@ -131,10 +135,10 @@ public class EventListActivity extends AppCompatActivity {
 
 
                 int position = ((StaggeredGridLayoutManager)layoutManager).findFirstVisibleItemPositions(null)[0];
-                TestModel testModel = recyclerAdapter.getItem(position);
+//                TestModel testModel = recyclerAdapter.getItem(position);
 
-                tvEventYear.setText(testModel.year+"");
-                tvEventMonth.setText(testModel.month+"월");
+//                tvEventYear.setText(testModel.year+"");
+//                tvEventMonth.setText(testModel.month+"월");
             }
         });
 
@@ -145,7 +149,47 @@ public class EventListActivity extends AppCompatActivity {
         }
         else{
             linearLoader.setVisibility(View.GONE);
+            loadEventList();
         }
+
+    }
+
+    void loadEventList(){
+        Util.getHttpService().getList(
+                SessionRecord.getSessionRecord().getSessionKey(),
+                currentPageNum
+        ).enqueue(new Callback<EventResponse>() {
+            @Override
+            public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
+                Log.d(TAG,"onResponse code : " + response.code());
+
+                if(response.code() == 200){
+                    EventResponse body = response.body();
+                    Log.d(TAG, "json : " + new Gson().toJson(body));
+                }
+                else{
+                    Log.e(TAG,"status code : " + response.code());
+                    Toast.makeText(
+                            getBaseContext(),
+                            getString(R.string.toast_msg_server_internal_error),
+                            Toast.LENGTH_LONG
+                    ).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<EventResponse> call, Throwable t) {
+
+                Log.e(TAG,"onfail : " + t.getMessage());
+                Log.e(TAG, "fail " + t.getClass().getName());
+
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_network_error),
+                        Toast.LENGTH_LONG
+                ).show();
+            }
+        });
 
     }
 
@@ -161,6 +205,8 @@ public class EventListActivity extends AppCompatActivity {
                 if(response.code() == 200){
                     BasicResponse body = response.body();
                     Toast.makeText(getBaseContext(),"동기화성공",Toast.LENGTH_LONG).show();
+
+                    loadEventList();
                 }
                 else{
                     Toast.makeText(

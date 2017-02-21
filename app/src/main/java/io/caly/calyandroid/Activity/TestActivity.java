@@ -13,6 +13,7 @@ import android.widget.Toast;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Model.Response.BasicResponse;
+import io.caly.calyandroid.Model.Response.EventResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Service.FirebaseMessagingService;
 import io.caly.calyandroid.Util.Util;
@@ -50,7 +51,6 @@ public class TestActivity extends Activity {
 
     @OnClick(R.id.button2)
     void onButtonCLick(){
-
 
     }
 

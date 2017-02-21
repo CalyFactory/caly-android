@@ -112,15 +112,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_login_naver)
     void onNaverLoginClick(){
-
-        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
-                new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(Status status) {
-                        Toast.makeText(getBaseContext(),"logout status : " + status.getStatusMessage(), Toast.LENGTH_LONG).show();
-                    }
-                });
-        /*
         LoginDialog dialog = new LoginDialog(this, "Naver로 로그인", new LoginDialog.LoginDialogCallback() {
             @Override
             public void onPositive(LoginDialog dialog, String userId, String userPw) {
@@ -134,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-        dialog.show();*/
+        dialog.show();
 
     }
 
@@ -170,6 +161,16 @@ public class LoginActivity extends AppCompatActivity {
         intent.putExtra("authCode", authCode);
         startActivity(intent);
         finish();
+    }
+
+    void signOutGoogle(){
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        Toast.makeText(getBaseContext(),"logout status : " + status.getStatusMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
     }
 
     void registerDeviceInfo(String sessionKey){

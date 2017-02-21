@@ -16,6 +16,8 @@ public class BasicResponse {
     @SerializedName("code")
     public int code;
 
+
+
 }
 
 

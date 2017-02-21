@@ -18,6 +18,8 @@ import java.util.UUID;
 
 import io.caly.calyandroid.BuildConfig;
 import io.caly.calyandroid.CalyApplication;
+import io.caly.calyandroid.Model.EventModel;
+import io.caly.calyandroid.Model.Deserializer.EventInstanceCreator;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Service.HttpService;
 import okhttp3.OkHttpClient;
@@ -43,15 +45,27 @@ public class Util {
 
     private static HttpService httpService;
 
+    private static Gson gsonObject;
+
     public static String[] dayOfDate = {"일","월","화","수","목","금","토"};
+
+
+    //gson
+    public static Gson getGson(){
+        if(gsonObject == null){
+
+            gsonObject = new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                    .registerTypeAdapter(EventModel.class, new EventInstanceCreator())
+                    .create();
+        }
+
+        return gsonObject;
+    }
 
     // http service
     public static HttpService getHttpService() {
         if(httpService == null){
-
-            Gson gson = new GsonBuilder()
-                    .setDateFormat("yyyy-MM-dd HH:mm:ss")
-                    .create();
 
             OkHttpClient.Builder client = new OkHttpClient.Builder();
             client.addInterceptor(new LoggingInterceptor());
@@ -59,7 +73,7 @@ public class Util {
             Util.httpService =
                     new Retrofit.Builder()
                             .baseUrl(CalyApplication.getContext().getString(R.string.app_server) + CalyApplication.getContext().getString(R.string.app_server_version) + "/")
-                            .addConverterFactory(GsonConverterFactory.create(gson))
+                            .addConverterFactory(GsonConverterFactory.create(getGson()))
                             .client(client.build())
                             .build()
                             .create(HttpService.class);
