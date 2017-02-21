@@ -6,6 +6,7 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -25,6 +26,7 @@ import io.caly.calyandroid.Model.Gender;
 import io.caly.calyandroid.Model.Response.SessionResponse;
 import io.caly.calyandroid.Model.SessionRecord;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.TextViewLinkHandler;
 import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -80,6 +82,15 @@ public class SignupActivity extends AppCompatActivity {
 
         imvGenderMan.setColorFilter(Color.GRAY, android.graphics.PorterDuff.Mode.MULTIPLY);
         imvGenderWoman.setColorFilter(Color.GRAY, android.graphics.PorterDuff.Mode.MULTIPLY);
+
+
+        cbPolicy.setText(Html.fromHtml("캘리의 <a href='signup'>이용정책</a>에 동의합니다."));
+        cbPolicy.setMovementMethod(new TextViewLinkHandler() {
+            @Override
+            public void onLinkClick(String url) {
+                Toast.makeText(getBaseContext(),"dd",Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @OnClick(R.id.imv_signup_man)

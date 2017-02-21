@@ -16,6 +16,7 @@
 
         <!-- Splash Activity -->
         <activity android:name=".Activity.SplashActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,6 +46,10 @@
 
         <!-- Signup Activity -->
         <activity android:name=".Activity.SignupActivity">
+        </activity>
+
+        <!-- Policy Activity -->
+        <activity android:name=".Activity.PolicyActivity">
         </activity>
 
 

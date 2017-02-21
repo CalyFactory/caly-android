@@ -2,6 +2,8 @@ package io.caly.calyandroid.Activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -93,6 +95,10 @@ public class EventListActivity extends AppCompatActivity {
         });
 
         setSupportActionBar(toolbar);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        upArrow.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
 
         //set recyclerview
         recyclerList.setHasFixedSize(true);

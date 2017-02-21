@@ -20,7 +20,9 @@ import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.common.api.Status;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.IOException;
@@ -110,6 +112,15 @@ public class LoginActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_login_naver)
     void onNaverLoginClick(){
+
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        Toast.makeText(getBaseContext(),"logout status : " + status.getStatusMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
+        /*
         LoginDialog dialog = new LoginDialog(this, "Naver로 로그인", new LoginDialog.LoginDialogCallback() {
             @Override
             public void onPositive(LoginDialog dialog, String userId, String userPw) {
@@ -123,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
                 dialog.dismiss();
             }
         });
-        dialog.show();
+        dialog.show();*/
 
     }
 
