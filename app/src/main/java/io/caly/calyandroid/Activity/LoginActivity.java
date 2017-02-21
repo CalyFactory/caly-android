@@ -299,7 +299,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     void procLoginGoogle(String authCode){
-        //procLogin("null", "null", "google", authCode);
+        procLogin("null", "null", "google", authCode);
     }
 
     @Override
