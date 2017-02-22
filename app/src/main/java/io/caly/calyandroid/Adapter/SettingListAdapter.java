@@ -22,9 +22,14 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Activity.SplashActivity;
-import io.caly.calyandroid.Model.SessionRecord;
+import io.caly.calyandroid.Model.ORM.SessionRecord;
+import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.SettingItemModel;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.Util;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -89,11 +94,47 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
-                            SessionRecord.destorySession();
-                            ActivityCompat.finishAffinity((Activity)context);
 
-                            Intent intent = new Intent(context, SplashActivity.class);
-                            context.startActivity(intent);
+                            Util.getHttpService().logout(
+                                    SessionRecord.getSessionRecord().getSessionKey()
+                            ).enqueue(new Callback<BasicResponse>() {
+                                @Override
+                                public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                                    Log.d(TAG,"onResponse code : " + response.code());
+
+                                    if(response.code() == 200){
+                                        BasicResponse body = response.body();
+
+                                        SessionRecord.destorySession();
+                                        ActivityCompat.finishAffinity((Activity)context);
+
+                                        Intent intent = new Intent(context, SplashActivity.class);
+                                        context.startActivity(intent);
+                                    }
+                                    else{
+                                        Log.e(TAG,"status code : " + response.code());
+                                        Toast.makeText(
+                                                context,
+                                                context.getString(R.string.toast_msg_server_internal_error),
+                                                Toast.LENGTH_LONG
+                                        ).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<BasicResponse> call, Throwable t) {
+
+                                    Log.e(TAG,"onfail : " + t.getMessage());
+                                    Log.e(TAG, "fail " + t.getClass().getName());
+
+                                    Toast.makeText(
+                                            context,
+                                            context.getString(R.string.toast_msg_network_error),
+                                            Toast.LENGTH_LONG
+                                    ).show();
+                                }
+                            });
+
                         }
                     });
                     builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {

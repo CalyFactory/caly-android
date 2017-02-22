@@ -18,8 +18,8 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import io.caly.calyandroid.Model.Response.SessionResponse;
-import io.caly.calyandroid.Model.SessionRecord;
-import io.caly.calyandroid.Model.SettingRecord;
+import io.caly.calyandroid.Model.ORM.SessionRecord;
+import io.caly.calyandroid.Model.ORM.SettingRecord;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
@@ -158,6 +158,14 @@ public class SplashActivity extends AppCompatActivity {
                                 switch (body.code){
                                     case 200:
                                         startEventActivity();
+                                        break;
+                                    case  401:
+                                        Toast.makeText(
+                                                getBaseContext(),
+                                                getString(R.string.toast_msg_session_invalid),
+                                                Toast.LENGTH_LONG
+                                        ).show();
+                                        finish();
                                         break;
                                     default:
                                         Toast.makeText(

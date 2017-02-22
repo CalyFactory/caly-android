@@ -6,7 +6,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
 import io.caly.calyandroid.Model.Response.BasicResponse;
-import io.caly.calyandroid.Model.SessionRecord;
+import io.caly.calyandroid.Model.ORM.SessionRecord;
 import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,12 +50,7 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
                 }
                 else{
                     Log.d(TAG, "push token update fail");
-                    /*
-                    Toast.makeText(
-                            getBaseContext(),
-                            getString(R.string.toast_msg_server_internal_error),
-                            Toast.LENGTH_LONG
-                    ).show();*/
+
                 }
             }
 
@@ -64,12 +59,7 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
 
                 Log.d(TAG,"onfail : " + t.getMessage());
                 Log.d(TAG, "fail " + t.getClass().getName());
-/*
-                Toast.makeText(
-                        getBaseContext(),
-                        getString(R.string.toast_msg_network_error),
-                        Toast.LENGTH_LONG
-                ).show();*/
+
             }
         });
     }

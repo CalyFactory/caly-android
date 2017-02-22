@@ -33,12 +33,11 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-
-        //추가한것
         Log.d(TAG,remoteMessage.getData().toString());
         sendNotification(remoteMessage.getData().get("message"));
     }
 
+    // TODO : 서버와 object 규격을 맞춰서 정리하기
     private void sendNotification(String messageBody) {
         Intent intent = new Intent(this, SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

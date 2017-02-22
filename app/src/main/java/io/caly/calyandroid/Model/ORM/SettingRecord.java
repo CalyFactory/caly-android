@@ -1,4 +1,4 @@
-package io.caly.calyandroid.Model;
+package io.caly.calyandroid.Model.ORM;
 
 import com.orm.SugarRecord;
 
