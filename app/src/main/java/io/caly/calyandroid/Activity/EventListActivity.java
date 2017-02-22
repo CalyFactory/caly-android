@@ -172,19 +172,16 @@ public class EventListActivity extends AppCompatActivity {
     Message
     what
         0 : 추가
-        1 :
+        1 : 삭제(예정)
     arg1
-        위치
-     arg2
-        추가된 갯수
+        추가삭제변경 할 위치index
      obj
-        객체
+        추가삭제변경 할 객체
      */
     Handler dataNotifyHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-
 
             switch (msg.what){
 
@@ -192,10 +189,9 @@ public class EventListActivity extends AppCompatActivity {
                     recyclerAdapter.addItem(msg.arg1, (EventModel)msg.obj);
                     break;
                 case 1:
-//                    recyclerAdapter.notifyItemRangeInserted(msg.arg1, msg.arg2);
                     break;
-//                default:
-//                    recyclerAdapter.notifyDataSetChanged();
+                default:
+                    recyclerAdapter.notifyDataSetChanged();
             }
         }
     };

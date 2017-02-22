@@ -50,12 +50,7 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
                 }
                 else{
                     Log.d(TAG, "push token update fail");
-                    /*
-                    Toast.makeText(
-                            getBaseContext(),
-                            getString(R.string.toast_msg_server_internal_error),
-                            Toast.LENGTH_LONG
-                    ).show();*/
+
                 }
             }
 
@@ -64,12 +59,7 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
 
                 Log.d(TAG,"onfail : " + t.getMessage());
                 Log.d(TAG, "fail " + t.getClass().getName());
-/*
-                Toast.makeText(
-                        getBaseContext(),
-                        getString(R.string.toast_msg_network_error),
-                        Toast.LENGTH_LONG
-                ).show();*/
+
             }
         });
     }
