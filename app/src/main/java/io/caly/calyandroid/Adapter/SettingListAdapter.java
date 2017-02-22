@@ -14,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -22,7 +21,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Activity.SplashActivity;
-import io.caly.calyandroid.Model.SessionRecord;
+import io.caly.calyandroid.Model.ORM.SessionRecord;
 import io.caly.calyandroid.Model.SettingItemModel;
 import io.caly.calyandroid.R;
 

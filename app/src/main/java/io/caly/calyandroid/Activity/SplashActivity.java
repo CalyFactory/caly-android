@@ -18,8 +18,8 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import io.caly.calyandroid.Model.Response.SessionResponse;
-import io.caly.calyandroid.Model.SessionRecord;
-import io.caly.calyandroid.Model.SettingRecord;
+import io.caly.calyandroid.Model.ORM.SessionRecord;
+import io.caly.calyandroid.Model.ORM.SettingRecord;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;

@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -15,6 +14,7 @@ import butterknife.ButterKnife;
 import io.caly.calyandroid.Model.EventModel;
 import io.caly.calyandroid.Model.TestModel;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.StringFormmater;
 import io.caly.calyandroid.Util.Util;
 
 /**
@@ -73,6 +73,15 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         dataList.add(data);
     }
 
+    public void addHead(EventModel data){
+        dataList.add(0, data);
+    }
+
+    public void addItem(int position, EventModel data){
+        dataList.add(position, data);
+        notifyItemInserted(position);
+
+    }
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         EventModel eventModel = dataList.get(position);
@@ -81,11 +90,10 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         if(position!=0){
             EventModel prevModel = dataList.get(position-1);
 
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-            String prevDate = dateFormat.format(prevModel.startDateTime);
-            String nowDate = dateFormat.format(eventModel.startDateTime);
-            if(nowDate.equals(prevDate)){
+            if(prevModel.startYear == eventModel.startYear &&
+                    prevModel.startMonth == eventModel.startMonth &&
+                    prevModel.startDay == eventModel.startDay){
                 isNewDay = false;
             }
             else{
@@ -106,8 +114,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
             holder.tvEventDayString.setVisibility(View.INVISIBLE);
             holder.tvEventDay.setVisibility(View.INVISIBLE);
         }
-/*
-        int dayOfDate = Util.dayOfDate(testModel.year, testModel.month, testModel.day);
+
+        int dayOfDate = Util.dayOfDate(eventModel.startYear, eventModel.startMonth, eventModel.startDay);
         if (dayOfDate == 0 || dayOfDate == 6){
             holder.tvEventDayString.setTextColor(Color.rgb(223,115,101));
         }
@@ -116,10 +124,15 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         }
         holder.tvEventDayString.setText(Util.dayOfDate[dayOfDate]);
 
-        holder.tvEventDay.setText(String.valueOf(testModel.day));
-        holder.tvEventSummary.setText(testModel.summary);
-        holder.tvEventDate.setText(testModel.time);
-        holder.tvEventLocation.setText(testModel.location);*/
+        holder.tvEventDay.setText(String.valueOf(eventModel.startDay));
+        holder.tvEventSummary.setText(eventModel.summaryText);
+        holder.tvEventDate.setText(
+                StringFormmater.simpleRangeTimeFormat(
+                        eventModel.startDateTime,
+                        eventModel.endDateTime
+                )
+        );
+        holder.tvEventLocation.setText("위치정보가엄어영");
 
     }
 

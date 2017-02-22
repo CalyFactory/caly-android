@@ -100,6 +100,13 @@ public interface HttpService {
             @Field("sessionkey") String sessionKey
     );
 
+    //accountList
+    @FormUrlEncoded
+    @POST("member/accountList")
+    Call<BasicResponse> accountList(
+            @Field("sessionkey") String sessionkey
+    );
+
     /*
     =============================
                 EVENT
