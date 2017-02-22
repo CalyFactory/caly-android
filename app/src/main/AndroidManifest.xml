@@ -62,6 +62,11 @@
 
         </activity>
 
+        <!-- Announce Activity -->
+        <activity android:name=".Activity.AnnounceActivity">
+
+        </activity>
+
         <!-- Services -->
 
         <!-- FCM Push Service -->

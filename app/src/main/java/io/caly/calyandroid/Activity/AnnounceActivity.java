@@ -15,10 +15,10 @@ import io.caly.calyandroid.R;
  * @since 17. 2. 22
  */
 
-public class AccountAddActivity extends AppCompatActivity {
+public class AnnounceActivity extends AppCompatActivity {
 
     //로그에 쓰일 tag
-    private static final String TAG = AccountAddActivity.class.getSimpleName();
+    private static final String TAG = AnnounceActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,4 +31,5 @@ public class AccountAddActivity extends AppCompatActivity {
     void init(){
         ButterKnife.bind(this);
     }
+
 }
