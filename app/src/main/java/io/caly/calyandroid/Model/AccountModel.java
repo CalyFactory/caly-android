@@ -1,5 +1,6 @@
 package io.caly.calyandroid.Model;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
@@ -22,5 +23,15 @@ public class AccountModel {
 
     @SerializedName("user_id")
     public String userId;
+
+    @Expose
+    public boolean isHeader;
+
+    @Expose
+    public String title;
+
+    public AccountModel(boolean isHeader){
+        this.isHeader = isHeader;
+    }
 
 }

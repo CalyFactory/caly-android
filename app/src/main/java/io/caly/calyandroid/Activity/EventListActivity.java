@@ -1,5 +1,6 @@
 package io.caly.calyandroid.Activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -349,6 +350,7 @@ public class EventListActivity extends AppCompatActivity {
         }
     };
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_eventlist, menu);
@@ -360,6 +362,8 @@ public class EventListActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.menu_eventlist_setting){
             Intent intent = new Intent(EventListActivity.this, SettingActivity.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+
         }
         return super.onOptionsItemSelected(item);
     }
