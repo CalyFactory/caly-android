@@ -52,6 +52,15 @@
         <activity android:name=".Activity.PolicyActivity">
         </activity>
 
+        <!-- AccountAdd Activity -->
+        <activity android:name=".Activity.AccountAddActivity">
+
+        </activity>
+
+        <!-- AccountList Activity -->
+        <activity android:name=".Activity.AccountListActivity">
+
+        </activity>
 
         <!-- Services -->
 
