@@ -1,5 +1,6 @@
 package io.caly.calyandroid.Service;
 
+import io.caly.calyandroid.Model.Response.AccountResponse;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.EventResponse;
 import io.caly.calyandroid.Model.Response.SessionResponse;
@@ -103,8 +104,16 @@ public interface HttpService {
     //accountList
     @FormUrlEncoded
     @POST("member/accountList")
-    Call<BasicResponse> accountList(
+    Call<AccountResponse> accountList(
             @Field("sessionkey") String sessionkey
+    );
+
+    //addAccount
+    @FormUrlEncoded
+    @POST("member/addAccount")
+    Call<BasicResponse> addAccount(
+            @Field("sessionkey") String sessionkey,
+            @Field("login_platform") String loginPlatform
     );
 
     /*

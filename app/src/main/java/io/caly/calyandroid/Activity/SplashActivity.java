@@ -159,6 +159,14 @@ public class SplashActivity extends AppCompatActivity {
                                     case 200:
                                         startEventActivity();
                                         break;
+                                    case  401:
+                                        Toast.makeText(
+                                                getBaseContext(),
+                                                getString(R.string.toast_msg_session_invalid),
+                                                Toast.LENGTH_LONG
+                                        ).show();
+                                        finish();
+                                        break;
                                     default:
                                         Toast.makeText(
                                                 getBaseContext(),
