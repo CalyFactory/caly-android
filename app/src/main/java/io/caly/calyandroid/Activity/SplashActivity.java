@@ -21,6 +21,7 @@ import io.caly.calyandroid.Model.Response.SessionResponse;
 import io.caly.calyandroid.Model.ORM.SessionRecord;
 import io.caly.calyandroid.Model.ORM.SettingRecord;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -140,7 +141,7 @@ public class SplashActivity extends AppCompatActivity {
                 else{
                     Log.d(TAG,"session : " + sessionRecord.getSessionKey());
 
-                    Util.getHttpService().loginCheck(
+                    ApiClient.getService().loginCheck(
                             "null",
                             "null",
                             Util.getUUID(),

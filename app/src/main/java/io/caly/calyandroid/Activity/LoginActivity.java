@@ -1,5 +1,6 @@
 package io.caly.calyandroid.Activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -30,6 +32,7 @@ import io.caly.calyandroid.Model.DeviceType;
 import io.caly.calyandroid.Model.ORM.SessionRecord;
 import io.caly.calyandroid.Model.Response.SessionResponse;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.Util;
 import io.caly.calyandroid.View.LoginDialog;
 import retrofit2.Call;
@@ -50,7 +53,10 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG = LoginActivity.class.getSimpleName();
 
     // CodeReview : enum 같은걸로 한군데에 모아놓기
-    private static final int codeSignIn = 10011;
+    /*
+    Util.java 안에 작성함
+
+     */
 
     GoogleApiClient mGoogleApiClient;
 
@@ -104,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
     void onGoogleLoginClick(){
         Log.d(TAG,"onclick");
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(signInIntent, codeSignIn);
+        startActivityForResult(signInIntent, Util.RC_INTENT_GOOGLE_SIGNIN);
     }
 
     @OnClick(R.id.btn_login_naver)
@@ -171,7 +177,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     void registerDeviceInfo(String sessionKey){
-        Util.getHttpService().registerDevice(
+        ApiClient.getService().registerDevice(
                 sessionKey,
                 FirebaseInstanceId.getInstance().getToken(),
                 DeviceType.ANDROID,
@@ -226,7 +232,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     void procLogin(final String userId, final String userPw, final String loginPlatform, final String authCode){
-        Util.getHttpService().loginCheck(
+        ApiClient.getService().loginCheck(
                 userId,
                 userPw,
                 Util.getUUID(),
@@ -245,15 +251,15 @@ public class LoginActivity extends AppCompatActivity {
                 SessionRecord sessionRecord = SessionRecord.getSessionRecord();
                 switch (response.code()){
                     case 200:
-                    case 205:
+//                    case 205:
                         sessionRecord.setSessionKey(body.payload.sessionKey);
                         sessionRecord.save();
                         startEventActivity();
                         break;
-                    case 201:
+                    case 202:
                         startSignupActivity(userId, userPw, loginPlatform, authCode);
                         break;
-                    case 207:
+                    case 201:
                         sessionRecord.setSessionKey(body.payload.sessionKey);
                         sessionRecord.save();
                         registerDeviceInfo(body.payload.sessionKey);
@@ -296,7 +302,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == codeSignIn) {
+        if (requestCode == Util.RC_INTENT_GOOGLE_SIGNIN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 
             Log.d(TAG, "handleSignInResult:" + result.isSuccess());

@@ -28,6 +28,7 @@ import io.caly.calyandroid.Model.ORM.SessionRecord;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.SettingItemModel;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -103,7 +104,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
 
-                            Util.getHttpService().logout(
+                            ApiClient.getService().logout(
                                     SessionRecord.getSessionRecord().getSessionKey()
                             ).enqueue(new Callback<BasicResponse>() {
                                 @Override

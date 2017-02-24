@@ -16,6 +16,7 @@ import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.EventResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Service.FirebaseMessagingService;
+import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -82,7 +83,7 @@ public class TestActivity extends Activity {
 
     void test(){
 
-        Util.getHttpService().test(
+        ApiClient.getService().test(
                 "test"
         ).enqueue(new Callback<BasicResponse>() {
             @Override

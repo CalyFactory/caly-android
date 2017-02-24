@@ -26,6 +26,7 @@ import io.caly.calyandroid.Model.Gender;
 import io.caly.calyandroid.Model.Response.SessionResponse;
 import io.caly.calyandroid.Model.ORM.SessionRecord;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.TextViewLinkHandler;
 import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
@@ -62,7 +63,6 @@ public class SignupActivity extends AppCompatActivity {
 
     int selectedGender = -1;
 
-    final int RC_POLICY_RESPONSE = 1121;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,7 +91,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onLinkClick(String url) {
                 Intent intent = new Intent(SignupActivity.this, PolicyActivity.class);
-                startActivityForResult(intent, RC_POLICY_RESPONSE);
+                startActivityForResult(intent, Util.RC_INTENT_POLICY_RESPONSE);
             }
         });
     }
@@ -130,7 +130,7 @@ public class SignupActivity extends AppCompatActivity {
     void onSignupClick(){
         Bundle bundleData = getIntent().getExtras();
 
-        Util.getHttpService().signUp(
+        ApiClient.getService().signUp(
                 bundleData.getString("userId"),
                 bundleData.getString("userPw"),
                 bundleData.getString("authCode"),
@@ -213,7 +213,7 @@ public class SignupActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == RESULT_OK){
             switch (requestCode){
-                case RC_POLICY_RESPONSE:
+                case Util.RC_INTENT_POLICY_RESPONSE:
 
                     Log.d(TAG,"agree : " + data.getBooleanExtra("agree", false));
                     cbPolicy.setChecked(

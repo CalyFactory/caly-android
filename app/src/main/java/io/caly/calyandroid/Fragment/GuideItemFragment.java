@@ -31,6 +31,7 @@ public class GuideItemFragment extends Fragment {
 
     /*
         CodeReview : Fragement vs Activity 기술적으로 조사해보기
+        Fragment로변경
     */
 
     //로그에 쓰일 tag

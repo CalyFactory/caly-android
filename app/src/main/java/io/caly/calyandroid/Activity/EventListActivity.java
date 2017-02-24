@@ -36,6 +36,7 @@ import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.EventResponse;
 import io.caly.calyandroid.Model.ORM.SessionRecord;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -201,13 +202,19 @@ public class EventListActivity extends AppCompatActivity {
 
         isLoading = true;
 
-        // CodeReview : asynTask 조사해보기 
+        // CodeReview : asynTask 조사해보기
+        /*
+        AsyncTask -> ui쓰레드에 접근이 쉽지 않기 때문에 쉽게 접근하라고 만든 클래스
+        Thread+Handler를 사용하면 문제없다.
+        Handler -> MQ방식으로 동작
+
+         */
         new Thread(new Runnable() {
             @Override
             public void run() {
 
                 try {
-                    Response<EventResponse> response = Util.getHttpService().getList(
+                    Response<EventResponse> response = ApiClient.getService().getList(
                             SessionRecord.getSessionRecord().getSessionKey(),
                             pageNum
                     ).execute();
@@ -257,7 +264,7 @@ public class EventListActivity extends AppCompatActivity {
     }
 
     void loadEventList(){
-        Util.getHttpService().getList(
+        ApiClient.getService().getList(
                 SessionRecord.getSessionRecord().getSessionKey(),
                 0
         ).enqueue(new Callback<EventResponse>() {
@@ -306,7 +313,7 @@ public class EventListActivity extends AppCompatActivity {
     }
 
     void syncCalendar(){
-        Util.getHttpService().sync(
+        ApiClient.getService().sync(
                 SessionRecord.getSessionRecord().getSessionKey()
         ).enqueue(new Callback<BasicResponse>() {
             @Override

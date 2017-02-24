@@ -26,6 +26,7 @@ import io.caly.calyandroid.Model.ORM.SessionRecord;
 import io.caly.calyandroid.Model.Response.AccountResponse;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -111,7 +112,7 @@ public class AccountListActivity extends AppCompatActivity {
     }
 
     void loadAccountList(){
-        Util.getHttpService().accountList(
+        ApiClient.getService().accountList(
                 SessionRecord.getSessionRecord().getSessionKey()
         ).enqueue(new Callback<AccountResponse>() {
             @Override
