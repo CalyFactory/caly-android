@@ -213,37 +213,39 @@ public class EventListActivity extends AppCompatActivity {
                     ).execute();
 
 
-                    if(response.code() == 200){
-                        EventResponse body = response.body();
-                        Log.d(TAG, "json : " + new Gson().toJson(body));
-                        Collections.reverse(body.payload.data);
-                        for(EventModel eventModel : body.payload.data){
+                    switch (response.code()){
+                        case 200:
+                            EventResponse body = response.body();
+                            Log.d(TAG, "json : " + new Gson().toJson(body));
+                            Collections.reverse(body.payload.data);
+                            for(EventModel eventModel : body.payload.data){
 
-                            Message message = dataNotifyHandler.obtainMessage();
-                            message.what = 0;
-                            message.obj = eventModel;
+                                Message message = dataNotifyHandler.obtainMessage();
+                                message.what = 0;
+                                message.obj = eventModel;
 
-                            if(pageNum<0){
-                                message.arg1 = 0;
-                                dataNotifyHandler.sendMessage(message);
+                                if(pageNum<0){
+                                    message.arg1 = 0;
+                                    dataNotifyHandler.sendMessage(message);
 
+                                }
+                                else{
+                                    message.arg1 = recyclerAdapter.getItemCount();
+                                    dataNotifyHandler.sendMessage(message);
+                                }
+                            }
+
+                            if(pageNum<0) {
+                                currentHeadPageNum--;
                             }
                             else{
-                                message.arg1 = recyclerAdapter.getItemCount();
-                                dataNotifyHandler.sendMessage(message);
+                                currentTailPageNum++;
                             }
-                        }
-
-                        if(pageNum<0) {
-                            currentHeadPageNum--;
-                        }
-                        else{
-                            currentTailPageNum++;
-                        }
-                        isLoading=false;
-                    }
-                    else{
-                        Log.e(TAG,"status code : " + response.code());
+                            isLoading=false;
+                            break;
+                        default:
+                            Log.e(TAG,"status code : " + response.code());
+                            break;
                     }
 
                 } catch (IOException e) {
@@ -263,27 +265,27 @@ public class EventListActivity extends AppCompatActivity {
             public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
                 Log.d(TAG,"onResponse code : " + response.code());
 
-                if(response.code() == 200){
-                    EventResponse body = response.body();
-                    Log.d(TAG, "json : " + new Gson().toJson(body));
-                    for(EventModel eventModel : body.payload.data){
+                switch (response.code()){
+                    case 200:
+                        EventResponse body = response.body();
+                        Log.d(TAG, "json : " + new Gson().toJson(body));
+                        for(EventModel eventModel : body.payload.data){
 
-                        Message message = dataNotifyHandler.obtainMessage();
-                        message.what = 0;
-                        message.arg1 = recyclerAdapter.getItemCount();
-                        message.obj = eventModel;
-                        dataNotifyHandler.sendMessage(message);
-                    }
-
-//                    loadMoreEventList(currentHeadPageNum);
-                }
-                else{
-                    Log.e(TAG,"status code : " + response.code());
-                    Toast.makeText(
-                            getBaseContext(),
-                            getString(R.string.toast_msg_server_internal_error),
-                            Toast.LENGTH_LONG
-                    ).show();
+                            Message message = dataNotifyHandler.obtainMessage();
+                            message.what = 0;
+                            message.arg1 = recyclerAdapter.getItemCount();
+                            message.obj = eventModel;
+                            dataNotifyHandler.sendMessage(message);
+                        }
+                        break;
+                    default:
+                        Log.e(TAG,"status code : " + response.code());
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_server_internal_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
                 }
             }
 
@@ -312,18 +314,21 @@ public class EventListActivity extends AppCompatActivity {
                 Log.d(TAG,"onResponse code : " + response.code());
 
                 linearLoader.setVisibility(View.GONE);
-                if(response.code() == 200){
-                    BasicResponse body = response.body();
-                    Toast.makeText(getBaseContext(),"동기화성공",Toast.LENGTH_LONG).show();
 
-                    loadEventList();
-                }
-                else{
-                    Toast.makeText(
-                            getBaseContext(),
-                            getString(R.string.toast_msg_server_internal_error),
-                            Toast.LENGTH_LONG
-                    ).show();
+                switch (response.code()){
+                    case 200:
+                        BasicResponse body = response.body();
+                        Toast.makeText(getBaseContext(),"동기화성공",Toast.LENGTH_LONG).show();
+
+                        loadEventList();
+                        break;
+                    default:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_server_internal_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
                 }
             }
 

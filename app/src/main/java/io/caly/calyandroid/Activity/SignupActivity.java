@@ -148,36 +148,28 @@ public class SignupActivity extends AppCompatActivity {
             public void onResponse(Call<SessionResponse> call, Response<SessionResponse> response) {
                 Log.d(TAG,"onResponse code : " + response.code());
                 Log.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
-                if(response.code() == 200){
-                    SessionResponse body = response.body();
 
-                    switch (body.code){
-                        case 200:
-                            Log.d(TAG, "session : " + body.payload.sessionKey);
-                            SessionRecord session = SessionRecord.getSessionRecord();
-                            session.setSessionKey(body.payload.sessionKey);
-                            session.save();
+                SessionResponse body = response.body();
 
-                            Intent intent = new Intent(SignupActivity.this, EventListActivity.class);
-                            intent.putExtra("first", true);
-                            startActivity(intent);
-                            finish();
-                            break;
-                        default:
-                            Toast.makeText(
-                                    getBaseContext(),
-                                    getString(R.string.toast_msg_server_internal_error),
-                                    Toast.LENGTH_LONG
-                            ).show();
-                            break;
-                    }
-                }
-                else{
-                    Toast.makeText(
-                            getBaseContext(),
-                            getString(R.string.toast_msg_server_internal_error),
-                            Toast.LENGTH_LONG
-                    ).show();
+                switch (response.code()){
+                    case 200:
+                        Log.d(TAG, "session : " + body.payload.sessionKey);
+                        SessionRecord session = SessionRecord.getSessionRecord();
+                        session.setSessionKey(body.payload.sessionKey);
+                        session.save();
+
+                        Intent intent = new Intent(SignupActivity.this, EventListActivity.class);
+                        intent.putExtra("first", true);
+                        startActivity(intent);
+                        finish();
+                        break;
+                    default:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_server_internal_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
                 }
             }
 

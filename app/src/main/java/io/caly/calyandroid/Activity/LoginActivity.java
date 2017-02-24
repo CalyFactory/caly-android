@@ -184,40 +184,31 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<SessionResponse> call, Response<SessionResponse> response) {
                 Log.d(TAG,"onResponse code : " + response.code());
 
-                if(response.code() == 200){
-                    SessionResponse body = response.body();
+                SessionResponse body = response.body();
 
-                    switch (body.code){
-                        case 200:
-                            SessionRecord session = SessionRecord.getSessionRecord();
-                            session.setSessionKey(body.payload.sessionKey);
-                            session.save();
-                            startEventActivity();
-                            break;
-                        case 400:
-                            Toast.makeText(
-                                    getBaseContext(),
-                                    getString(R.string.toast_msg_login_fail),
-                                    Toast.LENGTH_LONG
-                            ).show();
-                            break;
-                        default:
-                            Toast.makeText(
-                                    getBaseContext(),
-                                    getString(R.string.toast_msg_server_internal_error),
-                                    Toast.LENGTH_LONG
-                            ).show();
-                            break;
-                    }
+                switch (response.code()){
+                    case 200:
+                        SessionRecord session = SessionRecord.getSessionRecord();
+                        session.setSessionKey(body.payload.sessionKey);
+                        session.save();
+                        startEventActivity();
+                        break;
+                    case 400:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_login_fail),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
+                    default:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_server_internal_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
+                }
 
-                }
-                else{
-                    Toast.makeText(
-                            getBaseContext(),
-                            getString(R.string.toast_msg_server_internal_error),
-                            Toast.LENGTH_LONG
-                    ).show();
-                }
             }
 
             @Override
@@ -249,43 +240,33 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d(TAG,"onResponse code : " + response.code());
                 Log.d(TAG,"req url : " + call.request().url().toString());
 
-                if(response.code() == 200){
-                    SessionResponse body = response.body();
+                SessionResponse body = response.body();
 
-                    SessionRecord sessionRecord = SessionRecord.getSessionRecord();
-                    switch (body.code){
-                        case 200:
-                        case 205:
-                            sessionRecord.setSessionKey(body.payload.sessionKey);
-                            sessionRecord.save();
-                            startEventActivity();
-                            break;
-                        case 201:
-                            startSignupActivity(userId, userPw, loginPlatform, authCode);
-                            break;
-                        case 207:
-                            sessionRecord.setSessionKey(body.payload.sessionKey);
-                            sessionRecord.save();
-                            registerDeviceInfo(body.payload.sessionKey);
-                            break;
-                        default:
-                            Toast.makeText(
-                                    getBaseContext(),
-                                    getString(R.string.toast_msg_server_internal_error),
-                                    Toast.LENGTH_LONG
-                            ).show();
-                            break;
-                    }
-
+                SessionRecord sessionRecord = SessionRecord.getSessionRecord();
+                switch (response.code()){
+                    case 200:
+                    case 205:
+                        sessionRecord.setSessionKey(body.payload.sessionKey);
+                        sessionRecord.save();
+                        startEventActivity();
+                        break;
+                    case 201:
+                        startSignupActivity(userId, userPw, loginPlatform, authCode);
+                        break;
+                    case 207:
+                        sessionRecord.setSessionKey(body.payload.sessionKey);
+                        sessionRecord.save();
+                        registerDeviceInfo(body.payload.sessionKey);
+                        break;
+                    default:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_server_internal_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
                 }
-                else{
 
-                    Toast.makeText(
-                            getBaseContext(),
-                            getString(R.string.toast_msg_server_internal_error),
-                            Toast.LENGTH_LONG
-                    ).show();
-                }
 
             }
 

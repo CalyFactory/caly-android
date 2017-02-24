@@ -89,17 +89,18 @@ public class TestActivity extends Activity {
             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
                 Log.d(TAG,"onResponse code : " + response.code());
 
-                if(response.code() == 200){
-                    BasicResponse body = response.body();
-
-                }
-                else{
-                    Log.e(TAG,"status code : " + response.code());
-                    Toast.makeText(
-                            getBaseContext(),
-                            getString(R.string.toast_msg_server_internal_error),
-                            Toast.LENGTH_LONG
-                    ).show();
+                BasicResponse body = response.body();
+                switch (response.code()){
+                    case 200:
+                        break;
+                    default:
+                        Log.e(TAG,"status code : " + response.code());
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_server_internal_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
                 }
             }
 
