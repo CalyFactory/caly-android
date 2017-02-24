@@ -126,10 +126,10 @@ public class EventListActivity extends AppCompatActivity {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-
                 int position = layoutManager.findFirstVisibleItemPosition();
                 EventModel eventModel = recyclerAdapter.getItem(position);
 
+                Log.d(TAG, eventModel.startMonth+"월");
                 tvEventYear.setText(eventModel.startYear+"");
                 tvEventMonth.setText(eventModel.startMonth+"월");
             }
@@ -148,11 +148,11 @@ public class EventListActivity extends AppCompatActivity {
 
                 if(totalItemCount - 1 == lastVisibleItem + LOADING_THRESHOLD){
                     Log.d(TAG, "last item, loading more");
-                    loadMoreEventList(currentTailPageNum);
+//                    loadMoreEventList(currentTailPageNum);
                 }
                 else if(firstVisibleItem < LOADING_THRESHOLD){
                     Log.d(TAG, "first item, loading prev");
-                    loadMoreEventList(currentHeadPageNum);
+//                    loadMoreEventList(currentHeadPageNum);
                 }
 
             }
@@ -274,7 +274,7 @@ public class EventListActivity extends AppCompatActivity {
                         dataNotifyHandler.sendMessage(message);
                     }
 
-                    loadMoreEventList(currentHeadPageNum);
+//                    loadMoreEventList(currentHeadPageNum);
                 }
                 else{
                     Log.e(TAG,"status code : " + response.code());
