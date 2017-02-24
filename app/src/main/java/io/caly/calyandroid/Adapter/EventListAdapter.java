@@ -1,22 +1,21 @@
 package io.caly.calyandroid.Adapter;
 
 import android.graphics.Color;
-import android.support.annotation.BinderThread;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import junit.framework.Test;
-
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.caly.calyandroid.Model.EventModel;
 import io.caly.calyandroid.Model.TestModel;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.Util;
+import io.caly.calyandroid.Util.StringFormmater;
+import io.caly.calyandroid.Util.Util;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -28,7 +27,7 @@ import io.caly.calyandroid.Util;
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder> {
 
-    private ArrayList<TestModel> dataList;
+    private ArrayList<EventModel> dataList;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -57,7 +56,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         }
     }
 
-    public EventListAdapter(ArrayList<TestModel> dataList){
+    public EventListAdapter(ArrayList<EventModel> dataList){
         this.dataList = dataList;
     }
 
@@ -70,15 +69,31 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         return holder;
     }
 
+    public void addTail(EventModel data){
+        dataList.add(data);
+    }
+
+    public void addHead(EventModel data){
+        dataList.add(0, data);
+    }
+
+    public void addItem(int position, EventModel data){
+        dataList.add(position, data);
+        notifyItemInserted(position);
+
+    }
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        TestModel testModel = dataList.get(position);
+        EventModel eventModel = dataList.get(position);
 
         boolean isNewDay = false;
         if(position!=0){
-            TestModel prevModel = dataList.get(position-1);
+            EventModel prevModel = dataList.get(position-1);
 
-            if(prevModel.year == testModel.year && prevModel.month == testModel.month && prevModel.day == testModel.day){
+
+            if(prevModel.startYear == eventModel.startYear &&
+                    prevModel.startMonth == eventModel.startMonth &&
+                    prevModel.startDay == eventModel.startDay){
                 isNewDay = false;
             }
             else{
@@ -100,7 +115,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
             holder.tvEventDay.setVisibility(View.INVISIBLE);
         }
 
-        int dayOfDate = Util.dayOfDate(testModel.year, testModel.month, testModel.day);
+        int dayOfDate = Util.dayOfDate(eventModel.startYear, eventModel.startMonth, eventModel.startDay);
         if (dayOfDate == 0 || dayOfDate == 6){
             holder.tvEventDayString.setTextColor(Color.rgb(223,115,101));
         }
@@ -109,14 +124,19 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         }
         holder.tvEventDayString.setText(Util.dayOfDate[dayOfDate]);
 
-        holder.tvEventDay.setText(String.valueOf(testModel.day));
-        holder.tvEventSummary.setText(testModel.summary);
-        holder.tvEventDate.setText(testModel.time);
-        holder.tvEventLocation.setText(testModel.location);
+        holder.tvEventDay.setText(String.valueOf(eventModel.startDay));
+        holder.tvEventSummary.setText(eventModel.summaryText);
+        holder.tvEventDate.setText(
+                StringFormmater.simpleRangeTimeFormat(
+                        eventModel.startDateTime,
+                        eventModel.endDateTime
+                )
+        );
+        holder.tvEventLocation.setText("위치정보가엄어영");
 
     }
 
-    public TestModel getItem(int position){
+    public EventModel getItem(int position){
         return dataList.get(position);
     }
 

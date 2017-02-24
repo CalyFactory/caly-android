@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.annotation.IntegerRes;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -23,11 +23,11 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import io.caly.calyandroid.Model.DeviceType;
 import io.caly.calyandroid.Model.Gender;
-import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.SessionResponse;
-import io.caly.calyandroid.Model.SessionRecord;
+import io.caly.calyandroid.Model.ORM.SessionRecord;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.Util;
+import io.caly.calyandroid.Util.TextViewLinkHandler;
+import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,6 +62,8 @@ public class SignupActivity extends AppCompatActivity {
 
     int selectedGender = -1;
 
+    final int RC_POLICY_RESPONSE = 1121;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +84,16 @@ public class SignupActivity extends AppCompatActivity {
 
         imvGenderMan.setColorFilter(Color.GRAY, android.graphics.PorterDuff.Mode.MULTIPLY);
         imvGenderWoman.setColorFilter(Color.GRAY, android.graphics.PorterDuff.Mode.MULTIPLY);
+
+
+        cbPolicy.setText(Html.fromHtml("캘리의 <a href='signup'>이용정책</a>에 동의합니다."));
+        cbPolicy.setMovementMethod(new TextViewLinkHandler() {
+            @Override
+            public void onLinkClick(String url) {
+                Intent intent = new Intent(SignupActivity.this, PolicyActivity.class);
+                startActivityForResult(intent, RC_POLICY_RESPONSE);
+            }
+        });
     }
 
     @OnClick(R.id.imv_signup_man)
@@ -172,8 +184,9 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<SessionResponse> call, Throwable t) {
 
-                Log.d(TAG,"onfail : " + t.getMessage());
-                Log.d(TAG, "fail " + t.getClass().getName());
+                Log.e(TAG,"onfail : " + t.getMessage());
+                Log.e(TAG, "fail " + t.getClass().getName());
+
 
                 Toast.makeText(
                         getBaseContext(),
@@ -202,5 +215,22 @@ public class SignupActivity extends AppCompatActivity {
         if(cbPolicy.isChecked()==false) return false;
 
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(resultCode == RESULT_OK){
+            switch (requestCode){
+                case RC_POLICY_RESPONSE:
+
+                    Log.d(TAG,"agree : " + data.getBooleanExtra("agree", false));
+                    cbPolicy.setChecked(
+                            data.getBooleanExtra("agree", false)
+                    );
+
+                    break;
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

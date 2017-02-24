@@ -1,6 +1,8 @@
-package io.caly.calyandroid.Model;
+package io.caly.calyandroid.Service;
 
+import io.caly.calyandroid.Model.Response.AccountResponse;
 import io.caly.calyandroid.Model.Response.BasicResponse;
+import io.caly.calyandroid.Model.Response.EventResponse;
 import io.caly.calyandroid.Model.Response.SessionResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -72,7 +74,8 @@ public interface HttpService {
             @Field("deviceType") int deviceType,
             @Field("appVersion") String appVersion,
             @Field("deviceInfo") String deviceInfo,
-            @Field("uuid") String uuid
+            @Field("uuid") String uuid,
+            @Field("sdkLevel") String sdkLevel
     );
 
     //updatePushToken
@@ -98,12 +101,33 @@ public interface HttpService {
             @Field("sessionkey") String sessionKey
     );
 
+    //accountList
+    @FormUrlEncoded
+    @POST("member/accountList")
+    Call<AccountResponse> accountList(
+            @Field("sessionkey") String sessionkey
+    );
+
+    //addAccount
+    @FormUrlEncoded
+    @POST("member/addAccount")
+    Call<BasicResponse> addAccount(
+            @Field("sessionkey") String sessionkey,
+            @Field("login_platform") String loginPlatform
+    );
+
     /*
     =============================
                 EVENT
     =============================
      */
 
+    @FormUrlEncoded
+    @POST("events/getList")
+    Call<EventResponse> getList(
+            @Field("sessionkey") String sessionKey,
+            @Field("pageNum") int pageNum
+    );
 
 
 

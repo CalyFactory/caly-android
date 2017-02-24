@@ -21,10 +21,17 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.caly.calyandroid.Activity.AccountAddActivity;
+import io.caly.calyandroid.Activity.AccountListActivity;
 import io.caly.calyandroid.Activity.SplashActivity;
-import io.caly.calyandroid.Model.SessionRecord;
+import io.caly.calyandroid.Model.ORM.SessionRecord;
+import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.SettingItemModel;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.Util;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -81,6 +88,12 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
                     context.startActivity(it);
                     break;
+                case 8:
+                    startAccountListActivity();
+                    break;
+                case 9:
+                    startAccountAddActivity();
+                    break;
                 case 10:
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setMessage("정말 로그아웃하시겠습니까?");
@@ -89,11 +102,47 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
-                            SessionRecord.destorySession();
-                            ActivityCompat.finishAffinity((Activity)context);
 
-                            Intent intent = new Intent(context, SplashActivity.class);
-                            context.startActivity(intent);
+                            Util.getHttpService().logout(
+                                    SessionRecord.getSessionRecord().getSessionKey()
+                            ).enqueue(new Callback<BasicResponse>() {
+                                @Override
+                                public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                                    Log.d(TAG,"onResponse code : " + response.code());
+
+                                    if(response.code() == 200){
+                                        BasicResponse body = response.body();
+
+                                        SessionRecord.destorySession();
+                                        ActivityCompat.finishAffinity((Activity)context);
+
+                                        Intent intent = new Intent(context, SplashActivity.class);
+                                        context.startActivity(intent);
+                                    }
+                                    else{
+                                        Log.e(TAG,"status code : " + response.code());
+                                        Toast.makeText(
+                                                context,
+                                                context.getString(R.string.toast_msg_server_internal_error),
+                                                Toast.LENGTH_LONG
+                                        ).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<BasicResponse> call, Throwable t) {
+
+                                    Log.e(TAG,"onfail : " + t.getMessage());
+                                    Log.e(TAG, "fail " + t.getClass().getName());
+
+                                    Toast.makeText(
+                                            context,
+                                            context.getString(R.string.toast_msg_network_error),
+                                            Toast.LENGTH_LONG
+                                    ).show();
+                                }
+                            });
+
                         }
                     });
                     builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
@@ -108,6 +157,18 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                     Log.d(TAG,"clicked");
                     break;
             }
+        }
+
+        void startAccountListActivity(){
+            Intent intent = new Intent(context, AccountListActivity.class);
+            context.startActivity(intent);
+            ((Activity)context).overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+        }
+
+        void startAccountAddActivity(){
+            Intent intent = new Intent(context, AccountAddActivity.class);
+            context.startActivity(intent);
+            ((Activity)context).overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
         }
     }
 

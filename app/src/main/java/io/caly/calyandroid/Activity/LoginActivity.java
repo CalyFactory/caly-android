@@ -14,22 +14,23 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.common.api.Status;
 import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.gson.JsonObject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.DeviceType;
-import io.caly.calyandroid.Model.SessionRecord;
+import io.caly.calyandroid.Model.ORM.SessionRecord;
 import io.caly.calyandroid.Model.Response.SessionResponse;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.Util;
+import io.caly.calyandroid.Util.Util;
 import io.caly.calyandroid.View.LoginDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -75,12 +76,15 @@ public class LoginActivity extends AppCompatActivity {
         GoogleSignInOptions gso =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestServerAuthCode(getString(R.string.google_client_id))
+                        .requestIdToken(getString(R.string.google_client_id))
                         .requestScopes(
                                 new Scope("https://www.googleapis.com/auth/calendar"),
                                 new Scope("https://www.googleapis.com/auth/userinfo.email"),
-                                new Scope("https://www.googleapis.com/auth/calendar.readonly")
-                        )
-                        .build();
+                                new Scope("https://www.googleapis.com/auth/calendar.readonly"),
+                                new Scope(Scopes.PLUS_ME),
+                                new Scope(Scopes.PLUS_LOGIN)
+                        ).build();
+
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this , onGoogleConnectionFailedListener)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
@@ -91,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
     OnConnectionFailedListener onGoogleConnectionFailedListener = new OnConnectionFailedListener() {
         @Override
         public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
+            Log.d(TAG, "onConnectionFailed : " + connectionResult.getErrorMessage());
         }
     };
 
@@ -155,14 +159,25 @@ public class LoginActivity extends AppCompatActivity {
         finish();
     }
 
-    void registerDeviceInfo(){
+    void signOutGoogle(){
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        Toast.makeText(getBaseContext(),"logout status : " + status.getStatusMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
+    }
+
+    void registerDeviceInfo(String sessionKey){
         Util.getHttpService().registerDevice(
-                "null",
+                sessionKey,
                 FirebaseInstanceId.getInstance().getToken(),
                 DeviceType.ANDROID,
                 Util.getAppVersion(),
                 Util.getDeviceInfo(),
-                Util.getUUID()
+                Util.getUUID(),
+                Util.getSdkLevel()
         ).enqueue(new Callback<SessionResponse>() {
             @Override
             public void onResponse(Call<SessionResponse> call, Response<SessionResponse> response) {
@@ -206,8 +221,8 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<SessionResponse> call, Throwable t) {
-                Log.d(TAG,"onfail : " + t.getMessage());
-                Log.d(TAG, "fail " + t.getClass().getName());
+                Log.e(TAG,"onfail : " + t.getMessage());
+                Log.e(TAG, "fail " + t.getClass().getName());
 
                 Toast.makeText(
                         getBaseContext(),
@@ -250,7 +265,7 @@ public class LoginActivity extends AppCompatActivity {
                         case 207:
                             sessionRecord.setSessionKey(body.payload.sessionKey);
                             sessionRecord.save();
-                            registerDeviceInfo();
+                            registerDeviceInfo(body.payload.sessionKey);
                             break;
                         default:
                             Toast.makeText(
@@ -275,9 +290,8 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<SessionResponse> call, Throwable t) {
-                Log.d(TAG,"onfail : " + t.getMessage());
-                Log.d(TAG,"body" + call.request().body().toString());
-                Log.d(TAG, "fail " + t.getClass().getName());
+                Log.e(TAG,"onfail : " + t.getMessage());
+                Log.e(TAG, "fail " + t.getClass().getName());
 
                 Toast.makeText(
                         getBaseContext(),
@@ -311,8 +325,8 @@ public class LoginActivity extends AppCompatActivity {
                 GoogleSignInAccount acct = result.getSignInAccount();
                 Log.d(TAG, acct.getDisplayName());
                 Log.d(TAG, "id token : " + acct.getIdToken());
-                Log.d(TAG, "serverauthcode : " + acct.getServerAuthCode());
-                Log.d(TAG, "id : " + acct.getId());
+                Log.i(TAG, "serverauthcode : " + acct.getServerAuthCode());
+                Log.i(TAG, "id : " + acct.getId());
                 Log.d(TAG, "email : " + acct.getEmail());
 
                 procLoginGoogle(acct.getServerAuthCode());

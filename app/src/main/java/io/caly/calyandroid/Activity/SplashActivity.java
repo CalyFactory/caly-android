@@ -3,7 +3,6 @@ package io.caly.calyandroid.Activity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -15,19 +14,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
-import io.caly.calyandroid.Adapter.EventListAdapter;
-import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.SessionResponse;
-import io.caly.calyandroid.Model.SessionRecord;
-import io.caly.calyandroid.Model.SettingRecord;
+import io.caly.calyandroid.Model.ORM.SessionRecord;
+import io.caly.calyandroid.Model.ORM.SettingRecord;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.Util;
+import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.Response;
 
 
@@ -164,6 +159,14 @@ public class SplashActivity extends AppCompatActivity {
                                     case 200:
                                         startEventActivity();
                                         break;
+                                    case  401:
+                                        Toast.makeText(
+                                                getBaseContext(),
+                                                getString(R.string.toast_msg_session_invalid),
+                                                Toast.LENGTH_LONG
+                                        ).show();
+                                        finish();
+                                        break;
                                     default:
                                         Toast.makeText(
                                                 getBaseContext(),
@@ -186,8 +189,8 @@ public class SplashActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(Call<SessionResponse> call, Throwable t) {
 
-                            Log.d(TAG,"onfail : " + t.getMessage());
-                            Log.d(TAG, "fail " + t.getClass().getName());
+                            Log.e(TAG,"onfail : " + t.getMessage());
+                            Log.e(TAG, "fail " + t.getClass().getName());
 
                             Toast.makeText(
                                     getBaseContext(),

@@ -16,6 +16,7 @@
 
         <!-- Splash Activity -->
         <activity android:name=".Activity.SplashActivity">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -47,6 +48,24 @@
         <activity android:name=".Activity.SignupActivity">
         </activity>
 
+        <!-- Policy Activity -->
+        <activity android:name=".Activity.PolicyActivity">
+        </activity>
+
+        <!-- AccountAdd Activity -->
+        <activity android:name=".Activity.AccountAddActivity">
+
+        </activity>
+
+        <!-- AccountList Activity -->
+        <activity android:name=".Activity.AccountListActivity">
+
+        </activity>
+
+        <!-- Announce Activity -->
+        <activity android:name=".Activity.AnnounceActivity">
+
+        </activity>
 
         <!-- Services -->
 
