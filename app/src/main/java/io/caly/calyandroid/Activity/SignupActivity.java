@@ -141,7 +141,7 @@ public class SignupActivity extends AppCompatActivity {
 
                     switch (body.code){
                         case 200:
-
+                            Log.d(TAG, "session : " + body.payload.sessionKey);
                             SessionRecord session = SessionRecord.getSessionRecord();
                             session.setSessionKey(body.payload.sessionKey);
                             session.save();
