@@ -21,11 +21,14 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.caly.calyandroid.Activity.AccountAddActivity;
+import io.caly.calyandroid.Activity.AccountListActivity;
 import io.caly.calyandroid.Activity.SplashActivity;
 import io.caly.calyandroid.Model.ORM.SessionRecord;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.SettingItemModel;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -86,6 +89,12 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
                     context.startActivity(it);
                     break;
+                case 8:
+                    startAccountListActivity();
+                    break;
+                case 9:
+                    startAccountAddActivity();
+                    break;
                 case 10:
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setMessage("정말 로그아웃하시겠습니까?");
@@ -95,7 +104,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
 
-                            Util.getHttpService().logout(
+                            ApiClient.getService().logout(
                                     SessionRecord.getSessionRecord().getSessionKey()
                             ).enqueue(new Callback<BasicResponse>() {
                                 @Override
@@ -149,6 +158,18 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                     Log.d(TAG,"clicked");
                     break;
             }
+        }
+
+        void startAccountListActivity(){
+            Intent intent = new Intent(context, AccountListActivity.class);
+            context.startActivity(intent);
+            ((Activity)context).overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+        }
+
+        void startAccountAddActivity(){
+            Intent intent = new Intent(context, AccountAddActivity.class);
+            context.startActivity(intent);
+            ((Activity)context).overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
         }
     }
 

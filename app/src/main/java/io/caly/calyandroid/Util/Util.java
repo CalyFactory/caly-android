@@ -43,46 +43,12 @@ public class Util {
     //로그에 쓰일 tag
     private static final String TAG = Util.class.getSimpleName();
 
-    private static HttpService httpService;
-
-    private static Gson gsonObject;
 
     public static String[] dayOfDate = {"일","월","화","수","목","금","토"};
 
-
-    //gson
-    public static Gson getGson(){
-        if(gsonObject == null){
-
-            gsonObject = new GsonBuilder()
-                    .setDateFormat("yyyy-MM-dd HH:mm:ss")
-                    .registerTypeAdapter(EventModel.class, new EventInstanceCreator())
-                    .create();
-        }
-
-        return gsonObject;
-    }
-
-    // http service
-    public static HttpService getHttpService() {
-        if(httpService == null){
-
-            OkHttpClient.Builder client = new OkHttpClient.Builder();
-            client.addInterceptor(new LoggingInterceptor());
-
-            Util.httpService =
-                    new Retrofit.Builder()
-                            .baseUrl(CalyApplication.getContext().getString(R.string.app_server) + CalyApplication.getContext().getString(R.string.app_server_version) + "/")
-                            .addConverterFactory(GsonConverterFactory.create(getGson()))
-                            .client(client.build())
-                            .build()
-                            .create(HttpService.class);
-
-
-        }
-
-        return Util.httpService;
-    }
+    // intent result code
+    public static final int RC_INTENT_GOOGLE_SIGNIN = 10011;
+    public static final int RC_INTENT_POLICY_RESPONSE = 10021;
 
     public static String requestBodyToString(final RequestBody request) {
         try {

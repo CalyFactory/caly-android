@@ -1,6 +1,9 @@
 package io.caly.calyandroid.Activity;
 
+import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -66,6 +69,12 @@ public class SettingActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
 
+        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        upArrow.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         //set recycler view
         recyclerList.setHasFixedSize(true);
 
@@ -90,5 +99,18 @@ public class SettingActivity extends AppCompatActivity {
 
         recyclerAdapter = new SettingListAdapter(dataList);
         recyclerList.setAdapter(recyclerAdapter);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

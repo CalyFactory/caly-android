@@ -16,6 +16,7 @@ import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.EventResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Service.FirebaseMessagingService;
+import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -82,24 +83,25 @@ public class TestActivity extends Activity {
 
     void test(){
 
-        Util.getHttpService().test(
+        ApiClient.getService().test(
                 "test"
         ).enqueue(new Callback<BasicResponse>() {
             @Override
             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
                 Log.d(TAG,"onResponse code : " + response.code());
 
-                if(response.code() == 200){
-                    BasicResponse body = response.body();
-
-                }
-                else{
-                    Log.e(TAG,"status code : " + response.code());
-                    Toast.makeText(
-                            getBaseContext(),
-                            getString(R.string.toast_msg_server_internal_error),
-                            Toast.LENGTH_LONG
-                    ).show();
+                BasicResponse body = response.body();
+                switch (response.code()){
+                    case 200:
+                        break;
+                    default:
+                        Log.e(TAG,"status code : " + response.code());
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_server_internal_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
                 }
             }
 

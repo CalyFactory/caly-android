@@ -26,6 +26,7 @@ import io.caly.calyandroid.Model.Gender;
 import io.caly.calyandroid.Model.Response.SessionResponse;
 import io.caly.calyandroid.Model.ORM.SessionRecord;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.TextViewLinkHandler;
 import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
@@ -62,7 +63,6 @@ public class SignupActivity extends AppCompatActivity {
 
     int selectedGender = -1;
 
-    final int RC_POLICY_RESPONSE = 1121;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,7 +91,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onLinkClick(String url) {
                 Intent intent = new Intent(SignupActivity.this, PolicyActivity.class);
-                startActivityForResult(intent, RC_POLICY_RESPONSE);
+                startActivityForResult(intent, Util.RC_INTENT_POLICY_RESPONSE);
             }
         });
     }
@@ -130,7 +130,7 @@ public class SignupActivity extends AppCompatActivity {
     void onSignupClick(){
         Bundle bundleData = getIntent().getExtras();
 
-        Util.getHttpService().signUp(
+        ApiClient.getService().signUp(
                 bundleData.getString("userId"),
                 bundleData.getString("userPw"),
                 bundleData.getString("authCode"),
@@ -148,36 +148,28 @@ public class SignupActivity extends AppCompatActivity {
             public void onResponse(Call<SessionResponse> call, Response<SessionResponse> response) {
                 Log.d(TAG,"onResponse code : " + response.code());
                 Log.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
-                if(response.code() == 200){
-                    SessionResponse body = response.body();
 
-                    switch (body.code){
-                        case 200:
+                SessionResponse body = response.body();
 
-                            SessionRecord session = SessionRecord.getSessionRecord();
-                            session.setSessionKey(body.payload.sessionKey);
-                            session.save();
+                switch (response.code()){
+                    case 200:
+                        Log.d(TAG, "session : " + body.payload.sessionKey);
+                        SessionRecord session = SessionRecord.getSessionRecord();
+                        session.setSessionKey(body.payload.sessionKey);
+                        session.save();
 
-                            Intent intent = new Intent(SignupActivity.this, EventListActivity.class);
-                            intent.putExtra("first", true);
-                            startActivity(intent);
-                            finish();
-                            break;
-                        default:
-                            Toast.makeText(
-                                    getBaseContext(),
-                                    getString(R.string.toast_msg_server_internal_error),
-                                    Toast.LENGTH_LONG
-                            ).show();
-                            break;
-                    }
-                }
-                else{
-                    Toast.makeText(
-                            getBaseContext(),
-                            getString(R.string.toast_msg_server_internal_error),
-                            Toast.LENGTH_LONG
-                    ).show();
+                        Intent intent = new Intent(SignupActivity.this, EventListActivity.class);
+                        intent.putExtra("first", true);
+                        startActivity(intent);
+                        finish();
+                        break;
+                    default:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_server_internal_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
                 }
             }
 
@@ -221,7 +213,7 @@ public class SignupActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(resultCode == RESULT_OK){
             switch (requestCode){
-                case RC_POLICY_RESPONSE:
+                case Util.RC_INTENT_POLICY_RESPONSE:
 
                     Log.d(TAG,"agree : " + data.getBooleanExtra("agree", false));
                     cbPolicy.setChecked(

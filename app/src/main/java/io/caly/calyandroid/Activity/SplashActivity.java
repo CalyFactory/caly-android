@@ -21,6 +21,7 @@ import io.caly.calyandroid.Model.Response.SessionResponse;
 import io.caly.calyandroid.Model.ORM.SessionRecord;
 import io.caly.calyandroid.Model.ORM.SettingRecord;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -140,7 +141,7 @@ public class SplashActivity extends AppCompatActivity {
                 else{
                     Log.d(TAG,"session : " + sessionRecord.getSessionKey());
 
-                    Util.getHttpService().loginCheck(
+                    ApiClient.getService().loginCheck(
                             "null",
                             "null",
                             Util.getUUID(),
@@ -153,36 +154,28 @@ public class SplashActivity extends AppCompatActivity {
                         public void onResponse(Call<SessionResponse> call, Response<SessionResponse> response) {
                             Log.d(TAG,"onResponse code : " + response.code());
 
-                            if(response.code() == 200){
-                                SessionResponse body = response.body();
-                                switch (body.code){
-                                    case 200:
-                                        startEventActivity();
-                                        break;
-                                    case  401:
-                                        Toast.makeText(
-                                                getBaseContext(),
-                                                getString(R.string.toast_msg_session_invalid),
-                                                Toast.LENGTH_LONG
-                                        ).show();
-                                        finish();
-                                        break;
-                                    default:
-                                        Toast.makeText(
-                                                getBaseContext(),
-                                                getString(R.string.toast_msg_session_invalid),
-                                                Toast.LENGTH_LONG
-                                        ).show();
-                                        SessionRecord.destorySession();
-                                        startLoginActivity();
-                                }
-                            }
-                            else{
-                                Toast.makeText(
-                                        getBaseContext(),
-                                        getString(R.string.toast_msg_server_internal_error),
-                                        Toast.LENGTH_LONG
-                                ).show();
+                            SessionResponse body = response.body();
+                            switch (response.code()){
+                                case 200:
+                                    startEventActivity();
+                                    break;
+                                case 400:
+                                case 401:
+                                    Toast.makeText(
+                                            getBaseContext(),
+                                            getString(R.string.toast_msg_session_invalid),
+                                            Toast.LENGTH_LONG
+                                    ).show();
+                                    SessionRecord.destorySession();
+                                    startLoginActivity();
+                                    finish();
+                                    break;
+                                default:
+                                    Toast.makeText(
+                                            getBaseContext(),
+                                            getString(R.string.toast_msg_server_internal_error),
+                                            Toast.LENGTH_LONG
+                                    ).show();
                             }
                         }
 

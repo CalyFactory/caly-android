@@ -34,6 +34,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.d(TAG,remoteMessage.getData().toString());
+        Log.d(TAG, "push received!");
         sendNotification(remoteMessage.getData().get("message"));
     }
 
@@ -41,7 +42,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     private void sendNotification(String messageBody) {
         Intent intent = new Intent(this, SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 /* Request code */, intent,
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);

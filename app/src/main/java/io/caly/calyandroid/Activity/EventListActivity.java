@@ -1,5 +1,6 @@
 package io.caly.calyandroid.Activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -35,6 +36,7 @@ import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.EventResponse;
 import io.caly.calyandroid.Model.ORM.SessionRecord;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -125,10 +127,10 @@ public class EventListActivity extends AppCompatActivity {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-
                 int position = layoutManager.findFirstVisibleItemPosition();
                 EventModel eventModel = recyclerAdapter.getItem(position);
 
+                Log.d(TAG, eventModel.startMonth+"월");
                 tvEventYear.setText(eventModel.startYear+"");
                 tvEventMonth.setText(eventModel.startMonth+"월");
             }
@@ -147,11 +149,11 @@ public class EventListActivity extends AppCompatActivity {
 
                 if(totalItemCount - 1 == lastVisibleItem + LOADING_THRESHOLD){
                     Log.d(TAG, "last item, loading more");
-                    loadMoreEventList(currentTailPageNum);
+//                    loadMoreEventList(currentTailPageNum);
                 }
                 else if(firstVisibleItem < LOADING_THRESHOLD){
                     Log.d(TAG, "first item, loading prev");
-                    loadMoreEventList(currentHeadPageNum);
+//                    loadMoreEventList(currentHeadPageNum);
                 }
 
             }
@@ -200,48 +202,57 @@ public class EventListActivity extends AppCompatActivity {
 
         isLoading = true;
 
+        // CodeReview : asynTask 조사해보기
+        /*
+        AsyncTask -> ui쓰레드에 접근이 쉽지 않기 때문에 쉽게 접근하라고 만든 클래스
+        Thread+Handler를 사용하면 문제없다.
+        Handler -> MQ방식으로 동작
+
+         */
         new Thread(new Runnable() {
             @Override
             public void run() {
 
                 try {
-                    Response<EventResponse> response = Util.getHttpService().getList(
+                    Response<EventResponse> response = ApiClient.getService().getList(
                             SessionRecord.getSessionRecord().getSessionKey(),
                             pageNum
                     ).execute();
 
 
-                    if(response.code() == 200){
-                        EventResponse body = response.body();
-                        Log.d(TAG, "json : " + new Gson().toJson(body));
-                        Collections.reverse(body.payload.data);
-                        for(EventModel eventModel : body.payload.data){
+                    switch (response.code()){
+                        case 200:
+                            EventResponse body = response.body();
+                            Log.d(TAG, "json : " + new Gson().toJson(body));
+                            Collections.reverse(body.payload.data);
+                            for(EventModel eventModel : body.payload.data){
 
-                            Message message = dataNotifyHandler.obtainMessage();
-                            message.what = 0;
-                            message.obj = eventModel;
+                                Message message = dataNotifyHandler.obtainMessage();
+                                message.what = 0;
+                                message.obj = eventModel;
 
-                            if(pageNum<0){
-                                message.arg1 = 0;
-                                dataNotifyHandler.sendMessage(message);
+                                if(pageNum<0){
+                                    message.arg1 = 0;
+                                    dataNotifyHandler.sendMessage(message);
 
+                                }
+                                else{
+                                    message.arg1 = recyclerAdapter.getItemCount();
+                                    dataNotifyHandler.sendMessage(message);
+                                }
+                            }
+
+                            if(pageNum<0) {
+                                currentHeadPageNum--;
                             }
                             else{
-                                message.arg1 = recyclerAdapter.getItemCount();
-                                dataNotifyHandler.sendMessage(message);
+                                currentTailPageNum++;
                             }
-                        }
-
-                        if(pageNum<0) {
-                            currentHeadPageNum--;
-                        }
-                        else{
-                            currentTailPageNum++;
-                        }
-                        isLoading=false;
-                    }
-                    else{
-                        Log.e(TAG,"status code : " + response.code());
+                            isLoading=false;
+                            break;
+                        default:
+                            Log.e(TAG,"status code : " + response.code());
+                            break;
                     }
 
                 } catch (IOException e) {
@@ -253,7 +264,7 @@ public class EventListActivity extends AppCompatActivity {
     }
 
     void loadEventList(){
-        Util.getHttpService().getList(
+        ApiClient.getService().getList(
                 SessionRecord.getSessionRecord().getSessionKey(),
                 0
         ).enqueue(new Callback<EventResponse>() {
@@ -261,27 +272,27 @@ public class EventListActivity extends AppCompatActivity {
             public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
                 Log.d(TAG,"onResponse code : " + response.code());
 
-                if(response.code() == 200){
-                    EventResponse body = response.body();
-                    Log.d(TAG, "json : " + new Gson().toJson(body));
-                    for(EventModel eventModel : body.payload.data){
+                switch (response.code()){
+                    case 200:
+                        EventResponse body = response.body();
+                        Log.d(TAG, "json : " + new Gson().toJson(body));
+                        for(EventModel eventModel : body.payload.data){
 
-                        Message message = dataNotifyHandler.obtainMessage();
-                        message.what = 0;
-                        message.arg1 = recyclerAdapter.getItemCount();
-                        message.obj = eventModel;
-                        dataNotifyHandler.sendMessage(message);
-                    }
-
-                    loadMoreEventList(currentHeadPageNum);
-                }
-                else{
-                    Log.e(TAG,"status code : " + response.code());
-                    Toast.makeText(
-                            getBaseContext(),
-                            getString(R.string.toast_msg_server_internal_error),
-                            Toast.LENGTH_LONG
-                    ).show();
+                            Message message = dataNotifyHandler.obtainMessage();
+                            message.what = 0;
+                            message.arg1 = recyclerAdapter.getItemCount();
+                            message.obj = eventModel;
+                            dataNotifyHandler.sendMessage(message);
+                        }
+                        break;
+                    default:
+                        Log.e(TAG,"status code : " + response.code());
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_server_internal_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
                 }
             }
 
@@ -302,7 +313,7 @@ public class EventListActivity extends AppCompatActivity {
     }
 
     void syncCalendar(){
-        Util.getHttpService().sync(
+        ApiClient.getService().sync(
                 SessionRecord.getSessionRecord().getSessionKey()
         ).enqueue(new Callback<BasicResponse>() {
             @Override
@@ -310,18 +321,21 @@ public class EventListActivity extends AppCompatActivity {
                 Log.d(TAG,"onResponse code : " + response.code());
 
                 linearLoader.setVisibility(View.GONE);
-                if(response.code() == 200){
-                    BasicResponse body = response.body();
-                    Toast.makeText(getBaseContext(),"동기화성공",Toast.LENGTH_LONG).show();
 
-                    loadEventList();
-                }
-                else{
-                    Toast.makeText(
-                            getBaseContext(),
-                            getString(R.string.toast_msg_server_internal_error),
-                            Toast.LENGTH_LONG
-                    ).show();
+                switch (response.code()){
+                    case 200:
+                        BasicResponse body = response.body();
+                        Toast.makeText(getBaseContext(),"동기화성공",Toast.LENGTH_LONG).show();
+
+                        loadEventList();
+                        break;
+                    default:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_server_internal_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
                 }
             }
 
@@ -349,6 +363,7 @@ public class EventListActivity extends AppCompatActivity {
         }
     };
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_eventlist, menu);
@@ -360,6 +375,8 @@ public class EventListActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.menu_eventlist_setting){
             Intent intent = new Intent(EventListActivity.this, SettingActivity.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+
         }
         return super.onOptionsItemSelected(item);
     }

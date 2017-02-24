@@ -7,6 +7,7 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
 
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.ORM.SessionRecord;
+import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -35,7 +36,8 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
     }
 
     private void sendRegistrationToServer(String token) {
-        Util.getHttpService().updatePushToken(
+
+        ApiClient.getService().updatePushToken(
                 token,
                 SessionRecord.getSessionRecord().getSessionKey()
         ).enqueue(new Callback<BasicResponse>() {

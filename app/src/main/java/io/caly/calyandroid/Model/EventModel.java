@@ -89,7 +89,7 @@ public class EventModel {
             Calendar startCalendar = Calendar.getInstance();
             startCalendar.setTime(startDateTime);
             this.startYear = startCalendar.get(Calendar.YEAR);
-            this.startMonth = startCalendar.get(Calendar.MONTH);
+            this.startMonth = startCalendar.get(Calendar.MONTH) + 1;
             this.startDay = startCalendar.get(Calendar.DAY_OF_MONTH);
             this.startHour = startCalendar.get(Calendar.HOUR);
             this.startMinute = startCalendar.get(Calendar.MINUTE);
@@ -99,7 +99,7 @@ public class EventModel {
             Calendar endCalendar = Calendar.getInstance();
             endCalendar.setTime(endDateTime);
             this.endYear = endCalendar.get(Calendar.YEAR);
-            this.endMonth = endCalendar.get(Calendar.MONTH);
+            this.endMonth = endCalendar.get(Calendar.MONTH) + 1;
             this.endDay = endCalendar.get(Calendar.DAY_OF_MONTH);
             this.endHour = endCalendar.get(Calendar.HOUR);
             this.endMinute = endCalendar.get(Calendar.MINUTE);
