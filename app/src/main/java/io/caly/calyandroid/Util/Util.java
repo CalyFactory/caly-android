@@ -63,6 +63,7 @@ public class Util {
         return gsonObject;
     }
 
+    // CodeReview : 싱글톤 좀 더 공부해보기 , HttpService.getInstance()등이 더 명확하다.
     // http service
     public static HttpService getHttpService() {
         if(httpService == null){

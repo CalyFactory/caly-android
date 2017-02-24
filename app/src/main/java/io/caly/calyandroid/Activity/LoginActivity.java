@@ -49,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
     //로그에 쓰일 tag
     private static final String TAG = LoginActivity.class.getSimpleName();
 
+    // CodeReview : enum 같은걸로 한군데에 모아놓기
     private static final int codeSignIn = 10011;
 
     GoogleApiClient mGoogleApiClient;

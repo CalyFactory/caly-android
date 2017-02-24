@@ -29,6 +29,10 @@ import io.caly.calyandroid.R;
 
 public class GuideItemFragment extends Fragment {
 
+    /*
+        CodeReview : Fragement vs Activity 기술적으로 조사해보기
+    */
+
     //로그에 쓰일 tag
     private static final String TAG = GuideItemFragment.class.getSimpleName();
 

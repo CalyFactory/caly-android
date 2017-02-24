@@ -12,6 +12,7 @@ import com.orm.SugarRecord;
 
 public class SettingRecord extends SugarRecord {
 
+    // CodeReview : SharedPreference로 변경
     private boolean isDidRun;
     private boolean isPushReceive;
 

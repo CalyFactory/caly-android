@@ -35,6 +35,7 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
     }
 
     private void sendRegistrationToServer(String token) {
+
         Util.getHttpService().updatePushToken(
                 token,
                 SessionRecord.getSessionRecord().getSessionKey()

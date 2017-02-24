@@ -201,6 +201,7 @@ public class EventListActivity extends AppCompatActivity {
 
         isLoading = true;
 
+        // CodeReview : asynTask 조사해보기 
         new Thread(new Runnable() {
             @Override
             public void run() {
