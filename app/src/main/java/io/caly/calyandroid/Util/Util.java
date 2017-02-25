@@ -49,6 +49,7 @@ public class Util {
     // intent result code
     public static final int RC_INTENT_GOOGLE_SIGNIN = 10011;
     public static final int RC_INTENT_POLICY_RESPONSE = 10021;
+    public static final int RC_PERMISSION_PHONE_STATE = 10031;
 
     public static String requestBodyToString(final RequestBody request) {
         try {

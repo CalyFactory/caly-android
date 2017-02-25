@@ -24,7 +24,7 @@ import butterknife.OnTextChanged;
 import io.caly.calyandroid.Model.DeviceType;
 import io.caly.calyandroid.Model.Gender;
 import io.caly.calyandroid.Model.Response.SessionResponse;
-import io.caly.calyandroid.Model.ORM.SessionRecord;
+import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.TextViewLinkHandler;
@@ -154,7 +154,7 @@ public class SignupActivity extends AppCompatActivity {
                 switch (response.code()){
                     case 200:
                         Log.d(TAG, "session : " + body.payload.sessionKey);
-                        SessionRecord session = SessionRecord.getSessionRecord();
+                        TokenRecord session = TokenRecord.getSessionRecord();
                         session.setSessionKey(body.payload.sessionKey);
                         session.save();
 

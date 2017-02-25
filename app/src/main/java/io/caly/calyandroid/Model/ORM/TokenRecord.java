@@ -10,35 +10,35 @@ import com.orm.SugarRecord;
  * @since 17. 2. 11
  */
 
-public class SessionRecord extends SugarRecord {
+public class TokenRecord extends SugarRecord {
 
     private String sessionKey;
 
-    public SessionRecord(){
+    public TokenRecord(){
 
     }
 
-    public SessionRecord(String sessionKey){
+    public TokenRecord(String sessionKey){
         this.sessionKey = sessionKey;
     }
 
-    public static SessionRecord getSessionRecord(){
-        SessionRecord sessionRecord = SessionRecord.last(SessionRecord.class);
-        if(sessionRecord == null){
-            sessionRecord = new SessionRecord(null);
+    public static TokenRecord getSessionRecord(){
+        TokenRecord tokenRecord = TokenRecord.last(TokenRecord.class);
+        if(tokenRecord == null){
+            tokenRecord = new TokenRecord(null);
         }
-        return sessionRecord;
+        return tokenRecord;
     }
 
     public static void destorySession(){
-        SessionRecord sessionRecord = getSessionRecord();
-        if(sessionRecord!=null){
-            sessionRecord.delete();
+        TokenRecord tokenRecord = getSessionRecord();
+        if(tokenRecord !=null){
+            tokenRecord.delete();
         }
     }
 
     public static boolean checkSessionExist(){
-        if(SessionRecord.getSessionRecord().getSessionKey() == null) {
+        if(TokenRecord.getSessionRecord().getSessionKey() == null) {
             return false;
         }
         else{

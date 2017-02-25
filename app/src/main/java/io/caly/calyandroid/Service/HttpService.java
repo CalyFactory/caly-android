@@ -40,7 +40,7 @@ public interface HttpService {
             @Field("uId") String userId,
             @Field("uPw") String userPw,
             @Field("uuid") String uuid,
-            @Field("sessionkey") String sessionKey,
+            @Field("apitoken") String apiToken,
             @Field("loginPlatform") String loginPlatform,
             @Field("subject") String subject,
             @Field("appVersion") String appVersion/*,
@@ -69,7 +69,7 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("member/registerDevice")
     Call<SessionResponse> registerDevice(
-            @Field("sessionkey") String sessionKey,
+            @Field("apitoken") String apiToken,
             @Field("pushToken") String pushToken,
             @Field("deviceType") int deviceType,
             @Field("appVersion") String appVersion,
@@ -78,19 +78,11 @@ public interface HttpService {
             @Field("sdkLevel") String sdkLevel
     );
 
-    //updatePushToken
-    @FormUrlEncoded
-    @POST("member/updatePushToken")
-    Call<BasicResponse> updatePushToken(
-            @Field("pushToken") String pushToken,
-            @Field("sessionkey") String sessionKey
-    );
-
     //logout
     @FormUrlEncoded
     @POST("member/logout")
     Call<BasicResponse> logout(
-            @Field("sessionkey") String sessionKey
+            @Field("apitoken") String apiToken
     );
 
     //checkVersion
@@ -98,21 +90,21 @@ public interface HttpService {
     @POST("member/checkVersion")
     Call<BasicResponse> checkVersion(
             @Field("appVersion") String appVersion,
-            @Field("sessionkey") String sessionKey
+            @Field("apitoken") String apiToken
     );
 
     //accountList
     @FormUrlEncoded
     @POST("member/accountList")
     Call<AccountResponse> accountList(
-            @Field("sessionkey") String sessionkey
+            @Field("apitoken") String apitoken
     );
 
     //addAccount
     @FormUrlEncoded
     @POST("member/addAccount")
     Call<BasicResponse> addAccount(
-            @Field("sessionkey") String sessionkey,
+            @Field("apitoken") String apitoken,
             @Field("login_platform") String loginPlatform
     );
 
@@ -125,7 +117,7 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("events/getList")
     Call<EventResponse> getList(
-            @Field("sessionkey") String sessionKey,
+            @Field("apitoken") String apiToken,
             @Field("pageNum") int pageNum
     );
 
@@ -141,8 +133,29 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("sync")
     Call<BasicResponse> sync(
-            @Field("sessionkey") String sessionkey
+            @Field("apitoken") String apitoken
     );
 
 
+    /*
+    =============================
+              SETTING
+    =============================
+     */
+
+    //updatePushToken
+    @FormUrlEncoded
+    @POST("setting/updatePushToken")
+    Call<BasicResponse> updatePushToken(
+            @Field("pushToken") String pushToken,
+            @Field("apitoken") String apiToken
+    );
+
+    //setReceivePush
+    @FormUrlEncoded
+    @POST("setting/setReceivePush")
+    Call<BasicResponse> setReceivePush(
+            @Field("pushToken") String pushToken,
+            @Field("receive") int receive
+    );
 }

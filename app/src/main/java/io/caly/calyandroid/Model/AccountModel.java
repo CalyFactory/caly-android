@@ -30,8 +30,9 @@ public class AccountModel {
     @Expose
     public String title;
 
-    public AccountModel(boolean isHeader){
-        this.isHeader = isHeader;
+    public AccountModel(String title){
+        this.title = title;
+        isHeader = true;
     }
 
 }

@@ -17,9 +17,10 @@ import android.widget.Toast;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
+import net.jspiner.prefer.Prefer;
+
 import io.caly.calyandroid.Model.Response.SessionResponse;
-import io.caly.calyandroid.Model.ORM.SessionRecord;
-import io.caly.calyandroid.Model.ORM.SettingRecord;
+import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.Util;
@@ -39,8 +40,6 @@ public class SplashActivity extends AppCompatActivity {
 
     //로그에 쓰일 tag
     private static final String TAG = SplashActivity.class.getSimpleName();
-
-    private final int PERMISSION_CODE = 1111;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,6 +68,16 @@ public class SplashActivity extends AppCompatActivity {
 
     void startSplash(){
 
+        Log.d(TAG, "isdidrun : " + Prefer.get("isDidRun", false));
+        if(Prefer.get("isDidRun", false)){
+            timerHandler.sendEmptyMessageDelayed(0,1000);
+        }
+        else{
+            timerHandler.sendEmptyMessageDelayed(1,3000);
+        }
+        Prefer.set("isDidRun", true);
+
+        /*
         SettingRecord currentSetting = SettingRecord.getSettingRecord();
 
         if(currentSetting.isDidRun()){
@@ -79,7 +88,7 @@ public class SplashActivity extends AppCompatActivity {
         }
 
         currentSetting.setDidRun(true);
-        currentSetting.save();
+        currentSetting.save();*/
     }
 
     void requestPermission(){
@@ -88,7 +97,7 @@ public class SplashActivity extends AppCompatActivity {
                 new String[]{
                         Manifest.permission.READ_PHONE_STATE
                 },
-                PERMISSION_CODE
+                Util.RC_PERMISSION_PHONE_STATE
         );
     }
 
@@ -131,21 +140,21 @@ public class SplashActivity extends AppCompatActivity {
                 startGuideActivity();
             }
             else{
-                SessionRecord sessionRecord = SessionRecord.getSessionRecord();
+                TokenRecord tokenRecord = TokenRecord.getSessionRecord();
 
                 //로그인 정보가 없을 경우
-                if(sessionRecord.getSessionKey() == null){
+                if(tokenRecord.getSessionKey() == null){
                     Log.d(TAG, "no login");
                     startLoginActivity();
                 }
                 else{
-                    Log.d(TAG,"session : " + sessionRecord.getSessionKey());
+                    Log.d(TAG,"session : " + tokenRecord.getSessionKey());
 
                     ApiClient.getService().loginCheck(
                             "null",
                             "null",
                             Util.getUUID(),
-                            sessionRecord.getSessionKey(),
+                            tokenRecord.getSessionKey(),
                             "null",
                             "null",
                             Util.getAppVersion()
@@ -166,7 +175,7 @@ public class SplashActivity extends AppCompatActivity {
                                             getString(R.string.toast_msg_session_invalid),
                                             Toast.LENGTH_LONG
                                     ).show();
-                                    SessionRecord.destorySession();
+                                    TokenRecord.destorySession();
                                     startLoginActivity();
                                     finish();
                                     break;
@@ -206,7 +215,7 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        if(requestCode == PERMISSION_CODE){
+        if(requestCode == Util.RC_PERMISSION_PHONE_STATE){
 
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
                 startSplash();

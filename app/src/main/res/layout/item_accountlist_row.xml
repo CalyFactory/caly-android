@@ -31,10 +31,12 @@
                     android:layout_width="match_parent"
                     android:text="jspiner@naver.com"
                     android:textColor="#000000"
+                    android:id="@+id/tv_account_title"
                     android:textSize="20dp"
                     android:layout_height="wrap_content" />
                 <TextView
                     android:layout_width="match_parent"
+                    android:id="@+id/tv_account_info"
                     android:text="2017. 02. 22 가입됨 | 동기화 정상"
                     android:layout_height="match_parent" />
             </LinearLayout>
