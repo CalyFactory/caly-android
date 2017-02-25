@@ -149,11 +149,11 @@ public class EventListActivity extends AppCompatActivity {
 
                 if(totalItemCount - 1 == lastVisibleItem + LOADING_THRESHOLD){
                     Log.d(TAG, "last item, loading more");
-//                    loadMoreEventList(currentTailPageNum);
+                    loadMoreEventList(currentTailPageNum);
                 }
                 else if(firstVisibleItem < LOADING_THRESHOLD){
                     Log.d(TAG, "first item, loading prev");
-//                    loadMoreEventList(currentHeadPageNum);
+                    loadMoreEventList(currentHeadPageNum);
                 }
 
             }
@@ -175,6 +175,8 @@ public class EventListActivity extends AppCompatActivity {
     what
         0 : 추가
         1 : 삭제(예정)
+        2 :
+        3 : isLoading을 초기화
     arg1
         추가삭제변경 할 위치index
      obj
@@ -191,6 +193,9 @@ public class EventListActivity extends AppCompatActivity {
                     recyclerAdapter.addItem(msg.arg1, (EventModel)msg.obj);
                     break;
                 case 1:
+                    break;
+                case 3:
+                    isLoading = false;
                     break;
                 default:
                     recyclerAdapter.notifyDataSetChanged();
@@ -250,8 +255,12 @@ public class EventListActivity extends AppCompatActivity {
                             }
                             isLoading=false;
                             break;
+                        case 401:
+                            isLoading=false;
+                            break;
                         default:
                             Log.e(TAG,"status code : " + response.code());
+                            dataNotifyHandler.sendEmptyMessageDelayed(3,2000);
                             break;
                     }
 
@@ -276,13 +285,15 @@ public class EventListActivity extends AppCompatActivity {
                     case 200:
                         EventResponse body = response.body();
                         Log.d(TAG, "json : " + new Gson().toJson(body));
+                        int i=0;
                         for(EventModel eventModel : body.payload.data){
-
+                            Log.d(TAG, "json : " + new Gson().toJson(eventModel));
                             Message message = dataNotifyHandler.obtainMessage();
                             message.what = 0;
-                            message.arg1 = recyclerAdapter.getItemCount();
+                            message.arg1 = i;
                             message.obj = eventModel;
                             dataNotifyHandler.sendMessage(message);
+                            i++;
                         }
                         break;
                     default:
@@ -353,15 +364,6 @@ public class EventListActivity extends AppCompatActivity {
             }
         });
     }
-
-    Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            linearLoader.setVisibility(View.GONE);
-//            aviLoader.smoothToHide();
-            super.handleMessage(msg);
-        }
-    };
 
 
     @Override

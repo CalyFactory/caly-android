@@ -6,6 +6,8 @@ import android.content.Context;
 import com.google.firebase.FirebaseApp;
 import com.orm.SugarApp;
 
+import net.jspiner.prefer.Prefer;
+
 /**
  * Copyright 2017 JSpiner. All rights reserved.
  *
@@ -24,6 +26,7 @@ public class CalyApplication extends SugarApp {
 
         context = this;
         FirebaseApp.initializeApp(this);
+        Prefer.init(context, "caly");
     }
 
     public static Context getContext(){

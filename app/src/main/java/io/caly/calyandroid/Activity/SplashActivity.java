@@ -68,7 +68,8 @@ public class SplashActivity extends AppCompatActivity {
 
     void startSplash(){
 
-        if(Prefer.get("isDidRun", false) == false){
+        Log.d(TAG, "isdidrun : " + Prefer.get("isDidRun", false));
+        if(Prefer.get("isDidRun", false)){
             timerHandler.sendEmptyMessageDelayed(0,1000);
         }
         else{
