@@ -29,7 +29,7 @@ public class AccountAddAdapter extends RecyclerView.Adapter<AccountAddAdapter.Vi
     //로그에 쓰일 tag
     private static final String TAG = AccountAddAdapter.class.getSimpleName();
 
-    private ArrayList<AccountModel> dataList;
+    private ArrayList<String> dataList;
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
@@ -50,11 +50,11 @@ public class AccountAddAdapter extends RecyclerView.Adapter<AccountAddAdapter.Vi
 
     }
 
-    public void setData(ArrayList<AccountModel> dataList){
+    public void setData(ArrayList<String> dataList){
         this.dataList = dataList;
     }
 
-    public AccountAddAdapter(ArrayList<AccountModel> dataList){
+    public AccountAddAdapter(ArrayList<String> dataList){
         this.dataList = dataList;
     }
 
@@ -65,44 +65,18 @@ public class AccountAddAdapter extends RecyclerView.Adapter<AccountAddAdapter.Vi
         View view = null;
         ViewHolder viewHolder = null;
 
-        if (viewType==1){
-            view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_accountlist_header, parent, false);
+        view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_accountlist_header, parent, false);
 
-            viewHolder = new ViewHolder(view);
-        }
-        else if (viewType ==2){
-            view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_accountlist_row, parent, false);
-
-            viewHolder = new ViewHolder(view);
-        }
-        else{
-            view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_accountlist_row, parent, false);
-
-            viewHolder = new ViewHolder(view);
-        }
+        viewHolder = new ViewHolder(view);
 
         return viewHolder;
     }
 
     @Override
-    public int getItemViewType(int position) {
-        return dataList.get(position).isHeader?1:2;
-    }
-
-    @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        AccountModel accountModel = dataList.get(position);
 
-        if(accountModel.isHeader){
-            holder.tvTitle.setText(accountModel.title);
-        }
-        else{
-            holder.tvTitle.setText(accountModel.userId);
-            holder.tvInfo.setText(StringFormmater.accountStateFormat(accountModel));
-        }
+        holder.tvTitle.setText(dataList.get(position));
     }
 
     @Override
