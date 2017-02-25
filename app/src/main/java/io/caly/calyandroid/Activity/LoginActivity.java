@@ -1,6 +1,5 @@
 package io.caly.calyandroid.Activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -30,7 +28,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Model.DeviceType;
 import io.caly.calyandroid.Model.LoginPlatform;
-import io.caly.calyandroid.Model.ORM.SessionRecord;
+import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.SessionResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
@@ -195,7 +193,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 switch (response.code()){
                     case 200:
-                        SessionRecord session = SessionRecord.getSessionRecord();
+                        TokenRecord session = TokenRecord.getSessionRecord();
                         session.setSessionKey(body.payload.sessionKey);
                         session.save();
                         startEventActivity();
@@ -249,20 +247,20 @@ public class LoginActivity extends AppCompatActivity {
 
                 SessionResponse body = response.body();
 
-                SessionRecord sessionRecord = SessionRecord.getSessionRecord();
+                TokenRecord tokenRecord = TokenRecord.getSessionRecord();
                 switch (response.code()){
                     case 200:
 //                    case 205:
-                        sessionRecord.setSessionKey(body.payload.sessionKey);
-                        sessionRecord.save();
+                        tokenRecord.setSessionKey(body.payload.sessionKey);
+                        tokenRecord.save();
                         startEventActivity();
                         break;
                     case 202:
                         startSignupActivity(userId, userPw, loginPlatform, authCode);
                         break;
                     case 201:
-                        sessionRecord.setSessionKey(body.payload.sessionKey);
-                        sessionRecord.save();
+                        tokenRecord.setSessionKey(body.payload.sessionKey);
+                        tokenRecord.save();
                         registerDeviceInfo(body.payload.sessionKey);
                         break;
                     default:

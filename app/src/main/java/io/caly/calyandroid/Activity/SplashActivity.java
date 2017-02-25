@@ -20,7 +20,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import net.jspiner.prefer.Prefer;
 
 import io.caly.calyandroid.Model.Response.SessionResponse;
-import io.caly.calyandroid.Model.ORM.SessionRecord;
+import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.Util;
@@ -140,21 +140,21 @@ public class SplashActivity extends AppCompatActivity {
                 startGuideActivity();
             }
             else{
-                SessionRecord sessionRecord = SessionRecord.getSessionRecord();
+                TokenRecord tokenRecord = TokenRecord.getSessionRecord();
 
                 //로그인 정보가 없을 경우
-                if(sessionRecord.getSessionKey() == null){
+                if(tokenRecord.getSessionKey() == null){
                     Log.d(TAG, "no login");
                     startLoginActivity();
                 }
                 else{
-                    Log.d(TAG,"session : " + sessionRecord.getSessionKey());
+                    Log.d(TAG,"session : " + tokenRecord.getSessionKey());
 
                     ApiClient.getService().loginCheck(
                             "null",
                             "null",
                             Util.getUUID(),
-                            sessionRecord.getSessionKey(),
+                            tokenRecord.getSessionKey(),
                             "null",
                             "null",
                             Util.getAppVersion()
@@ -175,7 +175,7 @@ public class SplashActivity extends AppCompatActivity {
                                             getString(R.string.toast_msg_session_invalid),
                                             Toast.LENGTH_LONG
                                     ).show();
-                                    SessionRecord.destorySession();
+                                    TokenRecord.destorySession();
                                     startLoginActivity();
                                     finish();
                                     break;

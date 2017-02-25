@@ -1,6 +1,5 @@
 package io.caly.calyandroid.Activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -34,10 +33,9 @@ import io.caly.calyandroid.Adapter.EventListAdapter;
 import io.caly.calyandroid.Model.EventModel;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.EventResponse;
-import io.caly.calyandroid.Model.ORM.SessionRecord;
+import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
-import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -220,7 +218,7 @@ public class EventListActivity extends AppCompatActivity {
 
                 try {
                     Response<EventResponse> response = ApiClient.getService().getList(
-                            SessionRecord.getSessionRecord().getSessionKey(),
+                            TokenRecord.getSessionRecord().getSessionKey(),
                             pageNum
                     ).execute();
 
@@ -274,7 +272,7 @@ public class EventListActivity extends AppCompatActivity {
 
     void loadEventList(){
         ApiClient.getService().getList(
-                SessionRecord.getSessionRecord().getSessionKey(),
+                TokenRecord.getSessionRecord().getSessionKey(),
                 0
         ).enqueue(new Callback<EventResponse>() {
             @Override
@@ -325,7 +323,7 @@ public class EventListActivity extends AppCompatActivity {
 
     void syncCalendar(){
         ApiClient.getService().sync(
-                SessionRecord.getSessionRecord().getSessionKey()
+                TokenRecord.getSessionRecord().getSessionKey()
         ).enqueue(new Callback<BasicResponse>() {
             @Override
             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {

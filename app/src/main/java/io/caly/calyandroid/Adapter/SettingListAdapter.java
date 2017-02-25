@@ -24,12 +24,11 @@ import butterknife.OnClick;
 import io.caly.calyandroid.Activity.AccountAddActivity;
 import io.caly.calyandroid.Activity.AccountListActivity;
 import io.caly.calyandroid.Activity.SplashActivity;
-import io.caly.calyandroid.Model.ORM.SessionRecord;
+import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.SettingItemModel;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
-import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -105,7 +104,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                             dialogInterface.dismiss();
 
                             ApiClient.getService().logout(
-                                    SessionRecord.getSessionRecord().getSessionKey()
+                                    TokenRecord.getSessionRecord().getSessionKey()
                             ).enqueue(new Callback<BasicResponse>() {
                                 @Override
                                 public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
@@ -114,7 +113,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                                     if(response.code() == 200){
                                         BasicResponse body = response.body();
 
-                                        SessionRecord.destorySession();
+                                        TokenRecord.destorySession();
                                         ActivityCompat.finishAffinity((Activity)context);
 
                                         Intent intent = new Intent(context, SplashActivity.class);

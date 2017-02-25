@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -19,16 +18,12 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.Adapter.AccountListAdapter;
-import io.caly.calyandroid.Adapter.EventListAdapter;
 import io.caly.calyandroid.Model.AccountModel;
-import io.caly.calyandroid.Model.EventModel;
 import io.caly.calyandroid.Model.LoginPlatform;
-import io.caly.calyandroid.Model.ORM.SessionRecord;
+import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.AccountResponse;
-import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
-import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -101,7 +96,7 @@ public class AccountListActivity extends AppCompatActivity {
 
     void loadAccountList(){
         ApiClient.getService().accountList(
-                SessionRecord.getSessionRecord().getSessionKey()
+                TokenRecord.getSessionRecord().getSessionKey()
         ).enqueue(new Callback<AccountResponse>() {
             @Override
             public void onResponse(Call<AccountResponse> call, Response<AccountResponse> response) {
