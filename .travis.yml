@@ -4,13 +4,15 @@ jdk : oraclejdk8
 
 android:
   components:
+    - tools
     - platform-tools
     - tools
     - build-tools-23.0.2
     - android-23
     - extra-android-m2repository
+    - extra-google-m2repository
 
 before_install:
   - chmod +x gradlew
 
-script: ./gradlew build
+script: ./gradlew build -stacktrace
