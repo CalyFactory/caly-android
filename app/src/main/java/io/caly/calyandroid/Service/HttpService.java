@@ -158,6 +158,4 @@ public interface HttpService {
             @Field("pushToken") String pushToken,
             @Field("receive") int receive
     );
-
-    
 }
