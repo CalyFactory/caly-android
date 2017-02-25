@@ -17,6 +17,7 @@ import io.caly.calyandroid.Model.Response.EventResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Service.FirebaseMessagingService;
 import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.Prefer;
 import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,6 +49,12 @@ public class TestActivity extends Activity {
 
         Log.d(TAG, "uuid : " +Util.getUUID());
 
+        Prefer.put("df", 1);
+        Prefer.put("df", 1.1);
+        Prefer.put("df", 10000l);
+        Prefer.put("df", "sdfsdf");
+        Prefer.put("df", true);
+        Prefer.put("df", 1);
     }
 
     @OnClick(R.id.button2)
