@@ -78,14 +78,6 @@ public interface HttpService {
             @Field("sdkLevel") String sdkLevel
     );
 
-    //updatePushToken
-    @FormUrlEncoded
-    @POST("member/updatePushToken")
-    Call<BasicResponse> updatePushToken(
-            @Field("pushToken") String pushToken,
-            @Field("sessionkey") String sessionKey
-    );
-
     //logout
     @FormUrlEncoded
     @POST("member/logout")
@@ -145,4 +137,27 @@ public interface HttpService {
     );
 
 
+    /*
+    =============================
+              SETTING
+    =============================
+     */
+
+    //updatePushToken
+    @FormUrlEncoded
+    @POST("setting/updatePushToken")
+    Call<BasicResponse> updatePushToken(
+            @Field("pushToken") String pushToken,
+            @Field("sessionkey") String sessionKey
+    );
+
+    //setReceivePush
+    @FormUrlEncoded
+    @POST("setting/setReceivePush")
+    Call<BasicResponse> setReceivePush(
+            @Field("pushToken") String pushToken,
+            @Field("receive") int receive
+    );
+
+    
 }
