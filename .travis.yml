@@ -23,5 +23,4 @@ android:
     - sys-img-armeabi-v7a-android-22
     - sys-img-armeabi-v7a-android-17
 jdk: # 아래와 같이 java version / jdk 종류도 선택가능
-  - oraclejdk7
-  - openjdk6
+  - oraclejdk8
