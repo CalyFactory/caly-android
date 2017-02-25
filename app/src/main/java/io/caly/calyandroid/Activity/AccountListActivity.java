@@ -22,6 +22,7 @@ import io.caly.calyandroid.Adapter.AccountListAdapter;
 import io.caly.calyandroid.Adapter.EventListAdapter;
 import io.caly.calyandroid.Model.AccountModel;
 import io.caly.calyandroid.Model.EventModel;
+import io.caly.calyandroid.Model.LoginPlatform;
 import io.caly.calyandroid.Model.ORM.SessionRecord;
 import io.caly.calyandroid.Model.Response.AccountResponse;
 import io.caly.calyandroid.Model.Response.BasicResponse;
@@ -91,24 +92,11 @@ public class AccountListActivity extends AppCompatActivity {
         recyclerList.setLayoutManager(layoutManager);
 
         ArrayList<AccountModel> accountModels = new ArrayList<>();
-
-        accountModels.add(new AccountModel(true));
-        accountModels.add(new AccountModel(false));
-        accountModels.add(new AccountModel(false));
-        accountModels.add(new AccountModel(true));
-        accountModels.add(new AccountModel(false));
-        accountModels.add(new AccountModel(false));
-        accountModels.add(new AccountModel(false));
-        accountModels.add(new AccountModel(false));
-        accountModels.add(new AccountModel(true));
-        accountModels.add(new AccountModel(false));
-        accountModels.add(new AccountModel(false));
-
         recyclerAdapter = new AccountListAdapter(accountModels);
         recyclerList.setAdapter(recyclerAdapter);
 
 
-//        loadAccountList();
+        loadAccountList();
     }
 
     void loadAccountList(){
@@ -122,9 +110,41 @@ public class AccountListActivity extends AppCompatActivity {
                 if(response.code() == 200){
                     AccountResponse body = response.body();
 
+                    ArrayList<AccountModel> googleAccountList = new ArrayList<AccountModel>();
+                    ArrayList<AccountModel> naverAccountList = new ArrayList<AccountModel>();
+                    ArrayList<AccountModel> appleAccountList = new ArrayList<AccountModel>();
+
                     for(AccountModel accountModel : body.payload.data){
-                        
+                        switch (accountModel.loginPlatform){
+                            case LoginPlatform.CALDAV_NAVER:
+                                naverAccountList.add(accountModel);
+                                break;
+                            case LoginPlatform.CALDAV_ICAL:
+                                appleAccountList.add(accountModel);
+                                break;
+                            case LoginPlatform.GOOGLE:
+                                googleAccountList.add(accountModel);
+                                break;
+                        }
                     }
+
+                    ArrayList<AccountModel> accountList = new ArrayList<AccountModel>();
+
+                    if(googleAccountList.size()!=0){
+                        accountList.add(new AccountModel("Google Calendar 계정"));
+                        accountList.addAll(googleAccountList);
+                    }
+                    if(naverAccountList.size()!=0){
+                        accountList.add(new AccountModel("Naver Calendar 계정"));
+                        accountList.addAll(naverAccountList);
+                    }
+                    if(appleAccountList.size()!=0){
+                        accountList.add(new AccountModel("Apple Calendar 계정"));
+                        accountList.addAll(appleAccountList);
+                    }
+
+                    recyclerAdapter.setData(accountList);
+                    recyclerAdapter.notifyDataSetChanged();
 
                 }
                 else{

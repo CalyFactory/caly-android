@@ -1,17 +1,22 @@
 package io.caly.calyandroid.Adapter;
 
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.Activity.AccountListActivity;
 import io.caly.calyandroid.Model.AccountModel;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.StringFormmater;
+import io.caly.calyandroid.Util.TextViewLinkHandler;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -30,6 +35,14 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
+        @Nullable
+        @Bind(R.id.tv_account_title)
+        TextView tvTitle;
+
+        @Nullable
+        @Bind(R.id.tv_account_info)
+        TextView tvInfo;
+
         public ViewHolder(View view){
             super(view);
 
@@ -37,6 +50,10 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
 
         }
 
+    }
+
+    public void setData(ArrayList<AccountModel> dataList){
+        this.dataList = dataList;
     }
 
     public AccountListAdapter(ArrayList<AccountModel> dataList){
@@ -79,7 +96,15 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+        AccountModel accountModel = dataList.get(position);
 
+        if(accountModel.isHeader){
+            holder.tvTitle.setText(accountModel.title);
+        }
+        else{
+            holder.tvTitle.setText(accountModel.userId);
+            holder.tvInfo.setText(StringFormmater.accountStateFormat(accountModel));
+        }
     }
 
     @Override

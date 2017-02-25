@@ -29,6 +29,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Model.DeviceType;
+import io.caly.calyandroid.Model.LoginPlatform;
 import io.caly.calyandroid.Model.ORM.SessionRecord;
 import io.caly.calyandroid.Model.Response.SessionResponse;
 import io.caly.calyandroid.R;
@@ -120,7 +121,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onPositive(LoginDialog dialog, String userId, String userPw) {
                 dialog.dismiss();
 
-                procLoginCaldav(userId, userPw, "naver");
+                procLoginCaldav(userId, userPw, LoginPlatform.CALDAV_NAVER);
             }
 
             @Override
@@ -139,7 +140,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onPositive(LoginDialog dialog, String userId, String userPw) {
                 dialog.dismiss();
 
-                procLoginCaldav(userId, userPw, "ical");
+                procLoginCaldav(userId, userPw, LoginPlatform.CALDAV_ICAL);
             }
 
             @Override
@@ -295,7 +296,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     void procLoginGoogle(String authCode){
-        procLogin("null", "null", "google", authCode);
+        procLogin("null", "null", LoginPlatform.GOOGLE, authCode);
     }
 
     @Override

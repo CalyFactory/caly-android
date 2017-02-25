@@ -31,6 +31,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:text="Google Calendar 계정"
+                    android:id="@+id/tv_account_title"
                     android:textColor="#000000"
                     android:textSize="20dp"
                     android:layout_height="wrap_content" />

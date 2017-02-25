@@ -16,7 +16,6 @@
 
         <!-- Splash Activity -->
         <activity android:name=".Activity.SplashActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -59,7 +58,6 @@
 
         <!-- AccountList Activity -->
         <activity android:name=".Activity.AccountListActivity">
-
         </activity>
 
         <!-- Announce Activity -->
