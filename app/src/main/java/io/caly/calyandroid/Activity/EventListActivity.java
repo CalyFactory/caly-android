@@ -161,7 +161,7 @@ public class EventListActivity extends AppCompatActivity {
             syncCalendar();
         }
         else{
-//            loadEventList();
+            loadEventList();
         }
 
     }
@@ -301,6 +301,8 @@ public class EventListActivity extends AppCompatActivity {
                         ).show();
                         break;
                 }
+
+                linearLoader.setVisibility(View.GONE);
             }
 
             @Override
@@ -314,6 +316,9 @@ public class EventListActivity extends AppCompatActivity {
                         getString(R.string.toast_msg_network_error),
                         Toast.LENGTH_LONG
                 ).show();
+
+
+                linearLoader.setVisibility(View.GONE);
             }
         });
 
@@ -371,7 +376,7 @@ public class EventListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.menu_eventlist_setting){
-            Intent intent = new Intent(EventListActivity.this, SettingActivity.class);
+            Intent intent = new Intent(EventListActivity.this, LegacySettingActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 

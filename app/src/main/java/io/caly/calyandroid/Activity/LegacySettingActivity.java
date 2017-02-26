@@ -1,6 +1,5 @@
 package io.caly.calyandroid.Activity;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -16,10 +15,8 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.caly.calyandroid.Adapter.EventListAdapter;
 import io.caly.calyandroid.Adapter.SettingListAdapter;
 import io.caly.calyandroid.Model.SettingItemModel;
-import io.caly.calyandroid.Model.TestModel;
 import io.caly.calyandroid.R;
 
 /**
@@ -47,7 +44,7 @@ public class LegacySettingActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting);
+        setContentView(R.layout.legacy_activity_setting);
 
         init();
     }

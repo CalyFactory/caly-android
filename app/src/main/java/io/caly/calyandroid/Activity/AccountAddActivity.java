@@ -83,4 +83,6 @@ public class AccountAddActivity extends AppCompatActivity {
         recyclerAdapter = new AccountAddAdapter(dataList);
         recyclerList.setAdapter(recyclerAdapter);
     }
+
+
 }

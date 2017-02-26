@@ -6,17 +6,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
-import java.util.ArrayList;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.caly.calyandroid.Adapter.SettingListAdapter;
-import io.caly.calyandroid.Model.SettingItemModel;
 import io.caly.calyandroid.R;
 
 /**
@@ -30,7 +24,7 @@ import io.caly.calyandroid.R;
 public class SettingActivity extends AppCompatActivity {
 
     //로그에 쓰일 tag
-    private static final String TAG = LegacySettingActivity.class.getSimpleName();
+    private static final String TAG = SettingActivity.class.getSimpleName();
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;

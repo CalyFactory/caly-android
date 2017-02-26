@@ -39,6 +39,11 @@
         </activity>
 
         <!-- Setting Activity -->
+        <activity android:name=".Activity.LegacySettingActivity">
+
+        </activity>
+
+        <!-- Setting Activity -->
         <activity android:name=".Activity.SettingActivity">
 
         </activity>
