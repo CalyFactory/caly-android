@@ -89,6 +89,15 @@
             android:id="@+id/linear_eventlist_loader"
             android:layout_height="match_parent">
 
+            <com.github.ybq.android.spinkit.SpinKitView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/avi_eventlist"
+                style="@style/SpinKitView.Large.Circle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:SpinKit_Color="@color/colorAccent" />
+            <!--
             <com.wang.avi.AVLoadingIndicatorView
                 android:id="@+id/avi_eventlist"
                 android:layout_width="wrap_content"
@@ -97,7 +106,7 @@
                 android:visibility="visible"
                 app:indicatorName="LineScalePulseOutRapidIndicator"
                 app:indicatorColor="@color/colorPrimaryDark"
-                />
+                />-->
         </LinearLayout>
     </FrameLayout>
 

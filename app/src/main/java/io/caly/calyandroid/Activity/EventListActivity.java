@@ -21,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -71,8 +70,8 @@ public class EventListActivity extends AppCompatActivity {
     @Bind(R.id.tv_eventlist_month)
     TextView tvEventMonth;
 
-    @Bind(R.id.avi_eventlist)
-    AVLoadingIndicatorView aviLoader;
+//    @Bind(R.id.avi_eventlist)
+//    AVLoadingIndicatorView aviLoader;
 
     @Bind(R.id.linear_eventlist_loader)
     LinearLayout linearLoader;
@@ -162,8 +161,7 @@ public class EventListActivity extends AppCompatActivity {
             syncCalendar();
         }
         else{
-            linearLoader.setVisibility(View.GONE);
-            loadEventList();
+//            loadEventList();
         }
 
     }
@@ -218,7 +216,7 @@ public class EventListActivity extends AppCompatActivity {
 
                 try {
                     Response<EventResponse> response = ApiClient.getService().getList(
-                            TokenRecord.getSessionRecord().getSessionKey(),
+                            TokenRecord.getTokenRecord().getApiKey(),
                             pageNum
                     ).execute();
 
@@ -272,7 +270,7 @@ public class EventListActivity extends AppCompatActivity {
 
     void loadEventList(){
         ApiClient.getService().getList(
-                TokenRecord.getSessionRecord().getSessionKey(),
+                TokenRecord.getTokenRecord().getApiKey(),
                 0
         ).enqueue(new Callback<EventResponse>() {
             @Override
@@ -323,7 +321,7 @@ public class EventListActivity extends AppCompatActivity {
 
     void syncCalendar(){
         ApiClient.getService().sync(
-                TokenRecord.getSessionRecord().getSessionKey()
+                TokenRecord.getTokenRecord().getApiKey()
         ).enqueue(new Callback<BasicResponse>() {
             @Override
             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {

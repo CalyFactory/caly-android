@@ -153,9 +153,9 @@ public class SignupActivity extends AppCompatActivity {
 
                 switch (response.code()){
                     case 200:
-                        Log.d(TAG, "session : " + body.payload.sessionKey);
-                        TokenRecord session = TokenRecord.getSessionRecord();
-                        session.setSessionKey(body.payload.sessionKey);
+                        Log.d(TAG, "session : " + body.payload.apiKey);
+                        TokenRecord session = TokenRecord.getTokenRecord();
+                        session.setApiKey(body.payload.apiKey);
                         session.save();
 
                         Intent intent = new Intent(SignupActivity.this, EventListActivity.class);

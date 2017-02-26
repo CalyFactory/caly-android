@@ -96,7 +96,7 @@ public class AccountListActivity extends AppCompatActivity {
 
     void loadAccountList(){
         ApiClient.getService().accountList(
-                TokenRecord.getSessionRecord().getSessionKey()
+                TokenRecord.getTokenRecord().getApiKey()
         ).enqueue(new Callback<AccountResponse>() {
             @Override
             public void onResponse(Call<AccountResponse> call, Response<AccountResponse> response) {

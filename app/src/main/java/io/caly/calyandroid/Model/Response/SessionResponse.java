@@ -17,8 +17,8 @@ public class SessionResponse extends BasicResponse {
 
     public class Payload {
 
-        @SerializedName("sessionkey")
-        public String sessionKey;
+        @SerializedName("apikey")
+        public String apiKey;
 
         @SerializedName("msg")
         public String msg;

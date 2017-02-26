@@ -147,21 +147,21 @@ public class SplashActivity extends AppCompatActivity {
                 startGuideActivity();
             }
             else{
-                TokenRecord tokenRecord = TokenRecord.getSessionRecord();
+                TokenRecord tokenRecord = TokenRecord.getTokenRecord();
 
                 //로그인 정보가 없을 경우
-                if(tokenRecord.getSessionKey() == null){
+                if(tokenRecord.getApiKey() == null){
                     Log.d(TAG, "no login");
                     startLoginActivity();
                 }
                 else{
-                    Log.d(TAG,"session : " + tokenRecord.getSessionKey());
+                    Log.d(TAG,"session : " + tokenRecord.getApiKey());
 
                     ApiClient.getService().loginCheck(
                             "null",
                             "null",
                             Util.getUUID(),
-                            tokenRecord.getSessionKey(),
+                            tokenRecord.getApiKey(),
                             "null",
                             "null",
                             Util.getAppVersion()
@@ -182,7 +182,7 @@ public class SplashActivity extends AppCompatActivity {
                                             getString(R.string.toast_msg_session_invalid),
                                             Toast.LENGTH_LONG
                                     ).show();
-                                    TokenRecord.destorySession();
+                                    TokenRecord.destoryToken();
                                     startLoginActivity();
                                     finish();
                                     break;

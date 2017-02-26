@@ -104,7 +104,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                             dialogInterface.dismiss();
 
                             ApiClient.getService().logout(
-                                    TokenRecord.getSessionRecord().getSessionKey()
+                                    TokenRecord.getTokenRecord().getApiKey()
                             ).enqueue(new Callback<BasicResponse>() {
                                 @Override
                                 public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
@@ -113,7 +113,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                                     if(response.code() == 200){
                                         BasicResponse body = response.body();
 
-                                        TokenRecord.destorySession();
+                                        TokenRecord.destoryToken();
                                         ActivityCompat.finishAffinity((Activity)context);
 
                                         Intent intent = new Intent(context, SplashActivity.class);
