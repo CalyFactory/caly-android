@@ -3,9 +3,11 @@ package io.caly.calyandroid;
 import android.app.Application;
 import android.content.Context;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.FirebaseApp;
 import com.orm.SugarApp;
 
+import io.fabric.sdk.android.Fabric;
 import net.jspiner.prefer.Prefer;
 
 /**
@@ -23,6 +25,7 @@ public class CalyApplication extends SugarApp {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
 
         context = this;
         FirebaseApp.initializeApp(this);
