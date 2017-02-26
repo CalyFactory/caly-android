@@ -40,7 +40,7 @@ public interface HttpService {
             @Field("uId") String userId,
             @Field("uPw") String userPw,
             @Field("uuid") String uuid,
-            @Field("apitoken") String apiToken,
+            @Field("apikey") String apiKey,
             @Field("loginPlatform") String loginPlatform,
             @Field("subject") String subject,
             @Field("appVersion") String appVersion/*,
@@ -69,7 +69,7 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("member/registerDevice")
     Call<SessionResponse> registerDevice(
-            @Field("apitoken") String apiToken,
+            @Field("apikey") String apiKey,
             @Field("pushToken") String pushToken,
             @Field("deviceType") int deviceType,
             @Field("appVersion") String appVersion,
@@ -82,7 +82,7 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("member/logout")
     Call<BasicResponse> logout(
-            @Field("apitoken") String apiToken
+            @Field("apikey") String apiKey
     );
 
     //checkVersion
@@ -90,21 +90,21 @@ public interface HttpService {
     @POST("member/checkVersion")
     Call<BasicResponse> checkVersion(
             @Field("appVersion") String appVersion,
-            @Field("apitoken") String apiToken
+            @Field("apikey") String apiKey
     );
 
     //accountList
     @FormUrlEncoded
     @POST("member/accountList")
     Call<AccountResponse> accountList(
-            @Field("apitoken") String apitoken
+            @Field("apikey") String apikey
     );
 
     //addAccount
     @FormUrlEncoded
     @POST("member/addAccount")
     Call<BasicResponse> addAccount(
-            @Field("apitoken") String apitoken,
+            @Field("apikey") String apikey,
             @Field("login_platform") String loginPlatform
     );
 
@@ -117,7 +117,7 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("events/getList")
     Call<EventResponse> getList(
-            @Field("apitoken") String apiToken,
+            @Field("apikey") String apiKey,
             @Field("pageNum") int pageNum
     );
 
@@ -133,7 +133,7 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("sync")
     Call<BasicResponse> sync(
-            @Field("apitoken") String apitoken
+            @Field("apikey") String apikey
     );
 
 
@@ -148,7 +148,7 @@ public interface HttpService {
     @POST("setting/updatePushToken")
     Call<BasicResponse> updatePushToken(
             @Field("pushToken") String pushToken,
-            @Field("apitoken") String apiToken
+            @Field("apikey") String apiKey
     );
 
     //setReceivePush

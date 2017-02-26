@@ -3,6 +3,7 @@ package io.caly.calyandroid.Activity;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -130,6 +131,12 @@ public class SplashActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
     }
 
+    void requestUpdate(){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("market://details?id=" + getPackageName()));
+        startActivity(intent);
+    }
+
     Handler timerHandler = new Handler(){
 
         @Override
@@ -177,6 +184,15 @@ public class SplashActivity extends AppCompatActivity {
                                     ).show();
                                     TokenRecord.destorySession();
                                     startLoginActivity();
+                                    finish();
+                                    break;
+                                case 403:
+                                    Toast.makeText(
+                                            getBaseContext(),
+                                            getString(R.string.toast_msg_session_invalid),
+                                            Toast.LENGTH_LONG
+                                    ).show();
+                                    requestUpdate();
                                     finish();
                                     break;
                                 default:
