@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.caly.calyandroid.Model.AccountModel;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.StringFormmater;
@@ -47,6 +48,7 @@ public class AccountAddAdapter extends RecyclerView.Adapter<AccountAddAdapter.Vi
             ButterKnife.bind(this, view);
 
         }
+
 
     }
 

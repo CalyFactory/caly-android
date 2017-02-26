@@ -82,6 +82,7 @@ public class AccountAddActivity extends AppCompatActivity {
         dataList.add("Apple 계정");
         recyclerAdapter = new AccountAddAdapter(dataList);
         recyclerList.setAdapter(recyclerAdapter);
+
     }
 
 
