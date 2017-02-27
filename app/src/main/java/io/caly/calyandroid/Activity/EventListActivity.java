@@ -124,6 +124,7 @@ public class EventListActivity extends AppCompatActivity {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
+                if(recyclerAdapter.getItemCount()==0) return;
                 int position = layoutManager.findFirstVisibleItemPosition();
                 EventModel eventModel = recyclerAdapter.getItem(position);
 
@@ -223,7 +224,6 @@ public class EventListActivity extends AppCompatActivity {
 
                     switch (response.code()){
                         case 200:
-                        case 201:
                             EventResponse body = response.body();
                             Log.d(TAG, "json : " + new Gson().toJson(body));
                             Collections.reverse(body.payload.data);
@@ -251,6 +251,8 @@ public class EventListActivity extends AppCompatActivity {
                                 currentTailPageNum++;
                             }
                             isLoading=false;
+                            break;
+                        case 201:
                             break;
                         case 401:
                             isLoading=false;
@@ -280,7 +282,6 @@ public class EventListActivity extends AppCompatActivity {
 
                 switch (response.code()){
                     case 200:
-                    case 201:
                         EventResponse body = response.body();
                         Log.d(TAG, "json : " + new Gson().toJson(body));
                         int i=0;
@@ -293,6 +294,13 @@ public class EventListActivity extends AppCompatActivity {
                             dataNotifyHandler.sendMessage(message);
                             i++;
                         }
+                        break;
+                    case 201:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_no_more_data),
+                                Toast.LENGTH_LONG
+                        ).show();
                         break;
                     default:
                         Log.e(TAG,"status code : " + response.code());
