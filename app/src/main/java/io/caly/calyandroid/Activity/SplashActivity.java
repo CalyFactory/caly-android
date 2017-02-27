@@ -20,6 +20,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import net.jspiner.prefer.Prefer;
 
+import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Model.Response.SessionResponse;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.R;
@@ -37,10 +38,7 @@ import retrofit2.Response;
  * @since 17. 2. 11
  */
 
-public class SplashActivity extends AppCompatActivity {
-
-    //로그에 쓰일 tag
-    private static final String TAG = SplashActivity.class.getSimpleName();
+public class SplashActivity extends BaseAppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
