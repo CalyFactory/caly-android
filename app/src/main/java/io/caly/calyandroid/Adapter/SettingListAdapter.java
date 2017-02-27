@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,10 +17,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.jspiner.prefer.Prefer;
+
+import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import io.caly.calyandroid.Activity.AccountAddActivity;
 import io.caly.calyandroid.Activity.AccountListActivity;
@@ -29,6 +34,7 @@ import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.SettingItemModel;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,6 +69,10 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
         @Bind(R.id.tv_setting_desc)
         TextView tvSettingDesc;
 
+        @Nullable
+        @Bind(R.id.switch_setting_row)
+        SwitchCompat switchRow;
+
         public int position;
 
         Context context;
@@ -87,6 +97,9 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                     Intent it = new Intent(Intent.ACTION_SENDTO, uri);
 
                     context.startActivity(it);
+                    break;
+                case 6:         // push 설정
+                    switchRow.setChecked(!switchRow.isChecked());
                     break;
                 case 8:
                     startAccountListActivity();
@@ -157,6 +170,30 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                     Log.d(TAG,"clicked");
                     break;
             }
+
+        }
+
+        @Nullable
+        @OnCheckedChanged(R.id.switch_setting_row)
+        void onSwitchCheckChanged(){
+            Log.d(TAG,"checked : " + switchRow.isChecked());
+            Prefer.set("isPushReceive", switchRow.isChecked());
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+
+                        ApiClient.getService().setReceivePush(
+                                TokenRecord.getTokenRecord().getApiKey(),
+                                switchRow.isChecked()?1:0
+                        ).execute();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
         }
 
         void startAccountListActivity(){
@@ -186,6 +223,10 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_setting_row1, parent, false);
         }
+        else if(viewType==3){
+            view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.item_setting_row2, parent, false);
+        }
         else{
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_setting_row1, parent, false);
@@ -197,6 +238,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
     @Override
     public int getItemViewType(int position) {
+        if(position==6) return 3;
         return dataList.get(position).isTitle?1:2;
     }
 
@@ -211,6 +253,10 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
         else{
             holder.tvSettingTitle.setText(dataList.get(position).title);
             holder.tvSettingDesc.setText(dataList.get(position).description);
+        }
+
+        if(position==6){
+            holder.switchRow.setChecked(Prefer.get("isPushReceive", true));
         }
     }
 

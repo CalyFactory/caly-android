@@ -155,7 +155,7 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("setting/setReceivePush")
     Call<BasicResponse> setReceivePush(
-            @Field("pushToken") String pushToken,
+            @Field("apikey") String apiKey,
             @Field("receive") int receive
     );
 }
