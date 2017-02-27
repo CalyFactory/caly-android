@@ -26,6 +26,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Model.DeviceType;
 import io.caly.calyandroid.Model.LoginPlatform;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
@@ -46,10 +47,7 @@ import retrofit2.Response;
  * @since 17. 2. 11
  */
 
-public class LoginActivity extends AppCompatActivity {
-
-    //로그에 쓰일 tag
-    private static final String TAG = LoginActivity.class.getSimpleName();
+public class LoginActivity extends BaseAppCompatActivity {
 
     // CodeReview : enum 같은걸로 한군데에 모아놓기
     /*

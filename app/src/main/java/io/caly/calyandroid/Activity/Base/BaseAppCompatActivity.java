@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
@@ -27,20 +28,24 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-/*
+
         Tracker t = ((CalyApplication)getApplication()).getDefaultTracker();
         t.setScreenName(this.getClass().getName());
-        t.send(new HitBuilders.AppViewBuilder().build());*/
+        t.send(new HitBuilders.ScreenViewBuilder().build());
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+
+        GoogleAnalytics.getInstance(this).reportActivityStart(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+
+        GoogleAnalytics.getInstance(this).reportActivityStop(this);
     }
 }

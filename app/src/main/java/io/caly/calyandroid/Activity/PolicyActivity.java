@@ -17,6 +17,7 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.TextViewLinkHandler;
 import io.caly.calyandroid.Util.Util;
@@ -29,7 +30,7 @@ import io.caly.calyandroid.Util.Util;
  * @since 17. 2. 20
  */
 
-public class PolicyActivity extends AppCompatActivity {
+public class PolicyActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;

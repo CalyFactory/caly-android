@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.AccountListAdapter;
 import io.caly.calyandroid.Model.AccountModel;
 import io.caly.calyandroid.Model.LoginPlatform;
@@ -36,10 +37,7 @@ import retrofit2.Response;
  * @since 17. 2. 22
  */
 
-public class AccountListActivity extends AppCompatActivity {
-
-    //로그에 쓰일 tag
-    private static final String TAG = AccountListActivity.class.getSimpleName();
+public class AccountListActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;

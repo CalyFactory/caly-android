@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.SettingListAdapter;
 import io.caly.calyandroid.Model.SettingItemModel;
 import io.caly.calyandroid.R;
@@ -27,10 +28,7 @@ import io.caly.calyandroid.R;
  * @since 17. 2. 12
  */
 
-public class LegacySettingActivity extends AppCompatActivity {
-
-    //로그에 쓰일 tag
-    private static final String TAG = LegacySettingActivity.class.getSimpleName();
+public class LegacySettingActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;

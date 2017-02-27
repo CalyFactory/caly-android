@@ -28,6 +28,7 @@ import java.util.Collections;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.EventListAdapter;
 import io.caly.calyandroid.Model.EventModel;
 import io.caly.calyandroid.Model.Response.BasicResponse;
@@ -47,10 +48,7 @@ import retrofit2.Response;
  * @since 17. 2. 11
  */
 
-public class EventListActivity extends AppCompatActivity {
-
-    //로그에 쓰일 tag
-    private static final String TAG = EventListActivity.class.getSimpleName();
+public class EventListActivity extends BaseAppCompatActivity {
 
     private int currentTailPageNum = 1;
     private int currentHeadPageNum = -1;

@@ -11,6 +11,7 @@ import android.view.MenuItem;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.R;
 
 /**
@@ -21,10 +22,7 @@ import io.caly.calyandroid.R;
  * @since 17. 2. 26
  */
 
-public class SettingActivity extends AppCompatActivity {
-
-    //로그에 쓰일 tag
-    private static final String TAG = SettingActivity.class.getSimpleName();
+public class SettingActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
