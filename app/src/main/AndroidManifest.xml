@@ -17,11 +17,6 @@
 
         <!-- Splash Activity -->
         <activity android:name=".Activity.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- Login Activity -->
@@ -69,6 +64,16 @@
         <!-- Announce Activity -->
         <activity android:name=".Activity.AnnounceActivity">
 
+        </activity>
+
+        <!-- RecommandList Activity -->
+        <activity android:name=".Activity.RecommandListActivity">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!-- Services -->
