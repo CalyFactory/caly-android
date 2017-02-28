@@ -221,13 +221,6 @@ public class EventListActivity extends BaseAppCompatActivity {
 
         isLoading = true;
 
-        // CodeReview : asynTask 조사해보기
-        /*
-        AsyncTask -> ui쓰레드에 접근이 쉽지 않기 때문에 쉽게 접근하라고 만든 클래스
-        Thread+Handler를 사용하면 문제없다.
-        Handler -> MQ방식으로 동작
-
-         */
         new Thread(new Runnable() {
             @Override
             public void run() {

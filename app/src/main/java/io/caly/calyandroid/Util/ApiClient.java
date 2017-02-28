@@ -43,11 +43,6 @@ public class ApiClient {
     }
 
 
-    // CodeReview : 싱글톤 좀 더 공부해보기 , HttpService.getInstance()등이 더 명확하다.
-    // http service
-    /*
-    여러 패턴이 있지만, multi thread문제만 해결하면 될거라고봄
-     */
     public static synchronized HttpService getService() {
         if(httpService == null){
 
