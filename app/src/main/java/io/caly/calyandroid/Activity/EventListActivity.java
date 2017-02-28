@@ -36,6 +36,7 @@ import io.caly.calyandroid.Model.Response.EventResponse;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.EventListener.RecyclerItemClickListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -154,6 +155,24 @@ public class EventListActivity extends BaseAppCompatActivity {
 
             }
         });
+
+        recyclerList.addOnItemTouchListener(new RecyclerItemClickListener(
+                getBaseContext(),
+                recyclerList,
+                new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Intent intent = new Intent(EventListActivity.this, RecommandListActivity.class);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+
+                    }
+                }
+            )
+        );
 
         Intent intent = getIntent();
         if(intent.getBooleanExtra("first", false)){
