@@ -51,7 +51,7 @@ public class RecommandListActivity extends BaseAppCompatActivity {
 
 
         //set toolbar
-        toolbar.setTitle("일정 목록");
+        toolbar.setTitle("추천 목록");
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
