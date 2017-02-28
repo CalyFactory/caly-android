@@ -50,7 +50,7 @@ public class CalyApplication extends SugarApp {
 
         //add activitylifecycle listener
         registerActivityLifecycleCallbacks(new AppLifecycleListener());
-        
+
     }
 
     synchronized public Tracker getDefaultTracker() {
