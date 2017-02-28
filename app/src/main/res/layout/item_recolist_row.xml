@@ -100,6 +100,7 @@
                         <ImageView
                             android:layout_width="20dp"
                             android:layout_height="20dp"
+                            android:id="@+id/imv_reco_map"
                             android:src="@drawable/ic_my_location_black_48dp"
                             />
                     </LinearLayout>

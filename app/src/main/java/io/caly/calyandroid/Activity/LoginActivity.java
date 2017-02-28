@@ -228,14 +228,14 @@ public class LoginActivity extends BaseAppCompatActivity {
         });
     }
 
-    void procLogin(final String userId, final String userPw, final String loginPlatform, final String authCode){
+    void procLogin(final String userId, final String userPw, final String loginPlatform, final String subject, final String authCode){
         ApiClient.getService().loginCheck(
                 userId,
                 userPw,
                 Util.getUUID(),
                 "null", //session
                 loginPlatform,
-                authCode,
+                subject,
                 Util.getAppVersion()
         ).enqueue(new Callback<SessionResponse>() {
             @Override
@@ -288,11 +288,11 @@ public class LoginActivity extends BaseAppCompatActivity {
     }
 
     void procLoginCaldav(String userId, String userPw, String loginPlatform){
-        procLogin(userId, userPw, loginPlatform, "null");
+        procLogin(userId, userPw, loginPlatform, "null", "null");
     }
 
-    void procLoginGoogle(String authCode){
-        procLogin("null", "null", LoginPlatform.GOOGLE, authCode);
+    void procLoginGoogle(String subject, String authCode){
+        procLogin("null", "null", LoginPlatform.GOOGLE, subject, authCode);
     }
 
     @Override
@@ -314,7 +314,7 @@ public class LoginActivity extends BaseAppCompatActivity {
                 Log.i(TAG, "id : " + acct.getId());
                 Log.d(TAG, "email : " + acct.getEmail());
 
-                procLoginGoogle(acct.getServerAuthCode());
+                procLoginGoogle(acct.getId(), acct.getServerAuthCode());
 
             } else {
                 Toast.makeText(

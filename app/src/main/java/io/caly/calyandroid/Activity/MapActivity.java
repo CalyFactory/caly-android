@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import com.nhn.android.maps.NMapActivity;
 import com.nhn.android.maps.NMapView;
 
 import butterknife.Bind;
@@ -23,7 +24,7 @@ import io.caly.calyandroid.R;
  * @since 17. 2. 28
  */
 
-public class MapActivity extends BaseAppCompatActivity {
+public class MapActivity extends NMapActivity {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -34,14 +35,14 @@ public class MapActivity extends BaseAppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map);
+//        setContentView(R.layout.activity_map);
 
         init();
     }
 
     void init(){
-        ButterKnife.bind(this);
-
+//        ButterKnife.bind(this);
+/*
         //set toolbar
         toolbar.setTitle("일정 목록");
         toolbar.setTitleTextColor(Color.WHITE);
@@ -59,8 +60,12 @@ public class MapActivity extends BaseAppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+*/
+        mapView = new NMapView(this);
+        setContentView(mapView);
 
         mapView.setClientId(getString(R.string.naver_client_id));
+
         mapView.setClickable(true);
         mapView.setEnabled(true);
         mapView.setFocusable(true);
