@@ -10,6 +10,7 @@ import com.google.android.gms.analytics.Tracker;
 
 import io.caly.calyandroid.Activity.SplashActivity;
 import io.caly.calyandroid.CalyApplication;
+import io.caly.calyandroid.Util.BusProvider;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -39,7 +40,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-
+        BusProvider.getInstance().register(this);
         GoogleAnalytics.getInstance(this).reportActivityStart(this);
     }
 
@@ -47,6 +48,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
+        BusProvider.getInstance().unregister(this);
         GoogleAnalytics.getInstance(this).reportActivityStop(this);
     }
 }

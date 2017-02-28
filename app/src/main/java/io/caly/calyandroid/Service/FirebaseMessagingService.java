@@ -16,7 +16,9 @@ import java.util.Map;
 
 import io.caly.calyandroid.Activity.EventListActivity;
 import io.caly.calyandroid.Activity.SplashActivity;
+import io.caly.calyandroid.Model.DataModel.TestModel;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.BusProvider;
 import io.caly.calyandroid.Util.EventListener.AppLifecycleListener;
 
 /**
@@ -54,10 +56,10 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         switch (pushType){
             case "sync":
                 if(AppLifecycleListener.getActiveActivityCount()==0){ //app is background
-
+                    BusProvider.getInstance().post(new TestModel());
                 }
                 else{ //app is foreground
-
+                    BusProvider.getInstance().post(new TestModel());
                 }
                 break;
             case "noti":

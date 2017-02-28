@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.squareup.otto.Subscribe;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ import butterknife.OnClick;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.EventListAdapter;
 import io.caly.calyandroid.Model.DataModel.EventModel;
+import io.caly.calyandroid.Model.DataModel.TestModel;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.EventResponse;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
@@ -391,6 +393,11 @@ public class EventListActivity extends BaseAppCompatActivity {
                 ).show();
             }
         });
+    }
+
+    @Subscribe
+    public void testAction(TestModel testModel){
+        Log.d(TAG, "action received");
     }
 
     @OnClick(R.id.btn_eventlist_prev)
