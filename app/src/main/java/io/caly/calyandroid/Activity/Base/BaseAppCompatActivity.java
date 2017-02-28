@@ -39,6 +39,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
+
         GoogleAnalytics.getInstance(this).reportActivityStart(this);
     }
 

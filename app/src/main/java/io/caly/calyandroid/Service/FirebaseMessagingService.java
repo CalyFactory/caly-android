@@ -17,6 +17,7 @@ import java.util.Map;
 import io.caly.calyandroid.Activity.EventListActivity;
 import io.caly.calyandroid.Activity.SplashActivity;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.EventListener.AppLifecycleListener;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -52,6 +53,12 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         switch (pushType){
             case "sync":
+                if(AppLifecycleListener.getActiveActivityCount()==0){ //app is background
+
+                }
+                else{ //app is foreground
+
+                }
                 break;
             case "noti":
                 sendNotification(remoteMessage.getData().get("message"));
