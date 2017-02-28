@@ -40,7 +40,7 @@ public class LoggingInterceptor implements Interceptor {
 
         final String responseString = new String(response.body().bytes());
 
-        Log.d(TAG, "Response \n" + responseString);
+        Log.d(TAG, "Response "+response.code()+"\n" + responseString);
 
         return  response.newBuilder()
                 .body(ResponseBody.create(response.body().contentType(), responseString))

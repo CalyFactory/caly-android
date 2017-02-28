@@ -21,6 +21,7 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Model.DeviceType;
 import io.caly.calyandroid.Model.Gender;
 import io.caly.calyandroid.Model.Response.SessionResponse;
@@ -41,10 +42,7 @@ import retrofit2.Response;
  * @since 17. 2. 15
  */
 
-public class SignupActivity extends AppCompatActivity {
-
-    //로그에 쓰일 tag
-    private static final String TAG = SignupActivity.class.getSimpleName();
+public class SignupActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.imv_signup_man)
     ImageView imvGenderMan;
@@ -153,9 +151,9 @@ public class SignupActivity extends AppCompatActivity {
 
                 switch (response.code()){
                     case 200:
-                        Log.d(TAG, "session : " + body.payload.sessionKey);
-                        TokenRecord session = TokenRecord.getSessionRecord();
-                        session.setSessionKey(body.payload.sessionKey);
+                        Log.d(TAG, "session : " + body.payload.apiKey);
+                        TokenRecord session = TokenRecord.getTokenRecord();
+                        session.setApiKey(body.payload.apiKey);
                         session.save();
 
                         Intent intent = new Intent(SignupActivity.this, EventListActivity.class);

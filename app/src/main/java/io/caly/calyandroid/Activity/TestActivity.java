@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Service.FirebaseMessagingService;
@@ -28,10 +29,7 @@ import retrofit2.Response;
  * @since 17. 2. 18
  */
 
-public class TestActivity extends Activity {
-
-    //로그에 쓰일 tag
-    private static final String TAG = TestActivity.class.getSimpleName();
+public class TestActivity extends BaseAppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

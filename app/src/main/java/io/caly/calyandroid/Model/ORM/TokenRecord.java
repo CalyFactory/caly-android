@@ -12,17 +12,17 @@ import com.orm.SugarRecord;
 
 public class TokenRecord extends SugarRecord {
 
-    private String sessionKey;
+    private String apiKey;
 
     public TokenRecord(){
 
     }
 
     public TokenRecord(String sessionKey){
-        this.sessionKey = sessionKey;
+        this.apiKey = sessionKey;
     }
 
-    public static TokenRecord getSessionRecord(){
+    public static TokenRecord getTokenRecord(){
         TokenRecord tokenRecord = TokenRecord.last(TokenRecord.class);
         if(tokenRecord == null){
             tokenRecord = new TokenRecord(null);
@@ -30,15 +30,15 @@ public class TokenRecord extends SugarRecord {
         return tokenRecord;
     }
 
-    public static void destorySession(){
-        TokenRecord tokenRecord = getSessionRecord();
+    public static void destoryToken(){
+        TokenRecord tokenRecord = getTokenRecord();
         if(tokenRecord !=null){
             tokenRecord.delete();
         }
     }
 
     public static boolean checkSessionExist(){
-        if(TokenRecord.getSessionRecord().getSessionKey() == null) {
+        if(TokenRecord.getTokenRecord().getApiKey() == null) {
             return false;
         }
         else{
@@ -47,11 +47,11 @@ public class TokenRecord extends SugarRecord {
     }
 
 
-    public String getSessionKey() {
-        return sessionKey;
+    public String getApiKey() {
+        return apiKey;
     }
 
-    public void setSessionKey(String sessionKey) {
-        this.sessionKey = sessionKey;
+    public void setApiKey(String apiKey) {
+        this.apiKey = apiKey;
     }
 }

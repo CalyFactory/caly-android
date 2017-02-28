@@ -4,6 +4,7 @@
     <!-- Permissions -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -16,11 +17,6 @@
 
         <!-- Splash Activity -->
         <activity android:name=".Activity.SplashActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <!-- Login Activity -->
@@ -35,6 +31,11 @@
 
         <!-- Guide Activity -->
         <activity android:name=".Activity.GuideActivity">
+
+        </activity>
+
+        <!-- Setting Activity -->
+        <activity android:name=".Activity.LegacySettingActivity">
 
         </activity>
 
@@ -63,6 +64,16 @@
         <!-- Announce Activity -->
         <activity android:name=".Activity.AnnounceActivity">
 
+        </activity>
+
+        <!-- RecommandList Activity -->
+        <activity android:name=".Activity.RecommandListActivity">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
         <!-- Services -->

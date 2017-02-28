@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.GuidePagerAdapter;
 import io.caly.calyandroid.R;
 
@@ -18,10 +19,7 @@ import io.caly.calyandroid.R;
  * @since 17. 2. 11
  */
 
-public class GuideActivity extends AppCompatActivity {
-
-    //로그에 쓰일 tag
-    private static final String TAG = GuideActivity.class.getSimpleName();
+public class GuideActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.pager_guide)
     ViewPager pagerGuide;

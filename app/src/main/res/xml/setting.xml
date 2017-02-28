@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <android.support.v7.preference.Preference
+        android:title="CalyFactory"
+        />
+    <android.support.v7.preference.PreferenceCategory android:title="카테고리1">
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:key="pf_folder_display_option"
+            android:icon="@mipmap/ic_launcher"
+            android:title="카테 타이틀 01"
+            android:summary="summary"
+            android:defaultValue="false" />
+
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:icon="@mipmap/ic_launcher"
+            android:title="카테 타이틀 02"
+            android:summary="summary"
+            android:defaultValue="false" />
+
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:icon="@mipmap/ic_launcher"
+            android:title="summary"
+            android:summary="summary"
+            android:defaultValue="true" />
+    </android.support.v7.preference.PreferenceCategory>
+
+    <android.support.v7.preference.PreferenceCategory android:title="카테고리2">
+        <android.support.v7.preference.SwitchPreferenceCompat
+            android:title="SwitchPreferenceCompat 타이틀"
+            android:summary="SwitchPreferenceCompat Summary"
+            android:icon="@mipmap/ic_launcher"
+            android:defaultValue="true" />
+    </android.support.v7.preference.PreferenceCategory>
+
+    <android.support.v7.preference.PreferenceCategory android:title="카테고리3">
+        <android.support.v7.preference.Preference
+            android:title="타이틀 02"
+            android:summary="Summary"
+            />
+
+        <android.support.v7.preference.Preference
+            android:title="타이틀 03"
+            android:summary="Summary"
+            />
+
+        <android.support.v7.preference.Preference
+            android:title="@string/app_name"
+            android:summary="Summary"
+            />
+    </android.support.v7.preference.PreferenceCategory>
+</android.support.v7.preference.PreferenceScreen>

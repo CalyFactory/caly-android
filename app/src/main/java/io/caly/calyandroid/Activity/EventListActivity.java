@@ -21,7 +21,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.wang.avi.AVLoadingIndicatorView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,6 +28,7 @@ import java.util.Collections;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.EventListAdapter;
 import io.caly.calyandroid.Model.EventModel;
 import io.caly.calyandroid.Model.Response.BasicResponse;
@@ -48,10 +48,7 @@ import retrofit2.Response;
  * @since 17. 2. 11
  */
 
-public class EventListActivity extends AppCompatActivity {
-
-    //로그에 쓰일 tag
-    private static final String TAG = EventListActivity.class.getSimpleName();
+public class EventListActivity extends BaseAppCompatActivity {
 
     private int currentTailPageNum = 1;
     private int currentHeadPageNum = -1;
@@ -71,8 +68,8 @@ public class EventListActivity extends AppCompatActivity {
     @Bind(R.id.tv_eventlist_month)
     TextView tvEventMonth;
 
-    @Bind(R.id.avi_eventlist)
-    AVLoadingIndicatorView aviLoader;
+//    @Bind(R.id.avi_eventlist)
+//    AVLoadingIndicatorView aviLoader;
 
     @Bind(R.id.linear_eventlist_loader)
     LinearLayout linearLoader;
@@ -125,6 +122,7 @@ public class EventListActivity extends AppCompatActivity {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
+                if(recyclerAdapter.getItemCount()==0) return;
                 int position = layoutManager.findFirstVisibleItemPosition();
                 EventModel eventModel = recyclerAdapter.getItem(position);
 
@@ -162,7 +160,6 @@ public class EventListActivity extends AppCompatActivity {
             syncCalendar();
         }
         else{
-            linearLoader.setVisibility(View.GONE);
             loadEventList();
         }
 
@@ -218,7 +215,7 @@ public class EventListActivity extends AppCompatActivity {
 
                 try {
                     Response<EventResponse> response = ApiClient.getService().getList(
-                            TokenRecord.getSessionRecord().getSessionKey(),
+                            TokenRecord.getTokenRecord().getApiKey(),
                             pageNum
                     ).execute();
 
@@ -253,6 +250,8 @@ public class EventListActivity extends AppCompatActivity {
                             }
                             isLoading=false;
                             break;
+                        case 201:
+                            break;
                         case 401:
                             isLoading=false;
                             break;
@@ -272,7 +271,7 @@ public class EventListActivity extends AppCompatActivity {
 
     void loadEventList(){
         ApiClient.getService().getList(
-                TokenRecord.getSessionRecord().getSessionKey(),
+                TokenRecord.getTokenRecord().getApiKey(),
                 0
         ).enqueue(new Callback<EventResponse>() {
             @Override
@@ -294,6 +293,13 @@ public class EventListActivity extends AppCompatActivity {
                             i++;
                         }
                         break;
+                    case 201:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_no_more_data),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
                     default:
                         Log.e(TAG,"status code : " + response.code());
                         Toast.makeText(
@@ -303,6 +309,8 @@ public class EventListActivity extends AppCompatActivity {
                         ).show();
                         break;
                 }
+
+                linearLoader.setVisibility(View.GONE);
             }
 
             @Override
@@ -316,6 +324,9 @@ public class EventListActivity extends AppCompatActivity {
                         getString(R.string.toast_msg_network_error),
                         Toast.LENGTH_LONG
                 ).show();
+
+
+                linearLoader.setVisibility(View.GONE);
             }
         });
 
@@ -323,7 +334,7 @@ public class EventListActivity extends AppCompatActivity {
 
     void syncCalendar(){
         ApiClient.getService().sync(
-                TokenRecord.getSessionRecord().getSessionKey()
+                TokenRecord.getTokenRecord().getApiKey()
         ).enqueue(new Callback<BasicResponse>() {
             @Override
             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
@@ -373,7 +384,7 @@ public class EventListActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId() == R.id.menu_eventlist_setting){
-            Intent intent = new Intent(EventListActivity.this, SettingActivity.class);
+            Intent intent = new Intent(EventListActivity.this, LegacySettingActivity.class);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 

@@ -38,7 +38,7 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
 
         ApiClient.getService().updatePushToken(
                 token,
-                TokenRecord.getSessionRecord().getSessionKey()
+                TokenRecord.getTokenRecord().getApiKey()
         ).enqueue(new Callback<BasicResponse>() {
             @Override
             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {

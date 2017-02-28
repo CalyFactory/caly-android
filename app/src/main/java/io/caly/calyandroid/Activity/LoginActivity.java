@@ -26,6 +26,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Model.DeviceType;
 import io.caly.calyandroid.Model.LoginPlatform;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
@@ -46,10 +47,7 @@ import retrofit2.Response;
  * @since 17. 2. 11
  */
 
-public class LoginActivity extends AppCompatActivity {
-
-    //로그에 쓰일 tag
-    private static final String TAG = LoginActivity.class.getSimpleName();
+public class LoginActivity extends BaseAppCompatActivity {
 
     // CodeReview : enum 같은걸로 한군데에 모아놓기
     /*
@@ -193,8 +191,8 @@ public class LoginActivity extends AppCompatActivity {
 
                 switch (response.code()){
                     case 200:
-                        TokenRecord session = TokenRecord.getSessionRecord();
-                        session.setSessionKey(body.payload.sessionKey);
+                        TokenRecord session = TokenRecord.getTokenRecord();
+                        session.setApiKey(body.payload.apiKey);
                         session.save();
                         startEventActivity();
                         break;
@@ -247,11 +245,11 @@ public class LoginActivity extends AppCompatActivity {
 
                 SessionResponse body = response.body();
 
-                TokenRecord tokenRecord = TokenRecord.getSessionRecord();
+                TokenRecord tokenRecord = TokenRecord.getTokenRecord();
                 switch (response.code()){
                     case 200:
 //                    case 205:
-                        tokenRecord.setSessionKey(body.payload.sessionKey);
+                        tokenRecord.setApiKey(body.payload.apiKey);
                         tokenRecord.save();
                         startEventActivity();
                         break;
@@ -259,9 +257,9 @@ public class LoginActivity extends AppCompatActivity {
                         startSignupActivity(userId, userPw, loginPlatform, authCode);
                         break;
                     case 201:
-                        tokenRecord.setSessionKey(body.payload.sessionKey);
+                        tokenRecord.setApiKey(body.payload.apiKey);
                         tokenRecord.save();
-                        registerDeviceInfo(body.payload.sessionKey);
+                        registerDeviceInfo(body.payload.apiKey);
                         break;
                     default:
                         Toast.makeText(
