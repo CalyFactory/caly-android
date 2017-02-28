@@ -8,15 +8,23 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.RecommandListAdapter;
+import io.caly.calyandroid.Model.ORM.TokenRecord;
+import io.caly.calyandroid.Model.TrackingType;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.EventListener.RecyclerItemClickListener;
+import io.caly.calyandroid.Util.Util;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -82,5 +90,41 @@ public class RecommandListActivity extends BaseAppCompatActivity {
         recyclerAdapter = new RecommandListAdapter(dataList);
         recyclerList.setAdapter(recyclerAdapter);
 
+
+        recyclerList.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        getBaseContext(),
+                        recyclerList,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Log.i(TAG, "traking click");
+                                        try {
+                                            ApiClient.getService().tracking(
+                                                    TokenRecord.getTokenRecord().getApiKey(),
+                                                    "eventhashkey",
+                                                    "recohashkey",
+                                                    TrackingType.CLICK
+                                            ).execute();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }).start();
+
+
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+
+                            }
+                        }
+                )
+        );
     }
 }
