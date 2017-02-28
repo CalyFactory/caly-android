@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-import io.caly.calyandroid.Model.AccountModel;
+import io.caly.calyandroid.Model.DataModel.AccountModel;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.

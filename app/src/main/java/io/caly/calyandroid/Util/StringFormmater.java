@@ -3,7 +3,7 @@ package io.caly.calyandroid.Util;
 import java.util.Calendar;
 import java.util.Date;
 
-import io.caly.calyandroid.Model.AccountModel;
+import io.caly.calyandroid.Model.DataModel.AccountModel;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.

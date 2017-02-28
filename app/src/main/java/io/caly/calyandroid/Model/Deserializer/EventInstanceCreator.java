@@ -10,7 +10,7 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
-import io.caly.calyandroid.Model.EventModel;
+import io.caly.calyandroid.Model.DataModel.EventModel;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.

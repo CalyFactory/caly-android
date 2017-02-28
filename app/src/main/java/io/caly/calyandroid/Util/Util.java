@@ -8,9 +8,6 @@ import android.text.TextUtils;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
@@ -18,15 +15,8 @@ import java.util.UUID;
 
 import io.caly.calyandroid.BuildConfig;
 import io.caly.calyandroid.CalyApplication;
-import io.caly.calyandroid.Model.EventModel;
-import io.caly.calyandroid.Model.Deserializer.EventInstanceCreator;
-import io.caly.calyandroid.R;
-import io.caly.calyandroid.Service.HttpService;
-import okhttp3.OkHttpClient;
 import okhttp3.RequestBody;
 import okio.Buffer;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import static android.content.Context.TELEPHONY_SERVICE;
 

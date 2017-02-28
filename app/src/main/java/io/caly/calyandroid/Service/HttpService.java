@@ -152,6 +152,17 @@ public interface HttpService {
             @Field("category") String category
     );
 
+    //tracking
+    @FormUrlEncoded
+    @POST("reco/tracking")
+    Call<BasicResponse> tracking(
+            @Field("apikey") String apiKey,
+            @Field("eventHashkey") String eventHashkey,
+            @Field("recoHashkey") String recoHashkey,
+            @Field("type") String type
+    );
+
+
     /*
     =============================
               SETTING

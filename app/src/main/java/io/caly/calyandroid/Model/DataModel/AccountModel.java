@@ -1,4 +1,4 @@
-package io.caly.calyandroid.Model;
+package io.caly.calyandroid.Model.DataModel;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
