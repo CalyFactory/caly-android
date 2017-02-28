@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +28,7 @@ import java.util.Collections;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.EventListAdapter;
 import io.caly.calyandroid.Model.DataModel.EventModel;
@@ -70,6 +72,12 @@ public class EventListActivity extends BaseAppCompatActivity {
 
 //    @Bind(R.id.avi_eventlist)
 //    AVLoadingIndicatorView aviLoader;
+
+    @Bind(R.id.btn_eventlist_prev)
+    ImageButton imvEventPrev;
+
+    @Bind(R.id.btn_eventlist_next)
+    ImageButton imvEventNext;
 
     @Bind(R.id.linear_eventlist_loader)
     LinearLayout linearLoader;
@@ -383,6 +391,23 @@ public class EventListActivity extends BaseAppCompatActivity {
                 ).show();
             }
         });
+    }
+
+    @OnClick(R.id.btn_eventlist_prev)
+    void onEventPrevClick(){
+        if(recyclerAdapter.getItemCount()==0) return;
+        int position = layoutManager.findFirstVisibleItemPosition();
+        if(position==0) return;
+        recyclerList.smoothScrollToPosition(position-1);
+    }
+
+    @OnClick(R.id.btn_eventlist_next)
+    void onEventNextClick(){
+        if(recyclerAdapter.getItemCount()==0) return;
+        int position = layoutManager.findLastVisibleItemPosition();
+        if(position==recyclerAdapter.getItemCount() - 1) return;
+        Log.d(TAG, "position : " + position + " item size : " + recyclerAdapter.getItemCount());
+        recyclerList.smoothScrollToPosition(position + 1);
     }
 
 
