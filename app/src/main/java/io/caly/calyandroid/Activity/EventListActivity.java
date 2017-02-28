@@ -34,6 +34,8 @@ import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.EventListAdapter;
 import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.DataModel.TestModel;
+import io.caly.calyandroid.Model.Event.GoogleSyncDoneEvent;
+import io.caly.calyandroid.Model.LoginPlatform;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.EventResponse;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
@@ -185,7 +187,7 @@ public class EventListActivity extends BaseAppCompatActivity {
 
         Intent intent = getIntent();
         if(intent.getBooleanExtra("first", false)){
-            syncCalendar();
+            syncCalendar(intent.getStringExtra("loginPlatform"));
         }
         else{
             loadEventList();
@@ -353,7 +355,8 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     }
 
-    void syncCalendar(){
+    void syncCaldav(){
+        Log.d(TAG, "request sync to caldav");
         ApiClient.getService().sync(
                 TokenRecord.getTokenRecord().getApiKey()
         ).enqueue(new Callback<BasicResponse>() {
@@ -395,9 +398,52 @@ public class EventListActivity extends BaseAppCompatActivity {
         });
     }
 
+    void syncGoogle(){
+        Log.d(TAG, "request sync to google");
+
+        Toast.makeText(
+                getBaseContext(),
+                getString(R.string.toast_msg_google_sync_alert),
+                Toast.LENGTH_LONG
+        ).show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Response<BasicResponse> response = ApiClient.getService().sync(
+                            TokenRecord.getTokenRecord().getApiKey()
+                    ).execute();
+                    Log.d(TAG, "requested : " + response.body());
+                } catch (IOException e) {
+                    e.printStackTrace();
+
+                }
+            }
+        }).start();
+    }
+
+    void syncCalendar(String loginPlatform){
+        Log.i(TAG, "request sync");
+        switch (loginPlatform){
+            case LoginPlatform.GOOGLE:
+                syncGoogle();
+                break;
+            case LoginPlatform.CALDAV_ICAL:
+                syncCaldav();
+                break;
+            case LoginPlatform.CALDAV_NAVER:
+                syncCaldav();
+                break;
+            default:
+                syncCaldav();
+        }
+    }
+
     @Subscribe
-    public void testAction(TestModel testModel){
-        Log.d(TAG, "action received");
+    public void googleSyncCallback(GoogleSyncDoneEvent event){
+        linearLoader.setVisibility(View.GONE);
+
+        loadEventList();
     }
 
     @OnClick(R.id.btn_eventlist_prev)

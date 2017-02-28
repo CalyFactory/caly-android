@@ -17,6 +17,7 @@ import java.util.Map;
 import io.caly.calyandroid.Activity.EventListActivity;
 import io.caly.calyandroid.Activity.SplashActivity;
 import io.caly.calyandroid.Model.DataModel.TestModel;
+import io.caly.calyandroid.Model.Event.GoogleSyncDoneEvent;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.BusProvider;
 import io.caly.calyandroid.Util.EventListener.AppLifecycleListener;
@@ -55,11 +56,13 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         switch (pushType){
             case "sync":
-                if(AppLifecycleListener.getActiveActivityCount()==0){ //app is background
-                    BusProvider.getInstance().post(new TestModel());
+                if(AppLifecycleListener.getActiveActivityCount()==0){
+                    //app is background
+                    sendNotification(getString(R.string.notification_msg_google_sync_done));
                 }
-                else{ //app is foreground
-                    BusProvider.getInstance().post(new TestModel());
+                else{
+                    //app is foreground
+                    BusProvider.getInstance().post(new GoogleSyncDoneEvent());
                 }
                 break;
             case "noti":
@@ -73,7 +76,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     }
 
 
-    private void sendNotification(String messageBody) {
+    private void sendNotification(String title) {
         Intent intent = new Intent(this, SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent,
@@ -82,8 +85,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("FCM Push Test")
-                .setContentText(messageBody)
+                .setContentTitle(title)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);

@@ -125,7 +125,7 @@ public class SignupActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.btn_signup_proc)
     void onSignupClick(){
-        Bundle bundleData = getIntent().getExtras();
+        final Bundle bundleData = getIntent().getExtras();
 
         ApiClient.getService().signUp(
                 bundleData.getString("userId"),
@@ -157,6 +157,7 @@ public class SignupActivity extends BaseAppCompatActivity {
 
                         Intent intent = new Intent(SignupActivity.this, EventListActivity.class);
                         intent.putExtra("first", true);
+                        intent.putExtra("loginPlatform", bundleData.getString("loginPlatform"));
                         startActivity(intent);
                         finish();
                         break;
