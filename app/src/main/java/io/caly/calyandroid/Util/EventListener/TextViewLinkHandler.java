@@ -1,4 +1,4 @@
-package io.caly.calyandroid.Util;
+package io.caly.calyandroid.Util.EventListener;
 
 import android.text.Layout;
 import android.text.Spannable;

@@ -8,6 +8,7 @@ import io.caly.calyandroid.Model.Deserializer.EventInstanceCreator;
 import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Service.HttpService;
+import io.caly.calyandroid.Util.EventListener.LoggingInterceptor;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
