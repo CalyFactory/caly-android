@@ -116,7 +116,7 @@ public interface HttpService {
 
     @FormUrlEncoded
     @POST("events/getList")
-    Call<EventResponse> getList(
+    Call<EventResponse> getEventList(
             @Field("apikey") String apiKey,
             @Field("pageNum") int pageNum
     );
@@ -133,7 +133,33 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("sync")
     Call<BasicResponse> sync(
-            @Field("apikey") String apikey
+            @Field("apikey") String apiKey
+    );
+
+
+    /*
+    =============================
+                RECO
+    =============================
+     */
+
+    //getList
+    @FormUrlEncoded
+    @POST("reco/getList")
+    Call<BasicResponse> getRecoList(
+            @Field("apikey") String apiKey,
+            @Field("eventHashkey") String eventHashKey,
+            @Field("category") String category
+    );
+
+    //tracking
+    @FormUrlEncoded
+    @POST("reco/tracking")
+    Call<BasicResponse> tracking(
+            @Field("apikey") String apiKey,
+            @Field("eventHashkey") String eventHashkey,
+            @Field("recoHashkey") String recoHashkey,
+            @Field("type") String type
     );
 
 

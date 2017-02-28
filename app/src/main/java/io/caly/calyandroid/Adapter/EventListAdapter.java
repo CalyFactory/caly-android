@@ -11,8 +11,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.caly.calyandroid.Model.EventModel;
-import io.caly.calyandroid.Model.TestModel;
+import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.StringFormmater;
 import io.caly.calyandroid.Util.Util;

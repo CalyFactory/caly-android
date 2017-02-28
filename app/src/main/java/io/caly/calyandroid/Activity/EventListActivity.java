@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -16,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,14 +28,16 @@ import java.util.Collections;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.EventListAdapter;
-import io.caly.calyandroid.Model.EventModel;
+import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.EventResponse;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.EventListener.RecyclerItemClickListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -70,6 +72,12 @@ public class EventListActivity extends BaseAppCompatActivity {
 
 //    @Bind(R.id.avi_eventlist)
 //    AVLoadingIndicatorView aviLoader;
+
+    @Bind(R.id.btn_eventlist_prev)
+    ImageButton imvEventPrev;
+
+    @Bind(R.id.btn_eventlist_next)
+    ImageButton imvEventNext;
 
     @Bind(R.id.linear_eventlist_loader)
     LinearLayout linearLoader;
@@ -155,6 +163,24 @@ public class EventListActivity extends BaseAppCompatActivity {
             }
         });
 
+        recyclerList.addOnItemTouchListener(new RecyclerItemClickListener(
+                getBaseContext(),
+                recyclerList,
+                new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Intent intent = new Intent(EventListActivity.this, RecommandListActivity.class);
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onLongItemClick(View view, int position) {
+
+                    }
+                }
+            )
+        );
+
         Intent intent = getIntent();
         if(intent.getBooleanExtra("first", false)){
             syncCalendar();
@@ -202,19 +228,12 @@ public class EventListActivity extends BaseAppCompatActivity {
 
         isLoading = true;
 
-        // CodeReview : asynTask 조사해보기
-        /*
-        AsyncTask -> ui쓰레드에 접근이 쉽지 않기 때문에 쉽게 접근하라고 만든 클래스
-        Thread+Handler를 사용하면 문제없다.
-        Handler -> MQ방식으로 동작
-
-         */
         new Thread(new Runnable() {
             @Override
             public void run() {
 
                 try {
-                    Response<EventResponse> response = ApiClient.getService().getList(
+                    Response<EventResponse> response = ApiClient.getService().getEventList(
                             TokenRecord.getTokenRecord().getApiKey(),
                             pageNum
                     ).execute();
@@ -270,7 +289,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     }
 
     void loadEventList(){
-        ApiClient.getService().getList(
+        ApiClient.getService().getEventList(
                 TokenRecord.getTokenRecord().getApiKey(),
                 0
         ).enqueue(new Callback<EventResponse>() {
@@ -372,6 +391,23 @@ public class EventListActivity extends BaseAppCompatActivity {
                 ).show();
             }
         });
+    }
+
+    @OnClick(R.id.btn_eventlist_prev)
+    void onEventPrevClick(){
+        if(recyclerAdapter.getItemCount()==0) return;
+        int position = layoutManager.findFirstVisibleItemPosition();
+        if(position==0) return;
+        recyclerList.smoothScrollToPosition(position-1);
+    }
+
+    @OnClick(R.id.btn_eventlist_next)
+    void onEventNextClick(){
+        if(recyclerAdapter.getItemCount()==0) return;
+        int position = layoutManager.findLastVisibleItemPosition();
+        if(position==recyclerAdapter.getItemCount() - 1) return;
+        Log.d(TAG, "position : " + position + " item size : " + recyclerAdapter.getItemCount());
+        recyclerList.smoothScrollToPosition(position + 1);
     }
 
 

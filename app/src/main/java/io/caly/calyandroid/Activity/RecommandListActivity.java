@@ -5,21 +5,17 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
-import io.caly.calyandroid.Adapter.EventListAdapter;
 import io.caly.calyandroid.Adapter.RecommandListAdapter;
-import io.caly.calyandroid.Model.EventModel;
 import io.caly.calyandroid.R;
 
 /**
@@ -55,7 +51,7 @@ public class RecommandListActivity extends BaseAppCompatActivity {
 
 
         //set toolbar
-        toolbar.setTitle("일정 목록");
+        toolbar.setTitle("추천 목록");
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -68,6 +64,8 @@ public class RecommandListActivity extends BaseAppCompatActivity {
         final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
         upArrow.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         //set recyclerview
