@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -226,7 +225,7 @@ public class EventListActivity extends BaseAppCompatActivity {
             public void run() {
 
                 try {
-                    Response<EventResponse> response = ApiClient.getService().getList(
+                    Response<EventResponse> response = ApiClient.getService().getEventList(
                             TokenRecord.getTokenRecord().getApiKey(),
                             pageNum
                     ).execute();
@@ -282,7 +281,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     }
 
     void loadEventList(){
-        ApiClient.getService().getList(
+        ApiClient.getService().getEventList(
                 TokenRecord.getTokenRecord().getApiKey(),
                 0
         ).enqueue(new Callback<EventResponse>() {
