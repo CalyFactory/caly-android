@@ -17,11 +17,20 @@
             android:layout_height="match_parent">
 
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_recommandlist"
-                android:scrollbars="vertical"
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tab_recolist"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                android:elevation="6dp"
+                android:minHeight="?attr/actionBarSize"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/pager_recolist"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"/>
 
         </LinearLayout>
 

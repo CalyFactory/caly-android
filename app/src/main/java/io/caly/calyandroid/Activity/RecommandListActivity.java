@@ -5,6 +5,8 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
+import io.caly.calyandroid.Adapter.RecoTabPagerAdapter;
 import io.caly.calyandroid.Adapter.RecommandListAdapter;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.TrackingType;
@@ -39,12 +42,13 @@ public class RecommandListActivity extends BaseAppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
-    @Bind(R.id.recycler_recommandlist)
-    RecyclerView recyclerList;
+    @Bind(R.id.tab_recolist)
+    TabLayout tabLayout;
 
+    @Bind(R.id.pager_recolist)
+    ViewPager pagerRecoList;
 
-    RecommandListAdapter recyclerAdapter;
-    LinearLayoutManager layoutManager;
+    RecoTabPagerAdapter pagerAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,56 +79,33 @@ public class RecommandListActivity extends BaseAppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //init tab layout
+        tabLayout.addTab(tabLayout.newTab().setText("식당"));
+        tabLayout.addTab(tabLayout.newTab().setText("카페"));
+        tabLayout.addTab(tabLayout.newTab().setText("액티비티"));
 
-        //set recyclerview
-        recyclerList.setHasFixedSize(true);
-
-        layoutManager = new LinearLayoutManager(getBaseContext());
-        recyclerList.setLayoutManager(layoutManager);
-
-
-        ArrayList<Object> dataList = new ArrayList<>();
-        for(int i=0;i<50;i++){
-            dataList.add(new Object());
-        }
-        recyclerAdapter = new RecommandListAdapter(dataList);
-        recyclerList.setAdapter(recyclerAdapter);
-
-
-        recyclerList.addOnItemTouchListener(
-                new RecyclerItemClickListener(
-                        getBaseContext(),
-                        recyclerList,
-                        new RecyclerItemClickListener.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Log.i(TAG, "traking click");
-                                        try {
-                                            ApiClient.getService().tracking(
-                                                    TokenRecord.getTokenRecord().getApiKey(),
-                                                    "eventhashkey",
-                                                    "recohashkey",
-                                                    TrackingType.CLICK
-                                            ).execute();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }).start();
-
-
-                            }
-
-                            @Override
-                            public void onLongItemClick(View view, int position) {
-
-                            }
-                        }
-                )
+        pagerAdapter = new RecoTabPagerAdapter(getSupportFragmentManager());
+        pagerRecoList.setAdapter(pagerAdapter);
+        pagerRecoList.addOnPageChangeListener(
+                new TabLayout.TabLayoutOnPageChangeListener(tabLayout)
         );
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                pagerRecoList.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
+
     }
 }
