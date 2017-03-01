@@ -81,7 +81,7 @@ public class RecommandListActivity extends BaseAppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        
+
         eventData = ApiClient.getGson()
                 .fromJson(
                         getIntent().getStringExtra("event"),

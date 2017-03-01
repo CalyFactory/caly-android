@@ -24,6 +24,7 @@ import butterknife.OnClick;
 import io.caly.calyandroid.Activity.LoginActivity;
 import io.caly.calyandroid.Adapter.RecommandListAdapter;
 import io.caly.calyandroid.Fragment.base.BaseFragment;
+import io.caly.calyandroid.Model.Category;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.TrackingType;
 import io.caly.calyandroid.R;
@@ -44,12 +45,17 @@ public class RecoTabFragment extends BaseFragment {
     @Bind(R.id.recycler_recommandlist)
     RecyclerView recyclerList;
 
+    Category category;
 
     RecommandListAdapter recyclerAdapter;
     LinearLayoutManager layoutManager;
 
-    public RecoTabFragment() {
-        super();
+
+    public RecoTabFragment() { super(); }
+
+    public Fragment setCategory(Category category){
+        this.category = category;
+        return this;
     }
 
     @Override

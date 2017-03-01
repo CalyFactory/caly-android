@@ -8,8 +8,14 @@ package io.caly.calyandroid.Model;
  * @since 17. 2. 28
  */
 
-public class Category {
-    public static final String RESTAURANT = "restaurant";
-    public static final String CAFE = "cafe";
-    public static final String PLACE = "plcae";
+public enum Category {
+    RESTAURANT("restaurant"),
+    CAFE("cafe"),
+    PLACE("place");
+
+    public final String value;
+
+    Category(final String value){
+        this.value = value;
+    }
 }
