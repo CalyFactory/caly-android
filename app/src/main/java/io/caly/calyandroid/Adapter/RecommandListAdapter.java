@@ -3,6 +3,7 @@ package io.caly.calyandroid.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,8 @@ import io.caly.calyandroid.R;
 
 public class RecommandListAdapter extends RecyclerView.Adapter<RecommandListAdapter.ViewHolder>  {
 
+    //로그에 쓰일 tag
+    private static final String TAG = RecommandListAdapter.class.getSimpleName();
 
     private ArrayList<Object> dataList;
 
@@ -47,6 +50,7 @@ public class RecommandListAdapter extends RecyclerView.Adapter<RecommandListAdap
 
         @OnClick(R.id.imv_reco_map)
         void onMapClick(){
+            Log.i(TAG, "map click");
             Intent intent = new Intent(context, MapActivity.class);
             context.startActivity(intent);
         }
