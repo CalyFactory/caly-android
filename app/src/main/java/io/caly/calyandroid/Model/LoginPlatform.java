@@ -20,5 +20,14 @@ public enum  LoginPlatform {
         this.value = value;
     }
 
+    public static LoginPlatform getInstance(String code) {
+        for (LoginPlatform type : LoginPlatform.values()) {
+            if (type.value == code) {
+                return type;
+            }
+        }
+        return null;
+    }
+
 
 }

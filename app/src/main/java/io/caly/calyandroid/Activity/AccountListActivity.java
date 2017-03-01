@@ -107,14 +107,14 @@ public class AccountListActivity extends BaseAppCompatActivity {
                     ArrayList<AccountModel> appleAccountList = new ArrayList<AccountModel>();
 
                     for(AccountModel accountModel : body.payload.data){
-                        switch (accountModel.loginPlatform){
-                            case LoginPlatform.CALDAV_NAVER:
+                        switch (LoginPlatform.getInstance(accountModel.loginPlatform)){
+                            case CALDAV_NAVER:
                                 naverAccountList.add(accountModel);
                                 break;
-                            case LoginPlatform.CALDAV_ICAL:
+                            case CALDAV_ICAL:
                                 appleAccountList.add(accountModel);
                                 break;
-                            case LoginPlatform.GOOGLE:
+                            case GOOGLE:
                                 googleAccountList.add(accountModel);
                                 break;
                         }

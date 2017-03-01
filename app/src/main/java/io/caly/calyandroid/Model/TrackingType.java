@@ -9,7 +9,7 @@ package io.caly.calyandroid.Model;
  */
 
 public enum  TrackingType {
-    
+
     CLICK("click");
 
     public final String value;

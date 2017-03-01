@@ -46,6 +46,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static io.caly.calyandroid.Model.LoginPlatform.GOOGLE;
+
 /**
  * Copyright 2017 JSpiner. All rights reserved.
  *
@@ -423,16 +425,22 @@ public class EventListActivity extends BaseAppCompatActivity {
         }).start();
     }
 
+    enum  TEST{
+        test1,
+        test2
+    };
+
     void syncCalendar(String loginPlatform){
         Log.i(TAG, "request sync");
-        switch (loginPlatform){
-            case LoginPlatform.GOOGLE:
+
+        switch (LoginPlatform.getInstance(loginPlatform)){
+            case GOOGLE:
                 syncGoogle();
                 break;
-            case LoginPlatform.CALDAV_ICAL:
+            case CALDAV_ICAL:
                 syncCaldav();
                 break;
-            case LoginPlatform.CALDAV_NAVER:
+            case CALDAV_NAVER:
                 syncCaldav();
                 break;
             default:
