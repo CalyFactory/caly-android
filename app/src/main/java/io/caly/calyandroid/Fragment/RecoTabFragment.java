@@ -74,11 +74,6 @@ public class RecoTabFragment extends BaseFragment {
         return this;
     }
 
-    public RecoTabFragment build(){
-        loadList();
-        return this;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,8 +105,8 @@ public class RecoTabFragment extends BaseFragment {
 
 
         ArrayList<RecoModel> dataList = new ArrayList<>();
-        for(int i=0;i<50;i++){
-//            dataList.add(new RecoModel());
+        for(int i=0;i<2;i++){
+            dataList.add(new RecoModel());
         }
         recyclerAdapter = new RecommandListAdapter(dataList);
         recyclerList.setAdapter(recyclerAdapter);
@@ -152,6 +147,8 @@ public class RecoTabFragment extends BaseFragment {
                         }
                 )
         );
+
+        loadList();
     }
 
     void loadList(){
@@ -168,6 +165,8 @@ public class RecoTabFragment extends BaseFragment {
                 switch (response.code()){
                     case 200:
                         recyclerAdapter.addItems(body.payload.data);
+                        break;
+                    case 201:
                         break;
                     default:
                         Log.e(TAG,"status code : " + response.code());

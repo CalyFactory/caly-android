@@ -27,9 +27,9 @@ public class RecoTabPagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
 
         fragmentList= new Fragment[]{
-                new RecoTabFragment().setCategory(Category.RESTAURANT).setEvent(eventData).build(),
-                new RecoTabFragment().setCategory(Category.CAFE).setEvent(eventData).build(),
-                new RecoTabFragment().setCategory(Category.PLACE).setEvent(eventData).build()
+                new RecoTabFragment().setCategory(Category.RESTAURANT).setEvent(eventData),
+                new RecoTabFragment().setCategory(Category.CAFE).setEvent(eventData),
+                new RecoTabFragment().setCategory(Category.PLACE).setEvent(eventData)
         };
     }
 
