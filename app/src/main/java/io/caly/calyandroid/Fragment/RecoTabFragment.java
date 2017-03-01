@@ -64,18 +64,19 @@ public class RecoTabFragment extends BaseFragment {
 
     public RecoTabFragment() { super(); }
 
-    public Fragment setEvent(EventModel eventData){
+    public RecoTabFragment setEvent(EventModel eventData){
         this.eventData = eventData;
         return this;
     }
 
-    public Fragment setCategory(Category category){
+    public RecoTabFragment setCategory(Category category){
         this.category = category;
         return this;
     }
 
-    public void build(){
+    public RecoTabFragment build(){
         loadList();
+        return this;
     }
 
     @Override
@@ -171,7 +172,7 @@ public class RecoTabFragment extends BaseFragment {
                     default:
                         Log.e(TAG,"status code : " + response.code());
                         Toast.makeText(
-                                getContext(),
+                                getActivity(),
                                 getString(R.string.toast_msg_server_internal_error),
                                 Toast.LENGTH_LONG
                         ).show();
@@ -185,8 +186,8 @@ public class RecoTabFragment extends BaseFragment {
                 Log.e(TAG, "fail " + t.getClass().getName());
 
                 Toast.makeText(
-                        getContext(),
-                        getString(R.string.toast_msg_network_error),
+                        getActivity(),
+                        getResources().getString(R.string.toast_msg_network_error),
                         Toast.LENGTH_LONG
                 ).show();
             }

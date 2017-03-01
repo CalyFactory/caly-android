@@ -93,7 +93,7 @@ public class RecommandListActivity extends BaseAppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("카페"));
         tabLayout.addTab(tabLayout.newTab().setText("액티비티"));
 
-        pagerAdapter = new RecoTabPagerAdapter(getSupportFragmentManager());
+        pagerAdapter = new RecoTabPagerAdapter(getSupportFragmentManager(), eventData);
         pagerRecoList.setAdapter(pagerAdapter);
         pagerRecoList.addOnPageChangeListener(
                 new TabLayout.TabLayoutOnPageChangeListener(tabLayout)

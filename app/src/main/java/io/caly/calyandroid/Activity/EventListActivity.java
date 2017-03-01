@@ -425,6 +425,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     void syncCalendar(String loginPlatform){
         Log.i(TAG, "request sync");
 
+        Log.d(TAG,"loginplatform : " + loginPlatform);
         switch (LoginPlatform.getInstance(loginPlatform)){
             case GOOGLE:
                 syncGoogle();
