@@ -174,6 +174,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                     @Override
                     public void onItemClick(View view, int position) {
                         Intent intent = new Intent(EventListActivity.this, RecommandListActivity.class);
+                        intent.putExtra("event", ApiClient.getGson().toJson(recyclerAdapter.getItem(position)));
                         startActivity(intent);
                     }
 

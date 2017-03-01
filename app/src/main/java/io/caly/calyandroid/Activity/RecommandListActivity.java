@@ -22,6 +22,7 @@ import butterknife.ButterKnife;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.RecoTabPagerAdapter;
 import io.caly.calyandroid.Adapter.RecommandListAdapter;
+import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.TrackingType;
 import io.caly.calyandroid.R;
@@ -49,6 +50,8 @@ public class RecommandListActivity extends BaseAppCompatActivity {
     ViewPager pagerRecoList;
 
     RecoTabPagerAdapter pagerAdapter;
+
+    EventModel eventData;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,6 +81,12 @@ public class RecommandListActivity extends BaseAppCompatActivity {
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        
+        eventData = ApiClient.getGson()
+                .fromJson(
+                        getIntent().getStringExtra("event"),
+                        EventModel.class
+                );
 
         //init tab layout
         tabLayout.addTab(tabLayout.newTab().setText("식당"));
