@@ -5,7 +5,6 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -17,7 +16,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.SettingListAdapter;
-import io.caly.calyandroid.Model.SettingItemModel;
+import io.caly.calyandroid.Model.DataModel.SettingItemModel;
 import io.caly.calyandroid.R;
 
 /**

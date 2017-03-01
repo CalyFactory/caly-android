@@ -8,7 +8,14 @@ package io.caly.calyandroid.Model;
  * @since 17. 2. 18
  */
 
-public class Gender {
-    public static final int MAN = 1;
-    public static final int WOMAN = 2;
+public enum  Gender {
+
+    MAN(1),
+    WOMAN(2);
+
+    public final int value;
+
+    Gender(final int value){
+        this.value = value;
+    }
 }

@@ -3,7 +3,7 @@ package io.caly.calyandroid.Util;
 import java.util.Calendar;
 import java.util.Date;
 
-import io.caly.calyandroid.Model.AccountModel;
+import io.caly.calyandroid.Model.DataModel.AccountModel;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -20,7 +20,7 @@ public class StringFormmater {
         startCalendar.setTime(startDate);
 
         Calendar endCalendar = Calendar.getInstance();
-        endCalendar.setTime(endDate);
+        endCalendar.setTime(endDate==null?startDate:endDate);
 
         return String.format(
                 "%02d:%02d~%02d:%02d",

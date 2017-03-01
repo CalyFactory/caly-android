@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-import io.caly.calyandroid.Model.EventModel;
+import io.caly.calyandroid.Model.DataModel.EventModel;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.

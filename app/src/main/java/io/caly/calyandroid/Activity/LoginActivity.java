@@ -49,12 +49,6 @@ import retrofit2.Response;
 
 public class LoginActivity extends BaseAppCompatActivity {
 
-    // CodeReview : enum 같은걸로 한군데에 모아놓기
-    /*
-    Util.java 안에 작성함
-
-     */
-
     GoogleApiClient mGoogleApiClient;
 
     @Bind(R.id.btn_login_google)
@@ -117,7 +111,7 @@ public class LoginActivity extends BaseAppCompatActivity {
             public void onPositive(LoginDialog dialog, String userId, String userPw) {
                 dialog.dismiss();
 
-                procLoginCaldav(userId, userPw, LoginPlatform.CALDAV_NAVER);
+                procLoginCaldav(userId, userPw, LoginPlatform.CALDAV_NAVER.value);
             }
 
             @Override
@@ -136,7 +130,7 @@ public class LoginActivity extends BaseAppCompatActivity {
             public void onPositive(LoginDialog dialog, String userId, String userPw) {
                 dialog.dismiss();
 
-                procLoginCaldav(userId, userPw, LoginPlatform.CALDAV_ICAL);
+                procLoginCaldav(userId, userPw, LoginPlatform.CALDAV_ICAL.value);
             }
 
             @Override
@@ -177,7 +171,7 @@ public class LoginActivity extends BaseAppCompatActivity {
         ApiClient.getService().registerDevice(
                 sessionKey,
                 FirebaseInstanceId.getInstance().getToken(),
-                DeviceType.ANDROID,
+                DeviceType.ANDROID.value,
                 Util.getAppVersion(),
                 Util.getDeviceInfo(),
                 Util.getUUID(),
@@ -228,14 +222,14 @@ public class LoginActivity extends BaseAppCompatActivity {
         });
     }
 
-    void procLogin(final String userId, final String userPw, final String loginPlatform, final String authCode){
+    void procLogin(final String userId, final String userPw, final String loginPlatform, final String subject, final String authCode){
         ApiClient.getService().loginCheck(
                 userId,
                 userPw,
                 Util.getUUID(),
                 "null", //session
                 loginPlatform,
-                authCode,
+                subject,
                 Util.getAppVersion()
         ).enqueue(new Callback<SessionResponse>() {
             @Override
@@ -288,11 +282,11 @@ public class LoginActivity extends BaseAppCompatActivity {
     }
 
     void procLoginCaldav(String userId, String userPw, String loginPlatform){
-        procLogin(userId, userPw, loginPlatform, "null");
+        procLogin(userId, userPw, loginPlatform, "null", "null");
     }
 
-    void procLoginGoogle(String authCode){
-        procLogin("null", "null", LoginPlatform.GOOGLE, authCode);
+    void procLoginGoogle(String subject, String authCode){
+        procLogin("null", "null", LoginPlatform.GOOGLE.value, subject, authCode);
     }
 
     @Override
@@ -309,12 +303,12 @@ public class LoginActivity extends BaseAppCompatActivity {
             if (result.isSuccess()) {
                 GoogleSignInAccount acct = result.getSignInAccount();
                 Log.d(TAG, acct.getDisplayName());
-                Log.d(TAG, "id token : " + acct.getIdToken());
+                Log.i(TAG, "id token : " + acct.getIdToken());
                 Log.i(TAG, "serverauthcode : " + acct.getServerAuthCode());
                 Log.i(TAG, "id : " + acct.getId());
                 Log.d(TAG, "email : " + acct.getEmail());
 
-                procLoginGoogle(acct.getServerAuthCode());
+                procLoginGoogle(acct.getId(), acct.getServerAuthCode());
 
             } else {
                 Toast.makeText(

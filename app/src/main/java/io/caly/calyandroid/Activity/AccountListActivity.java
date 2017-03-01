@@ -5,7 +5,6 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -19,7 +18,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.AccountListAdapter;
-import io.caly.calyandroid.Model.AccountModel;
+import io.caly.calyandroid.Model.DataModel.AccountModel;
 import io.caly.calyandroid.Model.LoginPlatform;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.AccountResponse;
@@ -108,14 +107,14 @@ public class AccountListActivity extends BaseAppCompatActivity {
                     ArrayList<AccountModel> appleAccountList = new ArrayList<AccountModel>();
 
                     for(AccountModel accountModel : body.payload.data){
-                        switch (accountModel.loginPlatform){
-                            case LoginPlatform.CALDAV_NAVER:
+                        switch (LoginPlatform.getInstance(accountModel.loginPlatform)){
+                            case CALDAV_NAVER:
                                 naverAccountList.add(accountModel);
                                 break;
-                            case LoginPlatform.CALDAV_ICAL:
+                            case CALDAV_ICAL:
                                 appleAccountList.add(accountModel);
                                 break;
-                            case LoginPlatform.GOOGLE:
+                            case GOOGLE:
                                 googleAccountList.add(accountModel);
                                 break;
                         }

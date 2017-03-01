@@ -12,10 +12,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import io.caly.calyandroid.Model.AccountModel;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.Util.StringFormmater;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.

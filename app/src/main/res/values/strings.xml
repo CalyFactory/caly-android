@@ -3,12 +3,18 @@
     <string name="app_server">https://ssoma.xyz:12345/</string>
     <string name="app_server_version">v1.0</string>
     <string name="google_client_id">881274260597-26b4e9bqah6nbp1katm5qlud3gfitlat.apps.googleusercontent.com</string>
+    <string name="naver_client_id">toXORBEYXHOOkODnRrJN</string>
 
-    <!-- Toast Msg -->
+    <!-- Toast msg -->
     <string name="toast_msg_network_error">네트워크 연결을 확인해 주세요</string>
     <string name="toast_msg_server_internal_error">서버 문제가 발생하였습니다. 담당자에게 문의해주세요.</string>
     <string name="toast_msg_login_fail">로그인을 실패하였습니다. 아이디와 패스워드를 확인해주세요.</string>
     <string name="toast_msg_session_invalid">세션이 만료되었습니다. 다시 로그인해주세요.</string>
     <string name="toast_msg_app_version_not_latest"> 앱 버전이 최신이 아닙니다. 업데이트 해주세요.</string>
     <string name="toast_msg_no_more_data">더 불러올 데이터가 없습니다.</string>
+    <string name="toast_msg_google_sync_alert">구글 동기화가 30~90초 정도 소요됩니다. 앱 을끄셔도 동기화가 완료 되면 알려드릴께요.</string>
+
+    <!-- app notification msg -->
+    <string name="notification_msg_google_sync_done">캘린더 동기화가 완료됬습니다!</string>
+
 </resources>

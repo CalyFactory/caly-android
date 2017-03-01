@@ -12,9 +12,15 @@ import android.util.Log;
 
 import com.google.firebase.messaging.RemoteMessage;
 
+import java.util.Map;
+
 import io.caly.calyandroid.Activity.EventListActivity;
 import io.caly.calyandroid.Activity.SplashActivity;
+import io.caly.calyandroid.Model.DataModel.TestModel;
+import io.caly.calyandroid.Model.Event.GoogleSyncDoneEvent;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.BusProvider;
+import io.caly.calyandroid.Util.EventListener.AppLifecycleListener;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -31,15 +37,46 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
     public static final String INTENT_ACTION_SYNC_COMPLETE = "INTENT_ACTION_SYNC_COMPLETE";
 
+    // JSON 규격
+    /*
+    {
+        "type" : "type",
+        "action" : "action"
+    }
+     */
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d(TAG,remoteMessage.getData().toString());
+        Log.d(TAG, remoteMessage.getData().toString());
         Log.d(TAG, "push received!");
-        sendNotification(remoteMessage.getData().get("message"));
+
+        Map<String, String> pushData = remoteMessage.getData();
+
+        String pushType = pushData.get("type");
+        String pushAction = pushData.get("action");
+
+        switch (pushType){
+            case "sync":
+                if(AppLifecycleListener.getActiveActivityCount()==0){
+                    //app is background
+                    sendNotification(getString(R.string.notification_msg_google_sync_done));
+                }
+                else{
+                    //app is foreground
+                    BusProvider.getInstance().post(new GoogleSyncDoneEvent());
+                }
+                break;
+            case "noti":
+                sendNotification(remoteMessage.getData().get("message"));
+                break;
+            case "reco":
+                sendNotification(remoteMessage.getData().get("message"));
+                break;
+        }
+
     }
 
-    // TODO : 서버와 object 규격을 맞춰서 정리하기
-    private void sendNotification(String messageBody) {
+
+    private void sendNotification(String title) {
         Intent intent = new Intent(this, SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent,
@@ -48,8 +85,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("FCM Push Test")
-                .setContentText(messageBody)
+                .setContentTitle(title)
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);

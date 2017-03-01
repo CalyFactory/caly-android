@@ -8,10 +8,26 @@ package io.caly.calyandroid.Model;
  * @since 17. 2. 25
  */
 
-public class LoginPlatform {
+public enum  LoginPlatform {
 
-    public static final String CALDAV_NAVER = "naver";
-    public static final String CALDAV_ICAL = "ical";
-    public static final String GOOGLE = "google";
+    CALDAV_NAVER("naver"),
+    CALDAV_ICAL("ical"),
+    GOOGLE("google");
+
+    public final String value;
+
+    LoginPlatform(final String value){
+        this.value = value;
+    }
+
+    public static LoginPlatform getInstance(String code) {
+        for (LoginPlatform type : LoginPlatform.values()) {
+            if (type.value.equals(code)) {
+                return type;
+            }
+        }
+        return null;
+    }
+
 
 }

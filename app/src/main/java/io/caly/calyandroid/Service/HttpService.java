@@ -3,6 +3,7 @@ package io.caly.calyandroid.Service;
 import io.caly.calyandroid.Model.Response.AccountResponse;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.EventResponse;
+import io.caly.calyandroid.Model.Response.RecoResponse;
 import io.caly.calyandroid.Model.Response.SessionResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -116,7 +117,7 @@ public interface HttpService {
 
     @FormUrlEncoded
     @POST("events/getList")
-    Call<EventResponse> getList(
+    Call<EventResponse> getEventList(
             @Field("apikey") String apiKey,
             @Field("pageNum") int pageNum
     );
@@ -133,7 +134,33 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("sync")
     Call<BasicResponse> sync(
-            @Field("apikey") String apikey
+            @Field("apikey") String apiKey
+    );
+
+
+    /*
+    =============================
+                RECO
+    =============================
+     */
+
+    //getList
+    @FormUrlEncoded
+    @POST("reco/getList")
+    Call<RecoResponse> getRecoList(
+            @Field("apikey") String apiKey,
+            @Field("eventHashkey") String eventHashKey,
+            @Field("category") String category
+    );
+
+    //tracking
+    @FormUrlEncoded
+    @POST("reco/tracking")
+    Call<BasicResponse> tracking(
+            @Field("apikey") String apiKey,
+            @Field("eventHashkey") String eventHashkey,
+            @Field("recoHashkey") String recoHashkey,
+            @Field("type") String type
     );
 
 

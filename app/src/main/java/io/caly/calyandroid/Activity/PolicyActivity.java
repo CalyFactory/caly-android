@@ -6,20 +6,16 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
-import android.text.method.ScrollingMovementMethod;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.Util.TextViewLinkHandler;
 import io.caly.calyandroid.Util.Util;
 
 /**

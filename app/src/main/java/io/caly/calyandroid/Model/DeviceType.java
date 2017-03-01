@@ -8,9 +8,16 @@ package io.caly.calyandroid.Model;
  * @since 17. 2. 18
  */
 
-public class  DeviceType {
-    public final static int ANDROID = 1;
-    public final static int IPHONE = 2;
-    public final static int WEB = 3;
+public enum DeviceType {
+
+    ANDROID(1),
+    IPHONE(2),
+    WEB(3);
+
+    public final int value;
+
+    DeviceType(final int value){
+        this.value = value;
+    }
 
 }

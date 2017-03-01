@@ -5,22 +5,30 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
-import io.caly.calyandroid.Adapter.EventListAdapter;
+import io.caly.calyandroid.Adapter.RecoTabPagerAdapter;
 import io.caly.calyandroid.Adapter.RecommandListAdapter;
-import io.caly.calyandroid.Model.EventModel;
+import io.caly.calyandroid.Model.DataModel.EventModel;
+import io.caly.calyandroid.Model.ORM.TokenRecord;
+import io.caly.calyandroid.Model.TrackingType;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.EventListener.RecyclerItemClickListener;
+import io.caly.calyandroid.Util.Util;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -35,12 +43,15 @@ public class RecommandListActivity extends BaseAppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
-    @Bind(R.id.recycler_recommandlist)
-    RecyclerView recyclerList;
+    @Bind(R.id.tab_recolist)
+    TabLayout tabLayout;
 
+    @Bind(R.id.pager_recolist)
+    ViewPager pagerRecoList;
 
-    RecommandListAdapter recyclerAdapter;
-    LinearLayoutManager layoutManager;
+    RecoTabPagerAdapter pagerAdapter;
+
+    EventModel eventData;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,7 +66,7 @@ public class RecommandListActivity extends BaseAppCompatActivity {
 
 
         //set toolbar
-        toolbar.setTitle("일정 목록");
+        toolbar.setTitle("추천 목록");
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -69,20 +80,41 @@ public class RecommandListActivity extends BaseAppCompatActivity {
         upArrow.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        //set recyclerview
-        recyclerList.setHasFixedSize(true);
+        eventData = ApiClient.getGson()
+                .fromJson(
+                        getIntent().getStringExtra("event"),
+                        EventModel.class
+                );
 
-        layoutManager = new LinearLayoutManager(getBaseContext());
-        recyclerList.setLayoutManager(layoutManager);
+        //init tab layout
+        tabLayout.addTab(tabLayout.newTab().setText("식당"));
+        tabLayout.addTab(tabLayout.newTab().setText("카페"));
+        tabLayout.addTab(tabLayout.newTab().setText("액티비티"));
 
+        pagerAdapter = new RecoTabPagerAdapter(getSupportFragmentManager(), eventData);
+        pagerRecoList.setAdapter(pagerAdapter);
+        pagerRecoList.addOnPageChangeListener(
+                new TabLayout.TabLayoutOnPageChangeListener(tabLayout)
+        );
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                pagerRecoList.setCurrentItem(tab.getPosition());
+            }
 
-        ArrayList<Object> dataList = new ArrayList<>();
-        for(int i=0;i<50;i++){
-            dataList.add(new Object());
-        }
-        recyclerAdapter = new RecommandListAdapter(dataList);
-        recyclerList.setAdapter(recyclerAdapter);
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
 
     }
 }

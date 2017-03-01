@@ -11,8 +11,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.caly.calyandroid.Model.EventModel;
-import io.caly.calyandroid.Model.TestModel;
+import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.StringFormmater;
 import io.caly.calyandroid.Util.Util;
@@ -80,8 +79,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     public void addItem(int position, EventModel data){
         dataList.add(position, data);
         notifyItemInserted(position);
-
     }
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         EventModel eventModel = dataList.get(position);

@@ -9,6 +9,7 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.FirebaseApp;
 import com.orm.SugarApp;
 
+import io.caly.calyandroid.Util.EventListener.AppLifecycleListener;
 import io.fabric.sdk.android.Fabric;
 import net.jspiner.prefer.Prefer;
 
@@ -29,11 +30,27 @@ public class CalyApplication extends SugarApp {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        init();
+    }
+
+    void init(){
+
+        //set basic context
+        context = this;
+
+        //init fabric
         Fabric.with(this, new Crashlytics());
 
-        context = this;
+        //init firebase
         FirebaseApp.initializeApp(this);
+
+        //init prefer lib
         Prefer.init(context, "caly");
+
+        //add activitylifecycle listener
+        registerActivityLifecycleCallbacks(new AppLifecycleListener());
+
     }
 
     synchronized public Tracker getDefaultTracker() {
