@@ -2,6 +2,8 @@ package io.caly.calyandroid.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 
@@ -25,11 +28,18 @@ import io.caly.calyandroid.Activity.LoginActivity;
 import io.caly.calyandroid.Adapter.RecommandListAdapter;
 import io.caly.calyandroid.Fragment.base.BaseFragment;
 import io.caly.calyandroid.Model.Category;
+import io.caly.calyandroid.Model.DataModel.EventModel;
+import io.caly.calyandroid.Model.DataModel.RecoModel;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
+import io.caly.calyandroid.Model.Response.BasicResponse;
+import io.caly.calyandroid.Model.Response.RecoResponse;
 import io.caly.calyandroid.Model.TrackingType;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.EventListener.RecyclerItemClickListener;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -46,6 +56,7 @@ public class RecoTabFragment extends BaseFragment {
     RecyclerView recyclerList;
 
     Category category;
+    EventModel eventData;
 
     RecommandListAdapter recyclerAdapter;
     LinearLayoutManager layoutManager;
@@ -53,9 +64,18 @@ public class RecoTabFragment extends BaseFragment {
 
     public RecoTabFragment() { super(); }
 
+    public Fragment setEvent(EventModel eventData){
+        this.eventData = eventData;
+        return this;
+    }
+
     public Fragment setCategory(Category category){
         this.category = category;
         return this;
+    }
+
+    public void build(){
+        loadList();
     }
 
     @Override
@@ -88,9 +108,9 @@ public class RecoTabFragment extends BaseFragment {
         recyclerList.setLayoutManager(layoutManager);
 
 
-        ArrayList<Object> dataList = new ArrayList<>();
+        ArrayList<RecoModel> dataList = new ArrayList<>();
         for(int i=0;i<50;i++){
-            dataList.add(new Object());
+//            dataList.add(new RecoModel());
         }
         recyclerAdapter = new RecommandListAdapter(dataList);
         recyclerList.setAdapter(recyclerAdapter);
@@ -111,7 +131,7 @@ public class RecoTabFragment extends BaseFragment {
                                         try {
                                             ApiClient.getService().tracking(
                                                     TokenRecord.getTokenRecord().getApiKey(),
-                                                    "eventhashkey",
+                                                    eventData.eventHashKey,
                                                     "recohashkey",
                                                     TrackingType.CLICK.value
                                             ).execute();
@@ -131,6 +151,46 @@ public class RecoTabFragment extends BaseFragment {
                         }
                 )
         );
+    }
+
+    void loadList(){
+        ApiClient.getService().getRecoList(
+                TokenRecord.getTokenRecord().getApiKey(),
+                eventData.eventHashKey,
+                category.value
+        ).enqueue(new Callback<RecoResponse>() {
+            @Override
+            public void onResponse(Call<RecoResponse> call, Response<RecoResponse> response) {
+                Log.d(TAG,"onResponse code : " + response.code());
+
+                RecoResponse body = response.body();
+                switch (response.code()){
+                    case 200:
+                        recyclerAdapter.addItems(body.payload.data);
+                        break;
+                    default:
+                        Log.e(TAG,"status code : " + response.code());
+                        Toast.makeText(
+                                getContext(),
+                                getString(R.string.toast_msg_server_internal_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RecoResponse> call, Throwable t) {
+                Log.e(TAG,"onfail : " + t.getMessage());
+                Log.e(TAG, "fail " + t.getClass().getName());
+
+                Toast.makeText(
+                        getContext(),
+                        getString(R.string.toast_msg_network_error),
+                        Toast.LENGTH_LONG
+                ).show();
+            }
+        });
     }
 
 }

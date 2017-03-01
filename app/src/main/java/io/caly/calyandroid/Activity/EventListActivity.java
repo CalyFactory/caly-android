@@ -76,9 +76,6 @@ public class EventListActivity extends BaseAppCompatActivity {
     @Bind(R.id.tv_eventlist_month)
     TextView tvEventMonth;
 
-//    @Bind(R.id.avi_eventlist)
-//    AVLoadingIndicatorView aviLoader;
-
     @Bind(R.id.btn_eventlist_prev)
     ImageButton imvEventPrev;
 
@@ -424,11 +421,6 @@ public class EventListActivity extends BaseAppCompatActivity {
             }
         }).start();
     }
-
-    enum  TEST{
-        test1,
-        test2
-    };
 
     void syncCalendar(String loginPlatform){
         Log.i(TAG, "request sync");

@@ -22,7 +22,7 @@ public class RecoResponse extends BasicResponse {
     public class Payload {
 
         @SerializedName("data")
-        List<RecoModel> data;
+        public List<RecoModel> data;
 
     }
 

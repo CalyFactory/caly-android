@@ -12,11 +12,14 @@ import android.widget.ImageView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Activity.MapActivity;
+import io.caly.calyandroid.Model.DataModel.EventModel;
+import io.caly.calyandroid.Model.DataModel.RecoModel;
 import io.caly.calyandroid.R;
 
 /**
@@ -28,7 +31,7 @@ public class RecommandListAdapter extends RecyclerView.Adapter<RecommandListAdap
     //로그에 쓰일 tag
     private static final String TAG = RecommandListAdapter.class.getSimpleName();
 
-    private ArrayList<Object> dataList;
+    private ArrayList<RecoModel> dataList;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -56,8 +59,19 @@ public class RecommandListAdapter extends RecyclerView.Adapter<RecommandListAdap
         }
     }
 
-    public RecommandListAdapter(ArrayList<Object> dataList){
+    public RecommandListAdapter(ArrayList<RecoModel> dataList){
         this.dataList = dataList;
+    }
+
+
+    public void addItem(int position, RecoModel data){
+        dataList.add(position, data);
+        notifyItemInserted(position);
+    }
+
+    public void addItems(List<RecoModel> data){
+        dataList.addAll(data);
+        notifyDataSetChanged();
     }
 
     @Override
