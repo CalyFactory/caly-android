@@ -96,7 +96,7 @@ public class SignupActivity extends BaseAppCompatActivity {
     @OnClick(R.id.imv_signup_man)
     void onGenderManClick(){
 
-        selectedGender = Gender.MAN;
+        selectedGender = Gender.MAN.value;
         imvGenderMan.clearColorFilter();
         imvGenderWoman.setColorFilter(Color.GRAY, android.graphics.PorterDuff.Mode.MULTIPLY);
 
@@ -106,7 +106,7 @@ public class SignupActivity extends BaseAppCompatActivity {
     @OnClick(R.id.imv_signup_woman)
     void onGenderWomanClick(){
 
-        selectedGender = Gender.WOMAN;
+        selectedGender = Gender.WOMAN.value;
         imvGenderMan.setColorFilter(Color.GRAY, android.graphics.PorterDuff.Mode.MULTIPLY);
         imvGenderWoman.clearColorFilter();
 
@@ -125,7 +125,7 @@ public class SignupActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.btn_signup_proc)
     void onSignupClick(){
-        Bundle bundleData = getIntent().getExtras();
+        final Bundle bundleData = getIntent().getExtras();
 
         ApiClient.getService().signUp(
                 bundleData.getString("userId"),
@@ -135,7 +135,7 @@ public class SignupActivity extends BaseAppCompatActivity {
                 Integer.parseInt(edtBirth.getText().toString()),
                 bundleData.getString("loginPlatform"),
                 FirebaseInstanceId.getInstance().getToken(),
-                DeviceType.ANDROID,
+                DeviceType.ANDROID.value,
                 Util.getAppVersion(),
                 Util.getDeviceInfo(),
                 Util.getUUID(),
@@ -157,6 +157,7 @@ public class SignupActivity extends BaseAppCompatActivity {
 
                         Intent intent = new Intent(SignupActivity.this, EventListActivity.class);
                         intent.putExtra("first", true);
+                        intent.putExtra("loginPlatform", bundleData.getString("loginPlatform"));
                         startActivity(intent);
                         finish();
                         break;

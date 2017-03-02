@@ -3,6 +3,7 @@ package io.caly.calyandroid.Service;
 import io.caly.calyandroid.Model.Response.AccountResponse;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.EventResponse;
+import io.caly.calyandroid.Model.Response.RecoResponse;
 import io.caly.calyandroid.Model.Response.SessionResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -146,7 +147,7 @@ public interface HttpService {
     //getList
     @FormUrlEncoded
     @POST("reco/getList")
-    Call<BasicResponse> getRecoList(
+    Call<RecoResponse> getRecoList(
             @Field("apikey") String apiKey,
             @Field("eventHashkey") String eventHashKey,
             @Field("category") String category

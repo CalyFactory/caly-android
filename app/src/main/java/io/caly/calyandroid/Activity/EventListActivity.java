@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.squareup.otto.Subscribe;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,6 +33,9 @@ import butterknife.OnClick;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.EventListAdapter;
 import io.caly.calyandroid.Model.DataModel.EventModel;
+import io.caly.calyandroid.Model.DataModel.TestModel;
+import io.caly.calyandroid.Model.Event.GoogleSyncDoneEvent;
+import io.caly.calyandroid.Model.LoginPlatform;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.EventResponse;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
@@ -41,6 +45,8 @@ import io.caly.calyandroid.Util.EventListener.RecyclerItemClickListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static io.caly.calyandroid.Model.LoginPlatform.GOOGLE;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -69,9 +75,6 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.tv_eventlist_month)
     TextView tvEventMonth;
-
-//    @Bind(R.id.avi_eventlist)
-//    AVLoadingIndicatorView aviLoader;
 
     @Bind(R.id.btn_eventlist_prev)
     ImageButton imvEventPrev;
@@ -170,6 +173,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                     @Override
                     public void onItemClick(View view, int position) {
                         Intent intent = new Intent(EventListActivity.this, RecommandListActivity.class);
+                        intent.putExtra("event", ApiClient.getGson().toJson(recyclerAdapter.getItem(position)));
                         startActivity(intent);
                     }
 
@@ -183,7 +187,7 @@ public class EventListActivity extends BaseAppCompatActivity {
 
         Intent intent = getIntent();
         if(intent.getBooleanExtra("first", false)){
-            syncCalendar();
+            syncCalendar(intent.getStringExtra("loginPlatform"));
         }
         else{
             loadEventList();
@@ -351,7 +355,8 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     }
 
-    void syncCalendar(){
+    void syncCaldav(){
+        Log.d(TAG, "request sync to caldav");
         ApiClient.getService().sync(
                 TokenRecord.getTokenRecord().getApiKey()
         ).enqueue(new Callback<BasicResponse>() {
@@ -391,6 +396,56 @@ public class EventListActivity extends BaseAppCompatActivity {
                 ).show();
             }
         });
+    }
+
+    void syncGoogle(){
+        Log.d(TAG, "request sync to google");
+
+        Toast.makeText(
+                getBaseContext(),
+                getString(R.string.toast_msg_google_sync_alert),
+                Toast.LENGTH_LONG
+        ).show();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Response<BasicResponse> response = ApiClient.getService().sync(
+                            TokenRecord.getTokenRecord().getApiKey()
+                    ).execute();
+                    Log.d(TAG, "requested : " + response.body());
+                } catch (IOException e) {
+                    e.printStackTrace();
+
+                }
+            }
+        }).start();
+    }
+
+    void syncCalendar(String loginPlatform){
+        Log.i(TAG, "request sync");
+
+        Log.d(TAG,"loginplatform : " + loginPlatform);
+        switch (LoginPlatform.getInstance(loginPlatform)){
+            case GOOGLE:
+                syncGoogle();
+                break;
+            case CALDAV_ICAL:
+                syncCaldav();
+                break;
+            case CALDAV_NAVER:
+                syncCaldav();
+                break;
+            default:
+                syncCaldav();
+        }
+    }
+
+    @Subscribe
+    public void googleSyncCallback(GoogleSyncDoneEvent event){
+        linearLoader.setVisibility(View.GONE);
+
+        loadEventList();
     }
 
     @OnClick(R.id.btn_eventlist_prev)

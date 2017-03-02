@@ -111,7 +111,7 @@ public class LoginActivity extends BaseAppCompatActivity {
             public void onPositive(LoginDialog dialog, String userId, String userPw) {
                 dialog.dismiss();
 
-                procLoginCaldav(userId, userPw, LoginPlatform.CALDAV_NAVER);
+                procLoginCaldav(userId, userPw, LoginPlatform.CALDAV_NAVER.value);
             }
 
             @Override
@@ -130,7 +130,7 @@ public class LoginActivity extends BaseAppCompatActivity {
             public void onPositive(LoginDialog dialog, String userId, String userPw) {
                 dialog.dismiss();
 
-                procLoginCaldav(userId, userPw, LoginPlatform.CALDAV_ICAL);
+                procLoginCaldav(userId, userPw, LoginPlatform.CALDAV_ICAL.value);
             }
 
             @Override
@@ -171,7 +171,7 @@ public class LoginActivity extends BaseAppCompatActivity {
         ApiClient.getService().registerDevice(
                 sessionKey,
                 FirebaseInstanceId.getInstance().getToken(),
-                DeviceType.ANDROID,
+                DeviceType.ANDROID.value,
                 Util.getAppVersion(),
                 Util.getDeviceInfo(),
                 Util.getUUID(),
@@ -286,7 +286,7 @@ public class LoginActivity extends BaseAppCompatActivity {
     }
 
     void procLoginGoogle(String subject, String authCode){
-        procLogin("null", "null", LoginPlatform.GOOGLE, subject, authCode);
+        procLogin("null", "null", LoginPlatform.GOOGLE.value, subject, authCode);
     }
 
     @Override

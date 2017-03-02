@@ -17,6 +17,10 @@ public class TestModel {
     public String time;
     public String location;
 
+    public TestModel(){
+
+    }
+
     public TestModel(int year, int month, int day, String summary, String time, String location){
         this.year = year;
         this.month = month;

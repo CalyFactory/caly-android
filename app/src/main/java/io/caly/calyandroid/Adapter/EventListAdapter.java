@@ -79,8 +79,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     public void addItem(int position, EventModel data){
         dataList.add(position, data);
         notifyItemInserted(position);
-
     }
+
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         EventModel eventModel = dataList.get(position);

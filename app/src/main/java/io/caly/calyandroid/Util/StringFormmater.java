@@ -20,7 +20,7 @@ public class StringFormmater {
         startCalendar.setTime(startDate);
 
         Calendar endCalendar = Calendar.getInstance();
-        endCalendar.setTime(endDate);
+        endCalendar.setTime(endDate==null?startDate:endDate);
 
         return String.format(
                 "%02d:%02d~%02d:%02d",

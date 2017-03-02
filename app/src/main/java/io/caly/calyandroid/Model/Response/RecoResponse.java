@@ -1,5 +1,11 @@
 package io.caly.calyandroid.Model.Response;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
+import io.caly.calyandroid.Model.DataModel.RecoModel;
+
 /**
  * Copyright 2017 JSpiner. All rights reserved.
  *
@@ -10,7 +16,13 @@ package io.caly.calyandroid.Model.Response;
 
 public class RecoResponse extends BasicResponse {
 
-    class Payload {
+    @SerializedName("payload")
+    public Payload payload;
+
+    public class Payload {
+
+        @SerializedName("data")
+        public List<RecoModel> data;
 
     }
 
