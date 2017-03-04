@@ -17,6 +17,7 @@ import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.NoticeModel;
 import io.caly.calyandroid.Model.DataModel.TestModel;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.StringFormmater;
 
 /**
  * Created by jspiner on 2017. 3. 4..
@@ -38,6 +39,20 @@ public class NoticeListAdapter extends RecyclerView.Adapter<NoticeListAdapter.Vi
         @Nullable
         @Bind(R.id.linear_notice_header)
         public LinearLayout linearHeader;
+
+        @Nullable
+        @Bind(R.id.tv_notice_date)
+        public TextView tvDate;
+
+        @Nullable
+        @Bind(R.id.tv_notice_title)
+        public TextView tvTitle;
+
+        @Nullable
+        @Bind(R.id.tv_notice_description)
+        public TextView tvDescription;
+
+        public NoticeModel refferItem;
 
         public ViewHolder(View view){
             super(view);
@@ -78,19 +93,21 @@ public class NoticeListAdapter extends RecyclerView.Adapter<NoticeListAdapter.Vi
     }
 
     @Override
-    public void onBindViewHolder(NoticeListAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final NoticeListAdapter.ViewHolder holder, int position) {
         final NoticeModel noticeModel = dataList.get(position);
 
         if(noticeModel.isHeader){
+            holder.refferItem = noticeModel;
             holder.linearHeader.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(noticeModel.isExpandabled){
 
+                    int position = dataList.indexOf(holder.refferItem);
+
+                    if(noticeModel.isExpandabled){
                         dataList.remove(position + 1);
                         noticeModel.isExpandabled = false;
                         notifyItemRemoved(position + 1);
-
                     }
                     else{
                         dataList.add(position + 1, new NoticeModel(noticeModel.noticeDescription));
@@ -99,6 +116,12 @@ public class NoticeListAdapter extends RecyclerView.Adapter<NoticeListAdapter.Vi
                     }
                 }
             });
+
+            holder.tvTitle.setText(noticeModel.noticeTitle);
+            holder.tvDate.setText(StringFormmater.simpleDateFormat(noticeModel.createDateTime));
+        }
+        else{
+            holder.tvDescription.setText(noticeModel.noticeDescription);
         }
 
     }
