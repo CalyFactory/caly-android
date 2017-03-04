@@ -49,6 +49,11 @@ public class NoticeListAdapter extends RecyclerView.Adapter<NoticeListAdapter.Vi
 
     }
 
+    public void addItem(NoticeModel noticeModel){
+        dataList.add(noticeModel);
+        notifyItemInserted(dataList.size()-1);
+    }
+
     @Override
     public NoticeListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 

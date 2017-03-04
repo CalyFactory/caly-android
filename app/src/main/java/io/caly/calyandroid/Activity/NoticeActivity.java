@@ -8,7 +8,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -19,7 +21,14 @@ import io.caly.calyandroid.Adapter.NoticeListAdapter;
 import io.caly.calyandroid.Adapter.SettingListAdapter;
 import io.caly.calyandroid.Model.DataModel.NoticeModel;
 import io.caly.calyandroid.Model.DataModel.SettingItemModel;
+import io.caly.calyandroid.Model.ORM.TokenRecord;
+import io.caly.calyandroid.Model.Response.BasicResponse;
+import io.caly.calyandroid.Model.Response.NoticeResponse;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.ApiClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -78,14 +87,50 @@ public class NoticeActivity extends BaseAppCompatActivity {
         // test data
         ArrayList<NoticeModel> dataList = new ArrayList<>();
 
-        dataList.add(new NoticeModel());
-        dataList.add(new NoticeModel());
-        dataList.add(new NoticeModel());
-        dataList.add(new NoticeModel());
-        dataList.add(new NoticeModel());
-
         recyclerAdapter = new NoticeListAdapter(dataList);
         recyclerList.setAdapter(recyclerAdapter);
+
+        loadNotice();
+    }
+
+    void loadNotice(){
+        ApiClient.getService().notices(
+                TokenRecord.getTokenRecord().getApiKey()
+        ).enqueue(new Callback<NoticeResponse>() {
+            @Override
+            public void onResponse(Call<NoticeResponse> call, Response<NoticeResponse> response) {
+                Log.d(TAG,"onResponse code : " + response.code());
+
+                NoticeResponse body = response.body();
+                switch (response.code()){
+                    case 200:
+                        for(NoticeModel noticeModel : body.payload.data){
+                            recyclerAdapter.addItem(noticeModel);
+                        }
+                        break;
+                    default:
+                        Log.e(TAG,"status code : " + response.code());
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_server_internal_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<NoticeResponse> call, Throwable t) {
+                Log.e(TAG,"onfail : " + t.getMessage());
+                Log.e(TAG, "fail " + t.getClass().getName());
+
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_network_error),
+                        Toast.LENGTH_LONG
+                ).show();
+            }
+        });
     }
 
 }
