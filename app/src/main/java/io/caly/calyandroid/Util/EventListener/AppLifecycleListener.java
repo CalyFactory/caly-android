@@ -15,7 +15,7 @@ import io.caly.calyandroid.CalyApplication;
  * @since 17. 2. 28
  */
 
-public class AppLifecycleListener implements Application.ActivityLifecycleCallbacks{
+public class AppLifecycleListener implements Application.   ActivityLifecycleCallbacks{
 
     //로그에 쓰일 tag
     private static final String TAG = CalyApplication.class.getSimpleName() + "/" + AppLifecycleListener.class.getSimpleName();
@@ -24,18 +24,18 @@ public class AppLifecycleListener implements Application.ActivityLifecycleCallba
 
     @Override
     public void onActivityCreated(Activity activity, Bundle bundle) {
-        Log.d(TAG, "onActivityCreated");
+        Log.i(TAG, "onActivityCreated");
     }
 
     @Override
     public void onActivityStarted(Activity activity) {
-        Log.d(TAG, "onActivityStarted");
+        Log.i(TAG, "onActivityStarted");
         addActivity();
     }
 
     @Override
     public void onActivityResumed(Activity activity) {
-        Log.d(TAG, "onActivityResumed");
+
     }
 
     @Override
@@ -46,17 +46,17 @@ public class AppLifecycleListener implements Application.ActivityLifecycleCallba
 
     @Override
     public void onActivityStopped(Activity activity) {
-        Log.d(TAG, "onActivityStopped");
+
     }
 
     @Override
     public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
-        Log.d(TAG, "onActivitySaveInstanceState");
+
     }
 
     @Override
     public void onActivityDestroyed(Activity activity) {
-        Log.d(TAG, "onActivityDestroyed");
+
     }
 
     public void addActivity(){

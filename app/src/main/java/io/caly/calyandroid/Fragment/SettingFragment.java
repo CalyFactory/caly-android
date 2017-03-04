@@ -16,7 +16,6 @@ import io.caly.calyandroid.R;
 
 public class SettingFragment extends PreferenceFragmentCompat {
 
-
     @Override
     public void onCreatePreferences(Bundle bundle, String s) {
         addPreferencesFromResource(R.xml.setting);

@@ -168,6 +168,7 @@ public class LoginActivity extends BaseAppCompatActivity {
     }
 
     void registerDeviceInfo(String sessionKey){
+        Log.i(TAG, "registerDeviceInfo");
         ApiClient.getService().registerDevice(
                 sessionKey,
                 FirebaseInstanceId.getInstance().getToken(),
@@ -223,6 +224,7 @@ public class LoginActivity extends BaseAppCompatActivity {
     }
 
     void procLogin(final String userId, final String userPw, final String loginPlatform, final String subject, final String authCode){
+        Log.i(TAG, "procLogin");
         ApiClient.getService().loginCheck(
                 userId,
                 userPw,
@@ -282,10 +284,12 @@ public class LoginActivity extends BaseAppCompatActivity {
     }
 
     void procLoginCaldav(String userId, String userPw, String loginPlatform){
+        Log.i(TAG, "procLoginCaldav");
         procLogin(userId, userPw, loginPlatform, "null", "null");
     }
 
     void procLoginGoogle(String subject, String authCode){
+        Log.i(TAG, "procLoginGoogle");
         procLogin("null", "null", LoginPlatform.GOOGLE.value, subject, authCode);
     }
 

@@ -61,7 +61,6 @@ public class AccountAddAdapter extends RecyclerView.Adapter<AccountAddAdapter.Vi
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        Log.d(TAG, "oncreateviewholder");
         View view = null;
         ViewHolder viewHolder = null;
 

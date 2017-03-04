@@ -36,8 +36,6 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     //로그에 쓰일 tag
     private static final String TAG = CalyApplication.class.getSimpleName() + "/" + FirebaseMessagingService.class.getSimpleName();
 
-    public static final String INTENT_ACTION_SYNC_COMPLETE = "INTENT_ACTION_SYNC_COMPLETE";
-
     // JSON 규격
     /*
     {
@@ -47,8 +45,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
      */
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-        Log.d(TAG, remoteMessage.getData().toString());
-        Log.d(TAG, "push received!");
+        Log.i(TAG, "onMessageReceived");
+        Log.d(TAG, "push massage : " + remoteMessage.getData().toString());
 
         Map<String, String> pushData = remoteMessage.getData();
 
@@ -78,6 +76,8 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
 
     private void sendNotification(String title) {
+        Log.i(TAG, "sendNotification("+title+")");
+
         Intent intent = new Intent(this, SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent,
@@ -96,14 +96,6 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
 
-        sendMessageToActivity("hello", INTENT_ACTION_SYNC_COMPLETE);
-    }
-
-    void sendMessageToActivity(String message, String action){
-        Intent intent = new Intent();
-        intent.setAction(action);
-        intent.putExtra("message", message);
-        sendBroadcast(intent);
     }
 
 }

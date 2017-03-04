@@ -1,5 +1,6 @@
 package io.caly.calyandroid.Activity.Base;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -72,5 +73,17 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     protected void onRestart() {
         Log.i(TAG, "onRestart");
         super.onRestart();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.i(TAG, "onBackPressed");
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.i(TAG, "onActivityResult(" + requestCode + ", " + resultCode + ")");
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }
