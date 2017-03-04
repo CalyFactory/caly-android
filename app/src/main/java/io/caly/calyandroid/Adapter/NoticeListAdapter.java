@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.TestModel;
 import io.caly.calyandroid.R;
@@ -39,6 +40,12 @@ public class NoticeListAdapter extends RecyclerView.Adapter<NoticeListAdapter.Vi
 
         }
 
+        @Nullable
+        @OnClick(R.id.linear_notice_header)
+        void onHeaderClick(){
+
+        }
+
     }
 
     @Override
@@ -49,19 +56,19 @@ public class NoticeListAdapter extends RecyclerView.Adapter<NoticeListAdapter.Vi
 
         if (viewType==1){
             view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_accountlist_header, parent, false);
+                    .inflate(R.layout.item_notice_header, parent, false);
 
             viewHolder = new NoticeListAdapter.ViewHolder(view);
         }
         else if (viewType ==2){
             view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_accountlist_row, parent, false);
+                    .inflate(R.layout.item_notice_body, parent, false);
 
             viewHolder = new NoticeListAdapter.ViewHolder(view);
         }
         else{
             view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.item_accountlist_row, parent, false);
+                    .inflate(R.layout.item_notice_body, parent, false);
 
             viewHolder = new NoticeListAdapter.ViewHolder(view);
         }
