@@ -24,7 +24,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
 
     //로그에 쓰일 tag
-    private static final String TAG = ApiClient.class.getSimpleName();
+    private static final String TAG = CalyApplication.class.getSimpleName() + "/" + ApiClient.class.getSimpleName();
 
     private static HttpService httpService;
 

@@ -18,6 +18,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Activity.MapActivity;
+import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.DataModel.RecoModel;
 import io.caly.calyandroid.R;
@@ -29,7 +30,7 @@ import io.caly.calyandroid.R;
 public class RecommandListAdapter extends RecyclerView.Adapter<RecommandListAdapter.ViewHolder>  {
 
     //로그에 쓰일 tag
-    private static final String TAG = RecommandListAdapter.class.getSimpleName();
+    private static final String TAG = CalyApplication.class.getSimpleName() + "/" + RecommandListAdapter.class.getSimpleName();
 
     private ArrayList<RecoModel> dataList;
 

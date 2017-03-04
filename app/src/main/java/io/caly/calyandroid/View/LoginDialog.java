@@ -12,6 +12,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Activity.SplashActivity;
+import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.R;
 
 /**
@@ -25,7 +26,7 @@ import io.caly.calyandroid.R;
 public class LoginDialog extends Dialog {
 
     //로그에 쓰일 tag
-    private static final String TAG = LoginDialog.class.getSimpleName();
+    private static final String TAG = CalyApplication.class.getSimpleName() + "/" + LoginDialog.class.getSimpleName();
 
     @Bind(R.id.tv_login_title)
     TextView tvLoginTitle;

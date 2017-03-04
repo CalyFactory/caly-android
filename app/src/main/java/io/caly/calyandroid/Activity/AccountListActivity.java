@@ -92,6 +92,7 @@ public class AccountListActivity extends BaseAppCompatActivity {
     }
 
     void loadAccountList(){
+        Log.i(TAG, "loadAccountList");
         ApiClient.getService().accountList(
                 TokenRecord.getTokenRecord().getApiKey()
         ).enqueue(new Callback<AccountResponse>() {

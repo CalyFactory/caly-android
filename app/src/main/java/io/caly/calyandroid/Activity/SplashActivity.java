@@ -52,9 +52,8 @@ public class SplashActivity extends BaseAppCompatActivity {
 
         Util.setStatusBarColor(this, getResources().getColor(R.color.colorPrimaryDark));
 
-
         //firebase init
-        Log.d(TAG, "push token : " + FirebaseInstanceId.getInstance().getToken());
+        Log.i(TAG, "pushToken : " + FirebaseInstanceId.getInstance().getToken());
         FirebaseMessaging.getInstance().subscribeToTopic("noti");
 
         if(isPermissionGranted()){
@@ -66,7 +65,6 @@ public class SplashActivity extends BaseAppCompatActivity {
     }
 
     void startSplash(){
-
         Log.d(TAG, "isdidrun : " + Prefer.get("isDidRun", false));
         if(Prefer.get("isDidRun", false)){
             timerHandler.sendEmptyMessageDelayed(0,1000);
@@ -75,19 +73,6 @@ public class SplashActivity extends BaseAppCompatActivity {
             timerHandler.sendEmptyMessageDelayed(1,3000);
         }
         Prefer.set("isDidRun", true);
-
-        /*
-        SettingRecord currentSetting = SettingRecord.getSettingRecord();
-
-        if(currentSetting.isDidRun()){
-            timerHandler.sendEmptyMessageDelayed(0,1000);
-        }
-        else{
-            timerHandler.sendEmptyMessageDelayed(1,3000);
-        }
-
-        currentSetting.setDidRun(true);
-        currentSetting.save();*/
     }
 
     void requestPermission(){
@@ -155,66 +140,7 @@ public class SplashActivity extends BaseAppCompatActivity {
                 else{
                     Log.d(TAG,"session : " + tokenRecord.getApiKey());
 
-                    ApiClient.getService().loginCheck(
-                            "null",
-                            "null",
-                            Util.getUUID(),
-                            tokenRecord.getApiKey(),
-                            "null",
-                            "null",
-                            Util.getAppVersion()
-                    ).enqueue(new retrofit2.Callback<SessionResponse>() {
-                        @Override
-                        public void onResponse(Call<SessionResponse> call, Response<SessionResponse> response) {
-                            Log.d(TAG,"onResponse code : " + response.code());
-
-                            SessionResponse body = response.body();
-                            switch (response.code()){
-                                case 200:
-                                    startEventActivity();
-                                    break;
-                                case 400:
-                                case 401:
-                                    Toast.makeText(
-                                            getBaseContext(),
-                                            getString(R.string.toast_msg_session_invalid),
-                                            Toast.LENGTH_LONG
-                                    ).show();
-                                    TokenRecord.destoryToken();
-                                    startLoginActivity();
-                                    finish();
-                                    break;
-                                case 403:
-                                    Toast.makeText(
-                                            getBaseContext(),
-                                            getString(R.string.toast_msg_session_invalid),
-                                            Toast.LENGTH_LONG
-                                    ).show();
-                                    requestUpdate();
-                                    finish();
-                                    break;
-                                default:
-                                    Toast.makeText(
-                                            getBaseContext(),
-                                            getString(R.string.toast_msg_server_internal_error),
-                                            Toast.LENGTH_LONG
-                                    ).show();
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<SessionResponse> call, Throwable t) {
-
-                            Log.e(TAG,"onfail : " + t.getMessage());
-                            Log.e(TAG, "fail " + t.getClass().getName());
-
-                            Toast.makeText(
-                                    getBaseContext(),
-                                    getString(R.string.toast_msg_network_error),
-                                    Toast.LENGTH_LONG
-                            ).show();
-                        }
-                    });
+                    requestLoginCheck(tokenRecord.getApiKey());
 
                 }
 
@@ -225,6 +151,71 @@ public class SplashActivity extends BaseAppCompatActivity {
         }
 
     };
+
+    void requestLoginCheck(String apiKey){
+        Log.i(TAG, "requestLoginCheck");
+
+        ApiClient.getService().loginCheck(
+                "null",
+                "null",
+                Util.getUUID(),
+                apiKey,
+                "null",
+                "null",
+                Util.getAppVersion()
+        ).enqueue(new retrofit2.Callback<SessionResponse>() {
+            @Override
+            public void onResponse(Call<SessionResponse> call, Response<SessionResponse> response) {
+                Log.d(TAG,"onResponse code : " + response.code());
+
+                SessionResponse body = response.body();
+                switch (response.code()){
+                    case 200:
+                        startEventActivity();
+                        break;
+                    case 400:
+                    case 401:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_session_invalid),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        TokenRecord.destoryToken();
+                        startLoginActivity();
+                        finish();
+                        break;
+                    case 403:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_session_invalid),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        requestUpdate();
+                        finish();
+                        break;
+                    default:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_server_internal_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SessionResponse> call, Throwable t) {
+
+                Log.e(TAG,"onfail : " + t.getMessage());
+                Log.e(TAG, "fail " + t.getClass().getName());
+
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_network_error),
+                        Toast.LENGTH_LONG
+                ).show();
+            }
+        });
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

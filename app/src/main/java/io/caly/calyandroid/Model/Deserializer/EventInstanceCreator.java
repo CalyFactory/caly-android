@@ -10,6 +10,7 @@ import com.google.gson.JsonParseException;
 
 import java.lang.reflect.Type;
 
+import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.EventModel;
 
 /**
@@ -23,7 +24,7 @@ import io.caly.calyandroid.Model.DataModel.EventModel;
 public class EventInstanceCreator implements JsonDeserializer<EventModel> {
 
     //로그에 쓰일 tag
-    private static final String TAG = EventInstanceCreator.class.getSimpleName();
+    private static final String TAG = CalyApplication.class.getSimpleName() + "/" + EventInstanceCreator.class.getSimpleName();
 
     @Override
     public EventModel deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

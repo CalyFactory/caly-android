@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.AccountModel;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.StringFormmater;
@@ -27,7 +28,7 @@ import io.caly.calyandroid.Util.StringFormmater;
 public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.ViewHolder>  {
 
     //로그에 쓰일 tag
-    private static final String TAG = AccountListAdapter.class.getSimpleName();
+    private static final String TAG = CalyApplication.class.getSimpleName() + "/" + AccountListAdapter.class.getSimpleName();
 
     private ArrayList<AccountModel> dataList;
 
@@ -61,7 +62,6 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        Log.d(TAG, "oncreateviewholder");
         View view = null;
         ViewHolder viewHolder = null;
 
