@@ -45,8 +45,10 @@ public class GoogleOAuthDialog extends Dialog {
             "https://www.googleapis.com/auth/userinfo.email " +
             "https://www.googleapis.com/auth/calendar.readonly";
 
-    public GoogleOAuthDialog(Context context) {
+    public GoogleOAuthDialog(Context context, LoginCallback loginCallback) {
         super(context);
+
+        this.loginCallback = loginCallback;
     }
 
     @Override
@@ -73,7 +75,8 @@ public class GoogleOAuthDialog extends Dialog {
         webView.loadUrl(
                 OAUTH_URL +
                 "?redirect_uri=" + REDIRECT_URI +
-                "&response_type=code&client_id=" + getContext().getString(R.string.google_client_id) +
+                "&response_type=code" +
+                "&client_id=" + getContext().getString(R.string.google_client_id) +
                 "&scope=" + OAUTH_SCOPE +
                 "&access_type=offline" +
                 "&approval_prompt=force"
@@ -90,12 +93,12 @@ public class GoogleOAuthDialog extends Dialog {
                 if(url.contains("code=") && authComplete != true){
                     Uri uri = Uri.parse(url);
                     String authCode = uri.getQueryParameter("code");
-                    loginCallback.onLoginSuccess(authCode);
+                    loginCallback.onLoginSuccess(GoogleOAuthDialog.this, authCode);
                 }
                 else if(url.contains("error=")){
                     Uri uri = Uri.parse(url);
                     String errorCode = uri.getQueryParameter("error");
-                    loginCallback.onLoginFailed(errorCode);
+                    loginCallback.onLoginFailed(GoogleOAuthDialog.this, errorCode);
                 }
                 else{
                     super.onPageStarted(view, url, favicon);
@@ -112,13 +115,9 @@ public class GoogleOAuthDialog extends Dialog {
         });
     }
 
-    public void setLoginCallback(LoginCallback callback){
-        this.loginCallback = loginCallback;
-    }
-
     public interface LoginCallback{
-        public void onLoginSuccess(String code);
-        public void onLoginFailed(String error);
+        public void onLoginSuccess(Dialog dialog, String code);
+        public void onLoginFailed(Dialog dialog, String error);
     }
 
 }
