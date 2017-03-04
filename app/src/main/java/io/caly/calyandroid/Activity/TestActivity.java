@@ -1,12 +1,18 @@
 package io.caly.calyandroid.Activity;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
+import android.app.Dialog;
 import android.content.Intent;
-import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.ButterKnife;
@@ -14,9 +20,9 @@ import butterknife.OnClick;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.Service.FirebaseMessagingService;
 import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.Util;
+import io.caly.calyandroid.View.GoogleOAuthDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,13 +37,33 @@ import retrofit2.Response;
 
 public class TestActivity extends BaseAppCompatActivity {
 
+    Button auth;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_test);
+        auth = (Button)findViewById(R.id.auth);
+        auth.setOnClickListener(new View.OnClickListener() {
+            Dialog auth_dialog;
+            @Override
+            public void onClick(View arg0) {
+                // TODO Auto-generated method stub
+                auth_dialog = new GoogleOAuthDialog(TestActivity.this);
+                auth_dialog.show();
+                auth_dialog.setCancelable(true);
+            }
+        });
+    }
+
+/*
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
         init();
-    }
+    }*/
 
     void init(){
         ButterKnife.bind(this);
@@ -51,31 +77,6 @@ public class TestActivity extends BaseAppCompatActivity {
 
     }
 
-    PushReceiver pushReceiver;
-
-    @Override
-    protected void onStart() {
-        pushReceiver = new PushReceiver();
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(FirebaseMessagingService.INTENT_ACTION_SYNC_COMPLETE);
-        registerReceiver(pushReceiver, intentFilter);
-
-        super.onStart();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        unregisterReceiver(pushReceiver);
-    }
-
-    class PushReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            Log.d(TAG, "received!");
-            Log.d(TAG, "msg : " + intent.getStringExtra("message"));
-        }
-    }
 
     void test(){
 
