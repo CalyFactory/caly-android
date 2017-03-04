@@ -52,9 +52,8 @@ public class SplashActivity extends BaseAppCompatActivity {
 
         Util.setStatusBarColor(this, getResources().getColor(R.color.colorPrimaryDark));
 
-
         //firebase init
-        Log.d(TAG, "push token : " + FirebaseInstanceId.getInstance().getToken());
+        Log.i(TAG, "pushToken : " + FirebaseInstanceId.getInstance().getToken());
         FirebaseMessaging.getInstance().subscribeToTopic("noti");
 
         if(isPermissionGranted()){
@@ -67,7 +66,7 @@ public class SplashActivity extends BaseAppCompatActivity {
 
     void startSplash(){
 
-        Log.d(TAG, "isdidrun : " + Prefer.get("isDidRun", false));
+        Log.i(TAG, "isdidrun : " + Prefer.get("isDidRun", false));
         if(Prefer.get("isDidRun", false)){
             timerHandler.sendEmptyMessageDelayed(0,1000);
         }
@@ -75,19 +74,6 @@ public class SplashActivity extends BaseAppCompatActivity {
             timerHandler.sendEmptyMessageDelayed(1,3000);
         }
         Prefer.set("isDidRun", true);
-
-        /*
-        SettingRecord currentSetting = SettingRecord.getSettingRecord();
-
-        if(currentSetting.isDidRun()){
-            timerHandler.sendEmptyMessageDelayed(0,1000);
-        }
-        else{
-            timerHandler.sendEmptyMessageDelayed(1,3000);
-        }
-
-        currentSetting.setDidRun(true);
-        currentSetting.save();*/
     }
 
     void requestPermission(){

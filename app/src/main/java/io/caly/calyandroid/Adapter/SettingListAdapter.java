@@ -29,6 +29,7 @@ import butterknife.OnClick;
 import io.caly.calyandroid.Activity.AccountAddActivity;
 import io.caly.calyandroid.Activity.AccountListActivity;
 import io.caly.calyandroid.Activity.SplashActivity;
+import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.DataModel.SettingItemModel;
@@ -49,7 +50,7 @@ import retrofit2.Response;
 public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.ViewHolder> {
 
     //로그에 쓰일 tag
-    private static final String TAG = SettingListAdapter.class.getSimpleName();
+    private static final String TAG = CalyApplication.class.getSimpleName() + "/" + SettingListAdapter.class.getSimpleName();
 
     ArrayList<SettingItemModel> dataList = new ArrayList<>();
 

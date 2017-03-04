@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
+import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Util.ApiClient;
@@ -23,7 +24,7 @@ import retrofit2.Response;
 public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
 
     //로그에 쓰일 tag
-    private static final String TAG = FirebaseInstanceIDService.class.getSimpleName();
+    private static final String TAG = CalyApplication.class.getSimpleName() + "/" + FirebaseInstanceIDService.class.getSimpleName();
 
 
     @Override

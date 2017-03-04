@@ -5,6 +5,8 @@ import android.app.Application;
 import android.os.Bundle;
 import android.util.Log;
 
+import io.caly.calyandroid.CalyApplication;
+
 /**
  * Copyright 2017 JSpiner. All rights reserved.
  *
@@ -16,7 +18,7 @@ import android.util.Log;
 public class AppLifecycleListener implements Application.ActivityLifecycleCallbacks{
 
     //로그에 쓰일 tag
-    private static final String TAG = AppLifecycleListener.class.getSimpleName();
+    private static final String TAG = CalyApplication.class.getSimpleName() + "/" + AppLifecycleListener.class.getSimpleName();
 
     private static int activeActivities = 0;
 

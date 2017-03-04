@@ -16,6 +16,7 @@ import java.util.Map;
 
 import io.caly.calyandroid.Activity.EventListActivity;
 import io.caly.calyandroid.Activity.SplashActivity;
+import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.TestModel;
 import io.caly.calyandroid.Model.Event.GoogleSyncDoneEvent;
 import io.caly.calyandroid.R;
@@ -33,7 +34,7 @@ import io.caly.calyandroid.Util.EventListener.AppLifecycleListener;
 public class FirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
 
     //로그에 쓰일 tag
-    private static final String TAG = FirebaseMessagingService.class.getSimpleName();
+    private static final String TAG = CalyApplication.class.getSimpleName() + "/" + FirebaseMessagingService.class.getSimpleName();
 
     public static final String INTENT_ACTION_SYNC_COMPLETE = "INTENT_ACTION_SYNC_COMPLETE";
 

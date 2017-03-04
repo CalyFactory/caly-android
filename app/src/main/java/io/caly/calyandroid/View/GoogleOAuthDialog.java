@@ -17,6 +17,7 @@ import android.widget.Toast;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.Activity.TestActivity;
+import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.R;
 
@@ -31,7 +32,9 @@ import io.caly.calyandroid.R;
 public class GoogleOAuthDialog extends Dialog {
 
     //로그에 쓰일 tag
-    private static final String TAG = GoogleOAuthDialog.class.getSimpleName();
+    private static final String TAG = CalyApplication.class.getSimpleName() + "/" + GoogleOAuthDialog.class.getSimpleName();
+
+    private LoginCallback loginCallback;
 
     @Bind(R.id.webview_googleoauth)
     WebView webView;
@@ -40,8 +43,7 @@ public class GoogleOAuthDialog extends Dialog {
     private static String OAUTH_URL = "https://accounts.google.com/o/oauth2/auth";
     private static String OAUTH_SCOPE = "https://www.googleapis.com/auth/calendar " +
             "https://www.googleapis.com/auth/userinfo.email " +
-            "https://www.googleapis.com/auth/calendar.readonly"
-            ;
+            "https://www.googleapis.com/auth/calendar.readonly";
 
     public GoogleOAuthDialog(Context context) {
         super(context);
@@ -74,8 +76,7 @@ public class GoogleOAuthDialog extends Dialog {
                 "&response_type=code&client_id=" + getContext().getString(R.string.google_client_id) +
                 "&scope=" + OAUTH_SCOPE +
                 "&access_type=offline" +
-                "&approval_prompt=force" +
-                "&state=test" + TokenRecord.getTokenRecord().getApiKey()
+                "&approval_prompt=force"
         );
         webView.setWebViewClient(new WebViewClient() {
 
@@ -84,7 +85,21 @@ public class GoogleOAuthDialog extends Dialog {
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon){
-                super.onPageStarted(view, url, favicon);
+                Log.d(TAG, "onPageStarted : " + url);
+
+                if(url.contains("code=") && authComplete != true){
+                    Uri uri = Uri.parse(url);
+                    String authCode = uri.getQueryParameter("code");
+                    loginCallback.onLoginSuccess(authCode);
+                }
+                else if(url.contains("error=")){
+                    Uri uri = Uri.parse(url);
+                    String errorCode = uri.getQueryParameter("error");
+                    loginCallback.onLoginFailed(errorCode);
+                }
+                else{
+                    super.onPageStarted(view, url, favicon);
+                }
 
             }
 
@@ -93,33 +108,17 @@ public class GoogleOAuthDialog extends Dialog {
                 super.onPageFinished(view, url);
 
                 Log.d(TAG, "onPageFinished : " + url);
-
-                /*
-                if (url.contains("?code=") && authComplete != true) {
-                    Uri uri = Uri.parse(url);
-                    authCode = uri.getQueryParameter("code");
-                    Log.i(TAG, "CODE : " + authCode);
-                    authComplete = true;
-                    resultIntent.putExtra("code", authCode);
-                    TestActivity.this.setResult(Activity.RESULT_OK, resultIntent);
-                    setResult(Activity.RESULT_CANCELED, resultIntent);
-
-                    SharedPreferences.Editor edit = pref.edit();
-                    edit.putString("Code", authCode);
-                    edit.commit();
-                    auth_dialog.dismiss();
-                    Toast.makeText(getApplicationContext(),"Authorization Code is: " +authCode, Toast.LENGTH_SHORT).show();
-                }else if(url.contains("error=access_denied")){
-                    Log.i(TAG, "ACCESS_DENIED_HERE");
-                    resultIntent.putExtra("code", authCode);
-                    authComplete = true;
-                    setResult(Activity.RESULT_CANCELED, resultIntent);
-                    Toast.makeText(getApplicationContext(), "Error Occured", Toast.LENGTH_SHORT).show();
-
-                    auth_dialog.dismiss();
-                }*/
             }
         });
+    }
+
+    public void setLoginCallback(LoginCallback callback){
+        this.loginCallback = loginCallback;
+    }
+
+    public interface LoginCallback{
+        public void onLoginSuccess(String code);
+        public void onLoginFailed(String error);
     }
 
 }

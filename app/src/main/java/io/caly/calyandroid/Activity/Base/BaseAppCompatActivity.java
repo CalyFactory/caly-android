@@ -3,6 +3,7 @@ package io.caly.calyandroid.Activity.Base;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
@@ -27,6 +28,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
 
 
@@ -38,6 +40,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
+        Log.i(TAG, "onStart");
         super.onStart();
 
         BusProvider.getInstance().register(this);
@@ -46,9 +49,28 @@ public class BaseAppCompatActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+        Log.i(TAG, "onStop");
         super.onStop();
 
         BusProvider.getInstance().unregister(this);
         GoogleAnalytics.getInstance(this).reportActivityStop(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.i(TAG, "onDestroy");
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.i(TAG, "onResume");
+        super.onResume();
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.i(TAG, "onRestart");
+        super.onRestart();
     }
 }
