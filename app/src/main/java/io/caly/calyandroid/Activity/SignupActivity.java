@@ -125,6 +125,12 @@ public class SignupActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.btn_signup_proc)
     void onSignupClick(){
+        requestSignup();
+    }
+
+    void requestSignup(){
+        Log.i(TAG, "requestSignup");
+
         final Bundle bundleData = getIntent().getExtras();
 
         ApiClient.getService().signUp(
@@ -185,7 +191,6 @@ public class SignupActivity extends BaseAppCompatActivity {
                 ).show();
             }
         });
-
     }
 
     void updateButton(){

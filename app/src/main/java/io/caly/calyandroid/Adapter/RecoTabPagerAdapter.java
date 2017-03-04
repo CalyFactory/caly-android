@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Fragment.RecoTabFragment;
 import io.caly.calyandroid.Model.Category;
 import io.caly.calyandroid.Model.DataModel.EventModel;
@@ -19,7 +20,7 @@ import io.caly.calyandroid.Model.DataModel.EventModel;
 public class RecoTabPagerAdapter extends FragmentStatePagerAdapter {
 
     //로그에 쓰일 tag
-    private static final String TAG = RecoTabPagerAdapter.class.getSimpleName();
+    private static final String TAG = CalyApplication.class.getSimpleName() + "/" + RecoTabPagerAdapter.class.getSimpleName();
 
     Fragment[] fragmentList;
 

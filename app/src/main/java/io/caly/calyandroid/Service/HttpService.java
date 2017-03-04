@@ -106,7 +106,10 @@ public interface HttpService {
     @POST("member/addAccount")
     Call<BasicResponse> addAccount(
             @Field("apikey") String apikey,
-            @Field("login_platform") String loginPlatform
+            @Field("login_platform") String loginPlatform,
+            @Field("uId") String userId,
+            @Field("uPw") String userPw,
+            @Field("authCode") String authCode
     );
 
     /*
@@ -185,4 +188,22 @@ public interface HttpService {
             @Field("apikey") String apiKey,
             @Field("receive") int receive
     );
+
+
+
+    /*
+    =============================
+              SUPPORT
+    =============================
+     */
+
+    //notices
+    @FormUrlEncoded
+    @POST("support/notices")
+    Call<BasicResponse> notices(
+            @Field("apikey") String apiKey
+    );
+
+
+
 }

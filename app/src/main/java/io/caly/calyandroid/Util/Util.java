@@ -31,7 +31,7 @@ import static android.content.Context.TELEPHONY_SERVICE;
 public class Util {
 
     //로그에 쓰일 tag
-    private static final String TAG = Util.class.getSimpleName();
+    private static final String TAG = CalyApplication.class.getSimpleName() + "/" + Util.class.getSimpleName();
 
 
     public static String[] dayOfDate = {"일","월","화","수","목","금","토"};

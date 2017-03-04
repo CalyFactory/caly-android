@@ -2,6 +2,7 @@ package io.caly.calyandroid;
 
 import android.app.Application;
 import android.content.Context;
+import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -23,12 +24,15 @@ import net.jspiner.prefer.Prefer;
 
 public class CalyApplication extends SugarApp {
 
+    private final String TAG = CalyApplication.class.getSimpleName();
+
     private Tracker mTracker;
 
     private static Context context;
 
     @Override
     public void onCreate() {
+        Log.i(TAG, "onCreate");
         super.onCreate();
 
         init();

@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
 import io.caly.calyandroid.Activity.SettingActivity;
+import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Fragment.GuideItemFragment;
 
 /**
@@ -19,7 +20,7 @@ import io.caly.calyandroid.Fragment.GuideItemFragment;
 public class GuidePagerAdapter extends FragmentStatePagerAdapter {
 
     //로그에 쓰일 tag
-    private static final String TAG = GuidePagerAdapter.class.getSimpleName();
+    private static final String TAG = CalyApplication.class.getSimpleName() + "/" + GuidePagerAdapter.class.getSimpleName();
 
     Fragment[] fragmentList;
 

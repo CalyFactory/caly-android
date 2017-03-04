@@ -229,6 +229,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     };
 
     void loadMoreEventList(final int pageNum){
+        Log.i(TAG, "loadMoreEventList(" + pageNum + ")");
 
         isLoading = true;
 
@@ -293,6 +294,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     }
 
     void loadEventList(){
+        Log.i(TAG, "loadEventList");
         ApiClient.getService().getEventList(
                 TokenRecord.getTokenRecord().getApiKey(),
                 0
@@ -356,7 +358,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     }
 
     void syncCaldav(){
-        Log.d(TAG, "request sync to caldav");
+        Log.i(TAG, "syncCaldav");
         ApiClient.getService().sync(
                 TokenRecord.getTokenRecord().getApiKey()
         ).enqueue(new Callback<BasicResponse>() {
@@ -399,7 +401,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     }
 
     void syncGoogle(){
-        Log.d(TAG, "request sync to google");
+        Log.i(TAG, "syncGoogle");
 
         Toast.makeText(
                 getBaseContext(),
@@ -423,7 +425,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     }
 
     void syncCalendar(String loginPlatform){
-        Log.i(TAG, "request sync");
+        Log.i(TAG, "syncCalendar");
 
         Log.d(TAG,"loginplatform : " + loginPlatform);
         switch (LoginPlatform.getInstance(loginPlatform)){
@@ -443,6 +445,7 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     @Subscribe
     public void googleSyncCallback(GoogleSyncDoneEvent event){
+        Log.i(TAG, "googleSyncCallback");
         linearLoader.setVisibility(View.GONE);
 
         loadEventList();

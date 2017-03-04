@@ -37,33 +37,15 @@ import retrofit2.Response;
 
 public class TestActivity extends BaseAppCompatActivity {
 
-    Button auth;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
-        auth = (Button)findViewById(R.id.auth);
-        auth.setOnClickListener(new View.OnClickListener() {
-            Dialog auth_dialog;
-            @Override
-            public void onClick(View arg0) {
-                // TODO Auto-generated method stub
-                auth_dialog = new GoogleOAuthDialog(TestActivity.this);
-                auth_dialog.show();
-                auth_dialog.setCancelable(true);
-            }
-        });
-    }
 
-/*
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
         init();
-    }*/
+    }
 
     void init(){
         ButterKnife.bind(this);

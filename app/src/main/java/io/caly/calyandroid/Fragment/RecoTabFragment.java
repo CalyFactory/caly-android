@@ -152,6 +152,8 @@ public class RecoTabFragment extends BaseFragment {
     }
 
     void loadList(){
+        Log.i(TAG, "loadList");
+
         ApiClient.getService().getRecoList(
                 TokenRecord.getTokenRecord().getApiKey(),
                 eventData.eventHashKey,
