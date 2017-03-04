@@ -67,7 +67,7 @@
         </activity>
 
         <!-- Announce Activity -->
-        <activity android:name=".Activity.AnnounceActivity">
+        <activity android:name=".Activity.NoticeActivity">
 
         </activity>
 

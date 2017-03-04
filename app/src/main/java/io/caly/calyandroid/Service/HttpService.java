@@ -188,4 +188,22 @@ public interface HttpService {
             @Field("apikey") String apiKey,
             @Field("receive") int receive
     );
+
+
+
+    /*
+    =============================
+              SUPPORT
+    =============================
+     */
+
+    //notices
+    @FormUrlEncoded
+    @POST("support/notices")
+    Call<BasicResponse> notices(
+            @Field("apikey") String apiKey
+    );
+
+
+
 }
