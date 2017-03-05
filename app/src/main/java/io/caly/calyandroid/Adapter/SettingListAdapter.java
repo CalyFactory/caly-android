@@ -105,10 +105,12 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                     switchRow.setChecked(!switchRow.isChecked());
                     break;
                 case 8:
-                    startAccountListActivity();
+                    Toast.makeText(context, context.getString(R.string.toast_msg_not_support), Toast.LENGTH_LONG).show();
+//                    startAccountListActivity();
                     break;
                 case 9:
-                    startAccountAddActivity();
+                    Toast.makeText(context, context.getString(R.string.toast_msg_not_support), Toast.LENGTH_LONG).show();
+//                    startAccountAddActivity();
                     break;
                 case 10:
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
