@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -122,7 +123,22 @@ public class RecommandListActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.fab_recolist_feedback)
     void onFeedBackClick(){
-        new FeedbackDialog(RecommandListActivity.this).show();
+        new FeedbackDialog(RecommandListActivity.this, new FeedbackDialog.DialogCallback() {
+            @Override
+            public void onPositive(FeedbackDialog dialog, String contents) {
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_success_send_feedback),
+                        Toast.LENGTH_LONG
+                ).show();
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onNegative(FeedbackDialog dialog) {
+                dialog.dismiss();
+            }
+        }).show();
     }
 
 }

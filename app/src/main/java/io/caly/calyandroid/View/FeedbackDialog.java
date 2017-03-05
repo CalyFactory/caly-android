@@ -3,8 +3,11 @@ package io.caly.calyandroid.View;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.widget.EditText;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.caly.calyandroid.R;
 
 /**
@@ -16,6 +19,17 @@ import io.caly.calyandroid.R;
  */
 
 public class FeedbackDialog extends Dialog {
+
+    @Bind(R.id.edt_feedback_text)
+    EditText edtFeedback;
+
+    DialogCallback callback;
+
+    public FeedbackDialog(Context context, DialogCallback callback){
+        super(context);
+        this.callback = callback;
+
+    }
 
     public FeedbackDialog(Context context) {
         super(context);
@@ -43,6 +57,24 @@ public class FeedbackDialog extends Dialog {
         ButterKnife.bind(this);
 
 
+    }
+
+    @OnClick(R.id.btn_login_ok)
+    void onLoginOkClick(){
+        callback.onPositive(
+                this,
+                edtFeedback.getText().toString()
+        );
+    }
+
+    @OnClick(R.id.btn_login_cancel)
+    void onLoginCancelClick(){
+        callback.onNegative(this);
+    }
+
+    public interface DialogCallback {
+        public void onPositive(FeedbackDialog dialog, String contents);
+        public void onNegative(FeedbackDialog dialog);
     }
 
 }

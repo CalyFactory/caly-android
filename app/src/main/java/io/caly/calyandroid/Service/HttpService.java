@@ -205,6 +205,14 @@ public interface HttpService {
             @Field("apikey") String apiKey
     );
 
+    //requests
+    @FormUrlEncoded
+    @POST("support/requests")
+    Call<BasicResponse> requests(
+            @Field("apikey") String apiKey,
+            @Field("contents") String contents
+    );
+
 
 
 }
