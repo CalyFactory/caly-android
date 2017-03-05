@@ -19,6 +19,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.RecoTabPagerAdapter;
 import io.caly.calyandroid.Adapter.RecommandListAdapter;
@@ -29,6 +30,7 @@ import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.EventListener.RecyclerItemClickListener;
 import io.caly.calyandroid.Util.Util;
+import io.caly.calyandroid.View.FeedbackDialog;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -117,4 +119,10 @@ public class RecommandListActivity extends BaseAppCompatActivity {
 
 
     }
+
+    @OnClick(R.id.fab_recolist_feedback)
+    void onFeedBackClick(){
+        new FeedbackDialog(RecommandListActivity.this).show();
+    }
+
 }

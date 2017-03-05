@@ -44,4 +44,18 @@ public class StringFormmater {
         );
     }
 
+    public static String simpleDateFormat(Date date){
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+
+        return String.format(
+                "%02d.%02d.%02d",
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH)+1,
+                calendar.get(Calendar.DAY_OF_MONTH)
+
+        );
+
+    }
+
 }

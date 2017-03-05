@@ -28,6 +28,7 @@ import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import io.caly.calyandroid.Activity.AccountAddActivity;
 import io.caly.calyandroid.Activity.AccountListActivity;
+import io.caly.calyandroid.Activity.NoticeActivity;
 import io.caly.calyandroid.Activity.SplashActivity;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
@@ -91,6 +92,8 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                 case 0:
                     break;
                 case 1:         // 공지사항
+                    Intent intent = new Intent(context, NoticeActivity.class);
+                    context.startActivity(intent);
                     break;
                 case 2:         // 문의하기
                     Uri uri = Uri.parse("mailto:calyfactory@gmail.com");

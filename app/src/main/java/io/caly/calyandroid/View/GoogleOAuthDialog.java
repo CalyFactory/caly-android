@@ -9,7 +9,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.webkit.CookieManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -64,14 +63,7 @@ public class GoogleOAuthDialog extends Dialog {
 
         ButterKnife.bind(this);
 
-        //reset webview
-        webView.clearHistory();
-        webView.clearCache(true);
         webView.getSettings().setJavaScriptEnabled(true);
-
-        CookieManager cookieManager = CookieManager.getInstance();
-        cookieManager.removeAllCookie();
-
         webView.loadUrl(
                 OAUTH_URL +
                 "?redirect_uri=" + REDIRECT_URI +

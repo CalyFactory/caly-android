@@ -3,6 +3,7 @@ package io.caly.calyandroid.Service;
 import io.caly.calyandroid.Model.Response.AccountResponse;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.EventResponse;
+import io.caly.calyandroid.Model.Response.NoticeResponse;
 import io.caly.calyandroid.Model.Response.RecoResponse;
 import io.caly.calyandroid.Model.Response.SessionResponse;
 import retrofit2.Call;
@@ -200,7 +201,7 @@ public interface HttpService {
     //notices
     @FormUrlEncoded
     @POST("support/notices")
-    Call<BasicResponse> notices(
+    Call<NoticeResponse> notices(
             @Field("apikey") String apiKey
     );
 
