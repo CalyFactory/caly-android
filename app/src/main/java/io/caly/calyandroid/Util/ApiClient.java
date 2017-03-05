@@ -4,8 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import io.caly.calyandroid.CalyApplication;
-import io.caly.calyandroid.Model.Deserializer.EventInstanceCreator;
+import io.caly.calyandroid.Model.Deserializer.EventDeserialize;
 import io.caly.calyandroid.Model.DataModel.EventModel;
+import io.caly.calyandroid.Model.Deserializer.RecoStateDeserializer;
+import io.caly.calyandroid.Model.RecoState;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Service.HttpService;
 import io.caly.calyandroid.Util.EventListener.LoggingInterceptor;
@@ -36,7 +38,8 @@ public class ApiClient {
 
             gsonObject = new GsonBuilder()
                     .setDateFormat("yyyy-MM-dd HH:mm:ss")
-                    .registerTypeAdapter(EventModel.class, new EventInstanceCreator())
+                    .registerTypeAdapter(EventModel.class, new EventDeserialize())
+                    .registerTypeAdapter(RecoState.class, new RecoStateDeserializer())
                     .create();
         }
 

@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Calendar;
 import java.util.Date;
 
+import io.caly.calyandroid.Model.RecoState;
+
 /**
  * Copyright 2017 JSpiner. All rights reserved.
  *
@@ -33,6 +35,9 @@ public class EventModel {
 
     @SerializedName("summary")
     public String summaryText;
+
+    @SerializedName("reco_state")
+    public RecoState recoState;
 
     // TODO : recurrance 객체 만들기
     @SerializedName("recurrance")
