@@ -13,22 +13,29 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.RecoTabPagerAdapter;
 import io.caly.calyandroid.Adapter.RecommandListAdapter;
 import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
+import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.TrackingType;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.EventListener.RecyclerItemClickListener;
 import io.caly.calyandroid.Util.Util;
+import io.caly.calyandroid.View.FeedbackDialog;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -116,5 +123,81 @@ public class RecommandListActivity extends BaseAppCompatActivity {
         });
 
 
+    }
+
+    @OnClick(R.id.fab_recolist_feedback)
+    void onFeedBackClick(){
+        new FeedbackDialog(RecommandListActivity.this, new FeedbackDialog.DialogCallback() {
+            @Override
+            public void onPositive(final FeedbackDialog dialog, String contents) {
+                ApiClient.getService().requests(
+                        TokenRecord.getTokenRecord().getApiKey(),
+                        contents
+                ).enqueue(new Callback<BasicResponse>() {
+                    @Override
+                    public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                        Log.d(TAG,"onResponse code : " + response.code());
+
+                        BasicResponse body = response.body();
+                        switch (response.code()){
+                            case 200:
+
+                                Toast.makeText(
+                                        getBaseContext(),
+                                        getString(R.string.toast_msg_success_send_feedback),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                                dialog.dismiss();
+
+                                break;
+                            default:
+                                Log.e(TAG,"status code : " + response.code());
+                                Toast.makeText(
+                                        getBaseContext(),
+                                        getString(R.string.toast_msg_server_internal_error),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<BasicResponse> call, Throwable t) {
+                        Log.e(TAG,"onfail : " + t.getMessage());
+                        Log.e(TAG, "fail " + t.getClass().getName());
+
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_network_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onNegative(FeedbackDialog dialog) {
+                dialog.dismiss();
+            }
+        }).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

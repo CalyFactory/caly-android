@@ -15,9 +15,8 @@ import com.squareup.picasso.Picasso;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.caly.calyandroid.Activity.EventListActivity;
 import io.caly.calyandroid.Activity.LoginActivity;
-import io.caly.calyandroid.Fragment.base.BaseFragment;
+import io.caly.calyandroid.Fragment.Base.BaseFragment;
 import io.caly.calyandroid.R;
 
 /**

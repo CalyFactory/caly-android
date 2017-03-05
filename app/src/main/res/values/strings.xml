@@ -16,6 +16,8 @@
     <string name="toast_msg_add_account_success">성공적으로 계정을 추가했습니다.</string>
     <string name="toast_msg_add_account_duplicate">이미 추가된 계정입니다.</string>
     <string name="toast_msg_add_account_error">계정 추가를 실패하였습니다.</string>
+    <string name="toast_msg_success_send_feedback">소중한 피드백 감사합니다.</string>
+    <string name="toast_msg_not_support">현재 버전에서는 지원하지 않습니다. 조금만 기다려주세요 :)</string>
 
     <!-- app notification msg -->
     <string name="notification_msg_google_sync_done">캘린더 동기화가 완료됬습니다!</string>

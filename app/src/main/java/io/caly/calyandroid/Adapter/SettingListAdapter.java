@@ -28,6 +28,7 @@ import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import io.caly.calyandroid.Activity.AccountAddActivity;
 import io.caly.calyandroid.Activity.AccountListActivity;
+import io.caly.calyandroid.Activity.NoticeActivity;
 import io.caly.calyandroid.Activity.SplashActivity;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
@@ -91,6 +92,8 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                 case 0:
                     break;
                 case 1:         // 공지사항
+                    Intent intent = new Intent(context, NoticeActivity.class);
+                    context.startActivity(intent);
                     break;
                 case 2:         // 문의하기
                     Uri uri = Uri.parse("mailto:calyfactory@gmail.com");
@@ -98,14 +101,21 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
                     context.startActivity(it);
                     break;
+                case 5:
+                    Intent marketIntent = new Intent(Intent.ACTION_VIEW);
+                    marketIntent.setData(Uri.parse("market://details?id=" + context.getPackageName()));
+                    context.startActivity(marketIntent);
+                    break;
                 case 6:         // push 설정
                     switchRow.setChecked(!switchRow.isChecked());
                     break;
                 case 8:
-                    startAccountListActivity();
+                    Toast.makeText(context, context.getString(R.string.toast_msg_not_support), Toast.LENGTH_LONG).show();
+//                    startAccountListActivity();
                     break;
                 case 9:
-                    startAccountAddActivity();
+                    Toast.makeText(context, context.getString(R.string.toast_msg_not_support), Toast.LENGTH_LONG).show();
+//                    startAccountAddActivity();
                     break;
                 case 10:
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);

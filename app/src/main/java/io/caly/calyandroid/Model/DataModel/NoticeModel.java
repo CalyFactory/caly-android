@@ -21,6 +21,19 @@ public class NoticeModel {
     public String noticeDescription;
 
     @Expose
+    public boolean isHeader = true;
+
+    @Expose
     public boolean isExpandabled = false;
 
+    public NoticeModel(String noticeDescription){
+        this.noticeDescription = noticeDescription;
+        isHeader = false;
+    }
+
+    public NoticeModel(){
+        noticeTitle="test1";
+        noticeDescription="dd";
+
+    }
 }

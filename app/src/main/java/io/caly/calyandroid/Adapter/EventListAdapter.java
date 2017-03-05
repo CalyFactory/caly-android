@@ -1,6 +1,7 @@
 package io.caly.calyandroid.Adapter;
 
 import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.Model.DataModel.EventModel;
+import io.caly.calyandroid.Model.RecoState;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.StringFormmater;
 import io.caly.calyandroid.Util.Util;
@@ -47,6 +49,9 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
         @Bind(R.id.line_eventlist)
         View viewIndicator;
+
+        @Bind(R.id.card_eventlist_row)
+        CardView cardRow;
 
         public ViewHolder(View view){
             super(view);
@@ -131,7 +136,14 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                         eventModel.endDateTime
                 )
         );
-        holder.tvEventLocation.setText("위치정보가엄어영");
+        holder.tvEventLocation.setText(eventModel.location);
+
+        if(eventModel.recoState != RecoState.STATE_DONE_RECOMMEND){
+            holder.cardRow.setCardBackgroundColor(Color.LTGRAY);
+        }
+        else{
+            holder.cardRow.setCardBackgroundColor(Color.rgb(157,181,192));
+        }
 
     }
 

@@ -1,4 +1,4 @@
-package io.caly.calyandroid.Fragment.base;
+package io.caly.calyandroid.Fragment.Base;
 
 
 import android.content.Context;
@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import io.caly.calyandroid.CalyApplication;
-import io.caly.calyandroid.Fragment.GuideItemFragment;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.

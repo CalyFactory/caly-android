@@ -1,37 +1,27 @@
 package io.caly.calyandroid.Fragment;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import io.caly.calyandroid.Activity.LoginActivity;
 import io.caly.calyandroid.Adapter.RecommandListAdapter;
-import io.caly.calyandroid.Fragment.base.BaseFragment;
+import io.caly.calyandroid.Fragment.Base.BaseFragment;
 import io.caly.calyandroid.Model.Category;
 import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.DataModel.RecoModel;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
-import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.RecoResponse;
 import io.caly.calyandroid.Model.TrackingType;
 import io.caly.calyandroid.R;
@@ -105,10 +95,7 @@ public class RecoTabFragment extends BaseFragment {
 
 
         ArrayList<RecoModel> dataList = new ArrayList<>();
-        for(int i=0;i<2;i++){
-            dataList.add(new RecoModel());
-        }
-        recyclerAdapter = new RecommandListAdapter(dataList);
+        recyclerAdapter = new RecommandListAdapter(getContext(), dataList);
         recyclerList.setAdapter(recyclerAdapter);
 
 
@@ -156,7 +143,7 @@ public class RecoTabFragment extends BaseFragment {
 
         ApiClient.getService().getRecoList(
                 TokenRecord.getTokenRecord().getApiKey(),
-                eventData.eventHashKey,
+                "84eed75b49ccb544fd2c59ed2cbe6ff3221756c237d967a344b04336",//eventData.eventHashKey,
                 category.value
         ).enqueue(new Callback<RecoResponse>() {
             @Override

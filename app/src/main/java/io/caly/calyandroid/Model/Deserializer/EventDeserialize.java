@@ -21,14 +21,13 @@ import io.caly.calyandroid.Model.DataModel.EventModel;
  * @since 17. 2. 21
  */
 
-public class EventInstanceCreator implements JsonDeserializer<EventModel> {
+public class EventDeserialize implements JsonDeserializer<EventModel> {
 
     //로그에 쓰일 tag
-    private static final String TAG = CalyApplication.class.getSimpleName() + "/" + EventInstanceCreator.class.getSimpleName();
+    private static final String TAG = CalyApplication.class.getSimpleName() + "/" + EventDeserialize.class.getSimpleName();
 
     @Override
     public EventModel deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-        Log.d(TAG, "deserialize");
 
         EventModel eventModel = new GsonBuilder()
                     .setDateFormat("yyyy-MM-dd HH:mm:ss")
