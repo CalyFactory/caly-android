@@ -175,6 +175,8 @@ public class EventListActivity extends BaseAppCompatActivity {
                         Intent intent = new Intent(EventListActivity.this, RecommandListActivity.class);
                         intent.putExtra("event", ApiClient.getGson().toJson(recyclerAdapter.getItem(position)));
                         startActivity(intent);
+
+                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
                     }
 
                     @Override
