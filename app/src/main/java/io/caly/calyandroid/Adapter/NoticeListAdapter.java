@@ -13,6 +13,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.CalyApplication;
+import io.caly.calyandroid.Model.DataModel.NoticeModel;
 import io.caly.calyandroid.Model.DataModel.TestModel;
 import io.caly.calyandroid.R;
 
@@ -25,9 +26,9 @@ public class NoticeListAdapter extends RecyclerView.Adapter<NoticeListAdapter.Vi
     //로그에 쓰일 tag
     private static final String TAG = CalyApplication.class.getSimpleName() + "/" + NoticeListAdapter.class.getSimpleName();
 
-    private ArrayList<TestModel> dataList;
+    private ArrayList<NoticeModel> dataList;
 
-    public NoticeListAdapter(ArrayList<TestModel> dataList){
+    public NoticeListAdapter(ArrayList<NoticeModel> dataList){
         this.dataList = dataList;
     }
 
@@ -43,7 +44,7 @@ public class NoticeListAdapter extends RecyclerView.Adapter<NoticeListAdapter.Vi
         @Nullable
         @OnClick(R.id.linear_notice_header)
         void onHeaderClick(){
-
+            int position = getAdapterPosition();
         }
 
     }

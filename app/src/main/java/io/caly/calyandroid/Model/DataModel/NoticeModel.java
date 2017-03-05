@@ -21,6 +21,6 @@ public class NoticeModel {
     public String noticeDescription;
 
     @Expose
-    public boolean isExpandabled = false;
+    public boolean isExpanded = false;
 
 }
