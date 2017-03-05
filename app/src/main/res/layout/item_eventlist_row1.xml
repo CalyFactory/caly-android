@@ -58,6 +58,7 @@
             android:layout_marginBottom="20dp"
             android:layout_marginRight="20dp"
             card:cardBackgroundColor="#9db5c0"
+            android:id="@+id/card_eventlist_row"
             card:cardCornerRadius="3dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

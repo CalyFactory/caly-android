@@ -12,8 +12,11 @@ import com.google.gson.annotations.SerializedName;
 
 public enum  RecoState {
 
+    @SerializedName("1")
     STATE_BEING_RECOMMEND(1),
+    @SerializedName("2")
     STATE_NOTHING_TO_RECOMMEND(2),
+    @SerializedName("3")
     STATE_DONE_RECOMMEND(3);
 
     public final int value;

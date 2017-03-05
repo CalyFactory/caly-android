@@ -252,7 +252,6 @@ public class EventListActivity extends BaseAppCompatActivity {
                     switch (response.code()){
                         case 200:
                             EventResponse body = response.body();
-                            Log.d(TAG, "json : " + new Gson().toJson(body));
                             Collections.reverse(body.payload.data);
                             for(EventModel eventModel : body.payload.data){
 

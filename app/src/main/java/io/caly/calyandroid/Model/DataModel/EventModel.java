@@ -36,6 +36,9 @@ public class EventModel {
     @SerializedName("summary")
     public String summaryText;
 
+    @SerializedName("location")
+    public String location;
+
     @SerializedName("reco_state")
     public RecoState recoState;
 
