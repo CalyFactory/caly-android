@@ -36,6 +36,7 @@ import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.DataModel.TestModel;
 import io.caly.calyandroid.Model.Event.GoogleSyncDoneEvent;
 import io.caly.calyandroid.Model.LoginPlatform;
+import io.caly.calyandroid.Model.RecoState;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.EventResponse;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
@@ -175,11 +176,17 @@ public class EventListActivity extends BaseAppCompatActivity {
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Intent intent = new Intent(EventListActivity.this, RecommandListActivity.class);
-                        intent.putExtra("event", ApiClient.getGson().toJson(recyclerAdapter.getItem(position)));
-                        startActivity(intent);
 
-                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                        EventModel eventModel = recyclerAdapter.getItem(position);
+
+                        if(eventModel.recoState == RecoState.STATE_DONE_RECOMMEND){
+                            Intent intent = new Intent(EventListActivity.this, RecommandListActivity.class);
+                            intent.putExtra("event", ApiClient.getGson().toJson(recyclerAdapter.getItem(position)));
+                            startActivity(intent);
+
+                            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                        }
+
                     }
 
                     @Override
