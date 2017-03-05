@@ -12,14 +12,35 @@ import com.google.gson.annotations.SerializedName;
 
 public class RecoModel {
 
-    @SerializedName("event_hashkey")
-    public String eventHashKey;
+    @SerializedName("title")
+    public String title;
+
+    @SerializedName("deep_url")
+    public String deepUrl;
+
+    @SerializedName("category")
+    public String category;
+
+    @SerializedName("price")
+    public int price;
+
+    @SerializedName("reco_hashkey")
+    public String recoHashKey;
 
     @SerializedName("region")
     public String region;
 
-    @SerializedName("reco_hashkey")
-    public String recoHashKey;
+    @SerializedName("tagNames")
+    public String tagNames;
+
+    @SerializedName("map_url")
+    public String mapUrl;
+
+    @SerializedName("event_hashkey")
+    public String eventHashKey;
+
+    @SerializedName("img_url")
+    public String imgUrl;
 
 
 

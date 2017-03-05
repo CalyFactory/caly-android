@@ -180,12 +180,9 @@ public class EventListActivity extends BaseAppCompatActivity {
                         EventModel eventModel = recyclerAdapter.getItem(position);
 
                         if(eventModel.recoState == RecoState.STATE_DONE_RECOMMEND){
-                            Intent intent = new Intent(EventListActivity.this, RecommandListActivity.class);
-                            intent.putExtra("event", ApiClient.getGson().toJson(recyclerAdapter.getItem(position)));
-                            startActivity(intent);
-
-                            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                            startRecommandActivity(eventModel);
                         }
+
 
                     }
 
@@ -204,6 +201,15 @@ public class EventListActivity extends BaseAppCompatActivity {
         else{
             checkRecoState();
         }
+
+    }
+
+    void startRecommandActivity(EventModel eventModel){
+        Intent intent = new Intent(EventListActivity.this, RecommandListActivity.class);
+        intent.putExtra("event", ApiClient.getGson().toJson(eventModel));
+        startActivity(intent);
+
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 
     }
 

@@ -51,7 +51,9 @@
                             android:paddingLeft="5dp"
                             android:paddingRight="5dp"
                             android:layout_height="match_parent">
+
                             <TextView
+                                android:id="@+id/tv_reco_title"
                                 android:layout_width="wrap_content"
                                 android:text="스시 마이우"
                                 android:textColor="#ffffff"
@@ -79,6 +81,7 @@
                         android:layout_height="match_parent">
 
                         <TextView
+                            android:id="@+id/tv_reco_distance"
                             android:layout_width="wrap_content"
                             android:text="선릉역에서 걸어서 3분거리"
                             android:textColor="#2f2f2f"
@@ -87,6 +90,7 @@
 
                         <TextView
                             android:layout_marginTop="5dp"
+                            android:id="@+id/tv_reco_hashtag"
                             android:layout_width="wrap_content"
                             android:text="#맛있음 #일식 #돈부리 #분위기좋은곳 #데이트코스 #맨날가는 #배고파여 #적을게없다 #뭐적지"
                             android:textColor="#8f8f8f"

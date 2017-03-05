@@ -2,12 +2,14 @@ package io.caly.calyandroid.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -34,7 +36,14 @@ public class RecommandListAdapter extends RecyclerView.Adapter<RecommandListAdap
 
     private ArrayList<RecoModel> dataList;
 
+    private Context context;
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        View view;
+
+        @Bind(R.id.tv_reco_title)
+        TextView tvRecoTitle;
 
         @Bind(R.id.imv_reco_food)
         ImageView imvFood;
@@ -42,26 +51,27 @@ public class RecommandListAdapter extends RecyclerView.Adapter<RecommandListAdap
         @Bind(R.id.imv_reco_map)
         ImageView imvMap;
 
+        @Bind(R.id.tv_reco_distance)
+        TextView tvRecoDistance;
+
+        @Bind(R.id.tv_reco_hashtag)
+        TextView tvRecoHashtag;
+
         Context context;
 
         public ViewHolder(Context context, View view){
             super(view);
 
+            this.view = view;
             this.context = context;
             ButterKnife.bind(this, view);
 
         }
-
-        @OnClick(R.id.imv_reco_map)
-        void onMapClick(){
-            Log.i(TAG, "map click");
-            Intent intent = new Intent(context, MapActivity.class);
-            context.startActivity(intent);
-        }
     }
 
-    public RecommandListAdapter(ArrayList<RecoModel> dataList){
+    public RecommandListAdapter(Context context, ArrayList<RecoModel> dataList){
         this.dataList = dataList;
+        this.context = context;
     }
 
 
@@ -81,14 +91,50 @@ public class RecommandListAdapter extends RecyclerView.Adapter<RecommandListAdap
                 .inflate(R.layout.item_recolist_row, parent, false);
 
         ViewHolder holder = new ViewHolder(parent.getContext(), view);
+        /*
         Picasso.with(parent.getContext())
                 .load(R.drawable.sample_food_1)
-                .into(holder.imvFood);
+                .into(holder.imvFood);*/
         return holder;
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, final int position) {
+        RecoModel recoModel = dataList.get(position);
+
+        holder.tvRecoTitle.setText(recoModel.title);
+        holder.tvRecoDistance.setText(recoModel.region);
+        holder.tvRecoHashtag.setText(recoModel.tagNames);
+
+        Picasso.with(context)
+                .load(context.getString(R.string.app_server) + "img/" + recoModel.imgUrl)
+                .into(holder.imvFood);
+        holder.view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                RecoModel recoModel = dataList.get(position);
+
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(recoModel.deepUrl));
+                context.startActivity(intent);
+            }
+        });
+
+        holder.imvMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                RecoModel recoModel = dataList.get(position);
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(recoModel.mapUrl));
+                context.startActivity(intent);
+            }
+        });
+
+
+    }
+
+    public RecoModel getItem(int position){
+        return dataList.get(position);
     }
 
     @Override

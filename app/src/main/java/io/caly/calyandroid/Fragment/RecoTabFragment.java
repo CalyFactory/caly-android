@@ -1,5 +1,7 @@
 package io.caly.calyandroid.Fragment;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -93,10 +95,7 @@ public class RecoTabFragment extends BaseFragment {
 
 
         ArrayList<RecoModel> dataList = new ArrayList<>();
-        for(int i=0;i<2;i++){
-            dataList.add(new RecoModel());
-        }
-        recyclerAdapter = new RecommandListAdapter(dataList);
+        recyclerAdapter = new RecommandListAdapter(getContext(), dataList);
         recyclerList.setAdapter(recyclerAdapter);
 
 
@@ -144,7 +143,7 @@ public class RecoTabFragment extends BaseFragment {
 
         ApiClient.getService().getRecoList(
                 TokenRecord.getTokenRecord().getApiKey(),
-                eventData.eventHashKey,
+                "84eed75b49ccb544fd2c59ed2cbe6ff3221756c237d967a344b04336",//eventData.eventHashKey,
                 category.value
         ).enqueue(new Callback<RecoResponse>() {
             @Override
