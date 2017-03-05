@@ -85,6 +85,9 @@ public class EventListActivity extends BaseAppCompatActivity {
     @Bind(R.id.linear_eventlist_loader)
     LinearLayout linearLoader;
 
+    @Bind(R.id.linear_eventlist_still)
+    LinearLayout linearStill;
+
     EventListAdapter recyclerAdapter;
     LinearLayoutManager layoutManager;
 
@@ -192,7 +195,7 @@ public class EventListActivity extends BaseAppCompatActivity {
             syncCalendar(intent.getStringExtra("loginPlatform"));
         }
         else{
-            loadEventList();
+            checkRecoState();
         }
 
     }
@@ -359,6 +362,53 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     }
 
+    void checkRecoState(){
+        ApiClient.getService().checkRepoState(
+                TokenRecord.getTokenRecord().getApiKey()
+        ).enqueue(new Callback<BasicResponse>() {
+            @Override
+            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+
+                Log.d(TAG,"onResponse code : " + response.code());
+
+                linearLoader.setVisibility(View.GONE);
+
+                BasicResponse body = response.body();
+                switch (response.code()){
+                    case 200:
+                        loadEventList();
+                        break;
+                    case 201:
+                        linearStill.setVisibility(View.VISIBLE);
+                        break;
+                    default:
+                        Log.e(TAG,"status code : " + response.code());
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_server_internal_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
+                }
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponse> call, Throwable t) {
+                Log.e(TAG,"onfail : " + t.getMessage());
+                Log.e(TAG, "fail " + t.getClass().getName());
+
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_network_error),
+                        Toast.LENGTH_LONG
+                ).show();
+            }
+        });
+    }
+
     void syncCaldav(){
         Log.i(TAG, "syncCaldav");
         ApiClient.getService().sync(
@@ -368,16 +418,15 @@ public class EventListActivity extends BaseAppCompatActivity {
             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
                 Log.d(TAG,"onResponse code : " + response.code());
 
-                linearLoader.setVisibility(View.GONE);
 
                 switch (response.code()){
                     case 200:
                         BasicResponse body = response.body();
-                        Toast.makeText(getBaseContext(),"동기화성공",Toast.LENGTH_LONG).show();
 
-                        loadEventList();
+                        checkRecoState();
                         break;
                     default:
+                        linearLoader.setVisibility(View.GONE);
                         Toast.makeText(
                                 getBaseContext(),
                                 getString(R.string.toast_msg_server_internal_error),
@@ -435,8 +484,6 @@ public class EventListActivity extends BaseAppCompatActivity {
                 syncGoogle();
                 break;
             case CALDAV_ICAL:
-                syncCaldav();
-                break;
             case CALDAV_NAVER:
                 syncCaldav();
                 break;
@@ -448,9 +495,8 @@ public class EventListActivity extends BaseAppCompatActivity {
     @Subscribe
     public void googleSyncCallback(GoogleSyncDoneEvent event){
         Log.i(TAG, "googleSyncCallback");
-        linearLoader.setVisibility(View.GONE);
 
-        loadEventList();
+        checkRecoState();
     }
 
     @OnClick(R.id.btn_eventlist_prev)

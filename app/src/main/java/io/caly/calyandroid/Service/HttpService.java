@@ -167,6 +167,12 @@ public interface HttpService {
             @Field("type") String type
     );
 
+    //checkRepoState
+    @FormUrlEncoded
+    @POST("reco/checkRecoState")
+    Call<BasicResponse> checkRepoState(
+            @Field("apikey") String apiKey
+    );
 
     /*
     =============================

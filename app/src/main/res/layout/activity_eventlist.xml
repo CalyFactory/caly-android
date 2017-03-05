@@ -110,6 +110,37 @@
                 app:indicatorColor="@color/colorPrimaryDark"
                 />-->
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="#dd000000"
+            android:visibility="gone"
+            android:id="@+id/linear_eventlist_still"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:clickable="true"
+            android:layout_height="match_parent">
+
+            <com.github.ybq.android.spinkit.SpinKitView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                style="@style/SpinKitView.Large.FoldingCube"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:SpinKit_Color="@color/colorPrimary" />
+            <TextView
+                android:layout_marginLeft="50dp"
+                android:layout_marginRight="50dp"
+                android:textColor="#ffffff"
+                android:textSize="40dp"
+                android:gravity="center"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="추천 데이터를 준비중입니다.\n\n기다려주시면 알려 드릴게요 :)"
+                />
+
+        </LinearLayout>
     </FrameLayout>
 
 

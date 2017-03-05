@@ -101,6 +101,11 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
                     context.startActivity(it);
                     break;
+                case 5:
+                    Intent marketIntent = new Intent(Intent.ACTION_VIEW);
+                    marketIntent.setData(Uri.parse("market://details?id=" + context.getPackageName()));
+                    context.startActivity(marketIntent);
+                    break;
                 case 6:         // push 설정
                     switchRow.setChecked(!switchRow.isChecked());
                     break;
