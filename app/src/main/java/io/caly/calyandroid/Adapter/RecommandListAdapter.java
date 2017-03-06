@@ -103,7 +103,7 @@ public class RecommandListAdapter extends RecyclerView.Adapter<RecommandListAdap
         RecoModel recoModel = dataList.get(position);
 
         holder.tvRecoTitle.setText(recoModel.title);
-        holder.tvRecoDistance.setText(recoModel.region);
+        holder.tvRecoDistance.setText(recoModel.distance);
         holder.tvRecoHashtag.setText(recoModel.tagNames);
 
         Picasso.with(context)
