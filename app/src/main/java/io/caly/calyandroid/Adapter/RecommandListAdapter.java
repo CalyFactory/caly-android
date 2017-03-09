@@ -20,6 +20,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Activity.MapActivity;
+import io.caly.calyandroid.Activity.WebViewActivity;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.DataModel.RecoModel;
@@ -119,7 +120,9 @@ public class RecommandListAdapter extends RecyclerView.Adapter<RecommandListAdap
 
                 RecoModel recoModel = dataList.get(position);
 
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(recoModel.deepUrl));
+//                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(recoModel.deepUrl));
+                Intent intent = new Intent(context, WebViewActivity.class);
+                intent.putExtra("url", recoModel.deepUrl);
                 context.startActivity(intent);
             }
         });
@@ -129,7 +132,9 @@ public class RecommandListAdapter extends RecyclerView.Adapter<RecommandListAdap
             public void onClick(View view) {
 
                 RecoModel recoModel = dataList.get(position);
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(recoModel.mapUrl));
+//                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(recoModel.mapUrl));
+                Intent intent = new Intent(context, WebViewActivity.class);
+                intent.putExtra("url", recoModel.mapUrl);
                 context.startActivity(intent);
             }
         });

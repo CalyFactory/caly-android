@@ -22,7 +22,7 @@
                 android:textColor="#ffffff"
                 android:textSize="20dp"
                 android:textStyle="bold"
-                android:text="피드백 전송"
+                android:text="불편하신점이 있나요?"
                 />
 
         </LinearLayout>
@@ -38,19 +38,13 @@
             android:focusableInTouchMode="true"
             android:layout_height="wrap_content">
 
-            <android.support.design.widget.TextInputLayout
+
+            <EditText
+                android:id="@+id/edt_feedback_text"
                 android:layout_width="match_parent"
-                android:layout_gravity="top"
-                android:minHeight="100dp"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:hint="ex) 앱이 너무 느려요." />
 
-                <EditText
-                    android:id="@+id/edt_feedback_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="피드백" />
-
-            </android.support.design.widget.TextInputLayout>
 
         </LinearLayout>
 

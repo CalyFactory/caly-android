@@ -5,7 +5,14 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.webkit.WebChromeClient;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
+
+import com.github.ybq.android.spinkit.SpinKitView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -25,10 +32,16 @@ public class WebViewActivity extends BaseAppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
+    @Bind(R.id.web_webview)
+    WebView webView;
+
+    @Bind(R.id.loading_webview)
+    SpinKitView loadingView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
+        setContentView(R.layout.activity_webview);
 
         init();
     }
@@ -37,7 +50,7 @@ public class WebViewActivity extends BaseAppCompatActivity {
         ButterKnife.bind(this);
 
         //set toolbar
-        toolbar.setTitle("환경 설정");
+        toolbar.setTitle("");
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -54,6 +67,25 @@ public class WebViewActivity extends BaseAppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        String url = getIntent().getStringExtra("url");
+        Log.i(TAG,"move url : " + url);
+        webView.getSettings().setJavaScriptEnabled(true);
+        webView.loadUrl(getIntent().getStringExtra("url"));
+        webView.setWebViewClient(new WebViewClientClass());
+        webView.setWebChromeClient(new WebChromeClient(){
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+
+                if(newProgress>=80){
+                    loadingView.setVisibility(View.GONE);
+                }
+                else{
+                    loadingView.setVisibility(View.VISIBLE);
+                }
+
+            }
+        });
     }
 
     @Override
@@ -75,4 +107,14 @@ public class WebViewActivity extends BaseAppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private class WebViewClientClass extends WebViewClient {
+
+
+
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            view.loadUrl(url);
+            return true;
+        }
+    }
 }

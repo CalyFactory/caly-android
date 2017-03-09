@@ -107,8 +107,14 @@
 
         </activity>
 
-        <!-- Services -->
+        <!-- WebView Activity -->
+        <activity
+            android:name=".Activity.WebViewActivity"
+            android:screenOrientation="portrait">
 
+        </activity>
+
+        <!-- Services -->
         <!-- FCM Push Service -->
 
         <service

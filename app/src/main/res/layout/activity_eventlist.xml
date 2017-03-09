@@ -29,11 +29,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2월"
-                    android:textSize="60dp"
+                    android:textSize="40dp"
                     android:id="@+id/tv_eventlist_month"
                     android:textStyle="bold"
                     android:textColor="#ffffff"
                     />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -111,16 +112,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/text_wait_sync"
                 />
-            <!--
-            <com.wang.avi.AVLoadingIndicatorView
-                android:id="@+id/avi_eventlist"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/AVLoadingIndicatorView"
-                android:visibility="visible"
-                app:indicatorName="LineScalePulseOutRapidIndicator"
-                app:indicatorColor="@color/colorPrimaryDark"
-                />-->
         </LinearLayout>
 
         <LinearLayout
