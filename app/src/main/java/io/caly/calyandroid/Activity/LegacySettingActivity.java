@@ -52,7 +52,7 @@ public class LegacySettingActivity extends BaseAppCompatActivity {
 
 
         //set toolbar
-        toolbar.setTitle("일정 목록");
+        toolbar.setTitle("환경 설정");
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -106,5 +106,12 @@ public class LegacySettingActivity extends BaseAppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+
     }
 }

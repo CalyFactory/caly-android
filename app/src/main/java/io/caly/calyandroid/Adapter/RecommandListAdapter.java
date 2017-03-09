@@ -108,6 +108,8 @@ public class RecommandListAdapter extends RecyclerView.Adapter<RecommandListAdap
 
         Picasso.with(context)
                 .load(context.getString(R.string.app_server) + "img/" + recoModel.imgUrl)
+                .error(R.drawable.img_not_found)
+                .placeholder(R.drawable.img_not_found)
                 .into(holder.imvFood);
         holder.view.setOnClickListener(new View.OnClickListener() {
             @Override
