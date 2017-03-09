@@ -24,6 +24,8 @@ import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.DataModel.RecoModel;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.StringFormmater;
+import io.caly.calyandroid.Util.Util;
 
 /**
  * Created by jspiner on 2017. 2. 27..
@@ -104,7 +106,7 @@ public class RecommandListAdapter extends RecyclerView.Adapter<RecommandListAdap
 
         holder.tvRecoTitle.setText(recoModel.title);
         holder.tvRecoDistance.setText(recoModel.distance);
-        holder.tvRecoHashtag.setText(recoModel.tagNames);
+        holder.tvRecoHashtag.setText(StringFormmater.hashTagFormat(recoModel.tagNames));
 
         Picasso.with(context)
                 .load(context.getString(R.string.app_server) + "img/" + recoModel.imgUrl)
