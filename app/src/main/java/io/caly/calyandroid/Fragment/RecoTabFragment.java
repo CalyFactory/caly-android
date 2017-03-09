@@ -143,7 +143,7 @@ public class RecoTabFragment extends BaseFragment {
 
         ApiClient.getService().getRecoList(
                 TokenRecord.getTokenRecord().getApiKey(),
-                "84eed75b49ccb544fd2c59ed2cbe6ff3221756c237d967a344b04336",//eventData.eventHashKey,
+                eventData.eventHashKey,
                 category.value
         ).enqueue(new Callback<RecoResponse>() {
             @Override

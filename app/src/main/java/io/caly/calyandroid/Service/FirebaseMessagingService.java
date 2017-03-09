@@ -4,10 +4,12 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.util.Log;
 
 import com.google.firebase.messaging.RemoteMessage;
@@ -57,7 +59,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
             case "sync":
                 if(AppLifecycleListener.getActiveActivityCount()==0){
                     //app is background
-                    sendNotification(getString(R.string.notification_msg_google_sync_done));
+                    sendNotification(getString(R.string.notification_msg_google_sync_done), getString(R.string.notification_msg_google_sync_done));
                 }
                 else{
                     //app is foreground
@@ -65,17 +67,17 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 }
                 break;
             case "noti":
-                sendNotification(remoteMessage.getData().get("message"));
+                sendNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("message"));
                 break;
             case "reco":
-                sendNotification(remoteMessage.getData().get("message"));
+                sendNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("message"));
                 break;
         }
 
     }
 
 
-    private void sendNotification(String title) {
+    private void sendNotification(String title, String message) {
         Log.i(TAG, "sendNotification("+title+")");
 
         Intent intent = new Intent(this, SplashActivity.class);
@@ -86,13 +88,19 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.ic_launcher)
+                .setTicker(title)
+                .setWhen(0)
                 .setContentTitle(title)
+                .setStyle(new NotificationCompat.InboxStyle())
+                .setContentText(message)
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher))
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);
 
-        NotificationManager notificationManager =
-                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+//        NotificationManager notificationManager =
+//                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0 /* ID of notification */, notificationBuilder.build());
 
