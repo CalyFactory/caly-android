@@ -22,4 +22,8 @@
     <!-- app notification msg -->
     <string name="notification_msg_google_sync_done">캘린더 동기화가 완료됬습니다!</string>
 
+    <!-- view text -->
+    <string name="text_reco_wait">추천 데이터를 준비중입니다.\n\n기다려주시면 푸시로 알려 드릴게요 :)</string>
+    <string name="text_wait_sync">일정정보를 동기화중입니다.잠시만 기다려 주세요 :)</string>
+
 </resources>

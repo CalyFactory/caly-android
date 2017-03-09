@@ -257,6 +257,7 @@ public class LoginActivity extends BaseAppCompatActivity {
                         tokenRecord.save();
                         registerDeviceInfo(body.payload.apiKey);
                         break;
+                    case 400:
                     case 401:
                         Toast.makeText(
                                 getBaseContext(),
