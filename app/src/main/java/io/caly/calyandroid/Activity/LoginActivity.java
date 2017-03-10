@@ -257,6 +257,14 @@ public class LoginActivity extends BaseAppCompatActivity {
                         tokenRecord.save();
                         registerDeviceInfo(body.payload.apiKey);
                         break;
+                    case 400:
+                    case 401:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_login_fail),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
                     default:
                         Toast.makeText(
                                 getBaseContext(),

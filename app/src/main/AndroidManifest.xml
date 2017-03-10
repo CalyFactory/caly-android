@@ -16,7 +16,9 @@
 
 
         <!-- Splash Activity -->
-        <activity android:name=".Activity.SplashActivity">
+        <activity
+            android:name=".Activity.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,64 +27,94 @@
         </activity>
 
         <!-- Login Activity -->
-        <activity android:name=".Activity.LoginActivity">
+        <activity
+            android:name=".Activity.LoginActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <!-- Event List Activity -->
-        <activity android:name=".Activity.EventListActivity">
+        <activity
+            android:name=".Activity.EventListActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <!-- Guide Activity -->
-        <activity android:name=".Activity.GuideActivity">
+        <activity
+            android:name=".Activity.GuideActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <!-- Setting Activity -->
-        <activity android:name=".Activity.LegacySettingActivity">
+        <activity
+            android:name=".Activity.LegacySettingActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <!-- Setting Activity -->
-        <activity android:name=".Activity.SettingActivity">
+        <activity
+            android:name=".Activity.SettingActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <!-- Signup Activity -->
-        <activity android:name=".Activity.SignupActivity">
+        <activity
+            android:name=".Activity.SignupActivity"
+            android:screenOrientation="portrait">
         </activity>
 
         <!-- Policy Activity -->
-        <activity android:name=".Activity.PolicyActivity">
+        <activity
+            android:name=".Activity.PolicyActivity"
+            android:screenOrientation="portrait">
         </activity>
 
         <!-- AccountAdd Activity -->
-        <activity android:name=".Activity.AccountAddActivity">
+        <activity
+            android:name=".Activity.AccountAddActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <!-- AccountList Activity -->
-        <activity android:name=".Activity.AccountListActivity">
+        <activity
+            android:name=".Activity.AccountListActivity"
+            android:screenOrientation="portrait">
         </activity>
 
         <!-- Announce Activity -->
-        <activity android:name=".Activity.NoticeActivity">
+        <activity
+            android:name=".Activity.NoticeActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <!-- RecommandList Activity -->
-        <activity android:name=".Activity.RecommandListActivity">
+        <activity
+            android:name=".Activity.RecommandListActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <!-- Map Activity -->
-        <activity android:name=".Activity.MapActivity">
+        <activity
+            android:name=".Activity.MapActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+        <!-- WebView Activity -->
+        <activity
+            android:name=".Activity.WebViewActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <!-- Services -->
-
         <!-- FCM Push Service -->
 
         <service

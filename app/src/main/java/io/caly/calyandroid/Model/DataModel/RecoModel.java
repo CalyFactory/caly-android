@@ -36,6 +36,9 @@ public class RecoModel {
     @SerializedName("map_url")
     public String mapUrl;
 
+    @SerializedName("distance")
+    public String distance;
+
     @SerializedName("event_hashkey")
     public String eventHashKey;
 

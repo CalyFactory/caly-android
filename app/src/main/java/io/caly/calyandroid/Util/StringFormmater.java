@@ -58,4 +58,22 @@ public class StringFormmater {
 
     }
 
+    public static String hashTagFormat(String hashtags){
+        String[] tags = hashtags.split(",");
+        for(int i=0;i<tags.length;i++){
+            tags[i] = "#" + tags[i].trim();
+        }
+        return join(tags, " ");
+    }
+
+    public static String join(String[] list, String separator){
+        StringBuilder builder = new StringBuilder();
+        builder.append(list[0]);
+        for(int i=1;i<list.length;i++){
+            builder.append(separator).append(list[i]);
+        }
+
+        return builder.toString();
+    }
+
 }

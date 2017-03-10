@@ -187,7 +187,7 @@ public class SplashActivity extends BaseAppCompatActivity {
                     case 403:
                         Toast.makeText(
                                 getBaseContext(),
-                                getString(R.string.toast_msg_session_invalid),
+                                getString(R.string.toast_msg_app_version_not_latest),
                                 Toast.LENGTH_LONG
                         ).show();
                         requestUpdate();
