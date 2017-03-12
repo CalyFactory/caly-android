@@ -1,4 +1,4 @@
-./gradlew build -stacktrace
+echo "hello"
 ls
 ls app
 ls app/build
