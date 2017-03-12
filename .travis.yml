@@ -1,2 +1,2 @@
 language: android
-script: "script/build.sh $TRAVIS_BRANCH"
+script: "sh script/build.sh $TRAVIS_BRANCH"
