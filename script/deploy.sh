@@ -1,5 +1,5 @@
 SLACK_KEY="xoxb-118976894853-""ypenVhWFgnlrfGmHXhrsImeq"
-SLACK_TEXT="[ `$1` |` $2` ] *$3* "
+SLACK_TEXT="[ `$TRAVIS_BRANCH` |` $TRAVIS_COMMIT` ] *$TRAVIS_COMMIT_MESSAGE* "
 echo $SLACK_TEXT
 echo $TRAVIS_BRANCH
 curl \
