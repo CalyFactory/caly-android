@@ -1,6 +1,7 @@
 language: android
 script: 
-  - "sh script/build.sh $TRAVIS_BRANCH $TRAVIS_COMMIT $TRAVIS_COMMIT_MESSAGE"
+  - 
+  - "sh script/build.sh $( $TRAVIS_BRANCH ) $TRAVIS_COMMIT $TRAVIS_COMMIT_MESSAGE"
   - if [ "$TRAVIS_BRANCH" = "dev-jspiner" ]; then sh script/deploy.sh $TRAVIS_BRANCH $TRAVIS_COMMIT $TRAVIS_COMMIT_MESSAGE; fi
   - if [ "$TRAVIS_BRANCH" = "dev" ]; then sh script/deploy.sh $TRAVIS_BRANCH $TRAVIS_COMMIT $TRAVIS_COMMIT_MESSAGE; fi
   - if [ "$TRAVIS_BRANCH" = "master" ]; then sh script/deploy.sh $TRAVIS_BRANCH $TRAVIS_COMMIT $TRAVIS_COMMIT_MESSAGE; fi
