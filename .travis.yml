@@ -15,7 +15,7 @@ before_install:
 - chmod +x gradlew
 script: "./gradlew build -stacktrace"
 deploy:
-  - provider : script
+  provider : script
   script: "script/deploy.sh $TRAVIS_TAG"
   on:
     tags: true
