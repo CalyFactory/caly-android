@@ -5,7 +5,7 @@ BRANCH_NAME=$1
 COMMIT_TAG=$2
 COMMIT_MSG=$3
 SLACK_KEY="xoxb-118976894853-""ypenVhWFgnlrfGmHXhrsImeq"
-SLACK_TEXT="[ `$BRANCH_NAME` |` $COMMIT_TAG` ] *$COMMIT_MSG* "
+SLACK_TEXT="[ `$1` |` $2` ] *$3* "
 echo $SLACK_TEXT
 curl \
   -F "token=$SLACK_KEY" \
