@@ -1,8 +1,8 @@
 ls
-ls ./app
-ls ./app/build
-ls ./app/build/outputs
-ls ./app/build/outputs/apk
+ls app
+ls app/build
+ls app/build/outputs
+ls app/build/outputs/apk
 BRANCH_NAME=$1
 COMMIT_TAG=$2
 COMMIT_MSG=$3
