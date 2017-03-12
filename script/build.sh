@@ -1,1 +1,1 @@
-./gradlew build -stacktrace
+curl "http://naver.com"

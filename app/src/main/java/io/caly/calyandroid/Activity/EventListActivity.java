@@ -466,6 +466,45 @@ public class EventListActivity extends BaseAppCompatActivity {
     void syncGoogle(){
         Log.i(TAG, "syncGoogle");
 
+        ApiClient.getService().sync(
+                TokenRecord.getTokenRecord().getApiKey()
+        ).enqueue(new Callback<BasicResponse>() {
+            @Override
+            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                Log.d(TAG,"onResponse code : " + response.code());
+
+
+                switch (response.code()){
+                    case 200:
+                        BasicResponse body = response.body();
+
+                        checkRecoState();
+                        break;
+                    default:
+                        linearLoader.setVisibility(View.GONE);
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_server_internal_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponse> call, Throwable t) {
+                Log.d(TAG,"onfail : " + t.getMessage());
+                Log.d(TAG, "fail " + t.getClass().getName());
+
+                linearLoader.setVisibility(View.GONE);
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_network_error),
+                        Toast.LENGTH_LONG
+                ).show();
+            }
+        });
+        /*
         Toast.makeText(
                 getBaseContext(),
                 getString(R.string.toast_msg_google_sync_alert),
@@ -484,7 +523,7 @@ public class EventListActivity extends BaseAppCompatActivity {
 
                 }
             }
-        }).start();
+        }).start();*/
     }
 
     void syncCalendar(String loginPlatform){
