@@ -14,3 +14,9 @@ before_install:
   -in google-services.json.enc -out app/google-services.json -d
 - chmod +x gradlew
 script: "./gradlew build -stacktrace"
+deploy:
+  - provider : script
+  script: "script/deploy.sh $TRAVIS_TAG"
+  on:
+    tags: true
+    all_branches: true
