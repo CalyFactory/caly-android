@@ -1,4 +1,3 @@
-./gradlew build -stacktrace
 echo $1
 echo $2
 echo $3
