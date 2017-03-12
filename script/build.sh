@@ -15,6 +15,6 @@ echo $DEPLOY_COMMIT
 echo $DEPLOY_COMMIT_MESSAGE
 curl \
   -F "token=$SLACK_KEY" \
-  -F "channels=deploy-android" \
+  -F "channel=deploy-android" \
   -F "text=$SLACK_TEXT" \
   https://slack.com/api/chat.postMessage
