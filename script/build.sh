@@ -12,14 +12,12 @@ echo $TRAVIS_BRANCH
 echo "branch {$DEPLOY_BRANCH} branch"
 echo $DEPLOY_COMMIT
 echo $DEPLOY_COMMIT_MESSAGE
-echo "branch name `{$DEPLOY_BRANCH}`  "
-echo "branch name ${$DEPLOY_BRANCH}  "
-echo "branch name ${$BUILD_BRANCH_NAME}  "
+echo "branch name {$DEPLOY_BRANCH}  "
 echo "branch name {$BUILD_BRANCH_NAME}  "
 curl \
   -F "token=$SLACK_KEY" \
   -F "channel=deploy-android" \
-  -F "text={$DEPLOY_BRANCH}  {$DEPLOY_COMMIT} *$DEPLOY_COMMIT_MESSAGE* ${TRAVIS_COMMIT_MESSAGE:-none} " \
+  -F "text=$DEPLOY_BRANCH  $DEPLOY_COMMIT ${TRAVIS_COMMIT_MESSAGE:-none} " \
   https://slack.com/api/chat.postMessage
 
 
