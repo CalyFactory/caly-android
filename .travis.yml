@@ -19,6 +19,7 @@ script:
   - "sh script/build.sh"
 deploy:
   provider: script
+  skip_cleanup: true
   script: "sh script/deploy.sh"
   on:
     branch:
