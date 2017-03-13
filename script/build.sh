@@ -12,6 +12,7 @@ echo $TRAVIS_BRANCH
 echo "branch {$DEPLOY_BRANCH} branch"
 echo $DEPLOY_COMMIT
 echo $DEPLOY_COMMIT_MESSAGE
+echo "[ `{$DEPLOY_BRANCH}` | `{$DEPLOY_COMMIT}` ] *$DEPLOY_COMMIT_MESSAGE* ${TRAVIS_COMMIT_MESSAGE:-none} "
 curl \
   -F "token=$SLACK_KEY" \
   -F "channel=deploy-android" \
