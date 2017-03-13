@@ -1,8 +1,8 @@
 ./gradlew build -stacktrace
 
 
-DEPLOY_BRANCH=$1
-DEPLOY_COMMIT=$2
+DEPLOY_BRANCH=${1}
+DEPLOY_COMMIT=${2}
 DEPLOY_COMMIT_MESSAGE=$3
 
 SLACK_KEY="xoxb-118976894853-""ypenVhWFgnlrfGmHXhrsImeq"
