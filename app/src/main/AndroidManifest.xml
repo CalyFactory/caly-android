@@ -8,7 +8,7 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_event_black_48dp"
+        android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
         android:name=".CalyApplication"
         android:supportsRtl="true"
