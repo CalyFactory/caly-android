@@ -16,12 +16,12 @@ before_install:
 - chmod +rx app 
 skip_cleanup: true
 script: 
-  - "sh script/build.sh $TRAVIS_BRANCH $TRAVIS_COMMIT $TRAVIS_COMMIT_MESSAGE"
+  - "sh script/build.sh"
 deploy:
-provider: script
-script: "sh script/deploy.sh"
-on:
-  branch:
-    - dev-jspiner
-    - dev
-    - master
+  provider: script
+  script: "sh script/deploy.sh"
+  on:
+    branch:
+      - dev-jspiner
+      - dev
+      - master
