@@ -99,18 +99,26 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("member/accountList")
     Call<AccountResponse> accountList(
-            @Field("apikey") String apikey
+            @Field("apikey") String apiKey
     );
 
     //addAccount
     @FormUrlEncoded
     @POST("member/addAccount")
     Call<BasicResponse> addAccount(
-            @Field("apikey") String apikey,
+            @Field("apikey") String apiKey,
             @Field("login_platform") String loginPlatform,
             @Field("uId") String userId,
             @Field("uPw") String userPw,
             @Field("authCode") String authCode
+    );
+
+    //withdrawal
+    @FormUrlEncoded
+    @POST("member/withdrawal")
+    Call<BasicResponse> withdrawal(
+            @Field("apikey") String apiKey,
+            @Field("contents") String contents
     );
 
     /*

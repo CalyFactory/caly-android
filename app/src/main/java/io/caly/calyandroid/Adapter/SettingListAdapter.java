@@ -36,6 +36,8 @@ import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.DataModel.SettingItemModel;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.View.LoginDialog;
+import io.caly.calyandroid.View.WithDrawalDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -180,7 +182,71 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                     builder.show();
                     break;
                 case 8:
+                    WithDrawalDialog withDrawalDialog = new WithDrawalDialog(
+                            context,
+                            new WithDrawalDialog.DialogCallback() {
+                                @Override
+                                public void onPositive(LoginDialog dialog, final String content) {
 
+                                    ApiClient.getService().withdrawal(
+                                            TokenRecord.getTokenRecord().getApiKey(),
+                                            content
+                                    ).enqueue(new Callback<BasicResponse>() {
+                                        @Override
+                                        public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                                            Log.d(TAG,"onResponse code : " + response.code());
+
+                                            BasicResponse body = response.body();
+                                            switch (response.code()){
+                                                case 200:
+
+                                                    TokenRecord.destoryToken();
+                                                    ActivityCompat.finishAffinity((Activity)context);
+
+                                                    Intent intent = new Intent(context, SplashActivity.class);
+                                                    context.startActivity(intent);
+
+                                                    Toast.makeText(
+                                                            context,
+                                                            context.getString(R.string.toast_msg_withdrawal_success),
+                                                            Toast.LENGTH_LONG
+                                                    ).show();
+
+
+                                                    break;
+                                                default:
+                                                    Log.e(TAG,"status code : " + response.code());
+                                                    Toast.makeText(
+                                                            context,
+                                                            context.getString(R.string.toast_msg_server_internal_error),
+                                                            Toast.LENGTH_LONG
+                                                    ).show();
+                                                    break;
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<BasicResponse> call, Throwable t) {
+                                            Log.e(TAG,"onfail : " + t.getMessage());
+                                            Log.e(TAG, "fail " + t.getClass().getName());
+
+                                            Toast.makeText(
+                                                    context,
+                                                    context.getString(R.string.toast_msg_network_error),
+                                                    Toast.LENGTH_LONG
+                                            ).show();
+                                        }
+                                    });
+
+                                }
+
+                                @Override
+                                public void onNegative(LoginDialog dialog) {
+
+                                }
+                            }
+                    );
+                    withDrawalDialog.show();
 
 
                     break;
