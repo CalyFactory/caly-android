@@ -255,7 +255,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
     @Override
     public int getItemViewType(int position) {
-        if(position==6) return 3;
+        if(position==5) return 3;
         return dataList.get(position).isTitle?1:2;
     }
 
@@ -272,7 +272,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
             holder.tvSettingDesc.setText(dataList.get(position).description);
         }
 
-        if(position==6){
+        if(position==5){
             holder.switchRow.setChecked(Prefer.get("isPushReceive", true));
         }
     }
