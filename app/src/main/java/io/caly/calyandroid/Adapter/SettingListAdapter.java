@@ -186,8 +186,8 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                             context,
                             new WithDrawalDialog.DialogCallback() {
                                 @Override
-                                public void onPositive(LoginDialog dialog, final String content) {
-
+                                public void onPositive(WithDrawalDialog dialog, final String content) {
+                                    dialog.dismiss();
                                     ApiClient.getService().withdrawal(
                                             TokenRecord.getTokenRecord().getApiKey(),
                                             content
@@ -241,8 +241,8 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                                 }
 
                                 @Override
-                                public void onNegative(LoginDialog dialog) {
-
+                                public void onNegative(WithDrawalDialog dialog) {
+                                    dialog.dismiss();
                                 }
                             }
                     );

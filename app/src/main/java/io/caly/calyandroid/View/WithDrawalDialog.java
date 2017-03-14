@@ -3,8 +3,12 @@ package io.caly.calyandroid.View;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.R;
 
@@ -22,6 +26,9 @@ public class WithDrawalDialog extends Dialog {
     private static final String TAG = CalyApplication.class.getSimpleName() + "/" + WithDrawalDialog.class.getSimpleName();
 
     DialogCallback dialogCallback;
+
+    @Bind(R.id.edt_withdrawal_content)
+    EditText edtContent;
 
     public WithDrawalDialog(Context context, DialogCallback dialogCallback) {
         super(context);
@@ -41,7 +48,7 @@ public class WithDrawalDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.dialog_login);
+        setContentView(R.layout.dialog_withdrawal);
 
         init();
     }
@@ -52,11 +59,32 @@ public class WithDrawalDialog extends Dialog {
 
     }
 
+    @OnClick(R.id.btn_login_ok)
+    void onLoginOkClick(){
+        if(edtContent.getText().toString().length()>10){
+            dialogCallback.onPositive(
+                    this,
+                    edtContent.getText().toString()
+            );
+        }
+        else{
+            Toast.makeText(
+                    getContext(),
+                    getContext().getString(R.string.toast_msg_withdrawal_lengh_not_enough),
+                    Toast.LENGTH_LONG
+            ).show();
+        }
+    }
+
+    @OnClick(R.id.btn_login_cancel)
+    void onLoginCancelClick(){
+        dialogCallback.onNegative(this);
+    }
 
 
 
     public interface DialogCallback {
-        public void onPositive(LoginDialog dialog, String content);
-        public void onNegative(LoginDialog dialog);
+        public void onPositive(WithDrawalDialog dialog, String content);
+        public void onNegative(WithDrawalDialog dialog);
     }
 }
