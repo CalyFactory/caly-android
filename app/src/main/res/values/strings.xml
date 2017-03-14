@@ -24,7 +24,8 @@
 
     <!-- view text -->
     <string name="text_reco_wait">추천 데이터를 준비중입니다.\n\n기다려주시면 푸시로 알려 드릴게요 :)</string>
-    <string name="text_wait_sync">일정정보를 동기화중입니다.잠시만 기다려 주세요 :)</string>
+    <string name="text_wait_sync">일정정보를 가져오는 중입니다.잠시만 기다려 주세요 :)</string>
+    <string name="text_splash_slogan">언제 어디서나 추천을!</string>
 
     <!-- GA tag -->
     <string name="ga_category_button">ga_category_button</string>

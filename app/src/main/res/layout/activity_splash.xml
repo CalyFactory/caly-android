@@ -5,16 +5,27 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:background="#e43f3f"
-        android:gravity="center"
+        android:background="#ff652a"
+        android:paddingTop="100dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
         android:layout_height="match_parent">
 
 
         <ImageView
-            android:layout_marginBottom="50dp"
             android:layout_width="220dp"
             android:layout_height="220dp"
-            android:src="@drawable/logo_app"/>
+            android:src="@drawable/main_icon"/>
+
+        <TextView
+            android:layout_marginTop="-20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="#ffffff"
+            android:text="@string/text_splash_slogan"
+            />
     </LinearLayout>
+
 
 </LinearLayout>
