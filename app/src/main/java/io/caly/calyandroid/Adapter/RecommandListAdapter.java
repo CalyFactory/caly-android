@@ -1,5 +1,6 @@
 package io.caly.calyandroid.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -136,6 +139,18 @@ public class RecommandListAdapter extends RecyclerView.Adapter<RecommandListAdap
                 Intent intent = new Intent(context, WebViewActivity.class);
                 intent.putExtra("url", recoModel.mapUrl);
                 context.startActivity(intent);
+
+
+
+                Tracker t = ((CalyApplication)((Activity)context).getApplication()).getDefaultTracker();
+                t.setScreenName(this.getClass().getName());
+                t.send(
+                        new HitBuilders.EventBuilder()
+                                .setCategory(context.getString(R.string.ga_category_button))
+                                .setAction(context.getString(R.string.ga_action_click))
+                                .setLabel("onMapClick")
+                                .build()
+                );
             }
         });
 

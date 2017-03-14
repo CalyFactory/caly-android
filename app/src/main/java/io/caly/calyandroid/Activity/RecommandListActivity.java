@@ -15,6 +15,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -24,6 +27,7 @@ import butterknife.OnClick;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.RecoTabPagerAdapter;
 import io.caly.calyandroid.Adapter.RecommandListAdapter;
+import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.BasicResponse;
@@ -180,6 +184,18 @@ public class RecommandListActivity extends BaseAppCompatActivity {
                 dialog.dismiss();
             }
         }).show();
+
+
+
+        Tracker t = ((CalyApplication)getApplication()).getDefaultTracker();
+        t.setScreenName(this.getClass().getName());
+        t.send(
+                new HitBuilders.EventBuilder()
+                        .setCategory(getString(R.string.ga_category_button))
+                        .setAction(getString(R.string.ga_action_click))
+                        .setLabel("onFeedBackClick")
+                        .build()
+        );
     }
 
     @Override

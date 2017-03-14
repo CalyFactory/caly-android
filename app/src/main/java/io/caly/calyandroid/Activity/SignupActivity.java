@@ -13,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import butterknife.Bind;
@@ -21,6 +23,7 @@ import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
+import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DeviceType;
 import io.caly.calyandroid.Model.Gender;
 import io.caly.calyandroid.Model.Response.SessionResponse;
@@ -101,6 +104,7 @@ public class SignupActivity extends BaseAppCompatActivity {
         imvGenderWoman.setColorFilter(Color.GRAY, android.graphics.PorterDuff.Mode.MULTIPLY);
 
         updateButton();
+
     }
 
     @OnClick(R.id.imv_signup_woman)
@@ -126,6 +130,17 @@ public class SignupActivity extends BaseAppCompatActivity {
     @OnClick(R.id.btn_signup_proc)
     void onSignupClick(){
         requestSignup();
+
+
+        Tracker t = ((CalyApplication)getApplication()).getDefaultTracker();
+        t.setScreenName(this.getClass().getName());
+        t.send(
+                new HitBuilders.EventBuilder()
+                        .setCategory(getString(R.string.ga_category_button))
+                        .setAction(getString(R.string.ga_action_click))
+                        .setLabel("onSignupClick")
+                        .build()
+        );
     }
 
     void requestSignup(){

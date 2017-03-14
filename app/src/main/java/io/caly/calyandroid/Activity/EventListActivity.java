@@ -20,6 +20,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.gson.Gson;
 import com.squareup.otto.Subscribe;
 
@@ -32,6 +34,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.EventListAdapter;
+import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.DataModel.TestModel;
 import io.caly.calyandroid.Model.Event.GoogleSyncDoneEvent;
@@ -556,6 +559,17 @@ public class EventListActivity extends BaseAppCompatActivity {
         int position = layoutManager.findFirstVisibleItemPosition();
         if(position==0) return;
         recyclerList.smoothScrollToPosition(position-1);
+
+
+        Tracker t = ((CalyApplication)getApplication()).getDefaultTracker();
+        t.setScreenName(this.getClass().getName());
+        t.send(
+                new HitBuilders.EventBuilder()
+                        .setCategory(getString(R.string.ga_category_button))
+                        .setAction(getString(R.string.ga_action_click))
+                        .setLabel("onEventPrevClick")
+                        .build()
+        );
     }
 
     @OnClick(R.id.btn_eventlist_next)
@@ -565,6 +579,17 @@ public class EventListActivity extends BaseAppCompatActivity {
         if(position==recyclerAdapter.getItemCount() - 1) return;
         Log.d(TAG, "position : " + position + " item size : " + recyclerAdapter.getItemCount());
         recyclerList.smoothScrollToPosition(position + 1);
+
+
+        Tracker t = ((CalyApplication)getApplication()).getDefaultTracker();
+        t.setScreenName(this.getClass().getName());
+        t.send(
+                new HitBuilders.EventBuilder()
+                        .setCategory(getString(R.string.ga_category_button))
+                        .setAction(getString(R.string.ga_action_click))
+                        .setLabel("onEventNextClick")
+                        .build()
+        );
     }
 
 
