@@ -182,6 +182,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                 case 8:
 
 
+
                     break;
                 default:
                     Log.d(TAG,"clicked");
