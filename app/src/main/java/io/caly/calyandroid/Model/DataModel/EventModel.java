@@ -85,9 +85,17 @@ public class EventModel {
     @Expose
     public int endSecond;
 
+    @Expose
+    public boolean isHeader = false;
 
     public EventModel(){
 
+    }
+
+    public EventModel(int year, int month){
+        isHeader = true;
+        startYear = year;
+        startMonth = month;
     }
 
     public void setData(){

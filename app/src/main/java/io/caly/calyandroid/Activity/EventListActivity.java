@@ -28,6 +28,7 @@ import com.squareup.otto.Subscribe;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -216,6 +217,32 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     }
 
+    List<EventModel> addHeaderToEventList(List<EventModel> eventModelList){
+
+        eventModelList.add(
+                0,
+                new EventModel(
+                        eventModelList.get(0).startYear,
+                        eventModelList.get(0).startMonth
+                )
+        );
+        for(int i=1;i<eventModelList.size();i++){
+            if(eventModelList.get(i-1).isHeader || eventModelList.get(i).isHeader) continue;
+            if(eventModelList.get(i-1).startYear != eventModelList.get(i).startYear ||
+                    eventModelList.get(i-1).startMonth != eventModelList.get(i).startMonth){
+                eventModelList.add(
+                        i,
+                        new EventModel(
+                                eventModelList.get(i).startYear,
+                                eventModelList.get(i).startMonth
+                        )
+                );
+            }
+        }
+
+        return eventModelList;
+    }
+
     /*
     Message
     what
@@ -269,6 +296,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                         case 200:
                             EventResponse body = response.body();
                             Collections.reverse(body.payload.data);
+                            body.payload.data = addHeaderToEventList(body.payload.data);
                             for(EventModel eventModel : body.payload.data){
 
                                 Message message = dataNotifyHandler.obtainMessage();
@@ -328,6 +356,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                         EventResponse body = response.body();
                         Log.d(TAG, "json : " + new Gson().toJson(body));
                         int i=0;
+                        body.payload.data = addHeaderToEventList(body.payload.data);
                         for(EventModel eventModel : body.payload.data){
                             Log.d(TAG, "json : " + new Gson().toJson(eventModel));
                             Message message = dataNotifyHandler.obtainMessage();
