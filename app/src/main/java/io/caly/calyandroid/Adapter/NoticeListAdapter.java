@@ -114,6 +114,7 @@ public class NoticeListAdapter extends RecyclerView.Adapter<NoticeListAdapter.Vi
                         noticeModel.isExpandabled = true;
                         notifyItemInserted(position + 1);
                     }
+
                 }
             });
 

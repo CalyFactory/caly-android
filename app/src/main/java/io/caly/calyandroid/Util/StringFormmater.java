@@ -32,6 +32,15 @@ public class StringFormmater {
         );
     }
 
+    public static String yearMonthFormat(int year, int month){
+        return String.format(
+                "%04d년 %02d월",
+                year,
+                month
+
+        );
+    }
+
     public static String accountStateFormat(AccountModel accountModel){
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(accountModel.createDateTime);

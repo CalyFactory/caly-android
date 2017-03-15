@@ -11,10 +11,14 @@ import android.text.Html;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
+import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.Util;
 
@@ -74,6 +78,17 @@ public class PolicyActivity extends BaseAppCompatActivity {
 
         setResult(RESULT_OK, resultIntent);
         finish();
+
+
+        Tracker t = ((CalyApplication)getApplication()).getDefaultTracker();
+        t.setScreenName(this.getClass().getName());
+        t.send(
+                new HitBuilders.EventBuilder()
+                        .setCategory(getString(R.string.ga_category_button))
+                        .setAction(getString(R.string.ga_action_click))
+                        .setLabel("onAgreeClick")
+                        .build()
+        );
     }
 
     @Override

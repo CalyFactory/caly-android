@@ -9,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -27,6 +29,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
+import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DeviceType;
 import io.caly.calyandroid.Model.LoginPlatform;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
@@ -102,6 +105,16 @@ public class LoginActivity extends BaseAppCompatActivity {
         Log.d(TAG,"onclick");
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, Util.RC_INTENT_GOOGLE_SIGNIN);
+
+        Tracker t = ((CalyApplication)getApplication()).getDefaultTracker();
+        t.setScreenName(this.getClass().getName());
+        t.send(
+                new HitBuilders.EventBuilder()
+                        .setCategory(getString(R.string.ga_category_button))
+                        .setAction(getString(R.string.ga_action_click))
+                        .setLabel("onGoogleLoginClick")
+                        .build()
+        );
     }
 
     @OnClick(R.id.btn_login_naver)
@@ -121,6 +134,16 @@ public class LoginActivity extends BaseAppCompatActivity {
         });
         dialog.show();
 
+        Tracker t = ((CalyApplication)getApplication()).getDefaultTracker();
+        t.setScreenName(this.getClass().getName());
+        t.send(
+                new HitBuilders.EventBuilder()
+                        .setCategory(getString(R.string.ga_category_button))
+                        .setAction(getString(R.string.ga_action_click))
+                        .setLabel("onNaverLoginClick")
+                        .build()
+        );
+
     }
 
     @OnClick(R.id.btn_login_apple)
@@ -139,6 +162,16 @@ public class LoginActivity extends BaseAppCompatActivity {
             }
         });
         dialog.show();
+
+        Tracker t = ((CalyApplication)getApplication()).getDefaultTracker();
+        t.setScreenName(this.getClass().getName());
+        t.send(
+                new HitBuilders.EventBuilder()
+                        .setCategory(getString(R.string.ga_category_button))
+                        .setAction(getString(R.string.ga_action_click))
+                        .setLabel("onAppleLoginClick")
+                        .build()
+        );
     }
 
     void startEventActivity(){

@@ -20,18 +20,22 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.gson.Gson;
 import com.squareup.otto.Subscribe;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.EventListAdapter;
+import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.DataModel.TestModel;
 import io.caly.calyandroid.Model.Event.GoogleSyncDoneEvent;
@@ -71,6 +75,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     @Bind(R.id.recycler_eventlist)
     RecyclerView recyclerList;
 
+    /*
     @Bind(R.id.tv_eventlist_year)
     TextView tvEventYear;
 
@@ -83,6 +88,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     @Bind(R.id.btn_eventlist_next)
     ImageButton imvEventNext;
 
+    */
     @Bind(R.id.linear_eventlist_loader)
     LinearLayout linearLoader;
 
@@ -136,14 +142,14 @@ public class EventListActivity extends BaseAppCompatActivity {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-
+/*
                 if(recyclerAdapter.getItemCount()==0) return;
                 int position = layoutManager.findFirstVisibleItemPosition();
                 EventModel eventModel = recyclerAdapter.getItem(position);
 
                 Log.d(TAG, eventModel.startMonth+"월");
                 tvEventYear.setText(eventModel.startYear+"");
-                tvEventMonth.setText(eventModel.startMonth+"월");
+                tvEventMonth.setText(eventModel.startMonth+"월");*/
             }
 
             @Override
@@ -213,6 +219,32 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     }
 
+    List<EventModel> addHeaderToEventList(List<EventModel> eventModelList){
+
+        eventModelList.add(
+                0,
+                new EventModel(
+                        eventModelList.get(0).startYear,
+                        eventModelList.get(0).startMonth
+                )
+        );
+        for(int i=1;i<eventModelList.size();i++){
+            if(eventModelList.get(i-1).isHeader || eventModelList.get(i).isHeader) continue;
+            if(eventModelList.get(i-1).startYear != eventModelList.get(i).startYear ||
+                    eventModelList.get(i-1).startMonth != eventModelList.get(i).startMonth){
+                eventModelList.add(
+                        i,
+                        new EventModel(
+                                eventModelList.get(i).startYear,
+                                eventModelList.get(i).startMonth
+                        )
+                );
+            }
+        }
+
+        return eventModelList;
+    }
+
     /*
     Message
     what
@@ -266,6 +298,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                         case 200:
                             EventResponse body = response.body();
                             Collections.reverse(body.payload.data);
+                            body.payload.data = addHeaderToEventList(body.payload.data);
                             for(EventModel eventModel : body.payload.data){
 
                                 Message message = dataNotifyHandler.obtainMessage();
@@ -325,6 +358,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                         EventResponse body = response.body();
                         Log.d(TAG, "json : " + new Gson().toJson(body));
                         int i=0;
+                        body.payload.data = addHeaderToEventList(body.payload.data);
                         for(EventModel eventModel : body.payload.data){
                             Log.d(TAG, "json : " + new Gson().toJson(eventModel));
                             Message message = dataNotifyHandler.obtainMessage();
@@ -550,12 +584,24 @@ public class EventListActivity extends BaseAppCompatActivity {
         checkRecoState();
     }
 
+    /*
     @OnClick(R.id.btn_eventlist_prev)
     void onEventPrevClick(){
         if(recyclerAdapter.getItemCount()==0) return;
         int position = layoutManager.findFirstVisibleItemPosition();
         if(position==0) return;
         recyclerList.smoothScrollToPosition(position-1);
+
+
+        Tracker t = ((CalyApplication)getApplication()).getDefaultTracker();
+        t.setScreenName(this.getClass().getName());
+        t.send(
+                new HitBuilders.EventBuilder()
+                        .setCategory(getString(R.string.ga_category_button))
+                        .setAction(getString(R.string.ga_action_click))
+                        .setLabel("onEventPrevClick")
+                        .build()
+        );
     }
 
     @OnClick(R.id.btn_eventlist_next)
@@ -565,7 +611,18 @@ public class EventListActivity extends BaseAppCompatActivity {
         if(position==recyclerAdapter.getItemCount() - 1) return;
         Log.d(TAG, "position : " + position + " item size : " + recyclerAdapter.getItemCount());
         recyclerList.smoothScrollToPosition(position + 1);
-    }
+
+
+        Tracker t = ((CalyApplication)getApplication()).getDefaultTracker();
+        t.setScreenName(this.getClass().getName());
+        t.send(
+                new HitBuilders.EventBuilder()
+                        .setCategory(getString(R.string.ga_category_button))
+                        .setAction(getString(R.string.ga_action_click))
+                        .setLabel("onEventNextClick")
+                        .build()
+        );
+    }*/
 
 
     @Override

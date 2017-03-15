@@ -36,6 +36,8 @@ import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.DataModel.SettingItemModel;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.View.LoginDialog;
+import io.caly.calyandroid.View.WithDrawalDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -102,14 +104,16 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
                     context.startActivity(it);
                     break;
+                /*
                 case 5:
                     Intent marketIntent = new Intent(Intent.ACTION_VIEW);
                     marketIntent.setData(Uri.parse("market://details?id=" + context.getPackageName()));
                     context.startActivity(marketIntent);
-                    break;
-                case 6:         // push 설정
+                    break;*/
+                case 5:         // push 설정
                     switchRow.setChecked(!switchRow.isChecked());
                     break;
+                /*
                 case 8:
                     Toast.makeText(context, context.getString(R.string.toast_msg_not_support), Toast.LENGTH_LONG).show();
 //                    startAccountListActivity();
@@ -117,8 +121,8 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                 case 9:
                     Toast.makeText(context, context.getString(R.string.toast_msg_not_support), Toast.LENGTH_LONG).show();
 //                    startAccountAddActivity();
-                    break;
-                case 10:
+                    break;*/
+                case 7:
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setMessage("정말 로그아웃하시겠습니까?");
                     builder.setTitle("로그아웃");
@@ -176,6 +180,75 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                         }
                     });
                     builder.show();
+                    break;
+                case 8:
+                    WithDrawalDialog withDrawalDialog = new WithDrawalDialog(
+                            context,
+                            new WithDrawalDialog.DialogCallback() {
+                                @Override
+                                public void onPositive(WithDrawalDialog dialog, final String content) {
+                                    dialog.dismiss();
+                                    ApiClient.getService().withdrawal(
+                                            TokenRecord.getTokenRecord().getApiKey(),
+                                            content
+                                    ).enqueue(new Callback<BasicResponse>() {
+                                        @Override
+                                        public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                                            Log.d(TAG,"onResponse code : " + response.code());
+
+                                            BasicResponse body = response.body();
+                                            switch (response.code()){
+                                                case 200:
+
+                                                    TokenRecord.destoryToken();
+                                                    ActivityCompat.finishAffinity((Activity)context);
+
+                                                    Intent intent = new Intent(context, SplashActivity.class);
+                                                    context.startActivity(intent);
+
+                                                    Toast.makeText(
+                                                            context,
+                                                            context.getString(R.string.toast_msg_withdrawal_success),
+                                                            Toast.LENGTH_LONG
+                                                    ).show();
+
+
+                                                    break;
+                                                default:
+                                                    Log.e(TAG,"status code : " + response.code());
+                                                    Toast.makeText(
+                                                            context,
+                                                            context.getString(R.string.toast_msg_server_internal_error),
+                                                            Toast.LENGTH_LONG
+                                                    ).show();
+                                                    break;
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<BasicResponse> call, Throwable t) {
+                                            Log.e(TAG,"onfail : " + t.getMessage());
+                                            Log.e(TAG, "fail " + t.getClass().getName());
+
+                                            Toast.makeText(
+                                                    context,
+                                                    context.getString(R.string.toast_msg_network_error),
+                                                    Toast.LENGTH_LONG
+                                            ).show();
+                                        }
+                                    });
+
+                                }
+
+                                @Override
+                                public void onNegative(WithDrawalDialog dialog) {
+                                    dialog.dismiss();
+                                }
+                            }
+                    );
+                    withDrawalDialog.show();
+
+
                     break;
                 default:
                     Log.d(TAG,"clicked");
@@ -249,7 +322,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
     @Override
     public int getItemViewType(int position) {
-        if(position==6) return 3;
+        if(position==5) return 3;
         return dataList.get(position).isTitle?1:2;
     }
 
@@ -266,7 +339,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
             holder.tvSettingDesc.setText(dataList.get(position).description);
         }
 
-        if(position==6){
+        if(position==5){
             holder.switchRow.setChecked(Prefer.get("isPushReceive", true));
         }
     }
