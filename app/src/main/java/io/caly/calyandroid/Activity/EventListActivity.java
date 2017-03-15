@@ -75,6 +75,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     @Bind(R.id.recycler_eventlist)
     RecyclerView recyclerList;
 
+    /*
     @Bind(R.id.tv_eventlist_year)
     TextView tvEventYear;
 
@@ -87,6 +88,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     @Bind(R.id.btn_eventlist_next)
     ImageButton imvEventNext;
 
+    */
     @Bind(R.id.linear_eventlist_loader)
     LinearLayout linearLoader;
 
@@ -140,14 +142,14 @@ public class EventListActivity extends BaseAppCompatActivity {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-
+/*
                 if(recyclerAdapter.getItemCount()==0) return;
                 int position = layoutManager.findFirstVisibleItemPosition();
                 EventModel eventModel = recyclerAdapter.getItem(position);
 
                 Log.d(TAG, eventModel.startMonth+"월");
                 tvEventYear.setText(eventModel.startYear+"");
-                tvEventMonth.setText(eventModel.startMonth+"월");
+                tvEventMonth.setText(eventModel.startMonth+"월");*/
             }
 
             @Override
@@ -582,6 +584,7 @@ public class EventListActivity extends BaseAppCompatActivity {
         checkRecoState();
     }
 
+    /*
     @OnClick(R.id.btn_eventlist_prev)
     void onEventPrevClick(){
         if(recyclerAdapter.getItemCount()==0) return;
@@ -619,7 +622,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                         .setLabel("onEventNextClick")
                         .build()
         );
-    }
+    }*/
 
 
     @Override
