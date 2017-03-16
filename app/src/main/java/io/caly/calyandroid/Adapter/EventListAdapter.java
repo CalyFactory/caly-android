@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -64,6 +65,14 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         @Nullable
         @Bind(R.id.tv_eventrow_yearmonth)
         TextView tvYearMonth;
+
+        @Nullable
+        @Bind(R.id.linear_eventrow_state)
+        LinearLayout linearState;
+
+        @Nullable
+        @Bind(R.id.tv_eventrow_state)
+        TextView tvState;
 
         public ViewHolder(View view){
             super(view);
@@ -148,6 +157,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                     holder.tvEventDay.setVisibility(View.INVISIBLE);
                 }
 
+                //주말
                 int dayOfDate = Util.dayOfDate(eventModel.startYear, eventModel.startMonth, eventModel.startDay);
                 if (dayOfDate == 0 || dayOfDate == 6){
                     holder.tvEventDayString.setTextColor(Color.rgb(223,115,101));
@@ -167,11 +177,23 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                 );
                 holder.tvEventLocation.setText(eventModel.location);
 
-                if(eventModel.recoState != RecoState.STATE_DONE_RECOMMEND){
-                    holder.cardRow.setCardBackgroundColor(Color.LTGRAY);
-                }
-                else{
-                    holder.cardRow.setCardBackgroundColor(Color.rgb(157,181,192));
+                switch (eventModel.recoState){
+                    case STATE_BEING_RECOMMEND:
+                        holder.cardRow.setCardBackgroundColor(Color.LTGRAY);
+                        holder.linearState.setVisibility(View.VISIBLE);
+                        holder.linearState.setBackgroundColor(Color.GRAY);
+                        holder.tvState.setText("분\n석\n중");
+                        break;
+                    case STATE_NOTHING_TO_RECOMMEND:
+                        holder.cardRow.setCardBackgroundColor(Color.LTGRAY);
+                        holder.linearState.setVisibility(View.GONE);
+                        break;
+                    case STATE_DONE_RECOMMEND:
+                        holder.cardRow.setCardBackgroundColor(Color.rgb(157,181,192));
+                        holder.linearState.setVisibility(View.GONE);
+                        holder.linearState.setBackgroundColor(Color.BLACK);
+                        holder.tvState.setText("추\n천\n됨");
+                        break;
                 }
                 break;
             case 2:
