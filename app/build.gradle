@@ -1,4 +1,21 @@
+buildscript {
+    repositories {
+        maven { url 'https://maven.fabric.io/public' }
+        maven { url "https://jitpack.io" }
+    }
+
+    dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
+    }
+}
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+    maven { url "https://jitpack.io" }
+}
+
 
 android {
     compileSdkVersion 23
@@ -8,7 +25,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -17,6 +34,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -24,20 +45,53 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:design:23.2.1'
-
-    //external libs
-    compile 'com.github.satyan:sugar:1.5'
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.google.code.gson:gson:2.2.4'
-    compile 'com.google.android.gms:play-services-auth:10.0.1'
-    compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.android.support:appcompat-v7:23.+'
+    compile 'com.android.support:design:23.+'
+    compile 'com.android.support:preference-v7:23.+'
     compile 'com.android.support:cardview-v7:23.0.+'
     compile 'com.android.support:recyclerview-v7:23.+'
+
+    /**
+     *  external libs
+     */
+
+    //google
+    compile 'com.google.android.gms:play-services-auth:10.0.1'
+    compile 'com.google.android.gms:play-services-analytics:10.0.1'
     compile 'com.google.firebase:firebase-messaging:10.0.1'
 
+    //orm
+    compile 'com.github.satyan:sugar:1.5'
+
+    //http & json
+    compile 'com.squareup.retrofit2:retrofit:2.1.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.google.code.gson:gson:2.2.4'
+
+    //view binding
+    compile 'com.jakewharton:butterknife:7.0.1'
+
+    //image loading
+    compile 'com.squareup.picasso:picasso:2.5.2'
+
+    //loading progress animation
+    compile 'com.github.ybq:Android-SpinKit:1.1.0'
+
+    //event handling bus
+    compile 'com.squareup:otto:1.3.8'
+
+    //naver map
+    compile 'com.naver.maps.open:naver-map-api:2.1.2@aar'
+
+    //fabric crashlytics
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
+        transitive = true;
+    }
+
+    // prefer lib
+    compile project(path: ':prefer')
 
     testCompile 'junit:junit:4.12'
 }
+
+apply plugin: 'com.google.gms.google-services'

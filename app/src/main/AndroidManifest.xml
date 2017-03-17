@@ -1,55 +1,131 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="io.caly.calyandroid">
+
+    <!-- Permissions -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_event_black_48dp"
+        android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
         android:name=".CalyApplication"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!-- Main Activity -->
 
         <!-- Splash Activity -->
-        <activity android:name=".Activity.SplashActivity">
+        <activity
+            android:name=".Activity.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
 
         <!-- Login Activity -->
-        <activity android:name=".Activity.LoginActivity">
+        <activity
+            android:name=".Activity.LoginActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <!-- Event List Activity -->
-        <activity android:name=".Activity.EventListActivity">
+        <activity
+            android:name=".Activity.EventListActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <!-- Guide Activity -->
-        <activity android:name=".Activity.GuideActivity">
+        <activity
+            android:name=".Activity.GuideActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
         <!-- Setting Activity -->
-        <activity android:name=".Activity.SettingActivity">
+        <activity
+            android:name=".Activity.LegacySettingActivity"
+            android:screenOrientation="portrait">
 
         </activity>
 
+        <!-- Setting Activity -->
+        <activity
+            android:name=".Activity.SettingActivity"
+            android:screenOrientation="portrait">
 
+        </activity>
+
+        <!-- Signup Activity -->
+        <activity
+            android:name=".Activity.SignupActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <!-- Policy Activity -->
+        <activity
+            android:name=".Activity.PolicyActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <!-- AccountAdd Activity -->
+        <activity
+            android:name=".Activity.AccountAddActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+        <!-- AccountList Activity -->
+        <activity
+            android:name=".Activity.AccountListActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+        <!-- Announce Activity -->
+        <activity
+            android:name=".Activity.NoticeActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+        <!-- RecommandList Activity -->
+        <activity
+            android:name=".Activity.RecommandListActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+        <!-- Map Activity -->
+        <activity
+            android:name=".Activity.MapActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
+
+        <!-- WebView Activity -->
+        <activity
+            android:name=".Activity.WebViewActivity"
+            android:screenOrientation="portrait">
+
+        </activity>
 
         <!-- Services -->
-
         <!-- FCM Push Service -->
 
         <service
-            android:name=".MyFirebaseInstanceIDService">
+            android:name=".Service.FirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".Service.FirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
@@ -61,6 +137,17 @@
         <meta-data android:name="DOMAIN_PACKAGE_NAME" android:value="io.caly.calyandroid" />
 
 
+        <!-- TEST -->
+
+        <!-- Test Activity -->
+        <activity android:name=".Activity.TestActivity">
+        </activity>
+
+
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="b0c07fcd2ec71e73ed7fe4523cb00a7ce24f91a2" />
     </application>
 
 </manifest>

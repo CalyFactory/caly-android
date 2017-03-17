@@ -1,12 +1,17 @@
 package io.caly.calyandroid.Activity;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.R;
 
 /**
@@ -14,16 +19,14 @@ import io.caly.calyandroid.R;
  *
  * @author jspiner (jspiner@naver.com)
  * @project CalyAndroid
- * @since 17. 2. 12
+ * @since 17. 2. 26
  */
 
-public class SettingActivity extends AppCompatActivity {
+public class SettingActivity extends BaseAppCompatActivity {
 
-    //로그에 쓰일 tag
-    private static final String TAG = SettingActivity.class.getSimpleName();
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
 
-    @Bind(R.id.recycler_settinglist)
-    RecyclerView recyclerList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,6 +37,46 @@ public class SettingActivity extends AppCompatActivity {
     }
 
     void init(){
+
         ButterKnife.bind(this);
+
+
+        //set toolbar
+        toolbar.setTitle("환경 설정");
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                return false;
+            }
+        });
+
+        setSupportActionBar(toolbar);
+
+        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        upArrow.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
+        getSupportActionBar().setHomeAsUpIndicator(upArrow);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -1,17 +1,33 @@
 package io.caly.calyandroid.Activity;
 
+import android.Manifest;
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.widget.Toast;
 
-import io.caly.calyandroid.Model.SessionRecord;
-import io.caly.calyandroid.Model.SettingRecord;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import net.jspiner.prefer.Prefer;
+
+import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
+import io.caly.calyandroid.Model.Response.SessionResponse;
+import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.Util;
+import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.Util;
+import retrofit2.Call;
+import retrofit2.Response;
 
 
 /**
@@ -22,10 +38,7 @@ import io.caly.calyandroid.Util;
  * @since 17. 2. 11
  */
 
-public class SplashActivity extends AppCompatActivity {
-
-    //로그에 쓰일 tag
-    private static final String TAG = SplashActivity.class.getSimpleName();
+public class SplashActivity extends BaseAppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,20 +50,47 @@ public class SplashActivity extends AppCompatActivity {
 
     void init(){
 
-        Util.setStatusBarColor(this, getColor(R.color.colorPrimaryDark));
+        Util.setStatusBarColor(this, getResources().getColor(R.color.colorPrimaryDark));
 
-        SettingRecord currentSetting = SettingRecord.getSettingRecord();
+        //firebase init
+        Log.i(TAG, "pushToken : " + FirebaseInstanceId.getInstance().getToken());
+        FirebaseMessaging.getInstance().subscribeToTopic("noti");
 
-        if(currentSetting.isDidRun()){
+        if(isPermissionGranted()){
+            startSplash();
+        }
+        else{
+            requestPermission();
+        }
+    }
+
+    void startSplash(){
+        Log.d(TAG, "isdidrun : " + Prefer.get("isDidRun", false));
+        if(Prefer.get("isDidRun", false)){
             timerHandler.sendEmptyMessageDelayed(0,1000);
         }
         else{
             timerHandler.sendEmptyMessageDelayed(1,3000);
         }
+        Prefer.set("isDidRun", true);
+    }
 
-        currentSetting.setDidRun(true);
-        currentSetting.save();
+    void requestPermission(){
+        ActivityCompat.requestPermissions(
+                this,
+                new String[]{
+                        Manifest.permission.READ_PHONE_STATE
+                },
+                Util.RC_PERMISSION_PHONE_STATE
+        );
+    }
 
+    boolean isPermissionGranted(){
+
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED){
+            return false;
+        }
+        return true;
     }
 
     void startLoginActivity(){
@@ -67,6 +107,19 @@ public class SplashActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
     }
 
+    void startEventActivity(){
+        Intent intent = new Intent(SplashActivity.this, EventListActivity.class);
+        startActivity(intent);
+        SplashActivity.this.finish();
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+    }
+
+    void requestUpdate(){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse("market://details?id=" + getPackageName()));
+        startActivity(intent);
+    }
+
     Handler timerHandler = new Handler(){
 
         @Override
@@ -77,13 +130,18 @@ public class SplashActivity extends AppCompatActivity {
                 startGuideActivity();
             }
             else{
-                SessionRecord sessionRecord = SessionRecord.getSessionRecord();
+                TokenRecord tokenRecord = TokenRecord.getTokenRecord();
+
                 //로그인 정보가 없을 경우
-                if(sessionRecord.getSessionKey() == null){
+                if(tokenRecord.getApiKey() == null){
+                    Log.d(TAG, "no login");
                     startLoginActivity();
                 }
                 else{
-                    //TODO : 로그인검증로직필요
+                    Log.d(TAG,"session : " + tokenRecord.getApiKey());
+
+                    requestLoginCheck(tokenRecord.getApiKey());
+
                 }
 
             }
@@ -93,6 +151,87 @@ public class SplashActivity extends AppCompatActivity {
         }
 
     };
+
+    void requestLoginCheck(String apiKey){
+        Log.i(TAG, "requestLoginCheck");
+
+        ApiClient.getService().loginCheck(
+                "null",
+                "null",
+                Util.getUUID(),
+                apiKey,
+                "null",
+                "null",
+                Util.getAppVersion()
+        ).enqueue(new retrofit2.Callback<SessionResponse>() {
+            @Override
+            public void onResponse(Call<SessionResponse> call, Response<SessionResponse> response) {
+                Log.d(TAG,"onResponse code : " + response.code());
+
+                SessionResponse body = response.body();
+                switch (response.code()){
+                    case 200:
+                        startEventActivity();
+                        break;
+                    case 400:
+                    case 401:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_session_invalid),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        TokenRecord.destoryToken();
+                        startLoginActivity();
+                        finish();
+                        break;
+                    case 403:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_app_version_not_latest),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        requestUpdate();
+                        finish();
+                        break;
+                    default:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_server_internal_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SessionResponse> call, Throwable t) {
+
+                Log.e(TAG,"onfail : " + t.getMessage());
+                Log.e(TAG, "fail " + t.getClass().getName());
+
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_network_error),
+                        Toast.LENGTH_LONG
+                ).show();
+            }
+        });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if(requestCode == Util.RC_PERMISSION_PHONE_STATE){
+
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                startSplash();
+            }
+            else{
+                finish();
+            }
+
+        }
+
+    }
 
     @Override
     protected void onPause() {

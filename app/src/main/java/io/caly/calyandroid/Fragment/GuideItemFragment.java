@@ -15,8 +15,8 @@ import com.squareup.picasso.Picasso;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.caly.calyandroid.Activity.EventListActivity;
 import io.caly.calyandroid.Activity.LoginActivity;
+import io.caly.calyandroid.Fragment.Base.BaseFragment;
 import io.caly.calyandroid.R;
 
 /**
@@ -27,10 +27,7 @@ import io.caly.calyandroid.R;
  * @since 17. 2. 11
  */
 
-public class GuideItemFragment extends Fragment {
-
-    //로그에 쓰일 tag
-    private static final String TAG = GuideItemFragment.class.getSimpleName();
+public class GuideItemFragment extends BaseFragment {
 
     @Bind(R.id.imv_guide_item)
     ImageView imvGuide;
@@ -69,7 +66,6 @@ public class GuideItemFragment extends Fragment {
             init();
 
         }
-
 
         return v;
     }
