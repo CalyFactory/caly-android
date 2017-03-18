@@ -76,14 +76,12 @@ public class LoginActivity extends BaseAppCompatActivity {
 
         GoogleSignInOptions gso =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestServerAuthCode(getString(R.string.google_client_id))
+                        .requestServerAuthCode(getString(R.string.google_client_id), true)
                         .requestIdToken(getString(R.string.google_client_id))
                         .requestScopes(
                                 new Scope("https://www.googleapis.com/auth/calendar"),
                                 new Scope("https://www.googleapis.com/auth/userinfo.email"),
-                                new Scope("https://www.googleapis.com/auth/calendar.readonly"),
-                                new Scope(Scopes.PLUS_ME),
-                                new Scope(Scopes.PLUS_LOGIN)
+                                new Scope("https://www.googleapis.com/auth/calendar.readonly")
                         ).build();
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
