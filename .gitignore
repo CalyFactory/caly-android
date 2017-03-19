@@ -63,3 +63,7 @@ freeline_project_description.json
 gen-external-apklibs
 
 # End of https://www.gitignore.io/api/android
+
+## travis ##
+travis-encrypt
+travis-encrypt.tgz
