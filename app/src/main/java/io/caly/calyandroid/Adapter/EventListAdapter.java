@@ -117,6 +117,11 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         notifyItemInserted(position);
     }
 
+    public void removeAll(){
+        dataList.clear();
+        notifyDataSetChanged();
+    }
+
     @Override
     public int getItemViewType(int position) {
         return dataList.get(position).isHeader?2:1;

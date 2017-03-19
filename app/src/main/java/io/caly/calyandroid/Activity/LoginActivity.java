@@ -193,7 +193,7 @@ public class LoginActivity extends BaseAppCompatActivity {
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
-                        Toast.makeText(getBaseContext(),"logout status : " + status.getStatusMessage(), Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getBaseContext(),"logout status : " + status.getStatusMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -295,6 +295,7 @@ public class LoginActivity extends BaseAppCompatActivity {
                                 getString(R.string.toast_msg_login_fail),
                                 Toast.LENGTH_LONG
                         ).show();
+                        signOutGoogle();
                         break;
                     default:
                         Toast.makeText(
@@ -302,6 +303,7 @@ public class LoginActivity extends BaseAppCompatActivity {
                                 getString(R.string.toast_msg_server_internal_error),
                                 Toast.LENGTH_LONG
                         ).show();
+                        signOutGoogle();
                         break;
                 }
 
