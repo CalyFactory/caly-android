@@ -1,2 +1,4 @@
-openssl aes-256-cbc -K $encrypted_27342c7446d8_key -iv $encrypted_27342c7446d8_iv -in travis-encrypt.tgz.enc -out ./ -d
+openssl aes-256-cbc -K $encrypted_27342c7446d8_key -iv $encrypted_27342c7446d8_iv -in travis-encrypt.tgz.enc -out ./travis-encrypt.tgz -d
+tar xfvz travis-encrypt.tgz
 ls -l
+ls travis-encrypt 
