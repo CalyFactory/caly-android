@@ -4,11 +4,19 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
+
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
 
 import java.util.ArrayList;
 
@@ -37,6 +45,9 @@ public class LegacySettingActivity extends BaseAppCompatActivity {
 
     SettingListAdapter recyclerAdapter;
     RecyclerView.LayoutManager layoutManager;
+
+
+    public static GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -94,7 +105,31 @@ public class LegacySettingActivity extends BaseAppCompatActivity {
 
         recyclerAdapter = new SettingListAdapter(dataList);
         recyclerList.setAdapter(recyclerAdapter);
+
+
+
+        GoogleSignInOptions gso =
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestServerAuthCode(getString(R.string.google_client_id), true)
+                        .requestIdToken(getString(R.string.google_client_id))
+                        .requestScopes(
+                                new Scope("https://www.googleapis.com/auth/calendar"),
+                                new Scope("https://www.googleapis.com/auth/userinfo.email"),
+                                new Scope("https://www.googleapis.com/auth/calendar.readonly")
+                        ).build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .enableAutoManage(this , onGoogleConnectionFailedListener)
+                .build();;
     }
+
+    GoogleApiClient.OnConnectionFailedListener onGoogleConnectionFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
+        @Override
+        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+            Log.d(TAG, "onConnectionFailed : " + connectionResult.getErrorMessage());
+        }
+    };
 
 
     @Override

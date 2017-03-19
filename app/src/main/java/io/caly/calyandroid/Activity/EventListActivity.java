@@ -250,7 +250,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     what
         0 : 추가
         1 : 삭제(예정)
-        2 :
+        2 : 전체삭제
         3 : isLoading을 초기화
     arg1
         추가삭제변경 할 위치index
@@ -268,6 +268,9 @@ public class EventListActivity extends BaseAppCompatActivity {
                     recyclerAdapter.addItem(msg.arg1, (EventModel)msg.obj);
                     break;
                 case 1:
+                    break;
+                case 2:
+                    recyclerAdapter.removeAll();
                     break;
                 case 3:
                     isLoading = false;
@@ -633,12 +636,21 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.menu_eventlist_setting){
-            Intent intent = new Intent(EventListActivity.this, LegacySettingActivity.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+        switch (item.getItemId()){
+            case R.id.menu_eventlist_refresh:
+                Message message = dataNotifyHandler.obtainMessage();
+                message.what = 2;
+                dataNotifyHandler.sendMessage(message);
+                loadEventList();
+                break;
+            case R.id.menu_eventlist_setting:
+                Intent intent = new Intent(EventListActivity.this, LegacySettingActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 
+                break;
         }
+
         return super.onOptionsItemSelected(item);
     }
 }
