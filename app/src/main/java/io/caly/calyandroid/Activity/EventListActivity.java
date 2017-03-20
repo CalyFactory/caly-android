@@ -627,6 +627,11 @@ public class EventListActivity extends BaseAppCompatActivity {
         );
     }*/
 
+    @OnClick(R.id.btn_eventlist_skipreco)
+    public void onSkipRecoClick(){
+        linearStill.setVisibility(View.VISIBLE);
+        loadEventList();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
