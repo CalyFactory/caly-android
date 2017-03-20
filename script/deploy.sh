@@ -15,11 +15,5 @@ curl \
   -F "token=$SLACK_KEY" \
   -F "channels=deploy-android" \
   -F "initial_comment=$SLACK_TEXT" \
-  -F "file=@app/build/outputs/apk/app-debug.apk" \
-  https://slack.com/api/files.upload
-curl \
-  -F "token=$SLACK_KEY" \
-  -F "channels=deploy-android" \
-  -F "initial_comment=$SLACK_TEXT" \
   -F "file=@app/build/outputs/apk/app-release.apk" \
   https://slack.com/api/files.upload
