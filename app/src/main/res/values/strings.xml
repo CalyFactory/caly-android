@@ -16,7 +16,7 @@
     <string name="toast_msg_add_account_success">성공적으로 계정을 추가했습니다.</string>
     <string name="toast_msg_add_account_duplicate">이미 추가된 계정입니다.</string>
     <string name="toast_msg_add_account_error">계정 추가를 실패하였습니다.</string>
-    <string name="toast_msg_success_send_feedback">소중한 피드백 감사합니다.</string>
+    <string name="toast_msg_success_send_feedback">소중한 피드백 감사합니다. 검토 후에 반영하겠습니다!</string>
     <string name="toast_msg_not_support">현재 버전에서는 지원하지 않습니다. 조금만 기다려주세요 :)</string>
     <string name="toast_msg_withdrawal_success">정상적으로 탈퇴되었습니다.</string>
     <string name="toast_msg_withdrawal_lengh_not_enough">회원탈퇴 사유를 10글자 이상 입력해주세요.</string>
@@ -25,7 +25,7 @@
     <string name="notification_msg_google_sync_done">캘린더 동기화가 완료됬습니다!</string>
 
     <!-- view text -->
-    <string name="text_reco_wait">추천 데이터를 준비중입니다.\n\n기다려주시면 푸시로 알려 드릴게요 :)</string>
+    <string name="text_reco_wait">캘리가 추천해드릴만한 장소를 열심히 고민하는 중입니다.\n30분 안에는 끝나요!</string>
     <string name="text_wait_sync">일정정보를 가져오는 중입니다.잠시만 기다려 주세요 :)</string>
     <string name="text_splash_slogan">언제 어디서나 추천을!</string>
 
