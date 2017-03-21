@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.squareup.otto.Subscribe;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ import io.caly.calyandroid.Adapter.RecoTabPagerAdapter;
 import io.caly.calyandroid.Adapter.RecommandListAdapter;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.EventModel;
+import io.caly.calyandroid.Model.Event.RecoListLoadDoneEvent;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.TrackingType;
@@ -104,6 +106,7 @@ public class RecommandListActivity extends BaseAppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("카페"));
         tabLayout.addTab(tabLayout.newTab().setText("액티비티"));
 
+
         pagerAdapter = new RecoTabPagerAdapter(getSupportFragmentManager(), eventData);
         pagerRecoList.setAdapter(pagerAdapter);
         pagerRecoList.addOnPageChangeListener(
@@ -127,6 +130,21 @@ public class RecommandListActivity extends BaseAppCompatActivity {
         });
 
 
+    }
+
+    @Subscribe
+    public void recoListLoadDoneEvent(RecoListLoadDoneEvent doneEvent){
+        switch (doneEvent.category){
+            case RESTAURANT:
+                tabLayout.getTabAt(0).setText("식당("+doneEvent.dataCount+")");
+                break;
+            case CAFE:
+                tabLayout.getTabAt(0).setText("카페("+doneEvent.dataCount+")");
+                break;
+            case PLACE:
+                tabLayout.getTabAt(0).setText("액티비티("+doneEvent.dataCount+")");
+                break;
+        }
     }
 
     @OnClick(R.id.fab_recolist_feedback)

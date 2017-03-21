@@ -629,7 +629,7 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.btn_eventlist_skipreco)
     public void onSkipRecoClick(){
-        linearStill.setVisibility(View.VISIBLE);
+        linearStill.setVisibility(View.GONE);
         loadEventList();
     }
 

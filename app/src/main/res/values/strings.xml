@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">캘리</string>
-    <string name="app_server">https://caly.io/</string>
+    <string name="app_server">http://dev.caly.io:7070/</string>
     <string name="app_server_version">v1.0</string>
     <string name="google_client_id">881274260597-26b4e9bqah6nbp1katm5qlud3gfitlat.apps.googleusercontent.com</string>
     <string name="naver_client_id">toXORBEYXHOOkODnRrJN</string>
@@ -28,6 +28,7 @@
     <string name="text_reco_wait">캘리가 추천해드릴만한 장소를 열심히 고민하는 중입니다.\n30분 안에는 끝나요!</string>
     <string name="text_wait_sync">일정정보를 가져오는 중입니다.잠시만 기다려 주세요 :)</string>
     <string name="text_splash_slogan">언제 어디서나 추천을!</string>
+    <string name="text_reco_skip_button">네, 다 되면 알려주세요.</string>
 
     <!-- GA tag -->
     <string name="ga_category_button">ga_category_button</string>
