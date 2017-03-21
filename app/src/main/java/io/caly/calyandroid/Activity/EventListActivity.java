@@ -43,6 +43,7 @@ import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.DataModel.TestModel;
 import io.caly.calyandroid.Model.Event.GoogleSyncDoneEvent;
+import io.caly.calyandroid.Model.Event.RecoReadyEvent;
 import io.caly.calyandroid.Model.LoginPlatform;
 import io.caly.calyandroid.Model.RecoState;
 import io.caly.calyandroid.Model.Response.BasicResponse;
@@ -612,8 +613,15 @@ public class EventListActivity extends BaseAppCompatActivity {
     }
 
     @Subscribe
-    public void googleSyncCallback(GoogleSyncDoneEvent event){
-        Log.i(TAG, "googleSyncCallback");
+    public void googleSyncDoneEventCallback(GoogleSyncDoneEvent event){
+        Log.i(TAG, "googleSyncDoneEventCallback");
+
+        checkRecoState();
+    }
+
+    @Subscribe
+    public void recoReadyEventCallback(RecoReadyEvent event){
+        Log.i(TAG, "recoReadyEventCallback");
 
         checkRecoState();
     }
