@@ -139,10 +139,10 @@ public class RecommandListActivity extends BaseAppCompatActivity {
                 tabLayout.getTabAt(0).setText("식당("+doneEvent.dataCount+")");
                 break;
             case CAFE:
-                tabLayout.getTabAt(0).setText("카페("+doneEvent.dataCount+")");
+                tabLayout.getTabAt(1).setText("카페("+doneEvent.dataCount+")");
                 break;
             case PLACE:
-                tabLayout.getTabAt(0).setText("액티비티("+doneEvent.dataCount+")");
+                tabLayout.getTabAt(2).setText("액티비티("+doneEvent.dataCount+")");
                 break;
         }
     }

@@ -195,7 +195,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                         break;
                     case STATE_DONE_RECOMMEND:
                         holder.cardRow.setCardBackgroundColor(Color.rgb(157,181,192));
-                        holder.linearState.setVisibility(View.GONE);
+                        holder.linearState.setVisibility(View.VISIBLE);
                         holder.linearState.setBackgroundColor(Color.BLACK);
                         holder.tvState.setText("추\n천\n됨");
                         break;
