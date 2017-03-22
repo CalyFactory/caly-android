@@ -21,6 +21,7 @@ import io.caly.calyandroid.Activity.SplashActivity;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.TestModel;
 import io.caly.calyandroid.Model.Event.GoogleSyncDoneEvent;
+import io.caly.calyandroid.Model.Event.RecoReadyEvent;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.BusProvider;
 import io.caly.calyandroid.Util.EventListener.AppLifecycleListener;
@@ -70,7 +71,12 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 sendNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("message"));
                 break;
             case "reco":
-                sendNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("message"));
+                if(AppLifecycleListener.getActiveActivityCount()==0) {
+                    sendNotification("추천이 준비되었습니다.", "추천이 준비되었습니다.");
+                }
+                else{
+                    BusProvider.getInstance().post(new RecoReadyEvent());
+                }
                 break;
         }
 

@@ -21,11 +21,14 @@ import io.caly.calyandroid.Fragment.Base.BaseFragment;
 import io.caly.calyandroid.Model.Category;
 import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.DataModel.RecoModel;
+import io.caly.calyandroid.Model.Deserializer.RecoStateDeserializer;
+import io.caly.calyandroid.Model.Event.RecoListLoadDoneEvent;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.RecoResponse;
 import io.caly.calyandroid.Model.TrackingType;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.BusProvider;
 import io.caly.calyandroid.Util.EventListener.RecyclerItemClickListener;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -151,9 +154,11 @@ public class RecoTabFragment extends BaseFragment {
                 Log.d(TAG,"onResponse code : " + response.code());
 
                 RecoResponse body = response.body();
+                int dataSize = 0;
                 switch (response.code()){
                     case 200:
                         recyclerAdapter.addItems(body.payload.data);
+                        dataSize = recyclerAdapter.getItemCount();
                         break;
                     case 201:
                         break;
@@ -166,6 +171,13 @@ public class RecoTabFragment extends BaseFragment {
                         ).show();
                         break;
                 }
+
+                BusProvider.getInstance().post(
+                        new RecoListLoadDoneEvent(
+                                category,
+                                dataSize
+                        )
+                );
             }
 
             @Override

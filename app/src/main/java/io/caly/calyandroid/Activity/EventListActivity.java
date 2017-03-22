@@ -1,5 +1,7 @@
 package io.caly.calyandroid.Activity;
 
+import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -8,6 +10,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -39,6 +43,7 @@ import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.DataModel.TestModel;
 import io.caly.calyandroid.Model.Event.GoogleSyncDoneEvent;
+import io.caly.calyandroid.Model.Event.RecoReadyEvent;
 import io.caly.calyandroid.Model.LoginPlatform;
 import io.caly.calyandroid.Model.RecoState;
 import io.caly.calyandroid.Model.Response.BasicResponse;
@@ -51,6 +56,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static io.caly.calyandroid.Model.LoginPlatform.CALDAV_ICAL;
 import static io.caly.calyandroid.Model.LoginPlatform.GOOGLE;
 
 /**
@@ -481,6 +487,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                                 getString(R.string.toast_msg_server_internal_error),
                                 Toast.LENGTH_LONG
                         ).show();
+                        retrySync(CALDAV_ICAL.value);
                         break;
                 }
             }
@@ -496,6 +503,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                         getString(R.string.toast_msg_network_error),
                         Toast.LENGTH_LONG
                 ).show();
+                retrySync(CALDAV_ICAL.value);
             }
         });
     }
@@ -524,6 +532,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                                 getString(R.string.toast_msg_server_internal_error),
                                 Toast.LENGTH_LONG
                         ).show();
+                        retrySync(GOOGLE.value);
                         break;
                 }
             }
@@ -532,6 +541,7 @@ public class EventListActivity extends BaseAppCompatActivity {
             public void onFailure(Call<BasicResponse> call, Throwable t) {
                 Log.d(TAG,"onfail : " + t.getMessage());
                 Log.d(TAG, "fail " + t.getClass().getName());
+                retrySync(GOOGLE.value);
 
                 linearLoader.setVisibility(View.GONE);
                 Toast.makeText(
@@ -580,9 +590,38 @@ public class EventListActivity extends BaseAppCompatActivity {
         }
     }
 
+    void retrySync(final String loginPlatform){
+        AlertDialog.Builder builder = new AlertDialog.Builder(getBaseContext());
+        builder.setMessage("동기화를 실패했습니다. 재시도 하시겠습니까?");
+        builder.setTitle("재시도");
+        builder.setPositiveButton("재시도", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                syncCalendar(loginPlatform);
+
+            }
+        });
+        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+                finish();
+            }
+        });
+        builder.show();
+    }
+
     @Subscribe
-    public void googleSyncCallback(GoogleSyncDoneEvent event){
-        Log.i(TAG, "googleSyncCallback");
+    public void googleSyncDoneEventCallback(GoogleSyncDoneEvent event){
+        Log.i(TAG, "googleSyncDoneEventCallback");
+
+        checkRecoState();
+    }
+
+    @Subscribe
+    public void recoReadyEventCallback(RecoReadyEvent event){
+        Log.i(TAG, "recoReadyEventCallback");
 
         checkRecoState();
     }
@@ -629,7 +668,7 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.btn_eventlist_skipreco)
     public void onSkipRecoClick(){
-        linearStill.setVisibility(View.VISIBLE);
+        linearStill.setVisibility(View.GONE);
         loadEventList();
     }
 
