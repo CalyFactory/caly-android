@@ -168,9 +168,10 @@ public class EventListActivity extends BaseAppCompatActivity {
                 int firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
                 int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
 
+                Log.d(TAG, "total : " + totalItemCount + " first : " + firstVisibleItem + " last : " + lastVisibleItem);
                 if(totalItemCount<=1) return;
 
-                if(totalItemCount - 1 == lastVisibleItem + LOADING_THRESHOLD){
+                if(totalItemCount - 1 <= lastVisibleItem + LOADING_THRESHOLD){
                     Log.d(TAG, "last item, loading more");
                     loadMoreEventList(currentTailPageNum);
                 }
@@ -254,8 +255,8 @@ public class EventListActivity extends BaseAppCompatActivity {
     /*
     Message
     what
-        0 : 추가
-        1 : 삭제(예정)
+        0 : 추가(제일아레에)
+        1 : 추가(제일위에)
         2 : 전체삭제
         3 : isLoading을 초기화
     arg1
@@ -271,9 +272,10 @@ public class EventListActivity extends BaseAppCompatActivity {
             switch (msg.what){
 
                 case 0:
-                    recyclerAdapter.addItem(msg.arg1, (EventModel)msg.obj);
+                    recyclerAdapter.addTail((EventModel)msg.obj);
                     break;
                 case 1:
+                    recyclerAdapter.addHead((EventModel)msg.obj);
                     break;
                 case 2:
                     recyclerAdapter.removeAll();
@@ -306,23 +308,21 @@ public class EventListActivity extends BaseAppCompatActivity {
                     switch (response.code()){
                         case 200:
                             EventResponse body = response.body();
-                            Collections.reverse(body.payload.data);
+//                            Collections.reverse(body.payload.data);
                             body.payload.data = addHeaderToEventList(body.payload.data);
                             for(EventModel eventModel : body.payload.data){
 
                                 Message message = dataNotifyHandler.obtainMessage();
-                                message.what = 0;
                                 message.obj = eventModel;
 
                                 if(pageNum<0){
-                                    message.arg1 = 0;
-                                    dataNotifyHandler.sendMessage(message);
+                                    message.what = 1;
 
                                 }
                                 else{
-                                    message.arg1 = recyclerAdapter.getItemCount();
-                                    dataNotifyHandler.sendMessage(message);
+                                    message.what = 0;
                                 }
+                                dataNotifyHandler.sendMessage(message);
                             }
 
                             if(pageNum<0) {
@@ -334,6 +334,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                             isLoading=false;
                             break;
                         case 201:
+                            isLoading=false;
                             break;
                         case 401:
                             isLoading=false;
