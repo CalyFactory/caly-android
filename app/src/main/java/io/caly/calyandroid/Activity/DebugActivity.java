@@ -136,14 +136,14 @@ public class DebugActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.btn_debug_server_2)
     void onApplyClick2(){
-        Prefer.set("app_server", "https://devapi.caly.io:55566/");
+        Prefer.set("app_server", "https://devapi.caly.io:55565/");
         Log.d(TAG, "server url : " + Prefer.get("app_server", getString(R.string.app_server)));
         restartApp();
     }
 
     @OnClick(R.id.btn_debug_server_3)
     void onApplyClick3(){
-        Prefer.set("app_server", "https://devapi.caly.io:55568/");
+        Prefer.set("app_server", "https://devapi.caly.io:55567/");
         Log.d(TAG, "server url : " + Prefer.get("app_server", getString(R.string.app_server)));
         restartApp();
     }
