@@ -1,5 +1,6 @@
 package io.caly.calyandroid.Service;
 
+import io.caly.calyandroid.Model.Category;
 import io.caly.calyandroid.Model.Response.AccountResponse;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.EventResponse;
@@ -23,11 +24,12 @@ import retrofit2.http.Path;
 
 public interface HttpService {
 
-    @GET("/users/{user}/repos")
+    //TEST
+    @FormUrlEncoded
+    @POST("v1.0/")
     Call<BasicResponse> test(
-            @Path("user") String user
+            @Field("key") String key
     );
-
 
     /*
     =============================
@@ -37,7 +39,7 @@ public interface HttpService {
 
     //loginCheck
     @FormUrlEncoded
-    @POST("member/loginCheck")
+    @POST("v1.0/member/loginCheck")
     Call<SessionResponse> loginCheck(
             @Field("uId") String userId,
             @Field("uPw") String userPw,
@@ -51,7 +53,7 @@ public interface HttpService {
 
     //signUp
     @FormUrlEncoded
-    @POST("member/signUp")
+    @POST("v1.0/member/signUp")
     Call<SessionResponse> signUp(
             @Field("uId") String userId,
             @Field("uPw") String userPw,
@@ -69,7 +71,7 @@ public interface HttpService {
 
     //registerDevice
     @FormUrlEncoded
-    @POST("member/registerDevice")
+    @POST("v1.0/member/registerDevice")
     Call<SessionResponse> registerDevice(
             @Field("apikey") String apiKey,
             @Field("pushToken") String pushToken,
@@ -82,14 +84,14 @@ public interface HttpService {
 
     //logout
     @FormUrlEncoded
-    @POST("member/logout")
+    @POST("v1.0/member/logout")
     Call<BasicResponse> logout(
             @Field("apikey") String apiKey
     );
 
     //checkVersion
     @FormUrlEncoded
-    @POST("member/checkVersion")
+    @POST("v1.0/member/checkVersion")
     Call<BasicResponse> checkVersion(
             @Field("appVersion") String appVersion,
             @Field("apikey") String apiKey
@@ -97,14 +99,14 @@ public interface HttpService {
 
     //accountList
     @FormUrlEncoded
-    @POST("member/accountList")
+    @POST("v1.0/member/accountList")
     Call<AccountResponse> accountList(
             @Field("apikey") String apiKey
     );
 
     //addAccount
     @FormUrlEncoded
-    @POST("member/addAccount")
+    @POST("v1.0/member/addAccount")
     Call<BasicResponse> addAccount(
             @Field("apikey") String apiKey,
             @Field("login_platform") String loginPlatform,
@@ -115,7 +117,7 @@ public interface HttpService {
 
     //withdrawal
     @FormUrlEncoded
-    @POST("member/withdrawal")
+    @POST("v1.0/member/withdrawal")
     Call<BasicResponse> withdrawal(
             @Field("apikey") String apiKey,
             @Field("contents") String contents
@@ -128,7 +130,7 @@ public interface HttpService {
      */
 
     @FormUrlEncoded
-    @POST("events/getList")
+    @POST("v1.0/events/getList")
     Call<EventResponse> getEventList(
             @Field("apikey") String apiKey,
             @Field("pageNum") int pageNum
@@ -144,7 +146,7 @@ public interface HttpService {
 
     //sync
     @FormUrlEncoded
-    @POST("sync")
+    @POST("v1.0/sync")
     Call<BasicResponse> sync(
             @Field("apikey") String apiKey
     );
@@ -158,7 +160,7 @@ public interface HttpService {
 
     //getList
     @FormUrlEncoded
-    @POST("reco/getList")
+    @POST("v1.0/reco/getList")
     Call<RecoResponse> getRecoList(
             @Field("apikey") String apiKey,
             @Field("eventHashkey") String eventHashKey,
@@ -167,7 +169,7 @@ public interface HttpService {
 
     //tracking
     @FormUrlEncoded
-    @POST("reco/tracking")
+    @POST("v1.0/reco/tracking")
     Call<BasicResponse> tracking(
             @Field("apikey") String apiKey,
             @Field("eventHashkey") String eventHashkey,
@@ -177,7 +179,7 @@ public interface HttpService {
 
     //checkRepoState
     @FormUrlEncoded
-    @POST("reco/checkRecoState")
+    @POST("v1.0/reco/checkRecoState")
     Call<BasicResponse> checkRepoState(
             @Field("apikey") String apiKey
     );
@@ -190,7 +192,7 @@ public interface HttpService {
 
     //updatePushToken
     @FormUrlEncoded
-    @POST("setting/updatePushToken")
+    @POST("v1.0/setting/updatePushToken")
     Call<BasicResponse> updatePushToken(
             @Field("pushToken") String pushToken,
             @Field("apikey") String apiKey
@@ -198,7 +200,7 @@ public interface HttpService {
 
     //setReceivePush
     @FormUrlEncoded
-    @POST("setting/setReceivePush")
+    @POST("v1.0/setting/setReceivePush")
     Call<BasicResponse> setReceivePush(
             @Field("apikey") String apiKey,
             @Field("receive") int receive
@@ -214,14 +216,14 @@ public interface HttpService {
 
     //notices
     @FormUrlEncoded
-    @POST("support/notices")
+    @POST("v1.0/support/notices")
     Call<NoticeResponse> notices(
             @Field("apikey") String apiKey
     );
 
     //requests
     @FormUrlEncoded
-    @POST("support/requests")
+    @POST("v1.0/support/requests")
     Call<BasicResponse> requests(
             @Field("apikey") String apiKey,
             @Field("contents") String contents
