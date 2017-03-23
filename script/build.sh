@@ -1,4 +1,4 @@
-./gradlew assembleDebug
+./gradlew build -stacktrace
 ./gradlew assembleRelease \
 -Pandroid.injected.signing.store.file="travis-encrypt/calysigningkey.jks" \
 -Pandroid.injected.signing.store.password=$STORE_PASSWORD \
