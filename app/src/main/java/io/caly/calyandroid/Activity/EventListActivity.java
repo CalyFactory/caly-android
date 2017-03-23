@@ -592,7 +592,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     }
 
     void retrySync(final String loginPlatform){
-        AlertDialog.Builder builder = new AlertDialog.Builder(getBaseContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("동기화를 실패했습니다. 재시도 하시겠습니까?");
         builder.setTitle("재시도");
         builder.setPositiveButton("재시도", new DialogInterface.OnClickListener() {
