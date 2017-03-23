@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">캘리</string>
-    <string name="app_server">https://dev.caly.io/</string>
-    <string name="app_server_version">v1.0</string>
+    <string name="app_server">https://api.caly.io/</string>
     <string name="google_client_id">881274260597-26b4e9bqah6nbp1katm5qlud3gfitlat.apps.googleusercontent.com</string>
     <string name="naver_client_id">toXORBEYXHOOkODnRrJN</string>
 

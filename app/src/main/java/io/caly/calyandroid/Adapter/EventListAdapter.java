@@ -106,10 +106,12 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
     public void addTail(EventModel data){
         dataList.add(data);
+        notifyItemInserted(dataList.size());
     }
 
     public void addHead(EventModel data){
         dataList.add(0, data);
+        notifyItemInserted(0);
     }
 
     public void addItem(int position, EventModel data){
