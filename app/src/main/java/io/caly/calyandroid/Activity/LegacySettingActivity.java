@@ -24,6 +24,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.SettingListAdapter;
+import io.caly.calyandroid.BuildConfig;
 import io.caly.calyandroid.Model.DataModel.SettingItemModel;
 import io.caly.calyandroid.R;
 
@@ -93,7 +94,7 @@ public class LegacySettingActivity extends BaseAppCompatActivity {
         dataList.add(new SettingItemModel("공지사항", "Caly의 공지사항을 알려드립니다."));
         dataList.add(new SettingItemModel("문의하기", "문제가 있다면, 알려주세요."));
         dataList.add(new SettingItemModel("기본설정"));
-        dataList.add(new SettingItemModel("어플리케이션 버전", "v0.0.1+beta"));
+        dataList.add(new SettingItemModel("어플리케이션 버전", BuildConfig.VERSION_NAME));
 //        dataList.add(new SettingItemModel("최신버전 확인","마켓으로 이동해 최신버전으로 업데이트"));
         dataList.add(new SettingItemModel("푸시설정","푸시 알람을 끄고 켤 수 있습니다."));
         dataList.add(new SettingItemModel("계정설정"));

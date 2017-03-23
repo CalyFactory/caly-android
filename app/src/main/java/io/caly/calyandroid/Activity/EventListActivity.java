@@ -686,6 +686,10 @@ public class EventListActivity extends BaseAppCompatActivity {
                 Message message = dataNotifyHandler.obtainMessage();
                 message.what = 2;
                 dataNotifyHandler.sendMessage(message);
+
+                currentTailPageNum = 1;
+                currentHeadPageNum = -1;
+
                 loadEventList();
                 break;
             case R.id.menu_eventlist_setting:
