@@ -20,12 +20,12 @@
                 android:layout_height="wrap_content" />
             <Button
                 android:layout_width="wrap_content"
-                android:text="https://devapi.caly.io:55566"
+                android:text="https://devapi.caly.io:55565"
                 android:id="@+id/btn_debug_server_2"
                 android:layout_height="wrap_content" />
             <Button
                 android:layout_width="wrap_content"
-                android:text="https://devapi.caly.io:55568"
+                android:text="https://devapi.caly.io:55567"
                 android:id="@+id/btn_debug_server_3"
                 android:layout_height="wrap_content" />
             <EditText
