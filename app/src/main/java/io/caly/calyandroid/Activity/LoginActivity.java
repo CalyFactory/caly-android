@@ -36,6 +36,7 @@ import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.SessionResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.StringFormmater;
 import io.caly.calyandroid.Util.Util;
 import io.caly.calyandroid.View.LoginDialog;
 import retrofit2.Call;
@@ -122,7 +123,7 @@ public class LoginActivity extends BaseAppCompatActivity {
             public void onPositive(LoginDialog dialog, String userId, String userPw) {
                 dialog.dismiss();
 
-                procLoginCaldav(userId, userPw, LoginPlatform.CALDAV_NAVER.value);
+                procLoginCaldav(StringFormmater.hostnameAuthGenerator(userId, "naver.com"), userPw, LoginPlatform.CALDAV_NAVER.value);
             }
 
             @Override

@@ -56,6 +56,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         String pushType = pushData.get("type");
         String pushAction = pushData.get("action");
 
+        Log.d(TAG, "activity count : " + AppLifecycleListener.getActiveActivityCount());
         switch (pushType){
             case "sync":
                 if(AppLifecycleListener.getActiveActivityCount()==0){
@@ -93,13 +94,13 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.app_icon)
                 .setTicker(title)
                 .setWhen(0)
                 .setContentTitle(title)
                 .setStyle(new NotificationCompat.InboxStyle())
                 .setContentText(message)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher))
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.mipmap.app_icon))
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);

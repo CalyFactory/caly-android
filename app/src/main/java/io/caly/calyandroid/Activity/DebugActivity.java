@@ -154,6 +154,8 @@ public class DebugActivity extends BaseAppCompatActivity {
         TokenRecord.destoryToken();
 
         signOutGoogle();
+
+        restartApp();
     }
 
     void signOutGoogle(){
