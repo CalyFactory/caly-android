@@ -432,6 +432,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                 BasicResponse body = response.body();
                 switch (response.code()){
                     case 200:
+                        linearStill.setVisibility(View.GONE);
                         loadEventList();
                         break;
                     case 201:
