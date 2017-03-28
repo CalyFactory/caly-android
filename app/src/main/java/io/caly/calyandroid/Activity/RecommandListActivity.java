@@ -108,6 +108,7 @@ public class RecommandListActivity extends BaseAppCompatActivity {
 
 
         pagerAdapter = new RecoTabPagerAdapter(getSupportFragmentManager(), eventData);
+        pagerRecoList.setOffscreenPageLimit(4);
         pagerRecoList.setAdapter(pagerAdapter);
         pagerRecoList.addOnPageChangeListener(
                 new TabLayout.TabLayoutOnPageChangeListener(tabLayout)
