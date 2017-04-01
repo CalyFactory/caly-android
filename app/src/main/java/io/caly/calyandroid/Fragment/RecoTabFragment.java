@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -45,12 +46,14 @@ public class RecoTabFragment extends BaseFragment {
     @Bind(R.id.recycler_recommandlist)
     RecyclerView recyclerList;
 
+    @Bind(R.id.tv_reco_nodata)
+    TextView tvNodata;
+
     Category category;
     EventModel eventData;
 
     RecommendListAdapter recyclerAdapter;
     LinearLayoutManager layoutManager;
-
 
     public RecoTabFragment() { super(); }
 
@@ -152,12 +155,17 @@ public class RecoTabFragment extends BaseFragment {
 
                 RecoResponse body = response.body();
                 int dataSize = 0;
+
                 switch (response.code()){
                     case 200:
                         recyclerAdapter.addItems(body.payload.data);
-                        dataSize = recyclerAdapter.getItemCount();
+                        dataSize = body.payload.data.size();
+                        if(dataSize==0){
+                            tvNodata.setVisibility(View.VISIBLE);
+                        }
                         break;
-                    case 201:
+                    case 201: // no data
+                        tvNodata.setVisibility(View.VISIBLE);
                         break;
                     default:
                         Log.e(TAG,"status code : " + response.code());
