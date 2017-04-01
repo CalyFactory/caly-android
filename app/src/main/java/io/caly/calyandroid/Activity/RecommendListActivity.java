@@ -28,6 +28,7 @@ import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.Util;
 import io.caly.calyandroid.View.FeedbackDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -200,9 +201,8 @@ public class RecommendListActivity extends BaseAppCompatActivity {
         t.setScreenName(this.getClass().getName());
         t.send(
                 new HitBuilders.EventBuilder()
-                        .setCategory(getString(R.string.ga_category_button))
-                        .setAction(getString(R.string.ga_action_click))
-                        .setLabel("onFeedBackClick")
+                        .setCategory(getString(R.string.ga_category_button_click))
+                        .setAction(Util.getCurrentMethodName())
                         .build()
         );
     }

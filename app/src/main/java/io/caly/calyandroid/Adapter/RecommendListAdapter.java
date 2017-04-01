@@ -24,6 +24,7 @@ import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.RecoModel;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.StringFormmater;
+import io.caly.calyandroid.Util.Util;
 
 /**
  * Created by jspiner on 2017. 2. 27..
@@ -126,9 +127,8 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
                 t.setScreenName(this.getClass().getName());
                 t.send(
                         new HitBuilders.EventBuilder()
-                                .setCategory(context.getString(R.string.ga_category_button))
-                                .setAction(context.getString(R.string.ga_action_click))
-                                .setLabel("onRecoCLick")
+                                .setCategory(context.getString(R.string.ga_category_button_click))
+                                .setAction(Util.getCurrentMethodName())
                                 .build()
                 );
             }
@@ -150,9 +150,8 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
                 t.setScreenName(this.getClass().getName());
                 t.send(
                         new HitBuilders.EventBuilder()
-                                .setCategory(context.getString(R.string.ga_category_button))
-                                .setAction(context.getString(R.string.ga_action_click))
-                                .setLabel("onMapClick")
+                                .setCategory(context.getString(R.string.ga_category_button_click))
+                                .setAction(Util.getCurrentMethodName())
                                 .build()
                 );
             }

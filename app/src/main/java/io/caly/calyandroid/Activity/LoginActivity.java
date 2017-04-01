@@ -109,9 +109,8 @@ public class LoginActivity extends BaseAppCompatActivity {
         t.setScreenName(this.getClass().getName());
         t.send(
                 new HitBuilders.EventBuilder()
-                        .setCategory(getString(R.string.ga_category_button))
-                        .setAction(getString(R.string.ga_action_click))
-                        .setLabel("onGoogleLoginClick")
+                        .setCategory(getString(R.string.ga_category_button_click))
+                        .setAction(Util.getCurrentMethodName())
                         .build()
         );
     }
@@ -137,9 +136,8 @@ public class LoginActivity extends BaseAppCompatActivity {
         t.setScreenName(this.getClass().getName());
         t.send(
                 new HitBuilders.EventBuilder()
-                        .setCategory(getString(R.string.ga_category_button))
-                        .setAction(getString(R.string.ga_action_click))
-                        .setLabel("onNaverLoginClick")
+                        .setCategory(getString(R.string.ga_category_button_click))
+                        .setAction(Util.getCurrentMethodName())
                         .build()
         );
 
@@ -166,9 +164,8 @@ public class LoginActivity extends BaseAppCompatActivity {
         t.setScreenName(this.getClass().getName());
         t.send(
                 new HitBuilders.EventBuilder()
-                        .setCategory(getString(R.string.ga_category_button))
-                        .setAction(getString(R.string.ga_action_click))
-                        .setLabel("onAppleLoginClick")
+                        .setCategory(getString(R.string.ga_category_button_click))
+                        .setAction(Util.getCurrentMethodName())
                         .build()
         );
     }

@@ -109,6 +109,13 @@ public class Util {
 
     }
 
+    public static String getCurrentMethodName()
+    {
+        final StackTraceElement[] ste = Thread.currentThread().getStackTrace();
+
+        return ste[ste.length - 1].getMethodName();
+    }
+
     //텍스트 파일 불러오기
     public static String readTextFile(Context context, String file) {
         String text;
