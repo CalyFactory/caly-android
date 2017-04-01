@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.widget.ListViewAutoScrollHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,8 +25,6 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
 
 import net.jspiner.prefer.Prefer;
-
-import java.lang.reflect.Field;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -59,7 +56,7 @@ public class DebugActivity extends BaseAppCompatActivity {
             LoginActivity.class,
             SignupActivity.class,
             EventListActivity.class,
-            RecommandListActivity.class,
+            RecommendListActivity.class,
             AccountAddActivity.class,
             AccountListActivity.class,
             GuideActivity.class,

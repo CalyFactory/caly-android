@@ -3,9 +3,7 @@ package io.caly.calyandroid.Adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,24 +19,20 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import io.caly.calyandroid.Activity.MapActivity;
 import io.caly.calyandroid.Activity.WebViewActivity;
 import io.caly.calyandroid.CalyApplication;
-import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.DataModel.RecoModel;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.StringFormmater;
-import io.caly.calyandroid.Util.Util;
 
 /**
  * Created by jspiner on 2017. 2. 27..
  */
 
-public class RecommandListAdapter extends RecyclerView.Adapter<RecommandListAdapter.ViewHolder>  {
+public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdapter.ViewHolder>  {
 
     //로그에 쓰일 tag
-    private static final String TAG = CalyApplication.class.getSimpleName() + "/" + RecommandListAdapter.class.getSimpleName();
+    private static final String TAG = CalyApplication.class.getSimpleName() + "/" + RecommendListAdapter.class.getSimpleName();
 
     private ArrayList<RecoModel> dataList;
 
@@ -75,7 +69,7 @@ public class RecommandListAdapter extends RecyclerView.Adapter<RecommandListAdap
         }
     }
 
-    public RecommandListAdapter(Context context, ArrayList<RecoModel> dataList){
+    public RecommendListAdapter(Context context, ArrayList<RecoModel> dataList){
         this.dataList = dataList;
         this.context = context;
     }
@@ -127,6 +121,16 @@ public class RecommandListAdapter extends RecyclerView.Adapter<RecommandListAdap
                 Intent intent = new Intent(context, WebViewActivity.class);
                 intent.putExtra("url", recoModel.deepUrl);
                 context.startActivity(intent);
+
+                Tracker t = ((CalyApplication)((Activity)context).getApplication()).getDefaultTracker();
+                t.setScreenName(this.getClass().getName());
+                t.send(
+                        new HitBuilders.EventBuilder()
+                                .setCategory(context.getString(R.string.ga_category_button))
+                                .setAction(context.getString(R.string.ga_action_click))
+                                .setLabel("onRecoCLick")
+                                .build()
+                );
             }
         });
 

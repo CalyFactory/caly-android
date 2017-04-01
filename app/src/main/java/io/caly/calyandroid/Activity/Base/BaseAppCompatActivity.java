@@ -58,6 +58,12 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause() {
+        Log.i(TAG, "onPause");
+        super.onPause();
+    }
+
+    @Override
     protected void onDestroy() {
         Log.i(TAG, "onDestroy");
         super.onDestroy();

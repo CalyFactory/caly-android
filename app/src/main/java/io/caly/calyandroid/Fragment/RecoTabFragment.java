@@ -1,7 +1,5 @@
 package io.caly.calyandroid.Fragment;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,12 +14,11 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.caly.calyandroid.Adapter.RecommandListAdapter;
+import io.caly.calyandroid.Adapter.RecommendListAdapter;
 import io.caly.calyandroid.Fragment.Base.BaseFragment;
 import io.caly.calyandroid.Model.Category;
 import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.DataModel.RecoModel;
-import io.caly.calyandroid.Model.Deserializer.RecoStateDeserializer;
 import io.caly.calyandroid.Model.Event.RecoListLoadDoneEvent;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.RecoResponse;
@@ -51,7 +48,7 @@ public class RecoTabFragment extends BaseFragment {
     Category category;
     EventModel eventData;
 
-    RecommandListAdapter recyclerAdapter;
+    RecommendListAdapter recyclerAdapter;
     LinearLayoutManager layoutManager;
 
 
@@ -98,7 +95,7 @@ public class RecoTabFragment extends BaseFragment {
 
 
         ArrayList<RecoModel> dataList = new ArrayList<>();
-        recyclerAdapter = new RecommandListAdapter(getContext(), dataList);
+        recyclerAdapter = new RecommendListAdapter(getContext(), dataList);
         recyclerList.setAdapter(recyclerAdapter);
 
 
