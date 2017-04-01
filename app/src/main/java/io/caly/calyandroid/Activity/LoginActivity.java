@@ -109,7 +109,7 @@ public class LoginActivity extends BaseAppCompatActivity {
         t.setScreenName(this.getClass().getName());
         t.send(
                 new HitBuilders.EventBuilder()
-                        .setCategory(getString(R.string.ga_category_button_click))
+                        .setCategory(getString(R.string.ga_action_button_click))
                         .setAction(Util.getCurrentMethodName())
                         .build()
         );
@@ -136,7 +136,7 @@ public class LoginActivity extends BaseAppCompatActivity {
         t.setScreenName(this.getClass().getName());
         t.send(
                 new HitBuilders.EventBuilder()
-                        .setCategory(getString(R.string.ga_category_button_click))
+                        .setCategory(getString(R.string.ga_action_button_click))
                         .setAction(Util.getCurrentMethodName())
                         .build()
         );
@@ -164,7 +164,7 @@ public class LoginActivity extends BaseAppCompatActivity {
         t.setScreenName(this.getClass().getName());
         t.send(
                 new HitBuilders.EventBuilder()
-                        .setCategory(getString(R.string.ga_category_button_click))
+                        .setCategory(getString(R.string.ga_action_button_click))
                         .setAction(Util.getCurrentMethodName())
                         .build()
         );

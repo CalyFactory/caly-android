@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.analytics.ecommerce.Product;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -126,13 +127,18 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
                 Tracker t = ((CalyApplication)((Activity)context).getApplication()).getDefaultTracker();
                 t.setScreenName(this.getClass().getName());
                 t.send(
-                        new HitBuilders.EventBuilder()
-                                .setCategory(context.getString(R.string.ga_category_button_click))
-                                .setAction(Util.getCurrentMethodName())
+                        new HitBuilders.SocialBuilder()
+                                .setNetwork(context.getString(R.string.app_name))
+                                .setAction(context.getString(R.string.ga_action_reco_view))
+//                                .set("&userHashKey", recoModel.)
+//                              TODO : 유저식별값으로뭘넣을것인가?
+                                .set("&recoHashKey", recoModel.recoHashKey)
+                                .setTarget(recoModel.recoHashKey)
                                 .build()
                 );
             }
         });
+
 
         holder.imvMap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,8 +156,9 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
                 t.setScreenName(this.getClass().getName());
                 t.send(
                         new HitBuilders.EventBuilder()
-                                .setCategory(context.getString(R.string.ga_category_button_click))
-                                .setAction(Util.getCurrentMethodName())
+                                .setCategory(context.getString(R.string.ga_action_button_click))
+                                .setAction("onMapClick")
+                                .set("1","1")
                                 .build()
                 );
             }

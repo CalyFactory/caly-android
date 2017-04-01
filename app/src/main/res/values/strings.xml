@@ -30,7 +30,8 @@
     <string name="text_reco_skip_button">네, 다 되면 알려주세요.</string>
 
     <!-- GA tag -->
-    <string name="ga_category_button_click">ga_category_button</string>
+    <string name="ga_action_button_click">ga_action_button_click</string>
+    <string name="ga_action_reco_view">ga_action_reco_view</string>
 
 
 </resources>
