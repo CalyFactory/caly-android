@@ -1,16 +1,19 @@
 package io.caly.calyandroid.Activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.github.ybq.android.spinkit.SpinKitView;
 
@@ -18,6 +21,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.Util;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -37,6 +41,8 @@ public class WebViewActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.loading_webview)
     SpinKitView loadingView;
+
+    String url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,7 +73,7 @@ public class WebViewActivity extends BaseAppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        String url = getIntent().getStringExtra("url");
+        url = getIntent().getStringExtra("url");
         Log.i(TAG,"move url : " + url);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(getIntent().getStringExtra("url"));
@@ -95,6 +101,13 @@ public class WebViewActivity extends BaseAppCompatActivity {
 
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_recodetail, menu);
+        return true;
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
@@ -102,10 +115,32 @@ public class WebViewActivity extends BaseAppCompatActivity {
             case android.R.id.home:
                 onBackPressed();
                 break;
+            case R.id.menu_recodetail_share:
+                String[] snsList = {
+                    "com.kakao.talk", //kakaotalk
+                };
+                boolean sended = false;
+                for(String snsPackage : snsList){
+                    if(Util.isPackageInstalled(snsPackage)){
+
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("text/plain");
+                        intent.putExtra(Intent.EXTRA_TEXT,"[캘리] 여기어때요? \n" + url);
+                        intent.setPackage("com.kakao.talk");
+
+                        startActivity(intent);
+                        sended = true;
+                    }
+                }
+                if(!sended){
+                    Toast.makeText(getBaseContext(), "공유 할 수 있는 SNS가 설치 되어있지 않습니다.",Toast.LENGTH_LONG).show();
+                }
+                break;
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 
     private class WebViewClientClass extends WebViewClient {
 
