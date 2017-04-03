@@ -102,7 +102,7 @@
 
         <!-- RecommandList Activity -->
         <activity
-            android:name=".Activity.RecommandListActivity"
+            android:name=".Activity.RecommendListActivity"
             android:screenOrientation="portrait">
 
         </activity>

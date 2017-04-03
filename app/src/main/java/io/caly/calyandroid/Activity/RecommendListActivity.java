@@ -7,36 +7,27 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.squareup.otto.Subscribe;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.RecoTabPagerAdapter;
-import io.caly.calyandroid.Adapter.RecommandListAdapter;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.Event.RecoListLoadDoneEvent;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.BasicResponse;
-import io.caly.calyandroid.Model.TrackingType;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
-import io.caly.calyandroid.Util.EventListener.RecyclerItemClickListener;
 import io.caly.calyandroid.Util.Util;
 import io.caly.calyandroid.View.FeedbackDialog;
 import retrofit2.Call;
@@ -51,7 +42,7 @@ import retrofit2.Response;
  * @since 17. 2. 14
  */
 
-public class RecommandListActivity extends BaseAppCompatActivity {
+public class RecommendListActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -150,7 +141,7 @@ public class RecommandListActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.fab_recolist_feedback)
     void onFeedBackClick(){
-        new FeedbackDialog(RecommandListActivity.this, new FeedbackDialog.DialogCallback() {
+        new FeedbackDialog(RecommendListActivity.this, new FeedbackDialog.DialogCallback() {
             @Override
             public void onPositive(final FeedbackDialog dialog, String contents) {
                 ApiClient.getService().requests(
@@ -210,9 +201,8 @@ public class RecommandListActivity extends BaseAppCompatActivity {
         t.setScreenName(this.getClass().getName());
         t.send(
                 new HitBuilders.EventBuilder()
-                        .setCategory(getString(R.string.ga_category_button))
-                        .setAction(getString(R.string.ga_action_click))
-                        .setLabel("onFeedBackClick")
+                        .setCategory(getString(R.string.ga_action_button_click))
+                        .setAction(Util.getCurrentMethodName())
                         .build()
         );
     }

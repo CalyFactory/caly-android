@@ -84,9 +84,8 @@ public class PolicyActivity extends BaseAppCompatActivity {
         t.setScreenName(this.getClass().getName());
         t.send(
                 new HitBuilders.EventBuilder()
-                        .setCategory(getString(R.string.ga_category_button))
-                        .setAction(getString(R.string.ga_action_click))
-                        .setLabel("onAgreeClick")
+                        .setCategory(getString(R.string.ga_action_button_click))
+                        .setAction(Util.getCurrentMethodName())
                         .build()
         );
     }
