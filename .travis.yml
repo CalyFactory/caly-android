@@ -22,7 +22,6 @@ deploy:
   script: sh script/deploy.sh
   on:
     branch:
-    - dev-jspiner
     - dev
     - master
 env:
