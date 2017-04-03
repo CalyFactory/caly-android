@@ -51,7 +51,6 @@ public class ApiClient {
         return gsonObject;
     }
 
-
     public static synchronized HttpService getService() {
         if(httpService == null){
 
@@ -73,6 +72,11 @@ public class ApiClient {
         }
 
         return ApiClient.httpService;
+    }
+
+    public static synchronized void resetService(){
+        httpService = null;
+        getService();
     }
 
     private static String getAppServerUrl(){
