@@ -605,11 +605,23 @@ public class EventListActivity extends BaseAppCompatActivity {
         builder.show();
     }
 
+    void refreshEvent(){
+
+        Message message = dataNotifyHandler.obtainMessage();
+        message.what = 2;
+        dataNotifyHandler.sendMessage(message);
+
+        currentTailPageNum = 1;
+        currentHeadPageNum = -1;
+
+        loadEventList();
+    }
+
     @Subscribe
     public void googleSyncDoneEventCallback(GoogleSyncDoneEvent event){
         Log.i(TAG, "googleSyncDoneEventCallback");
-
-        checkRecoState();
+//        linearLoader.setVisibility(View.GONE);
+//        checkRecoState();
     }
 
     @Subscribe
@@ -675,14 +687,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_eventlist_refresh:
-                Message message = dataNotifyHandler.obtainMessage();
-                message.what = 2;
-                dataNotifyHandler.sendMessage(message);
-
-                currentTailPageNum = 1;
-                currentHeadPageNum = -1;
-
-                loadEventList();
+                refreshEvent();
                 break;
             case R.id.menu_eventlist_setting:
                 Intent intent = new Intent(EventListActivity.this, LegacySettingActivity.class);
