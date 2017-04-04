@@ -1,5 +1,6 @@
 package io.caly.calyandroid.Activity;
 
+import android.animation.Animator;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -10,6 +11,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -24,6 +29,7 @@ import io.caly.calyandroid.Adapter.RecoTabPagerAdapter;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.Event.RecoListLoadDoneEvent;
+import io.caly.calyandroid.Model.Event.RecoMoreClickEvent;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.R;
@@ -53,9 +59,18 @@ public class RecommendListActivity extends BaseAppCompatActivity {
     @Bind(R.id.pager_recolist)
     ViewPager pagerRecoList;
 
+    @Bind(R.id.layout_drawer)
+    LinearLayout layoutDrawer;
+
+    @Bind(R.id.layout_drawer_inside)
+    LinearLayout layoutDrawerInside;
+
     RecoTabPagerAdapter pagerAdapter;
 
     EventModel eventData;
+
+    TranslateAnimation drawerInAnimation;
+    TranslateAnimation drawerOutAnimation;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -121,6 +136,34 @@ public class RecommendListActivity extends BaseAppCompatActivity {
             }
         });
 
+        drawerInAnimation = new TranslateAnimation(0, 0, 600, 0);
+        drawerInAnimation.setDuration(200);
+        drawerInAnimation.setFillAfter(false);
+
+        drawerOutAnimation = new TranslateAnimation(0, 0, 0, 600);
+        drawerOutAnimation.setDuration(200);
+        drawerOutAnimation.setFillAfter(false);
+
+        drawerOutAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                layoutDrawer.setVisibility(View.GONE);
+                Util.setStatusBarColor(
+                        RecommendListActivity.this,
+                        getResources().getColor(R.color.colorPrimaryDark)
+                );
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
 
     }
 
@@ -225,4 +268,20 @@ public class RecommendListActivity extends BaseAppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Subscribe
+    public void onRecoMoreClickCallback(RecoMoreClickEvent event){
+        layoutDrawer.setVisibility(View.VISIBLE);
+
+        Util.setStatusBarColor(this, Color.BLACK);
+
+        layoutDrawerInside.startAnimation(drawerInAnimation);
+    }
+
+    @OnClick(R.id.layout_drawer)
+    void onDrawerClick(){
+
+        layoutDrawerInside.startAnimation(drawerOutAnimation);
+    }
+
 }

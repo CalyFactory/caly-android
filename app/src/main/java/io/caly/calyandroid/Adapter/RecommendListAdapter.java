@@ -3,6 +3,7 @@ package io.caly.calyandroid.Adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,9 @@ import butterknife.ButterKnife;
 import io.caly.calyandroid.Activity.WebViewActivity;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.RecoModel;
+import io.caly.calyandroid.Model.Event.RecoMoreClickEvent;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.BusProvider;
 import io.caly.calyandroid.Util.StringFormmater;
 import io.caly.calyandroid.Util.Util;
 
@@ -58,6 +61,9 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
 
         @Bind(R.id.tv_reco_hashtag)
         TextView tvRecoHashtag;
+
+        @Bind(R.id.imv_reco_more)
+        ImageView imvRecoMore;
 
         Context context;
 
@@ -136,6 +142,15 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
                                 .setTarget(recoModel.recoHashKey)
                                 .build()
                 );
+            }
+        });
+
+        holder.imvRecoMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                BusProvider.getInstance().post(new RecoMoreClickEvent());
+
             }
         });
 
