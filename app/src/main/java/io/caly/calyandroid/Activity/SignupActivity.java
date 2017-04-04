@@ -173,6 +173,8 @@ public class SignupActivity extends BaseAppCompatActivity {
                         Log.d(TAG, "session : " + body.payload.apiKey);
                         TokenRecord session = TokenRecord.getTokenRecord();
                         session.setApiKey(body.payload.apiKey);
+                        session.setLoginPlatform(bundleData.getString("loginPlatform"));
+                        session.setUserId(bundleData.getString("userId"));
                         session.save();
 
                         Intent intent = new Intent(SignupActivity.this, EventListActivity.class);

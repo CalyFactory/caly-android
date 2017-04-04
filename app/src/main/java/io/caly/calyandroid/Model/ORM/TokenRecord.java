@@ -14,20 +14,22 @@ public class TokenRecord extends SugarRecord {
 
     private String apiKey;
     private String loginPlatform;
+    private String userId;
 
     public TokenRecord(){
 
     }
 
-    public TokenRecord(String sessionKey, String loginPlatform){
+    public TokenRecord(String sessionKey, String loginPlatform, String userId){
         this.apiKey = sessionKey;
         this.loginPlatform = loginPlatform;
+        this.userId = userId;
     }
 
     public static TokenRecord getTokenRecord(){
         TokenRecord tokenRecord = TokenRecord.last(TokenRecord.class);
         if(tokenRecord == null){
-            tokenRecord = new TokenRecord(null, null);
+            tokenRecord = new TokenRecord(null, null, null);
         }
         return tokenRecord;
     }
@@ -65,4 +67,11 @@ public class TokenRecord extends SugarRecord {
         this.loginPlatform = loginPlatform;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }

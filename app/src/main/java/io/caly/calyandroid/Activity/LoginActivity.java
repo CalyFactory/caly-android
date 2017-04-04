@@ -273,6 +273,7 @@ public class LoginActivity extends BaseAppCompatActivity {
 //                    case 205:
                         tokenRecord.setApiKey(body.payload.apiKey);
                         tokenRecord.setLoginPlatform(loginPlatform);
+                        tokenRecord.setUserId(userId);
                         tokenRecord.save();
                         startEventActivity();
                         break;
@@ -282,6 +283,7 @@ public class LoginActivity extends BaseAppCompatActivity {
                     case 201:
                         tokenRecord.setApiKey(body.payload.apiKey);
                         tokenRecord.setLoginPlatform(loginPlatform);
+                        tokenRecord.setUserId(userId);
                         tokenRecord.save();
                         registerDeviceInfo(body.payload.apiKey);
                         break;

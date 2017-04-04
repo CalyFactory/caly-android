@@ -176,12 +176,13 @@ public class SplashActivity extends BaseAppCompatActivity {
                     case 400: //세션이 없거나 만료됬음.
                         Toast.makeText(
                                 getBaseContext(),
-                                getString(R.string.toast_msg_session_invalid),
+                                getString(R.string.toast_msg_password_changed),
                                 Toast.LENGTH_LONG
                         ).show();
-                        TokenRecord.destoryToken();
-                        startLoginActivity();
-                        finish();
+
+
+
+
                         break;
                     case 401: //비밀번호가 변경되어있음.
                         Toast.makeText(
