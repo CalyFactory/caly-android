@@ -19,6 +19,178 @@
             android:layout_width="match_parent"
             android:layout_height="200dp">
 
+            <!-- item list -->
+
+            <LinearLayout
+                android:clickable="true"
+                android:id="@+id/layout_draweritem_1"
+                android:layout_width="match_parent"
+                android:background="?attr/selectableItemBackground"
+                android:layout_height="60dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="60dp"
+                        android:gravity="center"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:src="@drawable/ic_link_black_48dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textColor="#000000"
+                            android:textStyle="bold"
+                            android:textSize="20dp"
+                            android:text="링크 복사하기"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:textColor="#000000"
+                            android:textSize="15dp"
+                            android:layout_width="wrap_content"
+                            android:text="링크를 복사해 친구에게 공유해보세요"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#efefef"
+                />
+            <LinearLayout
+                android:id="@+id/layout_draweritem_2"
+                android:clickable="true"
+                android:background="?attr/selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="60dp"
+                        android:gravity="center"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:src="@drawable/ic_copyright_black_48dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textColor="#000000"
+                            android:textStyle="bold"
+                            android:textSize="20dp"
+                            android:text="이미지 출처 확인"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:textColor="#000000"
+                            android:textSize="15dp"
+                            android:layout_width="wrap_content"
+                            android:text="이미지 출처로 이동합니다."
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#efefef"
+                />
+            <LinearLayout
+                android:id="@+id/layout_draweritem_3"
+                android:clickable="true"
+                android:background="?attr/selectableItemBackground"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="60dp"
+                        android:gravity="center"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:src="@drawable/ic_share_black_48dp"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="vertical"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="10dp"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:textColor="#000000"
+                            android:textStyle="bold"
+                            android:textSize="20dp"
+                            android:text="공유하기"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:textColor="#000000"
+                            android:textSize="15dp"
+                            android:layout_width="wrap_content"
+                            android:text="카카오톡으로 바로 공유해 보세요"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#efefef"
+                />
+
+            <!-- -->
         </LinearLayout>
 
     </LinearLayout>

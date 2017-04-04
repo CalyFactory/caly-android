@@ -1,5 +1,7 @@
 package io.caly.calyandroid.Model.Event;
 
+import io.caly.calyandroid.Model.DataModel.RecoModel;
+
 /**
  * Copyright 2017 JSpiner. All rights reserved.
  *
@@ -10,10 +12,10 @@ package io.caly.calyandroid.Model.Event;
 
 public class RecoMoreClickEvent {
 
+    public RecoModel recoModel;
 
-
-    public RecoMoreClickEvent(){
-
+    public RecoMoreClickEvent(RecoModel recoModel){
+        this.recoModel = recoModel;
     }
 
 }

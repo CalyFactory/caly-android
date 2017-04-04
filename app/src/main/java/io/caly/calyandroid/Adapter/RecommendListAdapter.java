@@ -108,7 +108,7 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        RecoModel recoModel = dataList.get(position);
+        final RecoModel recoModel = dataList.get(position);
 
         holder.tvRecoTitle.setText(recoModel.title);
         holder.tvRecoDistance.setText(recoModel.distance);
@@ -148,8 +148,7 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
         holder.imvRecoMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                BusProvider.getInstance().post(new RecoMoreClickEvent());
+                BusProvider.getInstance().post(new RecoMoreClickEvent(recoModel));
 
             }
         });
