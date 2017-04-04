@@ -318,6 +318,12 @@ public class RecommendListActivity extends BaseAppCompatActivity {
     @OnClick(R.id.layout_draweritem_2)
     void onDrawerItemClick2(){
 
+        Intent intent = new Intent(this, WebViewActivity.class);
+        intent.putExtra("url", recoModel.sourceUrl);
+        startActivity(intent);
+
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+
         drawOutDrawer();
     }
 

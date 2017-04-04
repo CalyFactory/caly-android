@@ -164,6 +164,7 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
                 intent.putExtra("url", recoModel.mapUrl);
                 context.startActivity(intent);
 
+                ((Activity)context).overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 
 
                 Tracker t = ((CalyApplication)((Activity)context).getApplication()).getDefaultTracker();

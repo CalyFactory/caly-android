@@ -13,19 +13,21 @@ import com.orm.SugarRecord;
 public class TokenRecord extends SugarRecord {
 
     private String apiKey;
+    private String loginPlatform;
 
     public TokenRecord(){
 
     }
 
-    public TokenRecord(String sessionKey){
+    public TokenRecord(String sessionKey, String loginPlatform){
         this.apiKey = sessionKey;
+        this.loginPlatform = loginPlatform;
     }
 
     public static TokenRecord getTokenRecord(){
         TokenRecord tokenRecord = TokenRecord.last(TokenRecord.class);
         if(tokenRecord == null){
-            tokenRecord = new TokenRecord(null);
+            tokenRecord = new TokenRecord(null, null);
         }
         return tokenRecord;
     }
@@ -54,4 +56,13 @@ public class TokenRecord extends SugarRecord {
     public void setApiKey(String apiKey) {
         this.apiKey = apiKey;
     }
+
+    public String getLoginPlatform() {
+        return loginPlatform;
+    }
+
+    public void setLoginPlatform(String loginPlatform) {
+        this.loginPlatform = loginPlatform;
+    }
+
 }
