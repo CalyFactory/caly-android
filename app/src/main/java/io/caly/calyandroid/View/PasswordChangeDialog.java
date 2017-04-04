@@ -45,12 +45,14 @@ public class PasswordChangeDialog extends Dialog {
     Button btnLoginOk;
 
     String loginTitle;
+    String userId;
 
     LoginDialogCallback dialogCallback;
 
-    public PasswordChangeDialog(Context context, String loginTitle, LoginDialogCallback dialogCallback) {
+    public PasswordChangeDialog(Context context, String loginTitle, String userId, LoginDialogCallback dialogCallback) {
         super(context);
 
+        this.userId = userId;
         this.loginTitle = loginTitle;
         this.dialogCallback = dialogCallback;
     }
@@ -70,7 +72,7 @@ public class PasswordChangeDialog extends Dialog {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        setContentView(R.layout.dialog_login);
+        setContentView(R.layout.dialog_change_password);
 
         init();
     }
@@ -81,6 +83,7 @@ public class PasswordChangeDialog extends Dialog {
 
         //remove focus
         edtLoginId.clearFocus();
+        edtLoginId.setText(userId);
 
         //init layout
         tvLoginTitle.setText(loginTitle);

@@ -128,6 +128,8 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
 //                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(recoModel.deepUrl));
                 Intent intent = new Intent(context, WebViewActivity.class);
                 intent.putExtra("url", recoModel.deepUrl);
+                intent.putExtra("recoHashKey", recoModel.recoHashKey);
+                intent.putExtra("eventHashKey", recoModel.eventHashKey);
                 context.startActivity(intent);
 
                 Tracker t = ((CalyApplication)((Activity)context).getApplication()).getDefaultTracker();

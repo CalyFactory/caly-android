@@ -20,8 +20,14 @@ import com.github.ybq.android.spinkit.SpinKitView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
+import io.caly.calyandroid.Model.ORM.TokenRecord;
+import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.Util;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -43,6 +49,10 @@ public class WebViewActivity extends BaseAppCompatActivity {
     SpinKitView loadingView;
 
     String url;
+
+    long startSecond;
+    String eventHashKey;
+    String recoHashKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +83,10 @@ public class WebViewActivity extends BaseAppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        startSecond = System.currentTimeMillis();
+
+
+
         url = getIntent().getStringExtra("url");
         Log.i(TAG,"move url : " + url);
         webView.getSettings().setJavaScriptEnabled(true);
@@ -99,6 +113,29 @@ public class WebViewActivity extends BaseAppCompatActivity {
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
 
+        if(getIntent().hasExtra("recoHashKey")){
+
+            long endSecond = System.currentTimeMillis();
+            long residenseTime = endSecond - startSecond;
+
+            ApiClient.getService().tracking(
+                    TokenRecord.getTokenRecord().getApiKey(),
+                    getIntent().getStringExtra("eventHashKey"),
+                    getIntent().getStringExtra("recoHashKey"),
+                    "residense",
+                    residenseTime
+            ).enqueue(new Callback<BasicResponse>() {
+                @Override
+                public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+
+                }
+
+                @Override
+                public void onFailure(Call<BasicResponse> call, Throwable t) {
+
+                }
+            });
+        }
     }
 
 

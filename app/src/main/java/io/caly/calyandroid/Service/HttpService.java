@@ -123,6 +123,16 @@ public interface HttpService {
             @Field("contents") String contents
     );
 
+    //updateAccount
+    @FormUrlEncoded
+    @POST("v1.0/member/updateAccount")
+    Call<BasicResponse> updateAccount(
+            @Field("uId") String userId,
+            @Field("uPw") String userPw,
+            @Field("loginPlatform") String loginPlatform
+    );
+
+
     /*
     =============================
                 EVENT
@@ -174,7 +184,8 @@ public interface HttpService {
             @Field("apikey") String apiKey,
             @Field("eventHashkey") String eventHashkey,
             @Field("recoHashkey") String recoHashkey,
-            @Field("type") String type
+            @Field("type") String type,
+            @Field("residenseTime") long residenseTime
     );
 
     //checkRepoState
