@@ -19,6 +19,7 @@
     <string name="toast_msg_not_support">현재 버전에서는 지원하지 않습니다. 조금만 기다려주세요 :)</string>
     <string name="toast_msg_withdrawal_success">정상적으로 탈퇴되었습니다.</string>
     <string name="toast_msg_withdrawal_lengh_not_enough">회원탈퇴 사유를 10글자 이상 입력해주세요.</string>
+    <string name="toast_msg_password_changed">계정의 비밀번호가 변경 되었습니다.</string>
 
     <!-- app notification msg -->
     <string name="notification_msg_google_sync_done">캘린더 동기화가 완료됬습니다!</string>

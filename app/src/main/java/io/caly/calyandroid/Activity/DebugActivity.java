@@ -32,6 +32,7 @@ import butterknife.OnClick;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.ApiClient;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -121,6 +122,7 @@ public class DebugActivity extends BaseAppCompatActivity {
     void onApplyClick(){
         Prefer.set("app_server", edtServer.getText().toString());
         Log.d(TAG, "server url : " + Prefer.get("app_server", getString(R.string.app_server)));
+        ApiClient.resetService();
         restartApp();
     }
 
@@ -128,6 +130,7 @@ public class DebugActivity extends BaseAppCompatActivity {
     void onApplyClick1(){
         Prefer.set("app_server", "https://caly.io/");
         Log.d(TAG, "server url : " + Prefer.get("app_server", getString(R.string.app_server)));
+        ApiClient.resetService();
         restartApp();
     }
 
@@ -135,6 +138,7 @@ public class DebugActivity extends BaseAppCompatActivity {
     void onApplyClick2(){
         Prefer.set("app_server", "https://devapi.caly.io:55565/");
         Log.d(TAG, "server url : " + Prefer.get("app_server", getString(R.string.app_server)));
+        ApiClient.resetService();
         restartApp();
     }
 
@@ -142,6 +146,7 @@ public class DebugActivity extends BaseAppCompatActivity {
     void onApplyClick3(){
         Prefer.set("app_server", "https://devapi.caly.io:55567/");
         Log.d(TAG, "server url : " + Prefer.get("app_server", getString(R.string.app_server)));
+        ApiClient.resetService();
         restartApp();
     }
 

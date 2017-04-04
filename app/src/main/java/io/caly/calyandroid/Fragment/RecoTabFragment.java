@@ -119,7 +119,8 @@ public class RecoTabFragment extends BaseFragment {
                                                     TokenRecord.getTokenRecord().getApiKey(),
                                                     eventData.eventHashKey,
                                                     "recohashkey",
-                                                    TrackingType.CLICK.value
+                                                    TrackingType.CLICK.value,
+                                                    0
                                             ).execute();
                                         } catch (IOException e) {
                                             e.printStackTrace();

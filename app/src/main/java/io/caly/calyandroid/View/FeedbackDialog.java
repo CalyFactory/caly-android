@@ -2,7 +2,10 @@ package io.caly.calyandroid.View;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.EditText;
 
 import butterknife.Bind;
@@ -46,6 +49,9 @@ public class FeedbackDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         setContentView(R.layout.dialog_feedback);
 

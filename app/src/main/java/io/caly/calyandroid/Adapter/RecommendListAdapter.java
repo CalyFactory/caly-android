@@ -3,6 +3,7 @@ package io.caly.calyandroid.Adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,9 @@ import butterknife.ButterKnife;
 import io.caly.calyandroid.Activity.WebViewActivity;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.RecoModel;
+import io.caly.calyandroid.Model.Event.RecoMoreClickEvent;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.BusProvider;
 import io.caly.calyandroid.Util.StringFormmater;
 import io.caly.calyandroid.Util.Util;
 
@@ -58,6 +61,9 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
 
         @Bind(R.id.tv_reco_hashtag)
         TextView tvRecoHashtag;
+
+        @Bind(R.id.imv_reco_more)
+        ImageView imvRecoMore;
 
         Context context;
 
@@ -102,7 +108,7 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        RecoModel recoModel = dataList.get(position);
+        final RecoModel recoModel = dataList.get(position);
 
         holder.tvRecoTitle.setText(recoModel.title);
         holder.tvRecoDistance.setText(recoModel.distance);
@@ -122,6 +128,8 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
 //                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(recoModel.deepUrl));
                 Intent intent = new Intent(context, WebViewActivity.class);
                 intent.putExtra("url", recoModel.deepUrl);
+                intent.putExtra("recoHashKey", recoModel.recoHashKey);
+                intent.putExtra("eventHashKey", recoModel.eventHashKey);
                 context.startActivity(intent);
 
                 Tracker t = ((CalyApplication)((Activity)context).getApplication()).getDefaultTracker();
@@ -139,6 +147,14 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
             }
         });
 
+        holder.imvRecoMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                BusProvider.getInstance().post(new RecoMoreClickEvent(recoModel));
+
+            }
+        });
+
 
         holder.imvMap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,6 +166,7 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
                 intent.putExtra("url", recoModel.mapUrl);
                 context.startActivity(intent);
 
+                ((Activity)context).overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 
 
                 Tracker t = ((CalyApplication)((Activity)context).getApplication()).getDefaultTracker();

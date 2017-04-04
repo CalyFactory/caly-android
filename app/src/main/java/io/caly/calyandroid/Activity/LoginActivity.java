@@ -215,9 +215,6 @@ public class LoginActivity extends BaseAppCompatActivity {
 
                 switch (response.code()){
                     case 200:
-                        TokenRecord session = TokenRecord.getTokenRecord();
-                        session.setApiKey(body.payload.apiKey);
-                        session.save();
                         startEventActivity();
                         break;
                     case 400:
@@ -275,6 +272,8 @@ public class LoginActivity extends BaseAppCompatActivity {
                     case 200:
 //                    case 205:
                         tokenRecord.setApiKey(body.payload.apiKey);
+                        tokenRecord.setLoginPlatform(loginPlatform);
+                        tokenRecord.setUserId(userId);
                         tokenRecord.save();
                         startEventActivity();
                         break;
@@ -283,6 +282,8 @@ public class LoginActivity extends BaseAppCompatActivity {
                         break;
                     case 201:
                         tokenRecord.setApiKey(body.payload.apiKey);
+                        tokenRecord.setLoginPlatform(loginPlatform);
+                        tokenRecord.setUserId(userId);
                         tokenRecord.save();
                         registerDeviceInfo(body.payload.apiKey);
                         break;

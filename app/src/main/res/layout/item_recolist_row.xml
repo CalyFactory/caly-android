@@ -36,6 +36,15 @@
                         android:background="#2f2f2f"
                     />
 
+                    <ImageView
+                        android:layout_marginTop="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_gravity="right"
+                        android:layout_width="24dp"
+                        android:id="@+id/imv_reco_more"
+                        android:src="@drawable/ic_more_horiz_white_48dp"
+                        android:layout_height="24dp" />
+
                     <android.support.v7.widget.CardView
                         card:cardCornerRadius="5dp"
                         android:layout_weight="1"

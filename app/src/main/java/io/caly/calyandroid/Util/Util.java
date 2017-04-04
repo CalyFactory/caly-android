@@ -2,6 +2,7 @@ package io.caly.calyandroid.Util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -134,6 +135,19 @@ public class Util {
             e.printStackTrace();
         }
         return text;
+    }
+
+    public static boolean isPackageInstalled(String uri) {
+        PackageManager pm = CalyApplication.getContext().getPackageManager();
+        boolean app_installed = false;
+        try {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            app_installed = true;
+        }
+        catch (PackageManager.NameNotFoundException e) {
+            app_installed = false;
+        }
+        return app_installed ;
     }
 
 }

@@ -21,12 +21,18 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import net.jspiner.prefer.Prefer;
 
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
+import io.caly.calyandroid.Model.LoginPlatform;
+import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.SessionResponse;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.StringFormmater;
 import io.caly.calyandroid.Util.Util;
+import io.caly.calyandroid.View.LoginDialog;
+import io.caly.calyandroid.View.PasswordChangeDialog;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 
@@ -173,16 +179,20 @@ public class SplashActivity extends BaseAppCompatActivity {
                     case 200:
                         startEventActivity();
                         break;
-                    case 400:
-                    case 401:
+                    case 400: //세션이 없거나 만료됬음.
                         Toast.makeText(
                                 getBaseContext(),
                                 getString(R.string.toast_msg_session_invalid),
                                 Toast.LENGTH_LONG
                         ).show();
-                        TokenRecord.destoryToken();
-                        startLoginActivity();
-                        finish();
+                        break;
+                    case 401: //비밀번호가 변경되어있음.
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_password_changed),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        showChangePasswordDialog();
                         break;
                     case 403:
                         Toast.makeText(
@@ -215,6 +225,60 @@ public class SplashActivity extends BaseAppCompatActivity {
                 ).show();
             }
         });
+    }
+
+    void showChangePasswordDialog(){
+        PasswordChangeDialog dialog = new PasswordChangeDialog(SplashActivity.this,
+                TokenRecord.getTokenRecord().getLoginPlatform() + " 계정 비밀번호 변경",
+                TokenRecord.getTokenRecord().getUserId(),
+                new PasswordChangeDialog.LoginDialogCallback() {
+            @Override
+            public void onPositive(PasswordChangeDialog dialog, String userId, String userPw) {
+                dialog.dismiss();
+
+                ApiClient.getService().updateAccount(
+                        userId,
+                        userPw,
+                        TokenRecord.getTokenRecord().getLoginPlatform()
+                ).enqueue(new Callback<BasicResponse>() {
+                    @Override
+                    public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                        Log.d(TAG,"onResponse code : " + response.code());
+
+                        BasicResponse body = response.body();
+                        switch (response.code()) {
+                            case 200:
+                                requestLoginCheck(TokenRecord.getTokenRecord().getApiKey());
+                                break;
+                            case 401:
+                                Toast.makeText(getBaseContext(), getString(R.string.toast_msg_login_fail), Toast.LENGTH_LONG).show();
+                                showChangePasswordDialog();
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<BasicResponse> call, Throwable t) {
+
+                        Log.e(TAG,"onfail : " + t.getMessage());
+                        Log.e(TAG, "fail " + t.getClass().getName());
+
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_network_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    }
+                });
+
+            }
+
+            @Override
+            public void onNegative(PasswordChangeDialog dialog) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 
     @Override

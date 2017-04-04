@@ -2,7 +2,6 @@ package io.caly.calyandroid.View;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.caly.calyandroid.Activity.SplashActivity;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.R;
 
@@ -26,10 +24,10 @@ import io.caly.calyandroid.R;
  * @since 17. 2. 11
  */
 
-public class LoginDialog extends Dialog {
+public class PasswordChangeDialog extends Dialog {
 
     //로그에 쓰일 tag
-    private static final String TAG = CalyApplication.class.getSimpleName() + "/" + LoginDialog.class.getSimpleName();
+    private static final String TAG = CalyApplication.class.getSimpleName() + "/" + PasswordChangeDialog.class.getSimpleName();
 
     @Bind(R.id.tv_login_title)
     TextView tvLoginTitle;
@@ -47,21 +45,23 @@ public class LoginDialog extends Dialog {
     Button btnLoginOk;
 
     String loginTitle;
+    String userId;
 
     LoginDialogCallback dialogCallback;
 
-    public LoginDialog(Context context, String loginTitle, LoginDialogCallback dialogCallback) {
+    public PasswordChangeDialog(Context context, String loginTitle, String userId, LoginDialogCallback dialogCallback) {
         super(context);
 
+        this.userId = userId;
         this.loginTitle = loginTitle;
         this.dialogCallback = dialogCallback;
     }
 
-    public LoginDialog(Context context, int themeResId) {
+    public PasswordChangeDialog(Context context, int themeResId) {
         super(context, themeResId);
     }
 
-    protected LoginDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
+    protected PasswordChangeDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
     }
 
@@ -72,7 +72,7 @@ public class LoginDialog extends Dialog {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         this.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        setContentView(R.layout.dialog_login);
+        setContentView(R.layout.dialog_change_password);
 
         init();
     }
@@ -83,6 +83,7 @@ public class LoginDialog extends Dialog {
 
         //remove focus
         edtLoginId.clearFocus();
+        edtLoginId.setText(userId);
 
         //init layout
         tvLoginTitle.setText(loginTitle);
@@ -104,8 +105,8 @@ public class LoginDialog extends Dialog {
     }
 
     public interface LoginDialogCallback {
-        public void onPositive(LoginDialog dialog, String userId, String userPw);
-        public void onNegative(LoginDialog dialog);
+        public void onPositive(PasswordChangeDialog dialog, String userId, String userPw);
+        public void onNegative(PasswordChangeDialog dialog);
     }
 
 }
