@@ -182,7 +182,12 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                                 eventModel.endDateTime
                         )
                 );
-                holder.tvEventLocation.setText(eventModel.location);
+                if(eventModel.location == null){
+                    holder.tvEventLocation.setText("위치정보가 없습니다.");
+                }
+                else{
+                    holder.tvEventLocation.setText(eventModel.location);
+                }
 
                 switch (eventModel.recoState){
                     case STATE_BEING_RECOMMEND:

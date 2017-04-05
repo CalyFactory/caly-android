@@ -97,7 +97,7 @@ public class WebViewActivity extends BaseAppCompatActivity {
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
 
-                if(newProgress>=80){
+                if(newProgress>=50){
                     loadingView.setVisibility(View.GONE);
                 }
                 else{
