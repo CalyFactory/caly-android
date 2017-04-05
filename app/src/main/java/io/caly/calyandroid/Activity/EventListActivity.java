@@ -35,7 +35,6 @@ import io.caly.calyandroid.Adapter.EventListAdapter;
 import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.Event.GoogleSyncDoneEvent;
 import io.caly.calyandroid.Model.Event.RecoReadyEvent;
-import io.caly.calyandroid.Model.LoginPlatform;
 import io.caly.calyandroid.Model.RecoState;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.EventResponse;
@@ -46,9 +45,6 @@ import io.caly.calyandroid.Util.EventListener.RecyclerItemClickListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static io.caly.calyandroid.Model.LoginPlatform.CALDAV_ICAL;
-import static io.caly.calyandroid.Model.LoginPlatform.GOOGLE;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -86,15 +82,16 @@ public class EventListActivity extends BaseAppCompatActivity {
     ImageButton imvEventNext;
 
     */
-    @Bind(R.id.linear_eventlist_loader)
-    LinearLayout linearLoader;
+    @Bind(R.id.linear_eventlist_loader) // 동기화
+    LinearLayout linearSyncProgress;
 
-    @Bind(R.id.linear_eventlist_still)
-    LinearLayout linearStill;
+    @Bind(R.id.linear_eventlist_still) //추천
+    LinearLayout linearRecoProgress;
 
     EventListAdapter recyclerAdapter;
     LinearLayoutManager layoutManager;
 
+    String loginPlatform;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -199,11 +196,13 @@ public class EventListActivity extends BaseAppCompatActivity {
         );
 
         Intent intent = getIntent();
+        loginPlatform = intent.getStringExtra("loginPlatform");
+        //TODO: 로직이 변경되어 의미 없는 if문이 존재하는데 동작 확인 테스트 후 삭제요망
         if(intent.getBooleanExtra("first", false)){
-            syncCalendar(intent.getStringExtra("loginPlatform"));
+            syncCalendar();
         }
         else{
-            checkRecoState();
+            syncCalendar();
         }
 
     }
@@ -387,7 +386,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                         break;
                 }
 
-                linearLoader.setVisibility(View.GONE);
+                linearRecoProgress.setVisibility(View.GONE);
             }
 
             @Override
@@ -403,12 +402,13 @@ public class EventListActivity extends BaseAppCompatActivity {
                 ).show();
 
 
-                linearLoader.setVisibility(View.GONE);
+                linearRecoProgress.setVisibility(View.GONE);
             }
         });
 
     }
 
+    @Deprecated
     void checkRecoState(){
         ApiClient.getService().checkRepoState(
                 TokenRecord.getTokenRecord().getApiKey()
@@ -418,16 +418,16 @@ public class EventListActivity extends BaseAppCompatActivity {
 
                 Log.d(TAG,"onResponse code : " + response.code());
 
-                linearLoader.setVisibility(View.GONE);
+                linearRecoProgress.setVisibility(View.GONE);
 
                 BasicResponse body = response.body();
                 switch (response.code()){
                     case 200:
-                        linearStill.setVisibility(View.GONE);
+                        linearSyncProgress.setVisibility(View.GONE);
                         loadEventList();
                         break;
                     case 201:
-                        linearStill.setVisibility(View.VISIBLE);
+                        linearSyncProgress.setVisibility(View.VISIBLE);
                         break;
                     default:
                         Log.e(TAG,"status code : " + response.code());
@@ -457,8 +457,153 @@ public class EventListActivity extends BaseAppCompatActivity {
         });
     }
 
-    void syncCaldav(){
-        Log.i(TAG, "syncCaldav");
+    void requestSyncCalendar(){
+        Log.i(TAG, "requestSyncCalendar");
+        ApiClient.getService().sync(
+                TokenRecord.getTokenRecord().getApiKey()
+        ).enqueue(new Callback<BasicResponse>() {
+            @Override
+            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                Log.d(TAG,"onResponse code : " + response.code());
+
+                BasicResponse body = response.body();
+
+                switch (response.code()) {
+                    case 200: //추천 종료됨
+                        checkCalendarSync();
+                        break;
+                    default:
+                        retrySync();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponse> call, Throwable t) {
+                Log.d(TAG,"onfail : " + t.getMessage());
+                Log.d(TAG, "fail " + t.getClass().getName());
+
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_network_error),
+                        Toast.LENGTH_LONG
+                ).show();
+                retrySync();
+            }
+        });
+    }
+
+    void checkCalendarSync(){
+        Log.i(TAG, "checkCalendarSync");
+        ApiClient.getService().checkSync(
+                TokenRecord.getTokenRecord().getApiKey()
+        ).enqueue(new Callback<BasicResponse>() {
+            @Override
+            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                Log.d(TAG,"onResponse code : " + response.code());
+
+                BasicResponse body = response.body();
+
+                switch (response.code()){
+                    case 200: //추천 종료됨
+                        linearRecoProgress.setVisibility(View.GONE);
+                        linearSyncProgress.setVisibility(View.GONE);
+                        loadEventList();
+                        break;
+                    case 201: //추천중
+                        linearRecoProgress.setVisibility(View.VISIBLE);
+                        linearSyncProgress.setVisibility(View.GONE);
+                        break;
+                    case 202: //동기화중
+                        linearRecoProgress.setVisibility(View.GONE);
+                        linearSyncProgress.setVisibility(View.VISIBLE);
+                        requestSyncCalendar();
+                        break;
+                    default:
+                        linearRecoProgress.setVisibility(View.GONE);
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_server_internal_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        retrySync();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponse> call, Throwable t) {
+
+                Log.d(TAG,"onfail : " + t.getMessage());
+                Log.d(TAG, "fail " + t.getClass().getName());
+
+                linearRecoProgress.setVisibility(View.GONE);
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_network_error),
+                        Toast.LENGTH_LONG
+                ).show();
+                retrySync();
+            }
+        });
+
+    }
+
+    void syncGoogle(){
+        Log.i(TAG, "syncGoogle");
+
+        ApiClient.getService().checkSync(
+                TokenRecord.getTokenRecord().getApiKey()
+        ).enqueue(new Callback<BasicResponse>() {
+            @Override
+            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+
+                switch (response.code()){
+                    case 200: //추천 종료됨
+                        linearRecoProgress.setVisibility(View.GONE);
+                        linearSyncProgress.setVisibility(View.GONE);
+                        loadEventList();
+                        break;
+                    case 201: //추천중
+                        linearRecoProgress.setVisibility(View.VISIBLE);
+                        linearSyncProgress.setVisibility(View.GONE);
+                        break;
+                    case 202: //동기화중
+                        linearRecoProgress.setVisibility(View.GONE);
+                        linearSyncProgress.setVisibility(View.VISIBLE);
+                        break;
+                    default:
+                        linearRecoProgress.setVisibility(View.GONE);
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_server_internal_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        retrySync();
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponse> call, Throwable t) {
+                Log.d(TAG,"onfail : " + t.getMessage());
+                Log.d(TAG, "fail " + t.getClass().getName());
+
+                linearRecoProgress.setVisibility(View.GONE);
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_network_error),
+                        Toast.LENGTH_LONG
+                ).show();
+                retrySync();
+            }
+        });
+
+    }
+
+    @Deprecated
+    void syncCaldav2(){
+        Log.i(TAG, "checkCalendarSync");
         ApiClient.getService().sync(
                 TokenRecord.getTokenRecord().getApiKey()
         ).enqueue(new Callback<BasicResponse>() {
@@ -474,13 +619,13 @@ public class EventListActivity extends BaseAppCompatActivity {
                         checkRecoState();
                         break;
                     default:
-                        linearLoader.setVisibility(View.GONE);
+                        linearRecoProgress.setVisibility(View.GONE);
                         Toast.makeText(
                                 getBaseContext(),
                                 getString(R.string.toast_msg_server_internal_error),
                                 Toast.LENGTH_LONG
                         ).show();
-                        retrySync(CALDAV_ICAL.value);
+                        retrySync();
                         break;
                 }
             }
@@ -490,18 +635,19 @@ public class EventListActivity extends BaseAppCompatActivity {
                 Log.d(TAG,"onfail : " + t.getMessage());
                 Log.d(TAG, "fail " + t.getClass().getName());
 
-                linearLoader.setVisibility(View.GONE);
+                linearRecoProgress.setVisibility(View.GONE);
                 Toast.makeText(
                         getBaseContext(),
                         getString(R.string.toast_msg_network_error),
                         Toast.LENGTH_LONG
                 ).show();
-                retrySync(CALDAV_ICAL.value);
+                retrySync();
             }
         });
     }
 
-    void syncGoogle(){
+    @Deprecated
+    void syncGoogle2(){
         Log.i(TAG, "syncGoogle");
 
         ApiClient.getService().sync(
@@ -519,13 +665,13 @@ public class EventListActivity extends BaseAppCompatActivity {
                         checkRecoState();
                         break;
                     default:
-                        linearLoader.setVisibility(View.GONE);
+                        linearRecoProgress.setVisibility(View.GONE);
                         Toast.makeText(
                                 getBaseContext(),
                                 getString(R.string.toast_msg_server_internal_error),
                                 Toast.LENGTH_LONG
                         ).show();
-                        retrySync(GOOGLE.value);
+                        retrySync();
                         break;
                 }
             }
@@ -534,9 +680,9 @@ public class EventListActivity extends BaseAppCompatActivity {
             public void onFailure(Call<BasicResponse> call, Throwable t) {
                 Log.d(TAG,"onfail : " + t.getMessage());
                 Log.d(TAG, "fail " + t.getClass().getName());
-                retrySync(GOOGLE.value);
+                retrySync();
 
-                linearLoader.setVisibility(View.GONE);
+                linearRecoProgress.setVisibility(View.GONE);
                 Toast.makeText(
                         getBaseContext(),
                         getString(R.string.toast_msg_network_error),
@@ -566,24 +712,27 @@ public class EventListActivity extends BaseAppCompatActivity {
         }).start();*/
     }
 
-    void syncCalendar(String loginPlatform){
+    void syncCalendar(){
         Log.i(TAG, "syncCalendar");
 
         Log.d(TAG,"loginplatform : " + loginPlatform);
+        checkCalendarSync();
+        //TODO : syncCaldav와 syncGoogle의 역할이 모호해져서 합칠 필요가 있음
+        /*
         switch (LoginPlatform.getInstance(loginPlatform)){
             case GOOGLE:
                 syncGoogle();
                 break;
             case CALDAV_ICAL:
             case CALDAV_NAVER:
-                syncCaldav();
+                checkCalendarSync();
                 break;
             default:
-                syncCaldav();
-        }
+                checkCalendarSync();
+        }*/
     }
 
-    void retrySync(final String loginPlatform){
+    void retrySync(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("동기화를 실패했습니다. 재시도 하시겠습니까?");
         builder.setTitle("재시도");
@@ -591,7 +740,7 @@ public class EventListActivity extends BaseAppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
-                syncCalendar(loginPlatform);
+                syncCalendar();
 
             }
         });
@@ -620,15 +769,16 @@ public class EventListActivity extends BaseAppCompatActivity {
     @Subscribe
     public void googleSyncDoneEventCallback(GoogleSyncDoneEvent event){
         Log.i(TAG, "googleSyncDoneEventCallback");
-//        linearLoader.setVisibility(View.GONE);
+//        linearRecoProgress.setVisibility(View.GONE);
 //        checkRecoState();
+        syncCalendar();
     }
 
     @Subscribe
     public void recoReadyEventCallback(RecoReadyEvent event){
         Log.i(TAG, "recoReadyEventCallback");
-
-        checkRecoState();
+        syncCalendar();
+//        checkRecoState();
     }
 
     /*
@@ -673,7 +823,7 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.btn_eventlist_skipreco)
     public void onSkipRecoClick(){
-        linearStill.setVisibility(View.GONE);
+        linearSyncProgress.setVisibility(View.GONE);
         loadEventList();
     }
 
