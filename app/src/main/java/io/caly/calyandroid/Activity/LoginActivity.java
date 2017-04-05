@@ -34,8 +34,10 @@ import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DeviceType;
 import io.caly.calyandroid.Model.LoginPlatform;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
+import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.SessionResponse;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Service.FirebaseMessagingService;
 import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.StringFormmater;
 import io.caly.calyandroid.Util.Util;
@@ -276,9 +278,11 @@ public class LoginActivity extends BaseAppCompatActivity {
                         tokenRecord.setLoginPlatform(loginPlatform);
                         tokenRecord.setUserId(userId);
                         tokenRecord.save();
+                        requestUpdatePushToken();
                         startEventActivity();
                         break;
                     case 202:
+                        requestUpdatePushToken();
                         startSignupActivity(userId, userPw, loginPlatform, authCode);
                         break;
                     case 201:
@@ -287,6 +291,7 @@ public class LoginActivity extends BaseAppCompatActivity {
                         tokenRecord.setUserId(userId);
                         tokenRecord.save();
                         registerDeviceInfo(body.payload.apiKey);
+                        requestUpdatePushToken();
                         break;
                     case 400:
                     case 401:
@@ -322,6 +327,40 @@ public class LoginActivity extends BaseAppCompatActivity {
                 ).show();
             }
         });
+    }
+
+
+    private void requestUpdatePushToken() {
+        Log.i(TAG, "sendRegistrationToServer");
+
+        if(TokenRecord.getTokenRecord().getApiKey()!=null) {
+            ApiClient.getService().updatePushToken(
+                    FirebaseInstanceId.getInstance().getToken(),
+                    TokenRecord.getTokenRecord().getApiKey()
+            ).enqueue(new Callback<BasicResponse>() {
+                @Override
+                public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                    Log.d(TAG, "onResponse code : " + response.code());
+
+                    if (response.code() == 200) {
+                        BasicResponse body = response.body();
+                        Log.d(TAG, "push token update success");
+
+                    } else {
+                        Log.d(TAG, "push token update fail");
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<BasicResponse> call, Throwable t) {
+
+                    Log.d(TAG, "onfail : " + t.getMessage());
+                    Log.d(TAG, "fail " + t.getClass().getName());
+
+                }
+            });
+        }
     }
 
     void procLoginCaldav(String userId, String userPw, String loginPlatform){
