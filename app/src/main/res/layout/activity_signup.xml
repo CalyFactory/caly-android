@@ -109,6 +109,7 @@
             android:textColor="#ffffff"
             android:id="@+id/btn_signup_proc"
             android:textSize="17dp"
+            android:background="@color/colorAccent"
             android:backgroundTint="@color/colorAccent"
             android:text="회원가입"/>
     </LinearLayout>

@@ -152,6 +152,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                                         BasicResponse body = response.body();
 
                                         TokenRecord.destoryToken();
+                                        Prefer.getSharedPreferences().edit().clear().commit();
                                         ActivityCompat.finishAffinity((Activity)context);
 
                                         Intent intent = new Intent(context, SplashActivity.class);
@@ -213,6 +214,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                                                 case 200:
 
                                                     TokenRecord.destoryToken();
+                                                    Prefer.getSharedPreferences().edit().clear().commit();
                                                     ActivityCompat.finishAffinity((Activity)context);
 
                                                     Intent intent = new Intent(context, SplashActivity.class);
