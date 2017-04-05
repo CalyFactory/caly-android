@@ -20,6 +20,8 @@
     <string name="toast_msg_withdrawal_success">정상적으로 탈퇴되었습니다.</string>
     <string name="toast_msg_withdrawal_lengh_not_enough">회원탈퇴 사유를 10글자 이상 입력해주세요.</string>
     <string name="toast_msg_password_changed">계정의 비밀번호가 변경 되었습니다.</string>
+    <string name="toast_msg_login_canceled">로그인이 취소되었습니다.</string>
+    <string name="toast_msg_unknown_error">알 수 없는 에러가 발생하였습니다.</string>
 
     <!-- app notification msg -->
     <string name="notification_msg_google_sync_done">캘린더 동기화가 완료됬습니다!</string>

@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:inputType="textEmailAddress"
                 android:layout_height="wrap_content"
-                android:hint="서비스가별로였나요? \n저희에게 알려주세요!(10글자이상)" />
+                android:hint="탈퇴 사유를 알려주세요!" />
 
 
 

@@ -15,6 +15,7 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
@@ -355,11 +356,30 @@ public class LoginActivity extends BaseAppCompatActivity {
                 procLoginGoogle(acct.getId(), acct.getServerAuthCode());
 
             } else {
-                Toast.makeText(
-                        getBaseContext(),
-                        getString(R.string.toast_msg_login_fail),
-                        Toast.LENGTH_LONG
-                ).show();
+                switch (result.getStatus().getStatusCode()){
+                    case GoogleSignInStatusCodes.SIGN_IN_CANCELLED:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_login_canceled),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
+                    case GoogleSignInStatusCodes.SIGN_IN_FAILED:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_login_fail),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
+                    default:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_unknown_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
+                }
+
             }
         }
     }

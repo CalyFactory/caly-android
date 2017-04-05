@@ -109,7 +109,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                     ((Activity)context).overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
                     break;
                 case 2:         // 문의하기
-                    Uri uri = Uri.parse("mailto:calyfactory@gmail.com");
+                    Uri uri = Uri.parse("mailto:contact@landing.caly.io");
                     Intent it = new Intent(Intent.ACTION_SENDTO, uri);
 
                     context.startActivity(it);
@@ -152,6 +152,9 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                                         BasicResponse body = response.body();
 
                                         TokenRecord.destoryToken();
+                                        Prefer.getSharedPreferences().edit().clear().commit();
+                                        Prefer.set("isDidRun", true);
+
                                         ActivityCompat.finishAffinity((Activity)context);
 
                                         Intent intent = new Intent(context, SplashActivity.class);
@@ -213,6 +216,9 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                                                 case 200:
 
                                                     TokenRecord.destoryToken();
+                                                    Prefer.getSharedPreferences().edit().clear().commit();
+                                                    Prefer.set("isDidRun", true);
+
                                                     ActivityCompat.finishAffinity((Activity)context);
 
                                                     Intent intent = new Intent(context, SplashActivity.class);
