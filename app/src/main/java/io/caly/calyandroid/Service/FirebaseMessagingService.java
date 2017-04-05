@@ -14,6 +14,8 @@ import android.util.Log;
 
 import com.google.firebase.messaging.RemoteMessage;
 
+import net.jspiner.prefer.Prefer;
+
 import java.util.Map;
 
 import io.caly.calyandroid.Activity.EventListActivity;
@@ -48,6 +50,10 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
      */
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        if(!Prefer.get("isPushReceive", true)){
+            return;
+        }
+
         Log.i(TAG, "onMessageReceived");
         Log.d(TAG, "push massage : " + remoteMessage.getData().toString());
 
