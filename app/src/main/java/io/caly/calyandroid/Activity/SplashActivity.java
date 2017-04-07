@@ -279,6 +279,7 @@ public class SplashActivity extends BaseAppCompatActivity {
             @Override
             public void onNegative(PasswordChangeDialog dialog) {
                 dialog.dismiss();
+                finish();
             }
         });
         dialog.show();

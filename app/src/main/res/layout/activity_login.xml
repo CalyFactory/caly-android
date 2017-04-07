@@ -25,6 +25,7 @@
             android:orientation="vertical"
             android:layout_height="wrap_content">
 
+            <!--
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -33,12 +34,53 @@
                     android:id="@+id/btn_login_google"
                     android:layout_width="match_parent"
                     android:layout_height="48dp" />
-            </LinearLayout>
 
-            <LinearLayout
+
+            </LinearLayout>
+-->
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_marginTop="5dp"
                 android:layout_height="wrap_content">
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:id="@+id/btn_login_google"
+                        android:layout_width="match_parent"
+                        android:background="#ffffff"
+                        android:textSize="15dp"
+                        android:textColor="#000000"
+                        android:textStyle="bold"
+                        android:layout_margin="4dp"
+                        android:text="구글 아이디로 로그인"
+                        android:layout_height="42dp" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="25dp"
+                    android:src="@drawable/g_logo"
+                    android:layout_height="25dp" />
+
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_height="wrap_content">
+
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
                 <Button
                     android:id="@+id/btn_login_naver"
                     android:layout_width="match_parent"
@@ -50,11 +92,24 @@
                     android:text = "네이버 아이디로 로그인"
                     android:scaleType="centerInside"
                     android:layout_height="42dp" />
+                </LinearLayout>
+                <ImageView
+                    android:layout_marginLeft="6dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="35dp"
+                    android:src="@drawable/logo_naver"
+                    android:layout_height="35dp" />
+            </FrameLayout>
 
-            </LinearLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="5dp"
+                android:layout_height="wrap_content">
+
+
 
             <LinearLayout
-                android:layout_marginTop="5dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <Button
@@ -70,6 +125,13 @@
                     android:layout_height="42dp" />
 
             </LinearLayout>
+                <ImageView
+                    android:layout_marginLeft="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="25dp"
+                    android:src="@drawable/logo_apple"
+                    android:layout_height="25dp" />
+            </FrameLayout>
 
         </LinearLayout>
 
