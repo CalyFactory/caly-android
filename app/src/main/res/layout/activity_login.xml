@@ -8,18 +8,28 @@
         android:layout_height="match_parent"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
-        android:background="@drawable/bg_login"
+        android:background="@drawable/login_background"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <ImageView
-            android:layout_marginTop="90dp"
-            android:layout_width="160dp"
-            android:layout_height="160dp"
-            android:src="@drawable/logo_app"/>
+            android:layout_marginTop="100dp"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:src="@drawable/caly_logo_blank"/>
+
+        <TextView
+            android:layout_marginTop="40dp"
+            android:layout_width="wrap_content"
+            android:textColor="#ffffff"
+            android:gravity="center"
+            android:textSize="18dp"
+            android:layout_height="wrap_content"
+            android:text="이번 주말에 어떤 약속 있으세요?\n 캘리가 갈 곳을 추천해드릴게요!"
+            />
 
         <LinearLayout
-            android:layout_marginTop="90dp"
+            android:layout_marginTop="70dp"
             android:gravity="center_horizontal"
             android:layout_width="match_parent"
             android:orientation="vertical"
@@ -62,7 +72,7 @@
                 </LinearLayout>
 
                 <ImageView
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_gravity="center_vertical"
                     android:layout_width="25dp"
                     android:src="@drawable/g_logo"
@@ -94,11 +104,11 @@
                     android:layout_height="42dp" />
                 </LinearLayout>
                 <ImageView
-                    android:layout_marginLeft="6dp"
+                    android:layout_marginLeft="11dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_width="35dp"
+                    android:layout_width="32dp"
                     android:src="@drawable/logo_naver"
-                    android:layout_height="35dp" />
+                    android:layout_height="32dp" />
             </FrameLayout>
 
 
@@ -126,11 +136,11 @@
 
             </LinearLayout>
                 <ImageView
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="15dp"
                     android:layout_gravity="center_vertical"
-                    android:layout_width="25dp"
+                    android:layout_width="22dp"
                     android:src="@drawable/logo_apple"
-                    android:layout_height="25dp" />
+                    android:layout_height="22dp" />
             </FrameLayout>
 
         </LinearLayout>
