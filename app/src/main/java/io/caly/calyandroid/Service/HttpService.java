@@ -161,6 +161,13 @@ public interface HttpService {
             @Field("apikey") String apiKey
     );
 
+    //checkSync
+    @FormUrlEncoded
+    @POST("v1.0/checkSync")
+    Call<BasicResponse> checkSync(
+            @Field("apikey") String apiKey
+    );
+
 
     /*
     =============================
@@ -189,6 +196,7 @@ public interface HttpService {
     );
 
     //checkRepoState
+    @Deprecated
     @FormUrlEncoded
     @POST("v1.0/reco/checkRecoState")
     Call<BasicResponse> checkRepoState(

@@ -12,7 +12,7 @@ if [ -z "$TRAVIS_BRANCH" ]
     echo "deploy in travis"
     DEPLOY_BRANCH="$TRAVIS_BRANCH"
     DEPLOY_COMMIT=$(git log --pretty=format:'%h' -n 1)
-    DEPLOY_COMMIT_MESSAGE=$3
+    DEPLOY_COMMIT_MESSAGE=$(git log -1 --pretty=%B)
 fi
 
 echo $DEPLOY_BRANCH
