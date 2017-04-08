@@ -79,7 +79,7 @@ public class SplashActivity extends BaseAppCompatActivity {
             timerHandler.sendEmptyMessageDelayed(0,1000);
         }
         else{
-            timerHandler.sendEmptyMessageDelayed(1,3000);
+            timerHandler.sendEmptyMessageDelayed(1,1500);
         }
         Prefer.set("isDidRun", true);
     }
