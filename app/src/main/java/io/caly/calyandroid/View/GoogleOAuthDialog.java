@@ -6,9 +6,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
@@ -53,6 +56,9 @@ public class GoogleOAuthDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         setContentView(R.layout.dialog_googleoauth);
 

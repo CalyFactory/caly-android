@@ -1,5 +1,5 @@
 .DS_Store
-
+script/env.sh
 
 # Created by https://www.gitignore.io/api/android
 
@@ -63,3 +63,7 @@ freeline_project_description.json
 gen-external-apklibs
 
 # End of https://www.gitignore.io/api/android
+
+## travis ##
+travis-encrypt
+travis-encrypt.tgz

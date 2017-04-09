@@ -1,16 +1,19 @@
 package io.caly.calyandroid.Activity;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
@@ -21,12 +24,18 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import net.jspiner.prefer.Prefer;
 
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
+import io.caly.calyandroid.Model.LoginPlatform;
+import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.SessionResponse;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.StringFormmater;
 import io.caly.calyandroid.Util.Util;
+import io.caly.calyandroid.View.LoginDialog;
+import io.caly.calyandroid.View.PasswordChangeDialog;
 import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
 
 
@@ -70,7 +79,7 @@ public class SplashActivity extends BaseAppCompatActivity {
             timerHandler.sendEmptyMessageDelayed(0,1000);
         }
         else{
-            timerHandler.sendEmptyMessageDelayed(1,3000);
+            timerHandler.sendEmptyMessageDelayed(1,1500);
         }
         Prefer.set("isDidRun", true);
     }
@@ -173,16 +182,20 @@ public class SplashActivity extends BaseAppCompatActivity {
                     case 200:
                         startEventActivity();
                         break;
-                    case 400:
-                    case 401:
+                    case 400: //세션이 없거나 만료됬음.
                         Toast.makeText(
                                 getBaseContext(),
                                 getString(R.string.toast_msg_session_invalid),
                                 Toast.LENGTH_LONG
                         ).show();
-                        TokenRecord.destoryToken();
-                        startLoginActivity();
-                        finish();
+                        break;
+                    case 401: //비밀번호가 변경되어있음.
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_password_changed),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        showChangePasswordDialog();
                         break;
                     case 403:
                         Toast.makeText(
@@ -217,18 +230,112 @@ public class SplashActivity extends BaseAppCompatActivity {
         });
     }
 
+    void showChangePasswordDialog(){
+        PasswordChangeDialog dialog = new PasswordChangeDialog(SplashActivity.this,
+                TokenRecord.getTokenRecord().getLoginPlatform() + " 계정 비밀번호 변경",
+                TokenRecord.getTokenRecord().getUserId(),
+                new PasswordChangeDialog.LoginDialogCallback() {
+            @Override
+            public void onPositive(PasswordChangeDialog dialog, String userId, String userPw) {
+                dialog.dismiss();
+
+                ApiClient.getService().updateAccount(
+                        userId,
+                        userPw,
+                        TokenRecord.getTokenRecord().getLoginPlatform()
+                ).enqueue(new Callback<BasicResponse>() {
+                    @Override
+                    public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                        Log.d(TAG,"onResponse code : " + response.code());
+
+                        BasicResponse body = response.body();
+                        switch (response.code()) {
+                            case 200:
+                                requestLoginCheck(TokenRecord.getTokenRecord().getApiKey());
+                                break;
+                            case 401:
+                                Toast.makeText(getBaseContext(), getString(R.string.toast_msg_login_fail), Toast.LENGTH_LONG).show();
+                                showChangePasswordDialog();
+                                break;
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<BasicResponse> call, Throwable t) {
+
+                        Log.e(TAG,"onfail : " + t.getMessage());
+                        Log.e(TAG, "fail " + t.getClass().getName());
+
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_network_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                    }
+                });
+
+            }
+
+            @Override
+            public void onNegative(PasswordChangeDialog dialog) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+        dialog.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(isPermissionGranted()){
+            startSplash();
+        }
+        else{
+            requestPermission();
+        }
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        if(requestCode == Util.RC_PERMISSION_PHONE_STATE){
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_PHONE_STATE)){
+            //denied
+            finish();
 
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        }else{
+            if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED){
+                //allowed
                 startSplash();
-            }
-            else{
-                finish();
-            }
 
+            } else{
+                //set to never ask again
+                Log.i(TAG,"never ask");
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(SplashActivity.this);
+                builder.setMessage("캘리 서비스를 이용하시려면 권한 설정이 필요합니다. 설정 번튼을 눌러 [어플리케이션 정보 > 권한] 에서 권한을 허용해주세요.");
+                builder.setTitle("권한 필요");
+                builder.setPositiveButton("설정", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+
+                                Intent intent = new Intent();
+                                intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                                Uri uri = Uri.fromParts("package", getPackageName(), null);
+                                intent.setData(uri);
+                                startActivity(intent);
+                            }
+                        }
+                );
+                builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        finish();
+                    }
+                });
+                builder.show();
+            }
         }
 
     }

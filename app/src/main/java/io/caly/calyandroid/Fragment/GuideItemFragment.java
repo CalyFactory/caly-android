@@ -32,11 +32,20 @@ public class GuideItemFragment extends BaseFragment {
     @Bind(R.id.imv_guide_item)
     ImageView imvGuide;
 
+    @Bind(R.id.imv_guide_text)
+    ImageView imvGuideText;
+
     @Bind(R.id.btn_guide_start)
     Button btnStart;
 
-    @Bind(R.id.tv_guide_text)
-    TextView tvGuideText;
+    @Bind(R.id.imv_guide_indicator1)
+    ImageView imvIndicator1;
+
+    @Bind(R.id.imv_guide_indicator2)
+    ImageView imvIndicator2;
+
+    @Bind(R.id.imv_guide_indicator3)
+    ImageView imvIndicator3;
 
     int resourceId;
 
@@ -72,25 +81,42 @@ public class GuideItemFragment extends BaseFragment {
 
     void init(){
         int imageId = 0;
+        int textId = 0;
         switch (resourceId){
             case 0:
                 imageId = R.drawable.guide_1;
+                textId = R.drawable.guide_text_1;
+
+                imvIndicator1.setImageResource(R.drawable.indicator_active);
                 break;
             case 1:
                 imageId = R.drawable.guide_2;
+                textId = R.drawable.guide_text_2;
+
+                imvIndicator2.setImageResource(R.drawable.indicator_active);
                 break;
             case 2:
                 imageId = R.drawable.guide_3;
-                tvGuideText.setVisibility(View.INVISIBLE);
+                textId = R.drawable.guide_text_3;
+
+                imvIndicator3.setImageResource(R.drawable.indicator_active);
+
+//                tvGuideText.setVisibility(View.INVISIBLE);
                 btnStart.setVisibility(View.VISIBLE);
                 break;
         }
 
         Picasso.with(getContext())
                 .load(imageId)
-                .fit()
+                .resize(1080,1920)
+                .centerInside()
                 .into(imvGuide);
+
+        Picasso.with(getContext())
+                .load(textId)
+                .into(imvGuideText);
     }
+
 
     @OnClick(R.id.btn_guide_start)
     void onGuideStartClick(){

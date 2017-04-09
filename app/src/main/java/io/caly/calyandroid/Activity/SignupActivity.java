@@ -136,9 +136,8 @@ public class SignupActivity extends BaseAppCompatActivity {
         t.setScreenName(this.getClass().getName());
         t.send(
                 new HitBuilders.EventBuilder()
-                        .setCategory(getString(R.string.ga_category_button))
-                        .setAction(getString(R.string.ga_action_click))
-                        .setLabel("onSignupClick")
+                        .setCategory(getString(R.string.ga_action_button_click))
+                        .setAction(Util.getCurrentMethodName())
                         .build()
         );
     }
@@ -174,6 +173,8 @@ public class SignupActivity extends BaseAppCompatActivity {
                         Log.d(TAG, "session : " + body.payload.apiKey);
                         TokenRecord session = TokenRecord.getTokenRecord();
                         session.setApiKey(body.payload.apiKey);
+                        session.setLoginPlatform(bundleData.getString("loginPlatform"));
+                        session.setUserId(bundleData.getString("userId"));
                         session.save();
 
                         Intent intent = new Intent(SignupActivity.this, EventListActivity.class);

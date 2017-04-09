@@ -14,6 +14,8 @@ import android.util.Log;
 
 import com.google.firebase.messaging.RemoteMessage;
 
+import net.jspiner.prefer.Prefer;
+
 import java.util.Map;
 
 import io.caly.calyandroid.Activity.EventListActivity;
@@ -21,6 +23,7 @@ import io.caly.calyandroid.Activity.SplashActivity;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.TestModel;
 import io.caly.calyandroid.Model.Event.GoogleSyncDoneEvent;
+import io.caly.calyandroid.Model.Event.RecoReadyEvent;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.BusProvider;
 import io.caly.calyandroid.Util.EventListener.AppLifecycleListener;
@@ -47,6 +50,10 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
      */
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
+        if(!Prefer.get("isPushReceive", true)){
+            return;
+        }
+
         Log.i(TAG, "onMessageReceived");
         Log.d(TAG, "push massage : " + remoteMessage.getData().toString());
 
@@ -55,6 +62,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
         String pushType = pushData.get("type");
         String pushAction = pushData.get("action");
 
+        Log.d(TAG, "activity count : " + AppLifecycleListener.getActiveActivityCount());
         switch (pushType){
             case "sync":
                 if(AppLifecycleListener.getActiveActivityCount()==0){
@@ -70,7 +78,12 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 sendNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("message"));
                 break;
             case "reco":
-                sendNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("message"));
+                if(AppLifecycleListener.getActiveActivityCount()==0) {
+                    sendNotification("추천이 준비되었습니다.", "추천이 준비되었습니다.");
+                }
+                else{
+                    BusProvider.getInstance().post(new RecoReadyEvent());
+                }
                 break;
         }
 
@@ -87,13 +100,13 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
         Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.app_icon)
                 .setTicker(title)
                 .setWhen(0)
                 .setContentTitle(title)
                 .setStyle(new NotificationCompat.InboxStyle())
                 .setContentText(message)
-                .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.mipmap.ic_launcher))
+                .setLargeIcon(BitmapFactory.decodeResource(getResources(),R.mipmap.app_icon))
                 .setAutoCancel(true)
                 .setSound(defaultSoundUri)
                 .setContentIntent(pendingIntent);

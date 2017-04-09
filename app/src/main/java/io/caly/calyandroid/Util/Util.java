@@ -2,6 +2,7 @@ package io.caly.calyandroid.Util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -32,7 +33,6 @@ public class Util {
 
     //로그에 쓰일 tag
     private static final String TAG = CalyApplication.class.getSimpleName() + "/" + Util.class.getSimpleName();
-
 
     public static String[] dayOfDate = {"일","월","화","수","목","금","토"};
 
@@ -110,6 +110,13 @@ public class Util {
 
     }
 
+    public static String getCurrentMethodName()
+    {
+        final StackTraceElement[] ste = Thread.currentThread().getStackTrace();
+
+        return ste[ste.length - 1].getMethodName();
+    }
+
     //텍스트 파일 불러오기
     public static String readTextFile(Context context, String file) {
         String text;
@@ -128,6 +135,19 @@ public class Util {
             e.printStackTrace();
         }
         return text;
+    }
+
+    public static boolean isPackageInstalled(String uri) {
+        PackageManager pm = CalyApplication.getContext().getPackageManager();
+        boolean app_installed = false;
+        try {
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            app_installed = true;
+        }
+        catch (PackageManager.NameNotFoundException e) {
+            app_installed = false;
+        }
+        return app_installed ;
     }
 
 }

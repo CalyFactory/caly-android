@@ -24,28 +24,31 @@ public class AppLifecycleListener implements Application.   ActivityLifecycleCal
 
     @Override
     public void onActivityCreated(Activity activity, Bundle bundle) {
-        Log.i(TAG, "onActivityCreated");
+        Log.i(TAG, "onActivityCreated : " + activity.getLocalClassName());
     }
 
     @Override
     public void onActivityStarted(Activity activity) {
-        Log.i(TAG, "onActivityStarted");
-        addActivity();
+        Log.i(TAG, "onActivityStarted : " + activity.getLocalClassName());
     }
 
     @Override
     public void onActivityResumed(Activity activity) {
-
+        Log.d(TAG, "onActivityResumed : " + activity.getLocalClassName());
+        addActivity();
+        Log.i(TAG, "activity count : " + activeActivities);
     }
 
     @Override
     public void onActivityPaused(Activity activity) {
-        Log.d(TAG, "onActivityPaused");
+        Log.d(TAG, "onActivityPaused : " + activity.getLocalClassName());
         delActivity();
+        Log.i(TAG, "activity count : " + activeActivities);
     }
 
     @Override
     public void onActivityStopped(Activity activity) {
+        Log.d(TAG, "onActivityStopped : " + activity.getLocalClassName());
 
     }
 

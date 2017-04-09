@@ -3,6 +3,11 @@ package io.caly.calyandroid.Util;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import net.jspiner.prefer.Prefer;
+
+import java.util.concurrent.TimeUnit;
+
+import io.caly.calyandroid.BuildConfig;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.Deserializer.EventDeserialize;
 import io.caly.calyandroid.Model.DataModel.EventModel;
@@ -46,16 +51,19 @@ public class ApiClient {
         return gsonObject;
     }
 
-
     public static synchronized HttpService getService() {
         if(httpService == null){
 
             OkHttpClient.Builder client = new OkHttpClient.Builder();
             client.addInterceptor(new LoggingInterceptor());
+            client.connectTimeout(20, TimeUnit.SECONDS);
+            client.readTimeout(20, TimeUnit.SECONDS);
+            client.writeTimeout(20, TimeUnit.SECONDS);
+
 
             ApiClient.httpService =
                     new Retrofit.Builder()
-                            .baseUrl(CalyApplication.getContext().getString(R.string.app_server) + CalyApplication.getContext().getString(R.string.app_server_version) + "/")
+                            .baseUrl(getAppServerUrl())
                             .addConverterFactory(GsonConverterFactory.create(getGson()))
                             .client(client.build())
                             .build()
@@ -64,5 +72,19 @@ public class ApiClient {
         }
 
         return ApiClient.httpService;
+    }
+
+    public static synchronized void resetService(){
+        httpService = null;
+        getService();
+    }
+
+    private static String getAppServerUrl(){
+        if(BuildConfig.DEBUG){
+            return Prefer.get("app_server", CalyApplication.getContext().getString(R.string.app_server));
+        }
+        else{
+            return CalyApplication.getContext().getString(R.string.app_server);
+        }
     }
 }

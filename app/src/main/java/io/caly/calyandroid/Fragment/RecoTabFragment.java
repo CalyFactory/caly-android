@@ -1,7 +1,5 @@
 package io.caly.calyandroid.Fragment;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -16,16 +15,18 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.caly.calyandroid.Adapter.RecommandListAdapter;
+import io.caly.calyandroid.Adapter.RecommendListAdapter;
 import io.caly.calyandroid.Fragment.Base.BaseFragment;
 import io.caly.calyandroid.Model.Category;
 import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.DataModel.RecoModel;
+import io.caly.calyandroid.Model.Event.RecoListLoadDoneEvent;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.RecoResponse;
 import io.caly.calyandroid.Model.TrackingType;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.BusProvider;
 import io.caly.calyandroid.Util.EventListener.RecyclerItemClickListener;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,12 +46,14 @@ public class RecoTabFragment extends BaseFragment {
     @Bind(R.id.recycler_recommandlist)
     RecyclerView recyclerList;
 
+    @Bind(R.id.tv_reco_nodata)
+    TextView tvNodata;
+
     Category category;
     EventModel eventData;
 
-    RecommandListAdapter recyclerAdapter;
+    RecommendListAdapter recyclerAdapter;
     LinearLayoutManager layoutManager;
-
 
     public RecoTabFragment() { super(); }
 
@@ -95,7 +98,7 @@ public class RecoTabFragment extends BaseFragment {
 
 
         ArrayList<RecoModel> dataList = new ArrayList<>();
-        recyclerAdapter = new RecommandListAdapter(getContext(), dataList);
+        recyclerAdapter = new RecommendListAdapter(getContext(), dataList);
         recyclerList.setAdapter(recyclerAdapter);
 
 
@@ -116,7 +119,8 @@ public class RecoTabFragment extends BaseFragment {
                                                     TokenRecord.getTokenRecord().getApiKey(),
                                                     eventData.eventHashKey,
                                                     "recohashkey",
-                                                    TrackingType.CLICK.value
+                                                    TrackingType.CLICK.value,
+                                                    0
                                             ).execute();
                                         } catch (IOException e) {
                                             e.printStackTrace();
@@ -151,11 +155,18 @@ public class RecoTabFragment extends BaseFragment {
                 Log.d(TAG,"onResponse code : " + response.code());
 
                 RecoResponse body = response.body();
+                int dataSize = 0;
+
                 switch (response.code()){
                     case 200:
                         recyclerAdapter.addItems(body.payload.data);
+                        dataSize = body.payload.data.size();
+                        if(dataSize==0){
+                            tvNodata.setVisibility(View.VISIBLE);
+                        }
                         break;
-                    case 201:
+                    case 201: // no data
+                        tvNodata.setVisibility(View.VISIBLE);
                         break;
                     default:
                         Log.e(TAG,"status code : " + response.code());
@@ -166,6 +177,13 @@ public class RecoTabFragment extends BaseFragment {
                         ).show();
                         break;
                 }
+
+                BusProvider.getInstance().post(
+                        new RecoListLoadDoneEvent(
+                                category,
+                                dataSize
+                        )
+                );
             }
 
             @Override

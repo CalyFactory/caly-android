@@ -3,7 +3,10 @@ package io.caly.calyandroid.View;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -65,6 +68,9 @@ public class LoginDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        this.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         setContentView(R.layout.dialog_login);
 

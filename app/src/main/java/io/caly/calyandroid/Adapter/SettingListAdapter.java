@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +18,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Scope;
+import com.google.android.gms.common.api.Status;
+
 import net.jspiner.prefer.Prefer;
 
 import java.io.IOException;
@@ -28,7 +36,9 @@ import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import io.caly.calyandroid.Activity.AccountAddActivity;
 import io.caly.calyandroid.Activity.AccountListActivity;
+import io.caly.calyandroid.Activity.LegacySettingActivity;
 import io.caly.calyandroid.Activity.NoticeActivity;
+import io.caly.calyandroid.Activity.SettingActivity;
 import io.caly.calyandroid.Activity.SplashActivity;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
@@ -99,7 +109,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                     ((Activity)context).overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
                     break;
                 case 2:         // 문의하기
-                    Uri uri = Uri.parse("mailto:calyfactory@gmail.com");
+                    Uri uri = Uri.parse("mailto:contact@landing.caly.io");
                     Intent it = new Intent(Intent.ACTION_SENDTO, uri);
 
                     context.startActivity(it);
@@ -142,10 +152,15 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                                         BasicResponse body = response.body();
 
                                         TokenRecord.destoryToken();
+                                        Prefer.getSharedPreferences().edit().clear().commit();
+                                        Prefer.set("isDidRun", true);
+
                                         ActivityCompat.finishAffinity((Activity)context);
 
                                         Intent intent = new Intent(context, SplashActivity.class);
                                         context.startActivity(intent);
+
+                                        signOutGoogle();
                                     }
                                     else{
                                         Log.e(TAG,"status code : " + response.code());
@@ -201,6 +216,9 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                                                 case 200:
 
                                                     TokenRecord.destoryToken();
+                                                    Prefer.getSharedPreferences().edit().clear().commit();
+                                                    Prefer.set("isDidRun", true);
+
                                                     ActivityCompat.finishAffinity((Activity)context);
 
                                                     Intent intent = new Intent(context, SplashActivity.class);
@@ -291,7 +309,21 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
             context.startActivity(intent);
             ((Activity)context).overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
         }
+
+        void signOutGoogle(){
+
+            Auth.GoogleSignInApi.signOut(LegacySettingActivity.mGoogleApiClient).setResultCallback(
+                    new ResultCallback<Status>() {
+                        @Override
+                        public void onResult(Status status) {
+                            Log.d(TAG,"Signout message : " +status.getStatusMessage());
+                        }
+                    });
+
+
+        }
     }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

@@ -25,7 +25,7 @@
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="200dp">
+                    android:layout_height="280dp">
 
                     <ImageView
                         android:layout_marginBottom="12dp"
@@ -36,6 +36,15 @@
                         android:background="#2f2f2f"
                     />
 
+                    <ImageView
+                        android:layout_marginTop="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_gravity="right"
+                        android:layout_width="24dp"
+                        android:id="@+id/imv_reco_more"
+                        android:src="@drawable/ic_more_horiz_white_48dp"
+                        android:layout_height="24dp" />
+
                     <android.support.v7.widget.CardView
                         card:cardCornerRadius="5dp"
                         android:layout_weight="1"
@@ -43,7 +52,7 @@
                         android:layout_marginLeft="10dp"
                         card:cardBackgroundColor="#626262"
                         android:layout_width="wrap_content"
-                        android:layout_height="25dp">
+                        android:layout_height="wrap_content">
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -57,7 +66,7 @@
                                 android:layout_width="wrap_content"
                                 android:text="스시 마이우"
                                 android:textColor="#ffffff"
-                                android:textSize="15dp"
+                                android:textSize="15sp"
                                 android:layout_height="wrap_content" />
                         </LinearLayout>
                     </android.support.v7.widget.CardView>
@@ -105,7 +114,7 @@
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:id="@+id/imv_reco_map"
-                            android:src="@drawable/ic_my_location_black_48dp"
+                            android:src="@drawable/icon_map"
                             />
                     </LinearLayout>
 

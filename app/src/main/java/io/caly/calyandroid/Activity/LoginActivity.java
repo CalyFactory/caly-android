@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -15,6 +16,7 @@ import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.Scopes;
 import com.google.android.gms.common.SignInButton;
@@ -33,9 +35,12 @@ import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DeviceType;
 import io.caly.calyandroid.Model.LoginPlatform;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
+import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.SessionResponse;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Service.FirebaseMessagingService;
 import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.StringFormmater;
 import io.caly.calyandroid.Util.Util;
 import io.caly.calyandroid.View.LoginDialog;
 import retrofit2.Call;
@@ -55,7 +60,7 @@ public class LoginActivity extends BaseAppCompatActivity {
     GoogleApiClient mGoogleApiClient;
 
     @Bind(R.id.btn_login_google)
-    SignInButton btnLoginGoogle;
+    Button btnLoginGoogle;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,14 +81,12 @@ public class LoginActivity extends BaseAppCompatActivity {
 
         GoogleSignInOptions gso =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                        .requestServerAuthCode(getString(R.string.google_client_id))
+                        .requestServerAuthCode(getString(R.string.google_client_id), true)
                         .requestIdToken(getString(R.string.google_client_id))
                         .requestScopes(
                                 new Scope("https://www.googleapis.com/auth/calendar"),
                                 new Scope("https://www.googleapis.com/auth/userinfo.email"),
-                                new Scope("https://www.googleapis.com/auth/calendar.readonly"),
-                                new Scope(Scopes.PLUS_ME),
-                                new Scope(Scopes.PLUS_LOGIN)
+                                new Scope("https://www.googleapis.com/auth/calendar.readonly")
                         ).build();
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -110,9 +113,8 @@ public class LoginActivity extends BaseAppCompatActivity {
         t.setScreenName(this.getClass().getName());
         t.send(
                 new HitBuilders.EventBuilder()
-                        .setCategory(getString(R.string.ga_category_button))
-                        .setAction(getString(R.string.ga_action_click))
-                        .setLabel("onGoogleLoginClick")
+                        .setCategory(getString(R.string.ga_action_button_click))
+                        .setAction(Util.getCurrentMethodName())
                         .build()
         );
     }
@@ -124,7 +126,7 @@ public class LoginActivity extends BaseAppCompatActivity {
             public void onPositive(LoginDialog dialog, String userId, String userPw) {
                 dialog.dismiss();
 
-                procLoginCaldav(userId, userPw, LoginPlatform.CALDAV_NAVER.value);
+                procLoginCaldav(StringFormmater.hostnameAuthGenerator(userId, "naver.com"), userPw, LoginPlatform.CALDAV_NAVER.value);
             }
 
             @Override
@@ -138,9 +140,8 @@ public class LoginActivity extends BaseAppCompatActivity {
         t.setScreenName(this.getClass().getName());
         t.send(
                 new HitBuilders.EventBuilder()
-                        .setCategory(getString(R.string.ga_category_button))
-                        .setAction(getString(R.string.ga_action_click))
-                        .setLabel("onNaverLoginClick")
+                        .setCategory(getString(R.string.ga_action_button_click))
+                        .setAction(Util.getCurrentMethodName())
                         .build()
         );
 
@@ -167,9 +168,8 @@ public class LoginActivity extends BaseAppCompatActivity {
         t.setScreenName(this.getClass().getName());
         t.send(
                 new HitBuilders.EventBuilder()
-                        .setCategory(getString(R.string.ga_category_button))
-                        .setAction(getString(R.string.ga_action_click))
-                        .setLabel("onAppleLoginClick")
+                        .setCategory(getString(R.string.ga_action_button_click))
+                        .setAction(Util.getCurrentMethodName())
                         .build()
         );
     }
@@ -195,7 +195,7 @@ public class LoginActivity extends BaseAppCompatActivity {
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
-                        Toast.makeText(getBaseContext(),"logout status : " + status.getStatusMessage(), Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getBaseContext(),"logout status : " + status.getStatusMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
     }
@@ -219,9 +219,6 @@ public class LoginActivity extends BaseAppCompatActivity {
 
                 switch (response.code()){
                     case 200:
-                        TokenRecord session = TokenRecord.getTokenRecord();
-                        session.setApiKey(body.payload.apiKey);
-                        session.save();
                         startEventActivity();
                         break;
                     case 400:
@@ -279,16 +276,23 @@ public class LoginActivity extends BaseAppCompatActivity {
                     case 200:
 //                    case 205:
                         tokenRecord.setApiKey(body.payload.apiKey);
+                        tokenRecord.setLoginPlatform(loginPlatform);
+                        tokenRecord.setUserId(userId);
                         tokenRecord.save();
+                        requestUpdatePushToken();
                         startEventActivity();
                         break;
                     case 202:
+                        requestUpdatePushToken();
                         startSignupActivity(userId, userPw, loginPlatform, authCode);
                         break;
                     case 201:
                         tokenRecord.setApiKey(body.payload.apiKey);
+                        tokenRecord.setLoginPlatform(loginPlatform);
+                        tokenRecord.setUserId(userId);
                         tokenRecord.save();
                         registerDeviceInfo(body.payload.apiKey);
+                        requestUpdatePushToken();
                         break;
                     case 400:
                     case 401:
@@ -297,6 +301,7 @@ public class LoginActivity extends BaseAppCompatActivity {
                                 getString(R.string.toast_msg_login_fail),
                                 Toast.LENGTH_LONG
                         ).show();
+                        signOutGoogle();
                         break;
                     default:
                         Toast.makeText(
@@ -304,6 +309,7 @@ public class LoginActivity extends BaseAppCompatActivity {
                                 getString(R.string.toast_msg_server_internal_error),
                                 Toast.LENGTH_LONG
                         ).show();
+                        signOutGoogle();
                         break;
                 }
 
@@ -322,6 +328,40 @@ public class LoginActivity extends BaseAppCompatActivity {
                 ).show();
             }
         });
+    }
+
+
+    private void requestUpdatePushToken() {
+        Log.i(TAG, "sendRegistrationToServer");
+
+        if(TokenRecord.getTokenRecord().getApiKey()!=null) {
+            ApiClient.getService().updatePushToken(
+                    FirebaseInstanceId.getInstance().getToken(),
+                    TokenRecord.getTokenRecord().getApiKey()
+            ).enqueue(new Callback<BasicResponse>() {
+                @Override
+                public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                    Log.d(TAG, "onResponse code : " + response.code());
+
+                    if (response.code() == 200) {
+                        BasicResponse body = response.body();
+                        Log.d(TAG, "push token update success");
+
+                    } else {
+                        Log.d(TAG, "push token update fail");
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<BasicResponse> call, Throwable t) {
+
+                    Log.d(TAG, "onfail : " + t.getMessage());
+                    Log.d(TAG, "fail " + t.getClass().getName());
+
+                }
+            });
+        }
     }
 
     void procLoginCaldav(String userId, String userPw, String loginPlatform){
@@ -356,11 +396,30 @@ public class LoginActivity extends BaseAppCompatActivity {
                 procLoginGoogle(acct.getId(), acct.getServerAuthCode());
 
             } else {
-                Toast.makeText(
-                        getBaseContext(),
-                        getString(R.string.toast_msg_login_fail),
-                        Toast.LENGTH_LONG
-                ).show();
+                switch (result.getStatus().getStatusCode()){
+                    case GoogleSignInStatusCodes.SIGN_IN_CANCELLED:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_login_canceled),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
+                    case GoogleSignInStatusCodes.SIGN_IN_FAILED:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_login_fail),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
+                    default:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_unknown_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
+                }
+
             }
         }
     }

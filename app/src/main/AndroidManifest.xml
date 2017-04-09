@@ -14,16 +14,23 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-
-        <!-- Splash Activity -->
-        <activity
-            android:name=".Activity.SplashActivity"
-            android:screenOrientation="portrait">
+        <!-- Activity Launcher -->
+        <activity android:name=".Activity.ActivityLauncher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <!-- DEBUG Activity -->
+        <activity android:name=".Activity.DebugActivity">
+        </activity>
+
+        <!-- Splash Activity -->
+        <activity
+            android:name=".Activity.SplashActivity"
+            android:screenOrientation="portrait">
         </activity>
 
         <!-- Login Activity -->
@@ -95,7 +102,7 @@
 
         <!-- RecommandList Activity -->
         <activity
-            android:name=".Activity.RecommandListActivity"
+            android:name=".Activity.RecommendListActivity"
             android:screenOrientation="portrait">
 
         </activity>

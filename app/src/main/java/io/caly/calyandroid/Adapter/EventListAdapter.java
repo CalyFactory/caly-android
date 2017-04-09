@@ -106,15 +106,22 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
     public void addTail(EventModel data){
         dataList.add(data);
+        notifyItemInserted(dataList.size());
     }
 
     public void addHead(EventModel data){
         dataList.add(0, data);
+        notifyItemInserted(0);
     }
 
     public void addItem(int position, EventModel data){
         dataList.add(position, data);
         notifyItemInserted(position);
+    }
+
+    public void removeAll(){
+        dataList.clear();
+        notifyDataSetChanged();
     }
 
     @Override
@@ -175,7 +182,12 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                                 eventModel.endDateTime
                         )
                 );
-                holder.tvEventLocation.setText(eventModel.location);
+                if(eventModel.location == null){
+                    holder.tvEventLocation.setText("위치정보가 없습니다.");
+                }
+                else{
+                    holder.tvEventLocation.setText(eventModel.location);
+                }
 
                 switch (eventModel.recoState){
                     case STATE_BEING_RECOMMEND:
@@ -190,7 +202,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                         break;
                     case STATE_DONE_RECOMMEND:
                         holder.cardRow.setCardBackgroundColor(Color.rgb(157,181,192));
-                        holder.linearState.setVisibility(View.GONE);
+                        holder.linearState.setVisibility(View.VISIBLE);
                         holder.linearState.setBackgroundColor(Color.BLACK);
                         holder.tvState.setText("추\n천\n됨");
                         break;

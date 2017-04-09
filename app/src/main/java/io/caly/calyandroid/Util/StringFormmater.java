@@ -14,6 +14,13 @@ import io.caly.calyandroid.Model.DataModel.AccountModel;
  */
 
 public class StringFormmater {
+    
+    public static String hostnameAuthGenerator(String userId, String hostname){
+        if(userId.indexOf("@")==-1){
+            return userId+"@"+hostname;
+        }
+        return userId;
+    }
 
     public static String simpleRangeTimeFormat(Date startDate, Date endDate){
         Calendar startCalendar = Calendar.getInstance();
