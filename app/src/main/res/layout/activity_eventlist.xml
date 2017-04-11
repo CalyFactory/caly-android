@@ -89,16 +89,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"/>
 -->
+
                     <com.cooltechworks.views.shimmer.ShimmerRecyclerView
                         xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/recycler_eventlist"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        app:demo_child_count="10"
-                        app:demo_layout="@layout/item_eventlist_row3"
-                        app:demo_layout_manager_type="linear_vertical"
+                        app:shimmer_demo_child_count="4"
+                        app:shimmer_demo_layout="@layout/item_eventlist_row3"
+                        app:shimmer_demo_layout_manager_type="linear_vertical"
                         />
-
 
                     <TextView
                         android:layout_width="wrap_content"
