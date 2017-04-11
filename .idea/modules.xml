@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/CalyAndroid.iml" filepath="$PROJECT_DIR$/CalyAndroid.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/caly-android.iml" filepath="$PROJECT_DIR$/caly-android.iml" />
-      <module fileurl="file://$PROJECT_DIR$/prefer/prefer.iml" filepath="$PROJECT_DIR$/prefer/prefer.iml" />
     </modules>
   </component>
 </project>

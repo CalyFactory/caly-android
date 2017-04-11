@@ -88,9 +88,6 @@ dependencies {
         transitive = true;
     }
 
-    // prefer lib
-    compile project(path: ':prefer')
-
     //listview loading lib
     compile 'com.github.sharish:ShimmerRecyclerView:v1.0'
 
