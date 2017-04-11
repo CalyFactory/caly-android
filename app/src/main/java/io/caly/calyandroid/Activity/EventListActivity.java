@@ -136,7 +136,6 @@ public class EventListActivity extends BaseAppCompatActivity {
 
         recyclerAdapter = new EventListAdapter(new ArrayList<EventModel>());
         recyclerList.setAdapter(recyclerAdapter);
-        recyclerList.showShimmerAdapter();
 
         recyclerList.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -351,6 +350,8 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     void loadEventList(){
         Log.i(TAG, "loadEventList");
+
+        recyclerList.showShimmerAdapter();
         ApiClient.getService().getEventList(
                 TokenRecord.getTokenRecord().getApiKey(),
                 0

@@ -1,6 +1,8 @@
 package io.caly.calyandroid.Fragment;
 
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -9,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,7 +48,7 @@ public class RecoTabFragment extends BaseFragment {
 
 
     @Bind(R.id.recycler_recommandlist)
-    RecyclerView recyclerList;
+    ShimmerRecyclerView recyclerList;
 
     @Bind(R.id.tv_reco_nodata)
     TextView tvNodata;
@@ -145,6 +149,8 @@ public class RecoTabFragment extends BaseFragment {
     void loadList(){
         Log.i(TAG, "loadList");
 
+        recyclerList.showShimmerAdapter();
+
         ApiClient.getService().getRecoList(
                 TokenRecord.getTokenRecord().getApiKey(),
                 eventData.eventHashKey,
@@ -156,6 +162,7 @@ public class RecoTabFragment extends BaseFragment {
 
                 RecoResponse body = response.body();
                 int dataSize = 0;
+                hideShimmerAdapter();
 
                 switch (response.code()){
                     case 200:
@@ -191,6 +198,7 @@ public class RecoTabFragment extends BaseFragment {
                 Log.e(TAG,"onfail : " + t.getMessage());
                 Log.e(TAG, "fail " + t.getClass().getName());
 
+                hideShimmerAdapter();
                 Toast.makeText(
                         getActivity(),
                         getResources().getString(R.string.toast_msg_network_error),
@@ -199,5 +207,16 @@ public class RecoTabFragment extends BaseFragment {
             }
         });
     }
+
+    void hideShimmerAdapter(){
+        hideShimmerHandler.sendEmptyMessageDelayed(0,1000);
+    }
+
+    Handler hideShimmerHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            recyclerList.hideShimmerAdapter();
+        }
+    };
 
 }
