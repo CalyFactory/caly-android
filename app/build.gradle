@@ -25,7 +25,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0.1_dev"
+        versionName "1.0.0_dev"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -90,6 +90,9 @@ dependencies {
 
     // prefer lib
     compile project(path: ':prefer')
+
+    //listview loading lib
+    compile 'com.github.sharish:ShimmerRecyclerView:v1.0'
 
     testCompile 'junit:junit:4.12'
 }
