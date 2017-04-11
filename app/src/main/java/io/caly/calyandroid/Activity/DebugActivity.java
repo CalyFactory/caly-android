@@ -65,7 +65,7 @@ public class DebugActivity extends BaseAppCompatActivity {
             MapActivity.class,
             NoticeActivity.class,
             PolicyActivity.class,
-            SettingActivity.class,
+            LegacySettingActivity.class,
             TestActivity.class,
             WebViewActivity.class
     };

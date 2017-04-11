@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -60,6 +62,9 @@ public class SignupActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.btn_signup_proc)
     Button btnSignup;
+
+    @Bind(R.id.linear_loading_parent)
+    LinearLayout linearLoading;
 
     int selectedGender = -1;
 
@@ -155,7 +160,7 @@ public class SignupActivity extends BaseAppCompatActivity {
                 ).show();
                 break;
             case ALL_SELECTED:
-//              requestSignup();
+                requestSignup();
                 break;
         }
 
@@ -172,6 +177,7 @@ public class SignupActivity extends BaseAppCompatActivity {
     void requestSignup(){
         Log.i(TAG, "requestSignup");
 
+        linearLoading.setVisibility(View.VISIBLE);
         final Bundle bundleData = getIntent().getExtras();
 
         ApiClient.getService().signUp(
@@ -193,6 +199,7 @@ public class SignupActivity extends BaseAppCompatActivity {
                 Log.d(TAG,"onResponse code : " + response.code());
                 Log.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
 
+                linearLoading.setVisibility(View.GONE);
                 SessionResponse body = response.body();
 
                 switch (response.code()){
@@ -226,6 +233,7 @@ public class SignupActivity extends BaseAppCompatActivity {
                 Log.e(TAG,"onfail : " + t.getMessage());
                 Log.e(TAG, "fail " + t.getClass().getName());
 
+                linearLoading.setVisibility(View.GONE);
 
                 Toast.makeText(
                         getBaseContext(),

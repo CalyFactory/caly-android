@@ -11,12 +11,15 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 
@@ -26,6 +29,7 @@ import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.SettingListAdapter;
 import io.caly.calyandroid.BuildConfig;
 import io.caly.calyandroid.Model.DataModel.SettingItemModel;
+import io.caly.calyandroid.Model.Event.SettingLoadingStateChangeEvent;
 import io.caly.calyandroid.R;
 
 /**
@@ -43,6 +47,9 @@ public class LegacySettingActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.recycler_settinglist)
     RecyclerView recyclerList;
+
+    @Bind(R.id.linear_loading_parent)
+    LinearLayout linearLoading;
 
     SettingListAdapter recyclerAdapter;
     RecyclerView.LayoutManager layoutManager;
@@ -150,5 +157,15 @@ public class LegacySettingActivity extends BaseAppCompatActivity {
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
 
+    }
+
+    @Subscribe
+    public void onSettingLoadingStateChangeEventListener(SettingLoadingStateChangeEvent event){
+        if(event.isEnable){
+            linearLoading.setVisibility(View.VISIBLE);
+        }
+        else {
+            linearLoading.setVisibility(View.GONE);
+        }
     }
 }

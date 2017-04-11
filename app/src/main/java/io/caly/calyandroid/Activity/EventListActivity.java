@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -87,6 +88,9 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.linear_eventlist_still) //추천
     LinearLayout linearRecoProgress;
+
+    @Bind(R.id.tv_eventlist_nodata)
+    TextView tvNodata;
 
     EventListAdapter recyclerAdapter;
     LinearLayoutManager layoutManager;
@@ -368,6 +372,12 @@ public class EventListActivity extends BaseAppCompatActivity {
                             dataNotifyHandler.sendMessage(message);
                             i++;
                         }
+                        if(body.payload.data.size()==0){
+                            tvNodata.setVisibility(View.VISIBLE);
+                        }
+                        else{
+                            tvNodata.setVisibility(View.GONE);
+                        }
                         break;
                     case 201:
                         Toast.makeText(
@@ -375,6 +385,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                                 getString(R.string.toast_msg_no_more_data),
                                 Toast.LENGTH_LONG
                         ).show();
+                        tvNodata.setVisibility(View.VISIBLE);
                         break;
                     default:
                         Log.e(TAG,"status code : " + response.code());

@@ -8,7 +8,7 @@
         android:id="@+id/linear_loading_parent"
         android:orientation="vertical"
         android:gravity="center"
-        android:visibility="visible"
+        android:visibility="gone"
         android:background="#dd000000"
         android:clickable="true"
         android:layout_height="match_parent">

@@ -41,11 +41,13 @@ import io.caly.calyandroid.Activity.NoticeActivity;
 import io.caly.calyandroid.Activity.SettingActivity;
 import io.caly.calyandroid.Activity.SplashActivity;
 import io.caly.calyandroid.CalyApplication;
+import io.caly.calyandroid.Model.Event.SettingLoadingStateChangeEvent;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.DataModel.SettingItemModel;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.BusProvider;
 import io.caly.calyandroid.View.LoginDialog;
 import io.caly.calyandroid.View.WithDrawalDialog;
 import retrofit2.Call;
@@ -141,12 +143,14 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
 
+                            BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(true));
                             ApiClient.getService().logout(
                                     TokenRecord.getTokenRecord().getApiKey()
                             ).enqueue(new Callback<BasicResponse>() {
                                 @Override
                                 public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
                                     Log.d(TAG,"onResponse code : " + response.code());
+                                    BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(false));
 
                                     if(response.code() == 200){
                                         BasicResponse body = response.body();
@@ -177,6 +181,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
                                     Log.e(TAG,"onfail : " + t.getMessage());
                                     Log.e(TAG, "fail " + t.getClass().getName());
+                                    BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(false));
 
                                     Toast.makeText(
                                             context,
@@ -203,6 +208,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                                 @Override
                                 public void onPositive(WithDrawalDialog dialog, final String content) {
                                     dialog.dismiss();
+                                    BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(true));
                                     ApiClient.getService().withdrawal(
                                             TokenRecord.getTokenRecord().getApiKey(),
                                             content
@@ -211,6 +217,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                                         public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
                                             Log.d(TAG,"onResponse code : " + response.code());
 
+                                            BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(false));
                                             BasicResponse body = response.body();
                                             switch (response.code()){
                                                 case 200:
@@ -247,6 +254,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                                         public void onFailure(Call<BasicResponse> call, Throwable t) {
                                             Log.e(TAG,"onfail : " + t.getMessage());
                                             Log.e(TAG, "fail " + t.getClass().getName());
+                                            BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(false));
 
                                             Toast.makeText(
                                                     context,
