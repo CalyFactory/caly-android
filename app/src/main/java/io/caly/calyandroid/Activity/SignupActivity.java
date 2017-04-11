@@ -94,6 +94,8 @@ public class SignupActivity extends BaseAppCompatActivity {
                 startActivityForResult(intent, Util.RC_INTENT_POLICY_RESPONSE);
             }
         });
+
+        updateButton();
     }
 
     @OnClick(R.id.imv_signup_man)
@@ -129,8 +131,33 @@ public class SignupActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.btn_signup_proc)
     void onSignupClick(){
-        requestSignup();
 
+        switch (getInputState()){
+            case BIRTH_NOT_SELECTED:
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_signup_policy_not_selected),
+                        Toast.LENGTH_LONG
+                ).show();
+                break;
+            case GENDER_NOT_SELECTED:
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_signup_policy_not_selected),
+                        Toast.LENGTH_LONG
+                ).show();
+                break;
+            case POLICY_NOT_SELECTED:
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_signup_policy_not_selected),
+                        Toast.LENGTH_LONG
+                ).show();
+                break;
+            case ALL_SELECTED:
+//              requestSignup();
+                break;
+        }
 
         Tracker t = ((CalyApplication)getApplication()).getDefaultTracker();
         t.setScreenName(this.getClass().getName());
@@ -211,12 +238,14 @@ public class SignupActivity extends BaseAppCompatActivity {
 
     void updateButton(){
         if(checkEnable()){
-            btnSignup.setEnabled(true);
-            btnSignup.getBackground().setColorFilter(null);
+//            btnSignup.setEnabled(true);
+            btnSignup.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            btnSignup.setTextColor(Color.WHITE);
         }
         else{
-            btnSignup.setEnabled(false);
-            btnSignup.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+//            btnSignup.setEnabled(false);
+            btnSignup.setBackgroundColor(Color.GRAY);
+            btnSignup.setTextColor(Color.BLACK);
         }
     }
 
@@ -226,6 +255,14 @@ public class SignupActivity extends BaseAppCompatActivity {
         if(cbPolicy.isChecked()==false) return false;
 
         return true;
+    }
+
+    private INPUT_STATE getInputState(){
+        if(edtBirth.getText().toString().length()!=4) return INPUT_STATE.BIRTH_NOT_SELECTED;
+        if(selectedGender==-1) return INPUT_STATE.GENDER_NOT_SELECTED;
+        if(cbPolicy.isChecked()==false) return INPUT_STATE.POLICY_NOT_SELECTED;
+
+        return INPUT_STATE.ALL_SELECTED;
     }
 
     @Override
@@ -243,5 +280,12 @@ public class SignupActivity extends BaseAppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private enum INPUT_STATE{
+        BIRTH_NOT_SELECTED,
+        GENDER_NOT_SELECTED,
+        POLICY_NOT_SELECTED,
+        ALL_SELECTED
     }
 }
