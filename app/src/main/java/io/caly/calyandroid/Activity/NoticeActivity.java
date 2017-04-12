@@ -10,6 +10,8 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -45,6 +47,9 @@ public class NoticeActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.recycler_notice)
     RecyclerView recyclerList;
+
+    @Bind(R.id.linear_loading_parent)
+    LinearLayout linearLoading;
 
     NoticeListAdapter recyclerAdapter;
     RecyclerView.LayoutManager layoutManager;
@@ -94,13 +99,14 @@ public class NoticeActivity extends BaseAppCompatActivity {
     }
 
     void loadNotice(){
+        linearLoading.setVisibility(View.VISIBLE);
         ApiClient.getService().notices(
                 TokenRecord.getTokenRecord().getApiKey()
         ).enqueue(new Callback<NoticeResponse>() {
             @Override
             public void onResponse(Call<NoticeResponse> call, Response<NoticeResponse> response) {
                 Log.d(TAG,"onResponse code : " + response.code());
-
+                linearLoading.setVisibility(View.GONE);
                 NoticeResponse body = response.body();
                 switch (response.code()){
                     case 200:
@@ -124,6 +130,7 @@ public class NoticeActivity extends BaseAppCompatActivity {
                 Log.e(TAG,"onfail : " + t.getMessage());
                 Log.e(TAG, "fail " + t.getClass().getName());
 
+                linearLoading.setVisibility(View.GONE);
                 Toast.makeText(
                         getBaseContext(),
                         getString(R.string.toast_msg_network_error),
