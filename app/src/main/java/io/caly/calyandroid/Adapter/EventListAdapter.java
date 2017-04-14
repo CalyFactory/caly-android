@@ -204,7 +204,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                         holder.cardRow.setCardBackgroundColor(Color.rgb(157,181,192));
                         holder.linearState.setVisibility(View.VISIBLE);
                         holder.linearState.setBackgroundColor(Color.BLACK);
-                        holder.tvState.setText("추\n천\n됨");
+                        holder.tvState.setText(eventModel.totalRecoCnt + "\n개\n추\n천\n됨");
                         break;
                 }
                 break;

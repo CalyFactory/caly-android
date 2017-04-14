@@ -140,7 +140,8 @@
                         android:id="@+id/tv_eventrow_state"
                         android:layout_width="wrap_content"
                         android:textColor="#ffffff"
-                        android:textSize="15sp"
+                        android:gravity="center"
+                        android:textSize="15dp"
                         android:text="분\n석\n중"
                         android:layout_height="wrap_content" />
                 </LinearLayout>

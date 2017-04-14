@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -61,6 +63,9 @@ public class SignupActivity extends BaseAppCompatActivity {
     @Bind(R.id.btn_signup_proc)
     Button btnSignup;
 
+    @Bind(R.id.linear_loading_parent)
+    LinearLayout linearLoading;
+
     int selectedGender = -1;
 
 
@@ -94,6 +99,8 @@ public class SignupActivity extends BaseAppCompatActivity {
                 startActivityForResult(intent, Util.RC_INTENT_POLICY_RESPONSE);
             }
         });
+
+        updateButton();
     }
 
     @OnClick(R.id.imv_signup_man)
@@ -129,8 +136,33 @@ public class SignupActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.btn_signup_proc)
     void onSignupClick(){
-        requestSignup();
 
+        switch (getInputState()){
+            case BIRTH_NOT_SELECTED:
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_signup_policy_not_selected),
+                        Toast.LENGTH_LONG
+                ).show();
+                break;
+            case GENDER_NOT_SELECTED:
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_signup_policy_not_selected),
+                        Toast.LENGTH_LONG
+                ).show();
+                break;
+            case POLICY_NOT_SELECTED:
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_signup_policy_not_selected),
+                        Toast.LENGTH_LONG
+                ).show();
+                break;
+            case ALL_SELECTED:
+                requestSignup();
+                break;
+        }
 
         Tracker t = ((CalyApplication)getApplication()).getDefaultTracker();
         t.setScreenName(this.getClass().getName());
@@ -145,6 +177,7 @@ public class SignupActivity extends BaseAppCompatActivity {
     void requestSignup(){
         Log.i(TAG, "requestSignup");
 
+        linearLoading.setVisibility(View.VISIBLE);
         final Bundle bundleData = getIntent().getExtras();
 
         ApiClient.getService().signUp(
@@ -166,6 +199,7 @@ public class SignupActivity extends BaseAppCompatActivity {
                 Log.d(TAG,"onResponse code : " + response.code());
                 Log.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
 
+                linearLoading.setVisibility(View.GONE);
                 SessionResponse body = response.body();
 
                 switch (response.code()){
@@ -199,6 +233,7 @@ public class SignupActivity extends BaseAppCompatActivity {
                 Log.e(TAG,"onfail : " + t.getMessage());
                 Log.e(TAG, "fail " + t.getClass().getName());
 
+                linearLoading.setVisibility(View.GONE);
 
                 Toast.makeText(
                         getBaseContext(),
@@ -211,12 +246,14 @@ public class SignupActivity extends BaseAppCompatActivity {
 
     void updateButton(){
         if(checkEnable()){
-            btnSignup.setEnabled(true);
-            btnSignup.getBackground().setColorFilter(null);
+//            btnSignup.setEnabled(true);
+            btnSignup.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            btnSignup.setTextColor(Color.WHITE);
         }
         else{
-            btnSignup.setEnabled(false);
-            btnSignup.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+//            btnSignup.setEnabled(false);
+            btnSignup.setBackgroundColor(Color.GRAY);
+            btnSignup.setTextColor(Color.BLACK);
         }
     }
 
@@ -226,6 +263,14 @@ public class SignupActivity extends BaseAppCompatActivity {
         if(cbPolicy.isChecked()==false) return false;
 
         return true;
+    }
+
+    private INPUT_STATE getInputState(){
+        if(edtBirth.getText().toString().length()!=4) return INPUT_STATE.BIRTH_NOT_SELECTED;
+        if(selectedGender==-1) return INPUT_STATE.GENDER_NOT_SELECTED;
+        if(cbPolicy.isChecked()==false) return INPUT_STATE.POLICY_NOT_SELECTED;
+
+        return INPUT_STATE.ALL_SELECTED;
     }
 
     @Override
@@ -243,5 +288,12 @@ public class SignupActivity extends BaseAppCompatActivity {
             }
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    private enum INPUT_STATE{
+        BIRTH_NOT_SELECTED,
+        GENDER_NOT_SELECTED,
+        POLICY_NOT_SELECTED,
+        ALL_SELECTED
     }
 }

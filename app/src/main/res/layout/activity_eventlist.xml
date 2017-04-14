@@ -75,14 +75,44 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="vertical"
-                android:background="#dedede"
+                android:background="#ffffff"
                 android:layout_height="match_parent">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_eventlist"
-                    android:scrollbars="vertical"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent">
+
+                    <!--
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_eventlist"
+                        android:scrollbars="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"/>
+-->
+
+                    <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+                        android:id="@+id/recycler_eventlist"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:shimmer_demo_child_count="4"
+                        app:shimmer_demo_layout="@layout/item_eventlist_row3"
+                        app:shimmer_demo_layout_manager_type="linear_vertical"
+                        />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:id="@+id/tv_eventlist_nodata"
+                        android:textSize="30sp"
+                        android:layout_marginLeft="30dp"
+                        android:layout_marginRight="30dp"
+                        android:visibility="gone"
+                        android:textColor="#000000"
+                        android:gravity="center"
+                        android:textStyle="bold"
+                        android:layout_gravity="center"
+                        android:text="일정이 없습니다. 일정을 추가해주시면 분석해드릴게요 :)"
+                        android:layout_height="wrap_content" />
+                </FrameLayout>
             </LinearLayout>
         </LinearLayout>
 
@@ -90,6 +120,7 @@
             android:layout_width="match_parent"
             android:gravity="center"
             android:background="#dd000000"
+            android:visibility="gone"
             android:id="@+id/linear_eventlist_loader"
             android:orientation="vertical"
             android:layout_height="match_parent">

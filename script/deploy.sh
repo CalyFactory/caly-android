@@ -1,6 +1,6 @@
 
 
-filename="$(find -name app-debug_*.apk)"
+filename="$(find . -name app-debug_*.apk)"
 
 if [ -z "$TRAVIS_BRANCH" ]
   then
@@ -29,7 +29,7 @@ curl \
   -F "file=@$filename" \
   https://slack.com/api/files.upload
 
-filename="$(find -name app-release_*.apk)"
+filename="$(find . -name app-release_*.apk)"
 
 SLACK_TEXT="[ *RELEASE* \`$DEPLOY_BRANCH\` | \`$DEPLOY_COMMIT\` ] ${DEPLOY_COMMIT_MESSAGE:-none} "
 curl \

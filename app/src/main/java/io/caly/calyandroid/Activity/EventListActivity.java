@@ -18,8 +18,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.gson.Gson;
 import com.squareup.otto.Subscribe;
 
@@ -66,7 +68,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     Toolbar toolbar;
 
     @Bind(R.id.recycler_eventlist)
-    RecyclerView recyclerList;
+    ShimmerRecyclerView recyclerList;
 
     /*
     @Bind(R.id.tv_eventlist_year)
@@ -87,6 +89,9 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.linear_eventlist_still) //추천
     LinearLayout linearRecoProgress;
+
+    @Bind(R.id.tv_eventlist_nodata)
+    TextView tvNodata;
 
     EventListAdapter recyclerAdapter;
     LinearLayoutManager layoutManager;
@@ -117,7 +122,7 @@ public class EventListActivity extends BaseAppCompatActivity {
         });
 
         setSupportActionBar(toolbar);
-        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp);
         upArrow.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
@@ -345,6 +350,8 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     void loadEventList(){
         Log.i(TAG, "loadEventList");
+
+        recyclerList.showShimmerAdapter();
         ApiClient.getService().getEventList(
                 TokenRecord.getTokenRecord().getApiKey(),
                 0
@@ -366,7 +373,14 @@ public class EventListActivity extends BaseAppCompatActivity {
                             message.arg1 = i;
                             message.obj = eventModel;
                             dataNotifyHandler.sendMessage(message);
+                            hideShimmerAdapter();
                             i++;
+                        }
+                        if(body.payload.data.size()==0){
+                            tvNodata.setVisibility(View.VISIBLE);
+                        }
+                        else{
+                            tvNodata.setVisibility(View.GONE);
                         }
                         break;
                     case 201:
@@ -375,6 +389,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                                 getString(R.string.toast_msg_no_more_data),
                                 Toast.LENGTH_LONG
                         ).show();
+                        tvNodata.setVisibility(View.VISIBLE);
                         break;
                     default:
                         Log.e(TAG,"status code : " + response.code());
@@ -763,6 +778,7 @@ public class EventListActivity extends BaseAppCompatActivity {
         currentTailPageNum = 1;
         currentHeadPageNum = -1;
 
+        recyclerList.showShimmerAdapter();
         loadEventList();
     }
 
@@ -849,4 +865,15 @@ public class EventListActivity extends BaseAppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    void hideShimmerAdapter(){
+        hideShimmerHandler.sendEmptyMessageDelayed(0,2000);
+    }
+
+    Handler hideShimmerHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            recyclerList.hideShimmerAdapter();
+        }
+    };
 }

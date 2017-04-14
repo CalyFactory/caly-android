@@ -31,9 +31,9 @@ public class StringFormmater {
 
         return String.format(
                 "%02d:%02d~%02d:%02d",
-                startCalendar.get(Calendar.HOUR),
+                startCalendar.get(Calendar.HOUR_OF_DAY),
                 startCalendar.get(Calendar.MINUTE),
-                endCalendar.get(Calendar.HOUR),
+                endCalendar.get(Calendar.HOUR_OF_DAY),
                 endCalendar.get(Calendar.MINUTE)
 
         );

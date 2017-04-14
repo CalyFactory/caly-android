@@ -7,7 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -61,6 +63,9 @@ public class LoginActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.btn_login_google)
     Button btnLoginGoogle;
+
+    @Bind(R.id.linear_loading_parent)
+    LinearLayout linearLoading;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -255,6 +260,8 @@ public class LoginActivity extends BaseAppCompatActivity {
 
     void procLogin(final String userId, final String userPw, final String loginPlatform, final String subject, final String authCode){
         Log.i(TAG, "procLogin");
+
+        linearLoading.setVisibility(View.VISIBLE);
         ApiClient.getService().loginCheck(
                 userId,
                 userPw,
@@ -272,6 +279,8 @@ public class LoginActivity extends BaseAppCompatActivity {
                 SessionResponse body = response.body();
 
                 TokenRecord tokenRecord = TokenRecord.getTokenRecord();
+
+                linearLoading.setVisibility(View.GONE);
                 switch (response.code()){
                     case 200:
 //                    case 205:
@@ -320,6 +329,8 @@ public class LoginActivity extends BaseAppCompatActivity {
             public void onFailure(Call<SessionResponse> call, Throwable t) {
                 Log.e(TAG,"onfail : " + t.getMessage());
                 Log.e(TAG, "fail " + t.getClass().getName());
+
+                linearLoading.setVisibility(View.GONE);
 
                 Toast.makeText(
                         getBaseContext(),

@@ -25,6 +25,7 @@ import io.caly.calyandroid.Activity.WebViewActivity;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.RecoModel;
 import io.caly.calyandroid.Model.Event.RecoMoreClickEvent;
+import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.BusProvider;
 import io.caly.calyandroid.Util.StringFormmater;
@@ -138,8 +139,8 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
                         new HitBuilders.SocialBuilder()
                                 .setNetwork(context.getString(R.string.app_name))
                                 .setAction(context.getString(R.string.ga_action_reco_view))
-//                                .set("&userHashKey", recoModel.)
-//                              TODO : 유저식별값으로뭘넣을것인가?
+                                .set("&userId", TokenRecord.getTokenRecord().getUserId())
+                                .set("&loginPlatform", TokenRecord.getTokenRecord().getLoginPlatform())
                                 .set("&recoHashKey", recoModel.recoHashKey)
                                 .setTarget(recoModel.recoHashKey)
                                 .build()

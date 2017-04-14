@@ -1,1 +1,2 @@
-include ':app', ':prefer'
+include ':app'
+include ':shimmer'

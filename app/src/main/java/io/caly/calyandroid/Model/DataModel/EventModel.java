@@ -21,6 +21,9 @@ public class EventModel {
     @SerializedName("event_hashkey")
     public String eventHashKey;
 
+    @SerializedName("totalRecoCnt")
+    public int totalRecoCnt;
+
     @SerializedName("calendar_name")
     public String calendarName;
 
