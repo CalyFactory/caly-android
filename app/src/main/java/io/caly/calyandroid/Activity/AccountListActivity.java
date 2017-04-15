@@ -1,5 +1,7 @@
 package io.caly.calyandroid.Activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -9,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -84,7 +87,7 @@ public class AccountListActivity extends BaseAppCompatActivity {
         recyclerList.setLayoutManager(layoutManager);
 
         ArrayList<AccountModel> accountModels = new ArrayList<>();
-        recyclerAdapter = new AccountListAdapter(accountModels);
+        recyclerAdapter = new AccountListAdapter(getBaseContext(), accountModels);
         recyclerList.setAdapter(recyclerAdapter);
 
 
@@ -165,6 +168,11 @@ public class AccountListActivity extends BaseAppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadAccountList();
+    }
 
     @Override
     public void onBackPressed() {
@@ -176,9 +184,21 @@ public class AccountListActivity extends BaseAppCompatActivity {
 
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_accountlist, menu);
+        return true;
+    }
+
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()){
+            case R.id.menu_accountlist_add:
+                Intent intent = new Intent(getBaseContext(), AccountAddActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+                break;
             case android.R.id.home:
                 onBackPressed();
                 break;

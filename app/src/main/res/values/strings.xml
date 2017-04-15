@@ -25,6 +25,7 @@
     <string name="toast_msg_signup_gender_not_selected">성별을 선택해주세요.</string>
     <string name="toast_msg_signup_birth_not_selected">생년을 입력해주세요.</string>
     <string name="toast_msg_signup_policy_not_selected">개인정보보호정책에 동의해주세요.</string>
+    <string name="toast_msg_sync_done">동기화가 완료되었습니다.</string>
 
     <!-- app notification msg -->
     <string name="notification_msg_google_sync_done">캘린더 동기화가 완료됬습니다!</string>

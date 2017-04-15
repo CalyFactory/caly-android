@@ -168,6 +168,14 @@ public interface HttpService {
             @Field("apikey") String apiKey
     );
 
+    //caldavManualSync
+    @FormUrlEncoded
+    @POST("v1.0/sync/caldavManualSync")
+    Call<BasicResponse> caldavManualSync(
+            @Field("apikey") String apiKey,
+            @Field("user_id") String user_id
+    );
+
 
     /*
     =============================
