@@ -221,15 +221,20 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     }
 
-    List<EventModel> addHeaderToEventList(List<EventModel> eventModelList){
+    private List<EventModel> addHeaderToEventList(int lastYear, int lastMonth, List<EventModel> eventModelList){
 
-        eventModelList.add(
-                0,
-                new EventModel(
-                        eventModelList.get(0).startYear,
-                        eventModelList.get(0).startMonth
-                )
-        );
+        if(lastYear == eventModelList.get(0).startYear && lastMonth == eventModelList.get(0).startMonth){
+
+        }
+        else{
+            eventModelList.add(
+                    0,
+                    new EventModel(
+                            eventModelList.get(0).startYear,
+                            eventModelList.get(0).startMonth
+                    )
+            );
+        }
         for(int i=1;i<eventModelList.size();i++){
             if(eventModelList.get(i-1).isHeader || eventModelList.get(i).isHeader) continue;
             if(eventModelList.get(i-1).startYear != eventModelList.get(i).startYear ||
@@ -304,7 +309,8 @@ public class EventListActivity extends BaseAppCompatActivity {
                         case 200:
                             EventResponse body = response.body();
 //                            Collections.reverse(body.payload.data);
-                            body.payload.data = addHeaderToEventList(body.payload.data);
+                            EventModel lastItem = recyclerAdapter.getItem(recyclerAdapter.getItemCount() - 1);
+                            body.payload.data = addHeaderToEventList(lastItem.startYear, lastItem.startMonth, body.payload.data);
                             for(EventModel eventModel : body.payload.data){
 
                                 Message message = dataNotifyHandler.obtainMessage();
@@ -365,7 +371,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                         EventResponse body = response.body();
                         Log.d(TAG, "json : " + new Gson().toJson(body));
                         int i=0;
-                        body.payload.data = addHeaderToEventList(body.payload.data);
+                        body.payload.data = addHeaderToEventList(0, 0, body.payload.data);
                         for(EventModel eventModel : body.payload.data){
                             Log.d(TAG, "json : " + new Gson().toJson(eventModel));
                             Message message = dataNotifyHandler.obtainMessage();
