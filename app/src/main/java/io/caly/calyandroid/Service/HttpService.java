@@ -132,6 +132,15 @@ public interface HttpService {
             @Field("loginPlatform") String loginPlatform
     );
 
+    //removeAccount
+    @FormUrlEncoded
+    @POST("v1.0/member/removeAccount")
+    Call<BasicResponse> removeAccount(
+            @Field("apikey") String apiKey,
+            @Field("loginPlatform") String loginPlatform,
+            @Field("uId") String userId
+    );
+
 
     /*
     =============================
