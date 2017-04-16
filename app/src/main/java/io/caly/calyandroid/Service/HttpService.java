@@ -109,7 +109,7 @@ public interface HttpService {
     @POST("v1.0/member/addAccount")
     Call<BasicResponse> addAccount(
             @Field("apikey") String apiKey,
-            @Field("login_platform") String loginPlatform,
+            @Field("loginPlatform") String loginPlatform,
             @Field("uId") String userId,
             @Field("uPw") String userPw,
             @Field("authCode") String authCode

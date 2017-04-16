@@ -2,6 +2,7 @@ package io.caly.calyandroid.Adapter;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v4.app.INotificationSideChannel;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import butterknife.ButterKnife;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.AccountModel;
 import io.caly.calyandroid.Model.DataModel.NoticeModel;
+import io.caly.calyandroid.Model.LoginPlatform;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.NoticeResponse;
@@ -125,6 +127,9 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
         else{
             holder.tvTitle.setText(accountModel.userId);
             holder.tvInfo.setText(StringFormmater.accountStateFormat(accountModel));
+            if(accountModel.loginPlatform.equals("google")){
+                holder.imvSync.setVisibility(View.INVISIBLE);
+            }
             holder.imvSync.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
