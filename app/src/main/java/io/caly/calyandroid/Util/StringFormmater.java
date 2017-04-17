@@ -48,9 +48,9 @@ public class StringFormmater {
         );
     }
 
-    public static String accountStateFormat(AccountModel accountModel){
+    public static String accountStateFormat(Date latestSyncTime){
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(accountModel.latestSyncTime);
+        calendar.setTime(latestSyncTime);
 
         return String.format(
                 "마지막 동기화 : %04d.%02d.%02d %02d:%02d:%02d",

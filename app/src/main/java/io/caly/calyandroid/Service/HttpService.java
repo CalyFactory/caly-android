@@ -7,6 +7,7 @@ import io.caly.calyandroid.Model.Response.EventResponse;
 import io.caly.calyandroid.Model.Response.NoticeResponse;
 import io.caly.calyandroid.Model.Response.RecoResponse;
 import io.caly.calyandroid.Model.Response.SessionResponse;
+import io.caly.calyandroid.Model.Response.SyncResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -180,9 +181,10 @@ public interface HttpService {
     //caldavManualSync
     @FormUrlEncoded
     @POST("v1.0/sync/caldavManualSync")
-    Call<BasicResponse> caldavManualSync(
+    Call<SyncResponse> caldavManualSync(
             @Field("apikey") String apiKey,
-            @Field("user_id") String user_id
+            @Field("userId") String user_id,
+            @Field("loginPlatform") String loginPlatform
     );
 
 

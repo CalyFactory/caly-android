@@ -2,6 +2,8 @@ package io.caly.calyandroid.Model.Response;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Date;
+
 /**
  * Copyright 2017 JSpiner. All rights reserved.
  *
@@ -15,8 +17,17 @@ public class SyncResponse extends BasicResponse {
     @SerializedName("payload")
     public Payload payload;
 
-    class Payload{
+    public class Payload{
 
+        @SerializedName("data")
+        public Data data;
+
+        public class Data{
+
+            @SerializedName("latestSyncTime")
+            public Date latestSyncTime;
+
+        }
     }
 
 }

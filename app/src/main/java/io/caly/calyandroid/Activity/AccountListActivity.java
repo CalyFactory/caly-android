@@ -15,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.squareup.otto.Subscribe;
+
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -22,6 +24,7 @@ import butterknife.ButterKnife;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.AccountListAdapter;
 import io.caly.calyandroid.Model.DataModel.AccountModel;
+import io.caly.calyandroid.Model.Event.AccountListRefreshEvent;
 import io.caly.calyandroid.Model.LoginPlatform;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.AccountResponse;
@@ -87,7 +90,7 @@ public class AccountListActivity extends BaseAppCompatActivity {
         recyclerList.setLayoutManager(layoutManager);
 
         ArrayList<AccountModel> accountModels = new ArrayList<>();
-        recyclerAdapter = new AccountListAdapter(getBaseContext(), accountModels);
+        recyclerAdapter = new AccountListAdapter(AccountListActivity.this, accountModels);
         recyclerList.setAdapter(recyclerAdapter);
 
 
@@ -166,6 +169,11 @@ public class AccountListActivity extends BaseAppCompatActivity {
                 ).show();
             }
         });
+    }
+
+    @Subscribe
+    public void onAccountLIstRefreshEventCallback(AccountListRefreshEvent event){
+        loadAccountList();
     }
 
     @Override
