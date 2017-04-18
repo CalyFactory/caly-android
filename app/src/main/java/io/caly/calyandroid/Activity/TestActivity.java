@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
@@ -56,7 +58,9 @@ public class TestActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.button2)
     void onButtonCLick(){
-
+        FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
+        String hello = remoteConfig.getString("hello","default data");
+        Log.i(TAG, "hello : " + hello);
     }
 
 

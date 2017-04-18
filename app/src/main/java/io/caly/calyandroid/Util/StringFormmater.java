@@ -49,6 +49,9 @@ public class StringFormmater {
     }
 
     public static String accountStateFormat(Date latestSyncTime){
+        if(latestSyncTime == null){
+            return "동기화중입니다.";
+        }
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(latestSyncTime);
 
