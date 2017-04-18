@@ -18,6 +18,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
@@ -30,6 +32,7 @@ import io.caly.calyandroid.Model.Response.SessionResponse;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.ConfigClient;
 import io.caly.calyandroid.Util.StringFormmater;
 import io.caly.calyandroid.Util.Util;
 import io.caly.calyandroid.View.LoginDialog;
@@ -49,6 +52,8 @@ import retrofit2.Response;
 
 public class SplashActivity extends BaseAppCompatActivity {
 
+    long startTimeMillisec;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +63,8 @@ public class SplashActivity extends BaseAppCompatActivity {
     }
 
     void init(){
+
+        startTimeMillisec = System.currentTimeMillis();
 
         Util.setStatusBarColor(this, getResources().getColor(R.color.colorPrimaryDark));
 
@@ -74,14 +81,33 @@ public class SplashActivity extends BaseAppCompatActivity {
     }
 
     void startSplash(){
-        Log.d(TAG, "isdidrun : " + Prefer.get("isDidRun", false));
-        if(Prefer.get("isDidRun", false)){
-            timerHandler.sendEmptyMessageDelayed(0,1000);
-        }
-        else{
-            timerHandler.sendEmptyMessageDelayed(1,1500);
-        }
-        Prefer.set("isDidRun", true);
+        //update remote config
+        ConfigClient.getConfig()
+                .fetch(0/*
+                        getResources()
+                                .getInteger(
+                                        R.integer.firebase_remoteconfig_cache_expiretime
+                                )*/
+                ).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    Log.i(TAG, "remoteConfig fetch result : " + task.isSuccessful());
+                    if(task.isSuccessful()){
+                        ConfigClient.getConfig().activateFetched();
+                    }
+
+                    long diffTimeMillisec = System.currentTimeMillis() - startTimeMillisec;
+                    Log.d(TAG, "isdidrun : " + Prefer.get("isDidRun", false));
+                    if(Prefer.get("isDidRun", false)){
+                        timerHandler.sendEmptyMessageDelayed(0,diffTimeMillisec>1000?1000:1000-diffTimeMillisec);
+                    }
+                    else{
+                        timerHandler.sendEmptyMessageDelayed(1,diffTimeMillisec>1500?1500:1500-diffTimeMillisec);
+                    }
+                    Prefer.set("isDidRun", true);
+                }
+            }
+        );
     }
 
     void requestPermission(){

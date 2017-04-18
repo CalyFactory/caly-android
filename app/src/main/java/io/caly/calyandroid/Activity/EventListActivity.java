@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +19,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,8 +29,11 @@ import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.gson.Gson;
 import com.squareup.otto.Subscribe;
 
+import net.jspiner.prefer.Prefer;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -34,6 +41,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.EventListAdapter;
+import io.caly.calyandroid.Model.DataModel.BannerModel;
 import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.Event.GoogleSyncDoneEvent;
 import io.caly.calyandroid.Model.Event.RecoReadyEvent;
@@ -43,6 +51,7 @@ import io.caly.calyandroid.Model.Response.EventResponse;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.ConfigClient;
 import io.caly.calyandroid.Util.EventListener.RecyclerItemClickListener;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -93,10 +102,21 @@ public class EventListActivity extends BaseAppCompatActivity {
     @Bind(R.id.tv_eventlist_nodata)
     TextView tvNodata;
 
+    @Bind(R.id.linear_banner)
+    LinearLayout linearBanner;
+
+    @Bind(R.id.tv_banner_title)
+    TextView tvBannerTitle;
+
+    @Bind(R.id.tv_banner_close)
+    TextView tvBannerClose;
+
     EventListAdapter recyclerAdapter;
     LinearLayoutManager layoutManager;
 
     String loginPlatform;
+
+    BannerModel bannerModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -210,7 +230,46 @@ public class EventListActivity extends BaseAppCompatActivity {
             syncCalendar();
         }
 
+        checkBanner();
     }
+
+    void checkBanner(){
+        String activeBanner = ConfigClient.getConfig().getString("active_banner");
+        Log.d(TAG, "active banner : " + activeBanner);
+        if(activeBanner.length() < 1) return;
+
+        bannerModel = ApiClient.getGson().fromJson(activeBanner, BannerModel.class);
+        Date todayDate = new Date();
+        if(
+                todayDate.after(bannerModel.activationPeriod.startDate) &&
+                todayDate.before(bannerModel.activationPeriod.endDate)) {
+            if(!Prefer.get("banner_dismiss_"+bannerModel.banner_id, false)){
+
+                Log.i(TAG, "active banner");
+
+                Message message = new Message();
+                message.obj = bannerModel;
+                bannerHandler.sendMessageDelayed(message,6000);
+            }
+        }
+    }
+
+    Handler bannerHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            linearBanner.setVisibility(View.VISIBLE);
+
+            TranslateAnimation animation = new TranslateAnimation(
+                Animation.RELATIVE_TO_SELF, 0f,
+                Animation.RELATIVE_TO_SELF, 0f,
+                Animation.RELATIVE_TO_SELF, -1.0f,
+                Animation.RELATIVE_TO_SELF, 0f
+            );
+            animation.setDuration(300);
+            linearBanner.startAnimation(animation);
+            tvBannerTitle.setText(((BannerModel)msg.obj).title);
+        }
+    };
 
     void startRecommandActivity(EventModel eventModel){
         Intent intent = new Intent(EventListActivity.this, RecommendListActivity.class);
@@ -843,6 +902,24 @@ public class EventListActivity extends BaseAppCompatActivity {
         );
     }*/
 
+    void startBannerActivity(){
+        Intent intent;
+        switch (bannerModel.action.to){
+            case "NoticeActivity":
+                intent = new Intent(this, NoticeActivity.class);
+                break;
+            default:
+                intent = new Intent(this, NoticeActivity.class);
+                break;
+        }
+        startActivity(intent);
+    }
+
+    void startBannerUrl(){
+        Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(bannerModel.action.to));
+        startActivity(intent);
+    }
+
     @OnClick(R.id.btn_eventlist_skipreco)
     public void onSkipRecoClick(){
         linearSyncProgress.setVisibility(View.GONE);
@@ -853,6 +930,36 @@ public class EventListActivity extends BaseAppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_eventlist, menu);
         return true;
+    }
+
+    @OnClick(R.id.tv_banner_close)
+    void onBannerCloseClick(){
+        Log.i(TAG, "onBannerCloseClick()");
+        TranslateAnimation animation = new TranslateAnimation(
+                Animation.RELATIVE_TO_SELF, 0f,
+                Animation.RELATIVE_TO_SELF, 0f,
+                Animation.RELATIVE_TO_SELF, 0f,
+                Animation.RELATIVE_TO_SELF, -1.0f
+        );
+        animation.setDuration(300);
+        linearBanner.startAnimation(animation);
+
+        linearBanner.setVisibility(View.GONE);
+
+        Prefer.set("banner_dismiss_" + bannerModel.banner_id, true);
+
+    }
+
+    @OnClick(R.id.linear_banner)
+    void onBannerClick(){
+        switch (bannerModel.action.type){
+            case "intent":
+                startBannerActivity();
+                break;
+            case "url":
+                startBannerUrl();
+                break;
+        }
     }
 
     @Override
