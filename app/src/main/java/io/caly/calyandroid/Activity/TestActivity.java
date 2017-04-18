@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
@@ -15,11 +16,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
+import io.caly.calyandroid.BuildConfig;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
@@ -54,13 +59,45 @@ public class TestActivity extends BaseAppCompatActivity {
 
         Log.d(TAG, "uuid : " +Util.getUUID());
 
+        initFirebase();
+
     }
+    FirebaseRemoteConfig remoteConfig;
 
     @OnClick(R.id.button2)
     void onButtonCLick(){
-        FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
-        String hello = remoteConfig.getString("hello","default data");
+        String hello = remoteConfig.getString("hello");
         Log.i(TAG, "hello : " + hello);
+
+    }
+
+    void initFirebase(){
+
+        remoteConfig = FirebaseRemoteConfig.getInstance();
+        FirebaseRemoteConfigSettings configSettings = new FirebaseRemoteConfigSettings.Builder()
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
+                .build();
+
+        remoteConfig.setConfigSettings(configSettings);
+        remoteConfig.setDefaults(R.xml.remote_config_defaults);
+
+        long cacheExpiration = 0;
+        remoteConfig.fetch(cacheExpiration).addOnCompleteListener(this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+                if(task.isSuccessful()){
+                    Toast.makeText(TestActivity.this, "success", Toast.LENGTH_LONG).show();
+
+                    String hello = remoteConfig.getString("hello");
+                    Log.i(TAG, "complete : " + hello);
+                    remoteConfig.activateFetched();
+                }
+                else{
+                    Toast.makeText(TestActivity.this, "fail", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
     }
 
 
