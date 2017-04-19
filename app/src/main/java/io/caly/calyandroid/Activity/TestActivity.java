@@ -16,11 +16,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
@@ -52,6 +57,7 @@ public class TestActivity extends BaseAppCompatActivity {
         setContentView(R.layout.activity_test);
 
         init();
+        mapView.onCreate(savedInstanceState);
     }
 
     void init(){
@@ -59,8 +65,23 @@ public class TestActivity extends BaseAppCompatActivity {
 
         Log.d(TAG, "uuid : " +Util.getUUID());
 
-
+        initMap();
     }
+
+    @Bind(R.id.map)
+    MapView mapView;
+
+    void initMap(){
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                MapsInitializer.initialize(TestActivity.this);
+                mapView.onResume();
+            }
+        });
+    }
+
+
     FirebaseRemoteConfig remoteConfig;
 
 
