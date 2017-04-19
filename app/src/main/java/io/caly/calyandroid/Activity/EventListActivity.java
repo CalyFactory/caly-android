@@ -871,7 +871,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     @Subscribe
     public void recoReadyEventCallback(RecoReadyEvent event){
         Log.i(TAG, "recoReadyEventCallback");
-        syncCalendar();
+        refreshEvent();
 //        checkRecoState();
     }
 
