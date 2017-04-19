@@ -31,6 +31,7 @@ import io.caly.calyandroid.Model.DataModel.AccountModel;
 import io.caly.calyandroid.Model.DataModel.NoticeModel;
 import io.caly.calyandroid.Model.Event.AccountListLoadingEvent;
 import io.caly.calyandroid.Model.Event.AccountListRefreshEvent;
+import io.caly.calyandroid.Model.Event.EventListRefreshEvent;
 import io.caly.calyandroid.Model.Event.SettingLoadingStateChangeEvent;
 import io.caly.calyandroid.Model.LoginPlatform;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
@@ -168,6 +169,7 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
                             SyncResponse body = response.body();
                             switch (response.code()){
                                 case 200:
+                                    BusProvider.getInstance().post(new EventListRefreshEvent());
                                     holder.tvInfo.setText(StringFormmater.accountStateFormat(body.payload.data.latestSyncTime));
                                     Toast.makeText(
                                             context,
@@ -235,6 +237,8 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
                                     BasicResponse body = response.body();
                                     switch (response.code()){
                                         case 200:
+                                            BusProvider.getInstance().post(new EventListRefreshEvent());
+
                                             Toast.makeText(
                                                     context,
                                                     context.getString(R.string.toast_msg_account_remove_success),
@@ -285,6 +289,10 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
     }
 
     void showWithDrawalDialog(){
+
+        BusProvider.getInstance().post(new AccountListLoadingEvent(true));
+
+
         WithDrawalDialog withDrawalDialog = new WithDrawalDialog(
                 context, true,
                 new WithDrawalDialog.DialogCallback() {
@@ -299,6 +307,7 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
                             @Override
                             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
                                 Log.d(TAG,"onResponse code : " + response.code());
+                                BusProvider.getInstance().post(new AccountListLoadingEvent(false));
 
                                 BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(false));
                                 BasicResponse body = response.body();
@@ -337,6 +346,8 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
                             public void onFailure(Call<BasicResponse> call, Throwable t) {
                                 Log.e(TAG,"onfail : " + t.getMessage());
                                 Log.e(TAG, "fail " + t.getClass().getName());
+                                BusProvider.getInstance().post(new AccountListLoadingEvent(false));
+
                                 BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(false));
 
                                 Toast.makeText(

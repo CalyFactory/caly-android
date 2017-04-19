@@ -35,11 +35,13 @@ import butterknife.ButterKnife;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.AccountAddAdapter;
 import io.caly.calyandroid.CalyApplication;
+import io.caly.calyandroid.Model.Event.EventListRefreshEvent;
 import io.caly.calyandroid.Model.LoginPlatform;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.BusProvider;
 import io.caly.calyandroid.Util.EventListener.RecyclerItemClickListener;
 import io.caly.calyandroid.Util.StringFormmater;
 import io.caly.calyandroid.Util.Util;
@@ -257,6 +259,8 @@ public class AccountAddActivity extends BaseAppCompatActivity {
                 BasicResponse body = response.body();
                 switch (response.code()){
                     case 200:
+                        BusProvider.getInstance().post(new EventListRefreshEvent());
+
                         Toast.makeText(
                                 getBaseContext(),
                                 getString(R.string.toast_msg_add_account_success),
@@ -327,12 +331,14 @@ public class AccountAddActivity extends BaseAppCompatActivity {
 
             } else {
                 switch (result.getStatus().getStatusCode()){
+
                     case GoogleSignInStatusCodes.SIGN_IN_CANCELLED:
+                        /*
                         Toast.makeText(
                                 getBaseContext(),
                                 getString(R.string.toast_msg_login_canceled),
                                 Toast.LENGTH_LONG
-                        ).show();
+                        ).show();*/
                         break;
                     case GoogleSignInStatusCodes.SIGN_IN_FAILED:
                         Toast.makeText(

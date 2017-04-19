@@ -44,6 +44,7 @@ import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.EventListAdapter;
 import io.caly.calyandroid.Model.DataModel.BannerModel;
 import io.caly.calyandroid.Model.DataModel.EventModel;
+import io.caly.calyandroid.Model.Event.EventListRefreshEvent;
 import io.caly.calyandroid.Model.Event.GoogleSyncDoneEvent;
 import io.caly.calyandroid.Model.Event.RecoReadyEvent;
 import io.caly.calyandroid.Model.RecoState;
@@ -250,7 +251,7 @@ public class EventListActivity extends BaseAppCompatActivity {
 
                 Message message = new Message();
                 message.obj = bannerModel;
-                bannerHandler.sendMessageDelayed(message,6000);
+                bannerHandler.sendMessageDelayed(message, 4000);
             }
         }
     }
@@ -852,6 +853,11 @@ public class EventListActivity extends BaseAppCompatActivity {
 
         recyclerList.showShimmerAdapter();
         loadEventList();
+    }
+
+    @Subscribe
+    public void eventListRefreshCallback(EventListRefreshEvent event){
+        refreshEvent();
     }
 
     @Subscribe

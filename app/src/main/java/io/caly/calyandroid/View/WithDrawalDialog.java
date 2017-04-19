@@ -78,8 +78,12 @@ public class WithDrawalDialog extends Dialog {
 
         ButterKnife.bind(this);
 
+        tvEnable.setVisibility(View.VISIBLE);
         if(enable){
             tvEnable.setVisibility(View.VISIBLE);
+        }
+        else{
+            tvEnable.setText("회원 탈퇴시 연결된 계정이 모두 삭제 됩니다.");
         }
     }
 
