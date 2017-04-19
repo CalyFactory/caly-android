@@ -114,7 +114,7 @@ public class DebugActivity extends BaseAppCompatActivity {
 
                     }
                 })
-                .build();;
+                .build();
     }
 
 

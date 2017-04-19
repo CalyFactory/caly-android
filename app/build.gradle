@@ -34,15 +34,18 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             versionNameSuffix '_dev'
+            resValue "string", "app_name", "@string/app_name_debug"
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             versionNameSuffix '_rel'
+            resValue "string", "app_name", "@string/app_name_release"
         }
         product {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            resValue "string", "app_name", "@string/app_name_product"
         }
     }
 
