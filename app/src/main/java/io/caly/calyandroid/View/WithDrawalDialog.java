@@ -5,8 +5,10 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.Bind;
@@ -33,9 +35,22 @@ public class WithDrawalDialog extends Dialog {
     @Bind(R.id.edt_withdrawal_content)
     EditText edtContent;
 
+    @Bind(R.id.tv_withdrawal_enable)
+    TextView tvEnable;
+
+    boolean enable;
+
     public WithDrawalDialog(Context context, DialogCallback dialogCallback) {
         super(context);
 
+        this.dialogCallback = dialogCallback;
+    }
+
+
+    public WithDrawalDialog(Context context, boolean enable, DialogCallback dialogCallback) {
+        super(context);
+
+        this.enable = enable;
         this.dialogCallback = dialogCallback;
     }
 
@@ -63,6 +78,9 @@ public class WithDrawalDialog extends Dialog {
 
         ButterKnife.bind(this);
 
+        if(enable){
+            tvEnable.setVisibility(View.VISIBLE);
+        }
     }
 
     @OnClick(R.id.btn_login_ok)

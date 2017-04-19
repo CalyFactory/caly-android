@@ -1,8 +1,11 @@
 package io.caly.calyandroid.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.INotificationSideChannel;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
@@ -16,15 +19,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import net.jspiner.prefer.Prefer;
+
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.caly.calyandroid.Activity.SplashActivity;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.AccountModel;
 import io.caly.calyandroid.Model.DataModel.NoticeModel;
 import io.caly.calyandroid.Model.Event.AccountListLoadingEvent;
 import io.caly.calyandroid.Model.Event.AccountListRefreshEvent;
+import io.caly.calyandroid.Model.Event.SettingLoadingStateChangeEvent;
 import io.caly.calyandroid.Model.LoginPlatform;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.BasicResponse;
@@ -34,6 +41,7 @@ import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.BusProvider;
 import io.caly.calyandroid.Util.StringFormmater;
+import io.caly.calyandroid.View.WithDrawalDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -197,8 +205,13 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
                 @Override
                 public void onClick(View view) {
 
-                    if(dataList.size()==1){
-
+                    int count = 0;
+                    for(int i=0;i<dataList.size();i++){
+                        if(!dataList.get(i).isHeader) count++;
+                    }
+                    if(count==1){
+                        showWithDrawalDialog();
+                        return;
                     }
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setMessage("캘린더 계정을 제거하시겠습니까?");
@@ -269,6 +282,80 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
                 }
             });
         }
+    }
+
+    void showWithDrawalDialog(){
+        WithDrawalDialog withDrawalDialog = new WithDrawalDialog(
+                context, true,
+                new WithDrawalDialog.DialogCallback() {
+                    @Override
+                    public void onPositive(WithDrawalDialog dialog, final String content) {
+                        dialog.dismiss();
+                        BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(true));
+                        ApiClient.getService().withdrawal(
+                                TokenRecord.getTokenRecord().getApiKey(),
+                                content
+                        ).enqueue(new Callback<BasicResponse>() {
+                            @Override
+                            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                                Log.d(TAG,"onResponse code : " + response.code());
+
+                                BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(false));
+                                BasicResponse body = response.body();
+                                switch (response.code()){
+                                    case 200:
+
+                                        TokenRecord.destoryToken();
+                                        Prefer.getSharedPreferences().edit().clear().commit();
+                                        Prefer.set("isDidRun", true);
+
+                                        ActivityCompat.finishAffinity((Activity)context);
+
+                                        Intent intent = new Intent(context, SplashActivity.class);
+                                        context.startActivity(intent);
+
+                                        Toast.makeText(
+                                                context,
+                                                context.getString(R.string.toast_msg_withdrawal_success),
+                                                Toast.LENGTH_LONG
+                                        ).show();
+
+
+                                        break;
+                                    default:
+                                        Log.e(TAG,"status code : " + response.code());
+                                        Toast.makeText(
+                                                context,
+                                                context.getString(R.string.toast_msg_server_internal_error),
+                                                Toast.LENGTH_LONG
+                                        ).show();
+                                        break;
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<BasicResponse> call, Throwable t) {
+                                Log.e(TAG,"onfail : " + t.getMessage());
+                                Log.e(TAG, "fail " + t.getClass().getName());
+                                BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(false));
+
+                                Toast.makeText(
+                                        context,
+                                        context.getString(R.string.toast_msg_network_error),
+                                        Toast.LENGTH_LONG
+                                ).show();
+                            }
+                        });
+
+                    }
+
+                    @Override
+                    public void onNegative(WithDrawalDialog dialog) {
+                        dialog.dismiss();
+                    }
+                }
+        );
+        withDrawalDialog.show();
     }
 
     @Override
