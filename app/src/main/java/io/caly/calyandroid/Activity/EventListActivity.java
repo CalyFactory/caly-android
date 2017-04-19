@@ -33,6 +33,7 @@ import net.jspiner.prefer.Prefer;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -43,6 +44,7 @@ import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.EventListAdapter;
 import io.caly.calyandroid.Model.DataModel.BannerModel;
 import io.caly.calyandroid.Model.DataModel.EventModel;
+import io.caly.calyandroid.Model.Event.EventListRefreshEvent;
 import io.caly.calyandroid.Model.Event.GoogleSyncDoneEvent;
 import io.caly.calyandroid.Model.Event.RecoReadyEvent;
 import io.caly.calyandroid.Model.RecoState;
@@ -249,7 +251,7 @@ public class EventListActivity extends BaseAppCompatActivity {
 
                 Message message = new Message();
                 message.obj = bannerModel;
-                bannerHandler.sendMessageDelayed(message,6000);
+                bannerHandler.sendMessageDelayed(message, 4000);
             }
         }
     }
@@ -369,7 +371,13 @@ public class EventListActivity extends BaseAppCompatActivity {
                             EventResponse body = response.body();
 //                            Collections.reverse(body.payload.data);
                             EventModel lastItem = recyclerAdapter.getItem(recyclerAdapter.getItemCount() - 1);
-                            body.payload.data = addHeaderToEventList(lastItem.startYear, lastItem.startMonth, body.payload.data);
+                            if(pageNum<0){
+                                body.payload.data = addHeaderToEventList(0, 0, body.payload.data);
+                                Collections.reverse(body.payload.data);
+                            }
+                            else{
+                                body.payload.data = addHeaderToEventList(lastItem.startYear, lastItem.startMonth, body.payload.data);
+                            }
                             for(EventModel eventModel : body.payload.data){
 
                                 Message message = dataNotifyHandler.obtainMessage();
@@ -848,6 +856,11 @@ public class EventListActivity extends BaseAppCompatActivity {
     }
 
     @Subscribe
+    public void eventListRefreshCallback(EventListRefreshEvent event){
+        refreshEvent();
+    }
+
+    @Subscribe
     public void googleSyncDoneEventCallback(GoogleSyncDoneEvent event){
         Log.i(TAG, "googleSyncDoneEventCallback");
 //        linearRecoProgress.setVisibility(View.GONE);
@@ -858,7 +871,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     @Subscribe
     public void recoReadyEventCallback(RecoReadyEvent event){
         Log.i(TAG, "recoReadyEventCallback");
-        syncCalendar();
+        refreshEvent();
 //        checkRecoState();
     }
 

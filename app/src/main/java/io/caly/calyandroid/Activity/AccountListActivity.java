@@ -13,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -25,6 +27,7 @@ import butterknife.ButterKnife;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.AccountListAdapter;
 import io.caly.calyandroid.Model.DataModel.AccountModel;
+import io.caly.calyandroid.Model.Event.AccountListLoadingEvent;
 import io.caly.calyandroid.Model.Event.AccountListRefreshEvent;
 import io.caly.calyandroid.Model.Event.GoogleSyncDoneEvent;
 import io.caly.calyandroid.Model.LoginPlatform;
@@ -51,6 +54,9 @@ public class AccountListActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.recycler_accountlist)
     RecyclerView recyclerList;
+
+    @Bind(R.id.linear_loading_parent)
+    LinearLayout linearLoading;
 
     AccountListAdapter recyclerAdapter;
     LinearLayoutManager layoutManager;
@@ -171,6 +177,16 @@ public class AccountListActivity extends BaseAppCompatActivity {
                 ).show();
             }
         });
+    }
+
+    @Subscribe
+    public void onAccountListLoadingCallback(AccountListLoadingEvent event){
+        if(event.enable){
+            linearLoading.setVisibility(View.VISIBLE);
+        }
+        else{
+            linearLoading.setVisibility(View.GONE);
+        }
     }
 
     @Subscribe

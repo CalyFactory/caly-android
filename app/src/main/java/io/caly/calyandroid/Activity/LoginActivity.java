@@ -59,13 +59,13 @@ import retrofit2.Response;
 
 public class LoginActivity extends BaseAppCompatActivity {
 
-    GoogleApiClient mGoogleApiClient;
-
     @Bind(R.id.btn_login_google)
     Button btnLoginGoogle;
 
     @Bind(R.id.linear_loading_parent)
     LinearLayout linearLoading;
+
+    GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -280,6 +280,7 @@ public class LoginActivity extends BaseAppCompatActivity {
 
                 TokenRecord tokenRecord = TokenRecord.getTokenRecord();
 
+                signOutGoogle();
                 linearLoading.setVisibility(View.GONE);
                 switch (response.code()){
                     case 200:
