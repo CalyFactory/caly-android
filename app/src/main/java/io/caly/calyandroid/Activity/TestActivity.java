@@ -59,17 +59,10 @@ public class TestActivity extends BaseAppCompatActivity {
 
         Log.d(TAG, "uuid : " +Util.getUUID());
 
-        initFirebase();
 
     }
     FirebaseRemoteConfig remoteConfig;
 
-    @OnClick(R.id.button2)
-    void onButtonCLick(){
-        String hello = remoteConfig.getString("hello");
-        Log.i(TAG, "hello : " + hello);
-
-    }
 
     void initFirebase(){
 

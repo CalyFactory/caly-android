@@ -151,6 +151,9 @@
         </activity>
 
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyClIAP-qkUXCV4jGnBBpWDrxAEgo-aqwWQ" />
 
         <meta-data
             android:name="io.fabric.ApiKey"
