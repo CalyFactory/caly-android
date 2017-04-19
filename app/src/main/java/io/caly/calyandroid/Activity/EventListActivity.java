@@ -33,6 +33,7 @@ import net.jspiner.prefer.Prefer;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -369,7 +370,13 @@ public class EventListActivity extends BaseAppCompatActivity {
                             EventResponse body = response.body();
 //                            Collections.reverse(body.payload.data);
                             EventModel lastItem = recyclerAdapter.getItem(recyclerAdapter.getItemCount() - 1);
-                            body.payload.data = addHeaderToEventList(lastItem.startYear, lastItem.startMonth, body.payload.data);
+                            if(pageNum<0){
+                                body.payload.data = addHeaderToEventList(0, 0, body.payload.data);
+                                Collections.reverse(body.payload.data);
+                            }
+                            else{
+                                body.payload.data = addHeaderToEventList(lastItem.startYear, lastItem.startMonth, body.payload.data);
+                            }
                             for(EventModel eventModel : body.payload.data){
 
                                 Message message = dataNotifyHandler.obtainMessage();
