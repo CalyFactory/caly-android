@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:padding="25dp"
+        android:layout_height="wrap_content">
+
+
+        <android.support.v7.widget.CardView
+            card:cardCornerRadius="5dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="280dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:background="#bbbbbb"
+                        android:layout_marginBottom="12dp"
+                        android:layout_height="match_parent">
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:background="#ababab"
+                        android:layout_weight="1"
+                        android:layout_gravity="bottom"
+                        android:layout_marginLeft="10dp"
+                        android:layout_width="80dp"
+                        android:layout_height="24dp">
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:paddingLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:paddingRight="10dp"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="5dp"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_marginTop="10dp"
+                            android:layout_width="match_parent"
+                            android:background="#bbbbbb"
+                            android:layout_height="12dp">
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_marginTop="10dp"
+                            android:layout_width="match_parent"
+                            android:background="#bbbbbb"
+                            android:layout_height="12dp">
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_marginTop="10dp"
+                            android:layout_width="match_parent"
+                            android:background="#bbbbbb"
+                            android:layout_marginBottom="10dp"
+                            android:layout_height="12dp">
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="20dp"
+                        android:layout_height="match_parent">
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+
+</LinearLayout>

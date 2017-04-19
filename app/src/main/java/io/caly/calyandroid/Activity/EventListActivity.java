@@ -5,8 +5,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -17,14 +19,22 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.google.gson.Gson;
 import com.squareup.otto.Subscribe;
 
+import net.jspiner.prefer.Prefer;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -32,7 +42,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.EventListAdapter;
+import io.caly.calyandroid.Model.DataModel.BannerModel;
 import io.caly.calyandroid.Model.DataModel.EventModel;
+import io.caly.calyandroid.Model.Event.EventListRefreshEvent;
 import io.caly.calyandroid.Model.Event.GoogleSyncDoneEvent;
 import io.caly.calyandroid.Model.Event.RecoReadyEvent;
 import io.caly.calyandroid.Model.RecoState;
@@ -41,6 +53,7 @@ import io.caly.calyandroid.Model.Response.EventResponse;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.ConfigClient;
 import io.caly.calyandroid.Util.EventListener.RecyclerItemClickListener;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -66,7 +79,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     Toolbar toolbar;
 
     @Bind(R.id.recycler_eventlist)
-    RecyclerView recyclerList;
+    ShimmerRecyclerView recyclerList;
 
     /*
     @Bind(R.id.tv_eventlist_year)
@@ -88,10 +101,24 @@ public class EventListActivity extends BaseAppCompatActivity {
     @Bind(R.id.linear_eventlist_still) //추천
     LinearLayout linearRecoProgress;
 
+    @Bind(R.id.tv_eventlist_nodata)
+    TextView tvNodata;
+
+    @Bind(R.id.linear_banner)
+    LinearLayout linearBanner;
+
+    @Bind(R.id.tv_banner_title)
+    TextView tvBannerTitle;
+
+    @Bind(R.id.tv_banner_close)
+    TextView tvBannerClose;
+
     EventListAdapter recyclerAdapter;
     LinearLayoutManager layoutManager;
 
     String loginPlatform;
+
+    BannerModel bannerModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -117,7 +144,7 @@ public class EventListActivity extends BaseAppCompatActivity {
         });
 
         setSupportActionBar(toolbar);
-        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp);
         upArrow.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
@@ -205,7 +232,46 @@ public class EventListActivity extends BaseAppCompatActivity {
             syncCalendar();
         }
 
+        checkBanner();
     }
+
+    void checkBanner(){
+        String activeBanner = ConfigClient.getConfig().getString("active_banner");
+        Log.d(TAG, "active banner : " + activeBanner);
+        if(activeBanner.length() < 1) return;
+
+        bannerModel = ApiClient.getGson().fromJson(activeBanner, BannerModel.class);
+        Date todayDate = new Date();
+        if(
+                todayDate.after(bannerModel.activationPeriod.startDate) &&
+                todayDate.before(bannerModel.activationPeriod.endDate)) {
+            if(!Prefer.get("banner_dismiss_"+bannerModel.banner_id, false)){
+
+                Log.i(TAG, "active banner");
+
+                Message message = new Message();
+                message.obj = bannerModel;
+                bannerHandler.sendMessageDelayed(message, 4000);
+            }
+        }
+    }
+
+    Handler bannerHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            linearBanner.setVisibility(View.VISIBLE);
+
+            TranslateAnimation animation = new TranslateAnimation(
+                Animation.RELATIVE_TO_SELF, 0f,
+                Animation.RELATIVE_TO_SELF, 0f,
+                Animation.RELATIVE_TO_SELF, -1.0f,
+                Animation.RELATIVE_TO_SELF, 0f
+            );
+            animation.setDuration(300);
+            linearBanner.startAnimation(animation);
+            tvBannerTitle.setText(((BannerModel)msg.obj).title);
+        }
+    };
 
     void startRecommandActivity(EventModel eventModel){
         Intent intent = new Intent(EventListActivity.this, RecommendListActivity.class);
@@ -216,15 +282,20 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     }
 
-    List<EventModel> addHeaderToEventList(List<EventModel> eventModelList){
+    private List<EventModel> addHeaderToEventList(int lastYear, int lastMonth, List<EventModel> eventModelList){
 
-        eventModelList.add(
-                0,
-                new EventModel(
-                        eventModelList.get(0).startYear,
-                        eventModelList.get(0).startMonth
-                )
-        );
+        if(lastYear == eventModelList.get(0).startYear && lastMonth == eventModelList.get(0).startMonth){
+
+        }
+        else{
+            eventModelList.add(
+                    0,
+                    new EventModel(
+                            eventModelList.get(0).startYear,
+                            eventModelList.get(0).startMonth
+                    )
+            );
+        }
         for(int i=1;i<eventModelList.size();i++){
             if(eventModelList.get(i-1).isHeader || eventModelList.get(i).isHeader) continue;
             if(eventModelList.get(i-1).startYear != eventModelList.get(i).startYear ||
@@ -299,7 +370,14 @@ public class EventListActivity extends BaseAppCompatActivity {
                         case 200:
                             EventResponse body = response.body();
 //                            Collections.reverse(body.payload.data);
-                            body.payload.data = addHeaderToEventList(body.payload.data);
+                            EventModel lastItem = recyclerAdapter.getItem(recyclerAdapter.getItemCount() - 1);
+                            if(pageNum<0){
+                                body.payload.data = addHeaderToEventList(0, 0, body.payload.data);
+                                Collections.reverse(body.payload.data);
+                            }
+                            else{
+                                body.payload.data = addHeaderToEventList(lastItem.startYear, lastItem.startMonth, body.payload.data);
+                            }
                             for(EventModel eventModel : body.payload.data){
 
                                 Message message = dataNotifyHandler.obtainMessage();
@@ -345,6 +423,8 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     void loadEventList(){
         Log.i(TAG, "loadEventList");
+
+        recyclerList.showShimmerAdapter();
         ApiClient.getService().getEventList(
                 TokenRecord.getTokenRecord().getApiKey(),
                 0
@@ -358,7 +438,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                         EventResponse body = response.body();
                         Log.d(TAG, "json : " + new Gson().toJson(body));
                         int i=0;
-                        body.payload.data = addHeaderToEventList(body.payload.data);
+                        body.payload.data = addHeaderToEventList(0, 0, body.payload.data);
                         for(EventModel eventModel : body.payload.data){
                             Log.d(TAG, "json : " + new Gson().toJson(eventModel));
                             Message message = dataNotifyHandler.obtainMessage();
@@ -366,7 +446,14 @@ public class EventListActivity extends BaseAppCompatActivity {
                             message.arg1 = i;
                             message.obj = eventModel;
                             dataNotifyHandler.sendMessage(message);
+                            hideShimmerAdapter();
                             i++;
+                        }
+                        if(body.payload.data.size()==0){
+                            tvNodata.setVisibility(View.VISIBLE);
+                        }
+                        else{
+                            tvNodata.setVisibility(View.GONE);
                         }
                         break;
                     case 201:
@@ -375,6 +462,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                                 getString(R.string.toast_msg_no_more_data),
                                 Toast.LENGTH_LONG
                         ).show();
+                        tvNodata.setVisibility(View.VISIBLE);
                         break;
                     default:
                         Log.e(TAG,"status code : " + response.code());
@@ -763,7 +851,13 @@ public class EventListActivity extends BaseAppCompatActivity {
         currentTailPageNum = 1;
         currentHeadPageNum = -1;
 
+        recyclerList.showShimmerAdapter();
         loadEventList();
+    }
+
+    @Subscribe
+    public void eventListRefreshCallback(EventListRefreshEvent event){
+        refreshEvent();
     }
 
     @Subscribe
@@ -777,7 +871,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     @Subscribe
     public void recoReadyEventCallback(RecoReadyEvent event){
         Log.i(TAG, "recoReadyEventCallback");
-        syncCalendar();
+        refreshEvent();
 //        checkRecoState();
     }
 
@@ -821,6 +915,24 @@ public class EventListActivity extends BaseAppCompatActivity {
         );
     }*/
 
+    void startBannerActivity(){
+        Intent intent;
+        switch (bannerModel.action.to){
+            case "NoticeActivity":
+                intent = new Intent(this, NoticeActivity.class);
+                break;
+            default:
+                intent = new Intent(this, NoticeActivity.class);
+                break;
+        }
+        startActivity(intent);
+    }
+
+    void startBannerUrl(){
+        Intent intent = new Intent(Intent.ACTION_VIEW).setData(Uri.parse(bannerModel.action.to));
+        startActivity(intent);
+    }
+
     @OnClick(R.id.btn_eventlist_skipreco)
     public void onSkipRecoClick(){
         linearSyncProgress.setVisibility(View.GONE);
@@ -831,6 +943,36 @@ public class EventListActivity extends BaseAppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_eventlist, menu);
         return true;
+    }
+
+    @OnClick(R.id.tv_banner_close)
+    void onBannerCloseClick(){
+        Log.i(TAG, "onBannerCloseClick()");
+        TranslateAnimation animation = new TranslateAnimation(
+                Animation.RELATIVE_TO_SELF, 0f,
+                Animation.RELATIVE_TO_SELF, 0f,
+                Animation.RELATIVE_TO_SELF, 0f,
+                Animation.RELATIVE_TO_SELF, -1.0f
+        );
+        animation.setDuration(300);
+        linearBanner.startAnimation(animation);
+
+        linearBanner.setVisibility(View.GONE);
+
+        Prefer.set("banner_dismiss_" + bannerModel.banner_id, true);
+
+    }
+
+    @OnClick(R.id.linear_banner)
+    void onBannerClick(){
+        switch (bannerModel.action.type){
+            case "intent":
+                startBannerActivity();
+                break;
+            case "url":
+                startBannerUrl();
+                break;
+        }
     }
 
     @Override
@@ -849,4 +991,15 @@ public class EventListActivity extends BaseAppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    void hideShimmerAdapter(){
+        hideShimmerHandler.sendEmptyMessageDelayed(0,2000);
+    }
+
+    Handler hideShimmerHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            recyclerList.hideShimmerAdapter();
+        }
+    };
 }

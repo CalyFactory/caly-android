@@ -18,8 +18,8 @@ public class AccountModel {
     @SerializedName("login_platform")
     public String loginPlatform;
 
-    @SerializedName("create_datetime")
-    public Date createDateTime;
+    @SerializedName("latestSyncTime")
+    public Date latestSyncTime;
 
     @SerializedName("user_id")
     public String userId;

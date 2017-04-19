@@ -22,6 +22,7 @@ import io.caly.calyandroid.Activity.EventListActivity;
 import io.caly.calyandroid.Activity.SplashActivity;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.TestModel;
+import io.caly.calyandroid.Model.Event.AccountListRefreshEvent;
 import io.caly.calyandroid.Model.Event.GoogleSyncDoneEvent;
 import io.caly.calyandroid.Model.Event.RecoReadyEvent;
 import io.caly.calyandroid.R;
@@ -76,6 +77,12 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 break;
             case "noti":
                 sendNotification(remoteMessage.getData().get("title"), remoteMessage.getData().get("message"));
+                break;
+            case "caldavForwardSyncEnd":
+                BusProvider.getInstance().post(new AccountListRefreshEvent());
+                break;
+            case "googleForwardSyncEnd":
+                BusProvider.getInstance().post(new AccountListRefreshEvent());
                 break;
             case "reco":
                 if(AppLifecycleListener.getActiveActivityCount()==0) {

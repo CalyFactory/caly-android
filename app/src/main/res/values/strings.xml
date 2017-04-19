@@ -1,5 +1,8 @@
 <resources>
-    <string name="app_name">캘리</string>
+    <string name="app_name_debug">캘리_dev</string>
+    <string name="app_name_release">캘리_rel</string>
+    <string name="app_name_product">캘리</string>
+
     <string name="app_server">https://api.caly.io/</string>
     <string name="google_client_id">881274260597-26b4e9bqah6nbp1katm5qlud3gfitlat.apps.googleusercontent.com</string>
     <string name="naver_client_id">toXORBEYXHOOkODnRrJN</string>
@@ -22,6 +25,11 @@
     <string name="toast_msg_password_changed">계정의 비밀번호가 변경 되었습니다.</string>
     <string name="toast_msg_login_canceled">로그인이 취소되었습니다.</string>
     <string name="toast_msg_unknown_error">알 수 없는 에러가 발생하였습니다.</string>
+    <string name="toast_msg_signup_gender_not_selected">성별을 선택해주세요.</string>
+    <string name="toast_msg_signup_birth_not_selected">생년을 입력해주세요.</string>
+    <string name="toast_msg_signup_policy_not_selected">개인정보보호정책에 동의해주세요.</string>
+    <string name="toast_msg_sync_done">동기화가 완료되었습니다.</string>
+    <string name="toast_msg_account_remove_success">계정이 삭제되었습니다.</string>
 
     <!-- app notification msg -->
     <string name="notification_msg_google_sync_done">캘린더 동기화가 완료됬습니다!</string>

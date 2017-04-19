@@ -1,10 +1,12 @@
 package io.caly.calyandroid.Activity;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,7 +14,19 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.Scope;
 
 import java.util.ArrayList;
 
@@ -20,12 +34,17 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.AccountAddAdapter;
+import io.caly.calyandroid.CalyApplication;
+import io.caly.calyandroid.Model.Event.EventListRefreshEvent;
 import io.caly.calyandroid.Model.LoginPlatform;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.BusProvider;
 import io.caly.calyandroid.Util.EventListener.RecyclerItemClickListener;
+import io.caly.calyandroid.Util.StringFormmater;
+import io.caly.calyandroid.Util.Util;
 import io.caly.calyandroid.View.GoogleOAuthDialog;
 import io.caly.calyandroid.View.LoginDialog;
 import retrofit2.Call;
@@ -48,8 +67,14 @@ public class AccountAddActivity extends BaseAppCompatActivity {
     @Bind(R.id.recycler_accountlist)
     RecyclerView recyclerList;
 
+    @Bind(R.id.linear_loading_parent)
+    LinearLayout linearLoading;
+
     AccountAddAdapter recyclerAdapter;
     LinearLayoutManager layoutManager;
+
+    GoogleApiClient mGoogleApiClient;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +98,7 @@ public class AccountAddActivity extends BaseAppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp);
         upArrow.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
@@ -104,7 +129,8 @@ public class AccountAddActivity extends BaseAppCompatActivity {
                                 Dialog dialog = null;
                                 switch (position){
                                     case 0: //google
-
+                                        getGoogleAuthCode();
+                                        /*
                                         dialog = new GoogleOAuthDialog(AccountAddActivity.this, new GoogleOAuthDialog.LoginCallback() {
                                             @Override
                                             public void onLoginSuccess(Dialog dialog, String code) {
@@ -117,14 +143,14 @@ public class AccountAddActivity extends BaseAppCompatActivity {
                                                 dialog.dismiss();
 
                                             }
-                                        });
+                                        });*/
                                         break;
                                     case 1: //naver
                                         dialog = new LoginDialog(AccountAddActivity.this, "Naver로 로그인", new LoginDialog.LoginDialogCallback(){
 
                                             @Override
                                             public void onPositive(LoginDialog dialog, String userId, String userPw) {
-                                                requestAddCaldav(LoginPlatform.CALDAV_NAVER.value, userId, userPw);
+                                                requestAddCaldav(LoginPlatform.CALDAV_NAVER.value, StringFormmater.hostnameAuthGenerator(userId, "naver.com"), userPw);
                                                 dialog.dismiss();
 
                                             }
@@ -135,6 +161,7 @@ public class AccountAddActivity extends BaseAppCompatActivity {
 
                                             }
                                         });
+                                        dialog.show();
                                         break;
                                     case 2: //ical
                                         dialog = new LoginDialog(AccountAddActivity.this, "Apple로 로그인", new LoginDialog.LoginDialogCallback(){
@@ -152,10 +179,10 @@ public class AccountAddActivity extends BaseAppCompatActivity {
 
                                             }
                                         });
+                                        dialog.show();
                                         break;
                                 }
 
-                                dialog.show();
 
                             }
 
@@ -165,6 +192,44 @@ public class AccountAddActivity extends BaseAppCompatActivity {
                             }
                         }
                 )
+        );
+
+        GoogleSignInOptions gso =
+                new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestServerAuthCode(getString(R.string.google_client_id), true)
+                        .requestIdToken(getString(R.string.google_client_id))
+                        .requestScopes(
+                                new Scope("https://www.googleapis.com/auth/calendar"),
+                                new Scope("https://www.googleapis.com/auth/userinfo.email"),
+                                new Scope("https://www.googleapis.com/auth/calendar.readonly")
+                        ).build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this , onGoogleConnectionFailedListener)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+    }
+
+
+    GoogleApiClient.OnConnectionFailedListener onGoogleConnectionFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
+        @Override
+        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+            Log.d(TAG, "onConnectionFailed : " + connectionResult.getErrorMessage());
+        }
+    };
+
+    void getGoogleAuthCode(){
+
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(signInIntent, Util.RC_INTENT_GOOGLE_SIGNIN);
+
+        Tracker t = ((CalyApplication)getApplication()).getDefaultTracker();
+        t.setScreenName(this.getClass().getName());
+        t.send(
+                new HitBuilders.EventBuilder()
+                        .setCategory(getString(R.string.ga_action_button_click))
+                        .setAction(Util.getCurrentMethodName())
+                        .build()
         );
     }
 
@@ -178,7 +243,7 @@ public class AccountAddActivity extends BaseAppCompatActivity {
 
     void requestAddAccount(String loginPlatform, String userId, String userPw, String authCode){
         Log.i(TAG, "requestAddAccount");
-
+        linearLoading.setVisibility(View.VISIBLE);
         ApiClient.getService().addAccount(
                 TokenRecord.getTokenRecord().getApiKey(),
                 loginPlatform,
@@ -190,9 +255,12 @@ public class AccountAddActivity extends BaseAppCompatActivity {
             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
                 Log.d(TAG,"onResponse code : " + response.code());
 
+                linearLoading.setVisibility(View.GONE);
                 BasicResponse body = response.body();
                 switch (response.code()){
                     case 200:
+                        BusProvider.getInstance().post(new EventListRefreshEvent());
+
                         Toast.makeText(
                                 getBaseContext(),
                                 getString(R.string.toast_msg_add_account_success),
@@ -230,6 +298,7 @@ public class AccountAddActivity extends BaseAppCompatActivity {
                 Log.e(TAG,"onfail : " + t.getMessage());
                 Log.e(TAG, "fail " + t.getClass().getName());
 
+                linearLoading.setVisibility(View.GONE);
                 Toast.makeText(
                         getBaseContext(),
                         getString(R.string.toast_msg_network_error),
@@ -239,5 +308,76 @@ public class AccountAddActivity extends BaseAppCompatActivity {
         });
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == Util.RC_INTENT_GOOGLE_SIGNIN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+
+            Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+            Log.d(TAG, "handleSignInResult:" + result.getStatus().getStatus());
+
+
+            if (result.isSuccess()) {
+                GoogleSignInAccount acct = result.getSignInAccount();
+                Log.d(TAG, acct.getDisplayName());
+                Log.i(TAG, "id token : " + acct.getIdToken());
+                Log.i(TAG, "serverauthcode : " + acct.getServerAuthCode());
+                Log.i(TAG, "id : " + acct.getId());
+                Log.d(TAG, "email : " + acct.getEmail());
+
+                requestAddGoogle(acct.getServerAuthCode());
+
+            } else {
+                switch (result.getStatus().getStatusCode()){
+
+                    case GoogleSignInStatusCodes.SIGN_IN_CANCELLED:
+                        /*
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_login_canceled),
+                                Toast.LENGTH_LONG
+                        ).show();*/
+                        break;
+                    case GoogleSignInStatusCodes.SIGN_IN_FAILED:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_login_fail),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
+                    default:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_unknown_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
+                }
+
+            }
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
 }

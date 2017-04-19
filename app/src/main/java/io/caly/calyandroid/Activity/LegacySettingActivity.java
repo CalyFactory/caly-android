@@ -11,12 +11,15 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Scope;
+import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
 
@@ -26,6 +29,7 @@ import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.SettingListAdapter;
 import io.caly.calyandroid.BuildConfig;
 import io.caly.calyandroid.Model.DataModel.SettingItemModel;
+import io.caly.calyandroid.Model.Event.SettingLoadingStateChangeEvent;
 import io.caly.calyandroid.R;
 
 /**
@@ -43,6 +47,9 @@ public class LegacySettingActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.recycler_settinglist)
     RecyclerView recyclerList;
+
+    @Bind(R.id.linear_loading_parent)
+    LinearLayout linearLoading;
 
     SettingListAdapter recyclerAdapter;
     RecyclerView.LayoutManager layoutManager;
@@ -75,7 +82,7 @@ public class LegacySettingActivity extends BaseAppCompatActivity {
 
         setSupportActionBar(toolbar);
 
-        final Drawable upArrow = getResources().getDrawable(R.drawable.abc_ic_ab_back_mtrl_am_alpha);
+        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp);
         upArrow.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
@@ -98,8 +105,8 @@ public class LegacySettingActivity extends BaseAppCompatActivity {
 //        dataList.add(new SettingItemModel("최신버전 확인","마켓으로 이동해 최신버전으로 업데이트"));
         dataList.add(new SettingItemModel("푸시설정","푸시 알람을 끄고 켤 수 있습니다."));
         dataList.add(new SettingItemModel("계정설정"));
-//        dataList.add(new SettingItemModel("계정수정","로그인된 계정의 정보를 수정할 수 있습니다."));
-//        dataList.add(new SettingItemModel("계정추가","Google 혹은 caldav계정을 추가할 수 있습니다."));
+        //dataList.add(new SettingItemModel("계정추가","Google 혹은 caldav계정을 추가할 수 있습니다."));
+        dataList.add(new SettingItemModel("캘린더 계정 관리","로그인된 계정의 정보를 추가/수정할 수 있습니다."));
         dataList.add(new SettingItemModel("로그아웃","통합계정을 로그아웃하고 다른계정으로 로그인 할 수 있습니다."));
         dataList.add(new SettingItemModel("회원탈퇴","Caly에 연결된 계정을 탈퇴합니다."));
 
@@ -150,5 +157,15 @@ public class LegacySettingActivity extends BaseAppCompatActivity {
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
 
+    }
+
+    @Subscribe
+    public void onSettingLoadingStateChangeEventListener(SettingLoadingStateChangeEvent event){
+        if(event.isEnable){
+            linearLoading.setVisibility(View.VISIBLE);
+        }
+        else {
+            linearLoading.setVisibility(View.GONE);
+        }
     }
 }

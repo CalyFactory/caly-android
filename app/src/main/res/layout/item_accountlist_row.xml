@@ -43,11 +43,20 @@
 
             <LinearLayout
                 android:layout_marginTop="3dp"
-                android:layout_width="60dp"
+                android:layout_width="wrap_content"
                 android:gravity="center"
                 android:layout_height="match_parent">
 
                 <ImageView
+                    android:id="@+id/imv_account_sync"
+                    android:layout_marginRight="5dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_refresh_black_48dp"/>
+
+
+                <ImageView
+                    android:id="@+id/imv_account_delete"
                     android:layout_marginRight="20dp"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
