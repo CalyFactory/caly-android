@@ -327,8 +327,6 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                             Log.d(TAG,"Signout message : " +status.getStatusMessage());
                         }
                     });
-
-
         }
     }
 

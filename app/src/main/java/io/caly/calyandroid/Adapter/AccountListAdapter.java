@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.AccountModel;
 import io.caly.calyandroid.Model.DataModel.NoticeModel;
+import io.caly.calyandroid.Model.Event.AccountListLoadingEvent;
 import io.caly.calyandroid.Model.Event.AccountListRefreshEvent;
 import io.caly.calyandroid.Model.LoginPlatform;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
@@ -195,6 +196,10 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
             holder.imvDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
+                    if(dataList.size()==1){
+
+                    }
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setMessage("캘린더 계정을 제거하시겠습니까?");
                     builder.setTitle("캘린더 계정 제거");
@@ -202,7 +207,7 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
-
+                            BusProvider.getInstance().post(new AccountListLoadingEvent(true));
                             ApiClient.getService().removeAccount(
                                     TokenRecord.getTokenRecord().getApiKey(),
                                     accountModel.loginPlatform,
@@ -212,6 +217,7 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
                                 public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
                                     Log.d(TAG,"onResponse code : " + response.code());
 
+                                    BusProvider.getInstance().post(new AccountListLoadingEvent(false));
 
                                     BasicResponse body = response.body();
                                     switch (response.code()){
@@ -239,6 +245,8 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
                                 public void onFailure(Call<BasicResponse> call, Throwable t) {
                                     Log.d(TAG,"onfail : " + t.getMessage());
                                     Log.d(TAG, "fail " + t.getClass().getName());
+
+                                    BusProvider.getInstance().post(new AccountListLoadingEvent(false));
 
                                     Toast.makeText(
                                             context,
