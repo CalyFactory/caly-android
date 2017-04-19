@@ -126,15 +126,15 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                     switchRow.setChecked(!switchRow.isChecked());
                     break;
 
-                case 7:
+/*                case 7:
 //                    Toast.makeText(context, context.getString(R.string.toast_msg_not_support), Toast.LENGTH_LONG).show();
                     startAccountAddActivity();
-                    break;
-                case 8:
+                    break;*/
+                case 7:
 //                    Toast.makeText(context, context.getString(R.string.toast_msg_not_support), Toast.LENGTH_LONG).show();
                     startAccountListActivity();
                     break;
-                case 9:
+                case 8:
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setMessage("정말 로그아웃하시겠습니까?");
                     builder.setTitle("로그아웃");
@@ -201,7 +201,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                     });
                     builder.show();
                     break;
-                case 10:
+                case 9:
                     WithDrawalDialog withDrawalDialog = new WithDrawalDialog(
                             context,
                             new WithDrawalDialog.DialogCallback() {

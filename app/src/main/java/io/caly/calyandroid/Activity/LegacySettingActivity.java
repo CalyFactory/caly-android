@@ -105,8 +105,8 @@ public class LegacySettingActivity extends BaseAppCompatActivity {
 //        dataList.add(new SettingItemModel("최신버전 확인","마켓으로 이동해 최신버전으로 업데이트"));
         dataList.add(new SettingItemModel("푸시설정","푸시 알람을 끄고 켤 수 있습니다."));
         dataList.add(new SettingItemModel("계정설정"));
-        dataList.add(new SettingItemModel("계정추가","Google 혹은 caldav계정을 추가할 수 있습니다."));
-        dataList.add(new SettingItemModel("계정수정","로그인된 계정의 정보를 수정할 수 있습니다."));
+        //dataList.add(new SettingItemModel("계정추가","Google 혹은 caldav계정을 추가할 수 있습니다."));
+        dataList.add(new SettingItemModel("캘린더 계정 관리","로그인된 계정의 정보를 추가/수정할 수 있습니다."));
         dataList.add(new SettingItemModel("로그아웃","통합계정을 로그아웃하고 다른계정으로 로그인 할 수 있습니다."));
         dataList.add(new SettingItemModel("회원탈퇴","Caly에 연결된 계정을 탈퇴합니다."));
 

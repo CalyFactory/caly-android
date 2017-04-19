@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.EventListener.RecyclerItemClickListener;
+import io.caly.calyandroid.Util.StringFormmater;
 import io.caly.calyandroid.View.GoogleOAuthDialog;
 import io.caly.calyandroid.View.LoginDialog;
 import retrofit2.Call;
@@ -48,8 +50,14 @@ public class AccountAddActivity extends BaseAppCompatActivity {
     @Bind(R.id.recycler_accountlist)
     RecyclerView recyclerList;
 
+    @Bind(R.id.linear_loading_parent)
+    LinearLayout linearLoading;
+
     AccountAddAdapter recyclerAdapter;
     LinearLayoutManager layoutManager;
+
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,7 +132,7 @@ public class AccountAddActivity extends BaseAppCompatActivity {
 
                                             @Override
                                             public void onPositive(LoginDialog dialog, String userId, String userPw) {
-                                                requestAddCaldav(LoginPlatform.CALDAV_NAVER.value, userId, userPw);
+                                                requestAddCaldav(LoginPlatform.CALDAV_NAVER.value, StringFormmater.hostnameAuthGenerator(userId, "naver.com"), userPw);
                                                 dialog.dismiss();
 
                                             }
@@ -178,7 +186,7 @@ public class AccountAddActivity extends BaseAppCompatActivity {
 
     void requestAddAccount(String loginPlatform, String userId, String userPw, String authCode){
         Log.i(TAG, "requestAddAccount");
-
+        linearLoading.setVisibility(View.VISIBLE);
         ApiClient.getService().addAccount(
                 TokenRecord.getTokenRecord().getApiKey(),
                 loginPlatform,
@@ -190,6 +198,7 @@ public class AccountAddActivity extends BaseAppCompatActivity {
             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
                 Log.d(TAG,"onResponse code : " + response.code());
 
+                linearLoading.setVisibility(View.GONE);
                 BasicResponse body = response.body();
                 switch (response.code()){
                     case 200:
@@ -230,6 +239,7 @@ public class AccountAddActivity extends BaseAppCompatActivity {
                 Log.e(TAG,"onfail : " + t.getMessage());
                 Log.e(TAG, "fail " + t.getClass().getName());
 
+                linearLoading.setVisibility(View.GONE);
                 Toast.makeText(
                         getBaseContext(),
                         getString(R.string.toast_msg_network_error),
@@ -239,5 +249,13 @@ public class AccountAddActivity extends BaseAppCompatActivity {
         });
     }
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+
+    }
 
 }

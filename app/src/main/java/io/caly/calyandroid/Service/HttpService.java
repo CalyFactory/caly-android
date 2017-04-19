@@ -7,6 +7,7 @@ import io.caly.calyandroid.Model.Response.EventResponse;
 import io.caly.calyandroid.Model.Response.NoticeResponse;
 import io.caly.calyandroid.Model.Response.RecoResponse;
 import io.caly.calyandroid.Model.Response.SessionResponse;
+import io.caly.calyandroid.Model.Response.SyncResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -109,7 +110,7 @@ public interface HttpService {
     @POST("v1.0/member/addAccount")
     Call<BasicResponse> addAccount(
             @Field("apikey") String apiKey,
-            @Field("login_platform") String loginPlatform,
+            @Field("loginPlatform") String loginPlatform,
             @Field("uId") String userId,
             @Field("uPw") String userPw,
             @Field("authCode") String authCode
@@ -130,6 +131,15 @@ public interface HttpService {
             @Field("uId") String userId,
             @Field("uPw") String userPw,
             @Field("loginPlatform") String loginPlatform
+    );
+
+    //removeAccount
+    @FormUrlEncoded
+    @POST("v1.0/member/removeAccount")
+    Call<BasicResponse> removeAccount(
+            @Field("apikey") String apiKey,
+            @Field("loginPlatform") String loginPlatform,
+            @Field("uId") String userId
     );
 
 
@@ -166,6 +176,15 @@ public interface HttpService {
     @POST("v1.0/checkSync")
     Call<BasicResponse> checkSync(
             @Field("apikey") String apiKey
+    );
+
+    //caldavManualSync
+    @FormUrlEncoded
+    @POST("v1.0/sync/caldavManualSync")
+    Call<SyncResponse> caldavManualSync(
+            @Field("apikey") String apiKey,
+            @Field("userId") String user_id,
+            @Field("loginPlatform") String loginPlatform
     );
 
 

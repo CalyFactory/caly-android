@@ -48,15 +48,21 @@ public class StringFormmater {
         );
     }
 
-    public static String accountStateFormat(AccountModel accountModel){
+    public static String accountStateFormat(Date latestSyncTime){
+        if(latestSyncTime == null){
+            return "동기화중입니다.";
+        }
         Calendar calendar = Calendar.getInstance();
-        calendar.setTime(accountModel.createDateTime);
+        calendar.setTime(latestSyncTime);
 
         return String.format(
-                "%04d.%02d.%02d 가입됨 | 동기화 정상",
+                "마지막 동기화 : %04d.%02d.%02d %02d:%02d:%02d",
                 calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH)+1,
-                calendar.get(Calendar.DAY_OF_MONTH)
+                calendar.get(Calendar.DAY_OF_MONTH),
+                calendar.get(Calendar.HOUR_OF_DAY),
+                calendar.get(Calendar.MINUTE),
+                calendar.get(Calendar.SECOND)
         );
     }
 
