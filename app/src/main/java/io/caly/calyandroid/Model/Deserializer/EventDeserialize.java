@@ -1,6 +1,6 @@
 package io.caly.calyandroid.Model.Deserializer;
 
-import android.util.Log;
+import io.caly.calyandroid.Util.Logger;
 
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;

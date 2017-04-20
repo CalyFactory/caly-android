@@ -6,7 +6,7 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import io.caly.calyandroid.Util.Logger;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -88,7 +88,7 @@ public class WebViewActivity extends BaseAppCompatActivity {
 
 
         url = getIntent().getStringExtra("url");
-        Log.i(TAG,"move url : " + url);
+        Logger.i(TAG,"move url : " + url);
         webView.getSettings().setJavaScriptEnabled(true);
         webView.loadUrl(getIntent().getStringExtra("url"));
         webView.setWebViewClient(new WebViewClientClass());

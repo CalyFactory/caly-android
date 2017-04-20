@@ -11,7 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import io.caly.calyandroid.Util.Logger;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -131,7 +131,7 @@ public class AccountAddActivity extends BaseAppCompatActivity {
                                     case 0: //google
                                         getGoogleAuthCode();
                                         /*
-                                        dialog = new GoogleOAuthDialog(AccountAddActivity.this, new GoogleOAuthDialog.LoginCallback() {
+                                        dialog = new GoogleOAuthDialog(AccountAddActivity.this, new GoogleOAuthDiaLogger.LoginCallback() {
                                             @Override
                                             public void onLoginSuccess(Dialog dialog, String code) {
                                                 requestAddGoogle(code);
@@ -214,7 +214,7 @@ public class AccountAddActivity extends BaseAppCompatActivity {
     GoogleApiClient.OnConnectionFailedListener onGoogleConnectionFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
         @Override
         public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-            Log.d(TAG, "onConnectionFailed : " + connectionResult.getErrorMessage());
+            Logger.d(TAG, "onConnectionFailed : " + connectionResult.getErrorMessage());
         }
     };
 
@@ -242,7 +242,7 @@ public class AccountAddActivity extends BaseAppCompatActivity {
     }
 
     void requestAddAccount(String loginPlatform, String userId, String userPw, String authCode){
-        Log.i(TAG, "requestAddAccount");
+        Logger.i(TAG, "requestAddAccount");
         linearLoading.setVisibility(View.VISIBLE);
         ApiClient.getService().addAccount(
                 TokenRecord.getTokenRecord().getApiKey(),
@@ -253,7 +253,7 @@ public class AccountAddActivity extends BaseAppCompatActivity {
         ).enqueue(new Callback<BasicResponse>() {
             @Override
             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                Log.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG,"onResponse code : " + response.code());
 
                 linearLoading.setVisibility(View.GONE);
                 BasicResponse body = response.body();
@@ -283,7 +283,7 @@ public class AccountAddActivity extends BaseAppCompatActivity {
                         ).show();
                         break;
                     default:
-                        Log.e(TAG,"status code : " + response.code());
+                        Logger.e(TAG,"status code : " + response.code());
                         Toast.makeText(
                                 getBaseContext(),
                                 getString(R.string.toast_msg_server_internal_error),
@@ -295,8 +295,8 @@ public class AccountAddActivity extends BaseAppCompatActivity {
 
             @Override
             public void onFailure(Call<BasicResponse> call, Throwable t) {
-                Log.e(TAG,"onfail : " + t.getMessage());
-                Log.e(TAG, "fail " + t.getClass().getName());
+                Logger.e(TAG,"onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
 
                 linearLoading.setVisibility(View.GONE);
                 Toast.makeText(
@@ -315,17 +315,17 @@ public class AccountAddActivity extends BaseAppCompatActivity {
         if (requestCode == Util.RC_INTENT_GOOGLE_SIGNIN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 
-            Log.d(TAG, "handleSignInResult:" + result.isSuccess());
-            Log.d(TAG, "handleSignInResult:" + result.getStatus().getStatus());
+            Logger.d(TAG, "handleSignInResult:" + result.isSuccess());
+            Logger.d(TAG, "handleSignInResult:" + result.getStatus().getStatus());
 
 
             if (result.isSuccess()) {
                 GoogleSignInAccount acct = result.getSignInAccount();
-                Log.d(TAG, acct.getDisplayName());
-                Log.i(TAG, "id token : " + acct.getIdToken());
-                Log.i(TAG, "serverauthcode : " + acct.getServerAuthCode());
-                Log.i(TAG, "id : " + acct.getId());
-                Log.d(TAG, "email : " + acct.getEmail());
+                Logger.d(TAG, acct.getDisplayName());
+                Logger.i(TAG, "id token : " + acct.getIdToken());
+                Logger.i(TAG, "serverauthcode : " + acct.getServerAuthCode());
+                Logger.i(TAG, "id : " + acct.getId());
+                Logger.d(TAG, "email : " + acct.getEmail());
 
                 requestAddGoogle(acct.getServerAuthCode());
 

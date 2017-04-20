@@ -9,7 +9,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.INotificationSideChannel;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import io.caly.calyandroid.Util.Logger;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -165,7 +165,7 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
                         public void onResponse(Call<SyncResponse> call, Response<SyncResponse> response) {
 
                             holder.imvSync.clearAnimation();
-                            Log.d(TAG,"onResponse code : " + response.code());
+                            Logger.d(TAG,"onResponse code : " + response.code());
                             SyncResponse body = response.body();
                             switch (response.code()){
                                 case 200:
@@ -178,7 +178,7 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
                                     ).show();
                                     break;
                                 default:
-                                    Log.e(TAG,"status code : " + response.code());
+                                    Logger.e(TAG,"status code : " + response.code());
                                     Toast.makeText(
                                             context,
                                             context.getString(R.string.toast_msg_server_internal_error),
@@ -190,8 +190,8 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
 
                         @Override
                         public void onFailure(Call<SyncResponse> call, Throwable t) {
-                            Log.e(TAG,"onfail : " + t.getMessage());
-                            Log.e(TAG, "fail " + t.getClass().getName());
+                            Logger.e(TAG,"onfail : " + t.getMessage());
+                            Logger.e(TAG, "fail " + t.getClass().getName());
 
                             holder.imvSync.clearAnimation();
                             Toast.makeText(
@@ -230,7 +230,7 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
                             ).enqueue(new Callback<BasicResponse>() {
                                 @Override
                                 public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                                    Log.d(TAG,"onResponse code : " + response.code());
+                                    Logger.d(TAG,"onResponse code : " + response.code());
 
                                     BusProvider.getInstance().post(new AccountListLoadingEvent(false));
 
@@ -260,8 +260,8 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
 
                                 @Override
                                 public void onFailure(Call<BasicResponse> call, Throwable t) {
-                                    Log.d(TAG,"onfail : " + t.getMessage());
-                                    Log.d(TAG, "fail " + t.getClass().getName());
+                                    Logger.d(TAG,"onfail : " + t.getMessage());
+                                    Logger.d(TAG, "fail " + t.getClass().getName());
 
                                     BusProvider.getInstance().post(new AccountListLoadingEvent(false));
 
@@ -306,7 +306,7 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
                         ).enqueue(new Callback<BasicResponse>() {
                             @Override
                             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                                Log.d(TAG,"onResponse code : " + response.code());
+                                Logger.d(TAG,"onResponse code : " + response.code());
                                 BusProvider.getInstance().post(new AccountListLoadingEvent(false));
 
                                 BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(false));
@@ -332,7 +332,7 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
 
                                         break;
                                     default:
-                                        Log.e(TAG,"status code : " + response.code());
+                                        Logger.e(TAG,"status code : " + response.code());
                                         Toast.makeText(
                                                 context,
                                                 context.getString(R.string.toast_msg_server_internal_error),
@@ -344,8 +344,8 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
 
                             @Override
                             public void onFailure(Call<BasicResponse> call, Throwable t) {
-                                Log.e(TAG,"onfail : " + t.getMessage());
-                                Log.e(TAG, "fail " + t.getClass().getName());
+                                Logger.e(TAG,"onfail : " + t.getMessage());
+                                Logger.e(TAG, "fail " + t.getClass().getName());
                                 BusProvider.getInstance().post(new AccountListLoadingEvent(false));
 
                                 BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(false));

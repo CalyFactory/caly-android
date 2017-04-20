@@ -3,7 +3,7 @@ package io.caly.calyandroid.Util.EventListener;
 import android.app.Activity;
 import android.app.Application;
 import android.os.Bundle;
-import android.util.Log;
+import io.caly.calyandroid.Util.Logger;
 
 import io.caly.calyandroid.CalyApplication;
 
@@ -24,31 +24,31 @@ public class AppLifecycleListener implements Application.   ActivityLifecycleCal
 
     @Override
     public void onActivityCreated(Activity activity, Bundle bundle) {
-        Log.i(TAG, "onActivityCreated : " + activity.getLocalClassName());
+        Logger.i(TAG, "onActivityCreated : " + activity.getLocalClassName());
     }
 
     @Override
     public void onActivityStarted(Activity activity) {
-        Log.i(TAG, "onActivityStarted : " + activity.getLocalClassName());
+        Logger.i(TAG, "onActivityStarted : " + activity.getLocalClassName());
     }
 
     @Override
     public void onActivityResumed(Activity activity) {
-        Log.d(TAG, "onActivityResumed : " + activity.getLocalClassName());
+        Logger.d(TAG, "onActivityResumed : " + activity.getLocalClassName());
         addActivity();
-        Log.i(TAG, "activity count : " + activeActivities);
+        Logger.i(TAG, "activity count : " + activeActivities);
     }
 
     @Override
     public void onActivityPaused(Activity activity) {
-        Log.d(TAG, "onActivityPaused : " + activity.getLocalClassName());
+        Logger.d(TAG, "onActivityPaused : " + activity.getLocalClassName());
         delActivity();
-        Log.i(TAG, "activity count : " + activeActivities);
+        Logger.i(TAG, "activity count : " + activeActivities);
     }
 
     @Override
     public void onActivityStopped(Activity activity) {
-        Log.d(TAG, "onActivityStopped : " + activity.getLocalClassName());
+        Logger.d(TAG, "onActivityStopped : " + activity.getLocalClassName());
 
     }
 

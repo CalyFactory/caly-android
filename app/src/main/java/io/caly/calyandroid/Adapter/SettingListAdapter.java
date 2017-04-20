@@ -11,7 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
-import android.util.Log;
+import io.caly.calyandroid.Util.Logger;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,7 +71,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
     public SettingListAdapter(ArrayList<SettingItemModel> dataList){
         this.dataList = dataList;
-        Log.d(TAG," size : " +dataList.size());
+        Logger.d(TAG," size : " +dataList.size());
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -149,7 +149,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                             ).enqueue(new Callback<BasicResponse>() {
                                 @Override
                                 public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                                    Log.d(TAG,"onResponse code : " + response.code());
+                                    Logger.d(TAG,"onResponse code : " + response.code());
                                     BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(false));
 
                                     if(response.code() == 200){
@@ -167,7 +167,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                                         signOutGoogle();
                                     }
                                     else{
-                                        Log.e(TAG,"status code : " + response.code());
+                                        Logger.e(TAG,"status code : " + response.code());
                                         Toast.makeText(
                                                 context,
                                                 context.getString(R.string.toast_msg_server_internal_error),
@@ -179,8 +179,8 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                                 @Override
                                 public void onFailure(Call<BasicResponse> call, Throwable t) {
 
-                                    Log.e(TAG,"onfail : " + t.getMessage());
-                                    Log.e(TAG, "fail " + t.getClass().getName());
+                                    Logger.e(TAG,"onfail : " + t.getMessage());
+                                    Logger.e(TAG, "fail " + t.getClass().getName());
                                     BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(false));
 
                                     Toast.makeText(
@@ -215,7 +215,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                                     ).enqueue(new Callback<BasicResponse>() {
                                         @Override
                                         public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                                            Log.d(TAG,"onResponse code : " + response.code());
+                                            Logger.d(TAG,"onResponse code : " + response.code());
 
                                             BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(false));
                                             BasicResponse body = response.body();
@@ -240,7 +240,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
                                                     break;
                                                 default:
-                                                    Log.e(TAG,"status code : " + response.code());
+                                                    Logger.e(TAG,"status code : " + response.code());
                                                     Toast.makeText(
                                                             context,
                                                             context.getString(R.string.toast_msg_server_internal_error),
@@ -252,8 +252,8 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
                                         @Override
                                         public void onFailure(Call<BasicResponse> call, Throwable t) {
-                                            Log.e(TAG,"onfail : " + t.getMessage());
-                                            Log.e(TAG, "fail " + t.getClass().getName());
+                                            Logger.e(TAG,"onfail : " + t.getMessage());
+                                            Logger.e(TAG, "fail " + t.getClass().getName());
                                             BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(false));
 
                                             Toast.makeText(
@@ -277,7 +277,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
                     break;
                 default:
-                    Log.d(TAG,"clicked");
+                    Logger.d(TAG,"clicked");
                     break;
             }
 
@@ -286,7 +286,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
         @Nullable
         @OnCheckedChanged(R.id.switch_setting_row)
         void onSwitchCheckChanged(){
-            Log.d(TAG,"checked : " + switchRow.isChecked());
+            Logger.d(TAG,"checked : " + switchRow.isChecked());
             Prefer.set("isPushReceive", switchRow.isChecked());
 
             new Thread(new Runnable() {
@@ -324,7 +324,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                     new ResultCallback<Status>() {
                         @Override
                         public void onResult(Status status) {
-                            Log.d(TAG,"Signout message : " +status.getStatusMessage());
+                            Logger.d(TAG,"Signout message : " +status.getStatusMessage());
                         }
                     });
         }

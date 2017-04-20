@@ -6,7 +6,7 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Html;
-import android.util.Log;
+import io.caly.calyandroid.Util.Logger;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -175,7 +175,7 @@ public class SignupActivity extends BaseAppCompatActivity {
     }
 
     void requestSignup(){
-        Log.i(TAG, "requestSignup");
+        Logger.i(TAG, "requestSignup");
 
         linearLoading.setVisibility(View.VISIBLE);
         final Bundle bundleData = getIntent().getExtras();
@@ -196,15 +196,15 @@ public class SignupActivity extends BaseAppCompatActivity {
         ).enqueue(new Callback<SessionResponse>() {
             @Override
             public void onResponse(Call<SessionResponse> call, Response<SessionResponse> response) {
-                Log.d(TAG,"onResponse code : " + response.code());
-                Log.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
+                Logger.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
 
                 linearLoading.setVisibility(View.GONE);
                 SessionResponse body = response.body();
 
                 switch (response.code()){
                     case 200:
-                        Log.d(TAG, "session : " + body.payload.apiKey);
+                        Logger.d(TAG, "session : " + body.payload.apiKey);
                         TokenRecord session = TokenRecord.getTokenRecord();
                         session.setApiKey(body.payload.apiKey);
                         session.setLoginPlatform(bundleData.getString("loginPlatform"));
@@ -230,8 +230,8 @@ public class SignupActivity extends BaseAppCompatActivity {
             @Override
             public void onFailure(Call<SessionResponse> call, Throwable t) {
 
-                Log.e(TAG,"onfail : " + t.getMessage());
-                Log.e(TAG, "fail " + t.getClass().getName());
+                Logger.e(TAG,"onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
 
                 linearLoading.setVisibility(View.GONE);
 
@@ -279,7 +279,7 @@ public class SignupActivity extends BaseAppCompatActivity {
             switch (requestCode){
                 case Util.RC_INTENT_POLICY_RESPONSE:
 
-                    Log.d(TAG,"agree : " + data.getBooleanExtra("agree", false));
+                    Logger.d(TAG,"agree : " + data.getBooleanExtra("agree", false));
                     cbPolicy.setChecked(
                             data.getBooleanExtra("agree", false)
                     );

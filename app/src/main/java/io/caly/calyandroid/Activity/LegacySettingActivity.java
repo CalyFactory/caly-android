@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import io.caly.calyandroid.Util.Logger;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -135,7 +135,7 @@ public class LegacySettingActivity extends BaseAppCompatActivity {
     GoogleApiClient.OnConnectionFailedListener onGoogleConnectionFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
         @Override
         public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-            Log.d(TAG, "onConnectionFailed : " + connectionResult.getErrorMessage());
+            Logger.d(TAG, "onConnectionFailed : " + connectionResult.getErrorMessage());
         }
     };
 
