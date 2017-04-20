@@ -1,6 +1,6 @@
 package io.caly.calyandroid.Util.EventListener;
 
-import android.util.Log;
+import io.caly.calyandroid.Util.Logger;
 
 import java.io.IOException;
 
@@ -29,7 +29,7 @@ public class LoggingInterceptor implements Interceptor {
         Request request = chain.request();
 
         long t1 = System.nanoTime();
-        Log.i(TAG, "Send to " + request.url() + "\nbody\n" + Util.requestBodyToString(request.body()));
+        Logger.i(TAG, "Send to " + request.url() + "\nbody\n" + Util.requestBodyToString(request.body()));
 
         Response response = chain.proceed(request);
 
@@ -37,7 +37,7 @@ public class LoggingInterceptor implements Interceptor {
 
         String responseString = new String(response.body().bytes());
 
-        Log.i(TAG, "Response in " + (t2 - t1) + "\ncode : " + response.code() + "\n" + responseString);
+        Logger.i(TAG, "Response in " + (t2 - t1) + "\ncode : " + response.code() + "\n" + responseString);
 
         return  response.newBuilder()
                 .body(ResponseBody.create(response.body().contentType(), responseString))

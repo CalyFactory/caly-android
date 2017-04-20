@@ -8,7 +8,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.util.Log;
+import io.caly.calyandroid.Util.Logger;
 import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -57,7 +57,7 @@ public class TestActivity extends BaseAppCompatActivity {
     void init(){
         ButterKnife.bind(this);
 
-        Log.d(TAG, "uuid : " +Util.getUUID());
+        Logger.d(TAG, "uuid : " +Util.getUUID());
 
         initFirebase();
 
@@ -67,7 +67,7 @@ public class TestActivity extends BaseAppCompatActivity {
     @OnClick(R.id.button2)
     void onButtonCLick(){
         String hello = remoteConfig.getString("hello");
-        Log.i(TAG, "hello : " + hello);
+        Logger.i(TAG, "hello : " + hello);
 
     }
 
@@ -90,7 +90,7 @@ public class TestActivity extends BaseAppCompatActivity {
                     Toast.makeText(TestActivity.this, "success", Toast.LENGTH_LONG).show();
 
                     String hello = remoteConfig.getString("hello");
-                    Log.i(TAG, "complete : " + hello);
+                    Logger.i(TAG, "complete : " + hello);
                     remoteConfig.activateFetched();
                 }
                 else{
@@ -108,14 +108,14 @@ public class TestActivity extends BaseAppCompatActivity {
         ).enqueue(new Callback<BasicResponse>() {
             @Override
             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                Log.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG,"onResponse code : " + response.code());
 
                 BasicResponse body = response.body();
                 switch (response.code()){
                     case 200:
                         break;
                     default:
-                        Log.e(TAG,"status code : " + response.code());
+                        Logger.e(TAG,"status code : " + response.code());
                         Toast.makeText(
                                 getBaseContext(),
                                 getString(R.string.toast_msg_server_internal_error),
@@ -127,8 +127,8 @@ public class TestActivity extends BaseAppCompatActivity {
 
             @Override
             public void onFailure(Call<BasicResponse> call, Throwable t) {
-                Log.e(TAG,"onfail : " + t.getMessage());
-                Log.e(TAG, "fail " + t.getClass().getName());
+                Logger.e(TAG,"onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
 
                 Toast.makeText(
                         getBaseContext(),

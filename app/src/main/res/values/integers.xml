@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="firebase_remoteconfig_cache_expiretime">0</integer>
+    <integer name="firebase_remoteconfig_cache_expiretime">43200</integer>
 </resources>

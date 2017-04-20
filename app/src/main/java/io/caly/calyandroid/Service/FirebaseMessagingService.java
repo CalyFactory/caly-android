@@ -10,7 +10,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
-import android.util.Log;
+import io.caly.calyandroid.Util.Logger;
 
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -55,15 +55,15 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
             return;
         }
 
-        Log.i(TAG, "onMessageReceived");
-        Log.d(TAG, "push massage : " + remoteMessage.getData().toString());
+        Logger.i(TAG, "onMessageReceived");
+        Logger.d(TAG, "push massage : " + remoteMessage.getData().toString());
 
         Map<String, String> pushData = remoteMessage.getData();
 
         String pushType = pushData.get("type");
         String pushAction = pushData.get("action");
 
-        Log.d(TAG, "activity count : " + AppLifecycleListener.getActiveActivityCount());
+        Logger.d(TAG, "activity count : " + AppLifecycleListener.getActiveActivityCount());
         switch (pushType){
             case "sync":
                 if(AppLifecycleListener.getActiveActivityCount()==0){
@@ -98,7 +98,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
 
 
     private void sendNotification(String title, String message) {
-        Log.i(TAG, "sendNotification("+title+")");
+        Logger.i(TAG, "sendNotification("+title+")");
 
         Intent intent = new Intent(this, SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

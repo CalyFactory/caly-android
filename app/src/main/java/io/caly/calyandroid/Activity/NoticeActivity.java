@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import io.caly.calyandroid.Util.Logger;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -105,7 +105,7 @@ public class NoticeActivity extends BaseAppCompatActivity {
         ).enqueue(new Callback<NoticeResponse>() {
             @Override
             public void onResponse(Call<NoticeResponse> call, Response<NoticeResponse> response) {
-                Log.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG,"onResponse code : " + response.code());
                 linearLoading.setVisibility(View.GONE);
                 NoticeResponse body = response.body();
                 switch (response.code()){
@@ -115,7 +115,7 @@ public class NoticeActivity extends BaseAppCompatActivity {
                         }
                         break;
                     default:
-                        Log.e(TAG,"status code : " + response.code());
+                        Logger.e(TAG,"status code : " + response.code());
                         Toast.makeText(
                                 getBaseContext(),
                                 getString(R.string.toast_msg_server_internal_error),
@@ -127,8 +127,8 @@ public class NoticeActivity extends BaseAppCompatActivity {
 
             @Override
             public void onFailure(Call<NoticeResponse> call, Throwable t) {
-                Log.e(TAG,"onfail : " + t.getMessage());
-                Log.e(TAG, "fail " + t.getClass().getName());
+                Logger.e(TAG,"onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
 
                 linearLoading.setVisibility(View.GONE);
                 Toast.makeText(

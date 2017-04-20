@@ -2,7 +2,7 @@ package io.caly.calyandroid;
 
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
+import io.caly.calyandroid.Util.Logger;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -32,7 +32,7 @@ public class CalyApplication extends SugarApp {
 
     @Override
     public void onCreate() {
-        Log.i(TAG, "onCreate");
+        Logger.i(TAG, "onCreate");
         super.onCreate();
 
         init();

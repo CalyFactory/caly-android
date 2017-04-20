@@ -15,7 +15,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+
+import io.caly.calyandroid.BuildConfig;
+import io.caly.calyandroid.Util.Logger;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -69,7 +71,7 @@ public class SplashActivity extends BaseAppCompatActivity {
         Util.setStatusBarColor(this, getResources().getColor(R.color.colorPrimaryDark));
 
         //firebase init
-        Log.i(TAG, "pushToken : " + FirebaseInstanceId.getInstance().getToken());
+        Logger.i(TAG, "pushToken : " + FirebaseInstanceId.getInstance().getToken());
         FirebaseMessaging.getInstance().subscribeToTopic("noti");
 
         if(isPermissionGranted()){
@@ -83,21 +85,23 @@ public class SplashActivity extends BaseAppCompatActivity {
     void startSplash(){
         //update remote config
         ConfigClient.getConfig()
-                .fetch(0/*
+                .fetch(
+                        BuildConfig.DEBUG?
+                        0:
                         getResources()
                                 .getInteger(
                                         R.integer.firebase_remoteconfig_cache_expiretime
-                                )*/
+                                )
                 ).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
-                    Log.i(TAG, "remoteConfig fetch result : " + task.isSuccessful());
+                    Logger.i(TAG, "remoteConfig fetch result : " + task.isSuccessful());
                     if(task.isSuccessful()){
                         ConfigClient.getConfig().activateFetched();
                     }
 
                     long diffTimeMillisec = System.currentTimeMillis() - startTimeMillisec;
-                    Log.d(TAG, "isdidrun : " + Prefer.get("isDidRun", false));
+                    Logger.d(TAG, "isdidrun : " + Prefer.get("isDidRun", false));
                     if(Prefer.get("isDidRun", false)){
                         timerHandler.sendEmptyMessageDelayed(0,diffTimeMillisec>1000?1000:1000-diffTimeMillisec);
                     }
@@ -169,11 +173,11 @@ public class SplashActivity extends BaseAppCompatActivity {
 
                 //로그인 정보가 없을 경우
                 if(tokenRecord.getApiKey() == null){
-                    Log.d(TAG, "no login");
+                    Logger.d(TAG, "no login");
                     startLoginActivity();
                 }
                 else{
-                    Log.d(TAG,"session : " + tokenRecord.getApiKey());
+                    Logger.d(TAG,"session : " + tokenRecord.getApiKey());
 
                     requestLoginCheck(tokenRecord.getApiKey());
 
@@ -188,7 +192,7 @@ public class SplashActivity extends BaseAppCompatActivity {
     };
 
     void requestLoginCheck(String apiKey){
-        Log.i(TAG, "requestLoginCheck");
+        Logger.i(TAG, "requestLoginCheck");
 
         ApiClient.getService().loginCheck(
                 "null",
@@ -201,7 +205,7 @@ public class SplashActivity extends BaseAppCompatActivity {
         ).enqueue(new retrofit2.Callback<SessionResponse>() {
             @Override
             public void onResponse(Call<SessionResponse> call, Response<SessionResponse> response) {
-                Log.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG,"onResponse code : " + response.code());
 
                 SessionResponse body = response.body();
                 switch (response.code()){
@@ -244,8 +248,8 @@ public class SplashActivity extends BaseAppCompatActivity {
             @Override
             public void onFailure(Call<SessionResponse> call, Throwable t) {
 
-                Log.e(TAG,"onfail : " + t.getMessage());
-                Log.e(TAG, "fail " + t.getClass().getName());
+                Logger.e(TAG,"onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
 
                 Toast.makeText(
                         getBaseContext(),
@@ -272,7 +276,7 @@ public class SplashActivity extends BaseAppCompatActivity {
                 ).enqueue(new Callback<BasicResponse>() {
                     @Override
                     public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                        Log.d(TAG,"onResponse code : " + response.code());
+                        Logger.d(TAG,"onResponse code : " + response.code());
 
                         BasicResponse body = response.body();
                         switch (response.code()) {
@@ -289,8 +293,8 @@ public class SplashActivity extends BaseAppCompatActivity {
                     @Override
                     public void onFailure(Call<BasicResponse> call, Throwable t) {
 
-                        Log.e(TAG,"onfail : " + t.getMessage());
-                        Log.e(TAG, "fail " + t.getClass().getName());
+                        Logger.e(TAG,"onfail : " + t.getMessage());
+                        Logger.e(TAG, "fail " + t.getClass().getName());
 
                         Toast.makeText(
                                 getBaseContext(),
@@ -337,7 +341,7 @@ public class SplashActivity extends BaseAppCompatActivity {
 
             } else{
                 //set to never ask again
-                Log.i(TAG,"never ask");
+                Logger.i(TAG,"never ask");
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(SplashActivity.this);
                 builder.setMessage("캘리 서비스를 이용하시려면 권한 설정이 필요합니다. 설정 번튼을 눌러 [어플리케이션 정보 > 권한] 에서 권한을 허용해주세요.");

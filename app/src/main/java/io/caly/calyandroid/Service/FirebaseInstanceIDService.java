@@ -1,6 +1,6 @@
 package io.caly.calyandroid.Service;
 
-import android.util.Log;
+import io.caly.calyandroid.Util.Logger;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
@@ -29,15 +29,15 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
 
     @Override
     public void onTokenRefresh() {
-        Log.i(TAG, "onTokenRefresh");
+        Logger.i(TAG, "onTokenRefresh");
         String token = FirebaseInstanceId.getInstance().getToken();
-        Log.d(TAG, "Refreshed token: " + token);
+        Logger.d(TAG, "Refreshed token: " + token);
 
         requestUpdatePushToken(token);
     }
 
     private void requestUpdatePushToken(String token) {
-        Log.i(TAG, "sendRegistrationToServer");
+        Logger.i(TAG, "sendRegistrationToServer");
 
         if(TokenRecord.getTokenRecord().getApiKey()!=null) {
             ApiClient.getService().updatePushToken(
@@ -46,14 +46,14 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
             ).enqueue(new Callback<BasicResponse>() {
                 @Override
                 public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                    Log.d(TAG, "onResponse code : " + response.code());
+                    Logger.d(TAG, "onResponse code : " + response.code());
 
                     if (response.code() == 200) {
                         BasicResponse body = response.body();
-                        Log.d(TAG, "push token update success");
+                        Logger.d(TAG, "push token update success");
 
                     } else {
-                        Log.d(TAG, "push token update fail");
+                        Logger.d(TAG, "push token update fail");
 
                     }
                 }
@@ -61,8 +61,8 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
                 @Override
                 public void onFailure(Call<BasicResponse> call, Throwable t) {
 
-                    Log.d(TAG, "onfail : " + t.getMessage());
-                    Log.d(TAG, "fail " + t.getClass().getName());
+                    Logger.d(TAG, "onfail : " + t.getMessage());
+                    Logger.d(TAG, "fail " + t.getClass().getName());
 
                 }
             });

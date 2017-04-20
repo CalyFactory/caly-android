@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import io.caly.calyandroid.Util.Logger;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -104,13 +104,13 @@ public class LoginActivity extends BaseAppCompatActivity {
     OnConnectionFailedListener onGoogleConnectionFailedListener = new OnConnectionFailedListener() {
         @Override
         public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-            Log.d(TAG, "onConnectionFailed : " + connectionResult.getErrorMessage());
+            Logger.d(TAG, "onConnectionFailed : " + connectionResult.getErrorMessage());
         }
     };
 
     @OnClick(R.id.btn_login_google)
     void onGoogleLoginClick(){
-        Log.d(TAG,"onclick");
+        Logger.d(TAG,"onclick");
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(signInIntent, Util.RC_INTENT_GOOGLE_SIGNIN);
 
@@ -206,7 +206,7 @@ public class LoginActivity extends BaseAppCompatActivity {
     }
 
     void registerDeviceInfo(String sessionKey){
-        Log.i(TAG, "registerDeviceInfo");
+        Logger.i(TAG, "registerDeviceInfo");
         ApiClient.getService().registerDevice(
                 sessionKey,
                 FirebaseInstanceId.getInstance().getToken(),
@@ -218,7 +218,7 @@ public class LoginActivity extends BaseAppCompatActivity {
         ).enqueue(new Callback<SessionResponse>() {
             @Override
             public void onResponse(Call<SessionResponse> call, Response<SessionResponse> response) {
-                Log.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG,"onResponse code : " + response.code());
 
                 SessionResponse body = response.body();
 
@@ -246,8 +246,8 @@ public class LoginActivity extends BaseAppCompatActivity {
 
             @Override
             public void onFailure(Call<SessionResponse> call, Throwable t) {
-                Log.e(TAG,"onfail : " + t.getMessage());
-                Log.e(TAG, "fail " + t.getClass().getName());
+                Logger.e(TAG,"onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
 
                 Toast.makeText(
                         getBaseContext(),
@@ -259,7 +259,7 @@ public class LoginActivity extends BaseAppCompatActivity {
     }
 
     void procLogin(final String userId, final String userPw, final String loginPlatform, final String subject, final String authCode){
-        Log.i(TAG, "procLogin");
+        Logger.i(TAG, "procLogin");
 
         linearLoading.setVisibility(View.VISIBLE);
         ApiClient.getService().loginCheck(
@@ -273,8 +273,8 @@ public class LoginActivity extends BaseAppCompatActivity {
         ).enqueue(new Callback<SessionResponse>() {
             @Override
             public void onResponse(Call<SessionResponse> call, Response<SessionResponse> response) {
-                Log.d(TAG,"onResponse code : " + response.code());
-                Log.d(TAG,"req url : " + call.request().url().toString());
+                Logger.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG,"req url : " + call.request().url().toString());
 
                 SessionResponse body = response.body();
 
@@ -328,8 +328,8 @@ public class LoginActivity extends BaseAppCompatActivity {
 
             @Override
             public void onFailure(Call<SessionResponse> call, Throwable t) {
-                Log.e(TAG,"onfail : " + t.getMessage());
-                Log.e(TAG, "fail " + t.getClass().getName());
+                Logger.e(TAG,"onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
 
                 linearLoading.setVisibility(View.GONE);
 
@@ -344,7 +344,7 @@ public class LoginActivity extends BaseAppCompatActivity {
 
 
     private void requestUpdatePushToken() {
-        Log.i(TAG, "sendRegistrationToServer");
+        Logger.i(TAG, "sendRegistrationToServer");
 
         if(TokenRecord.getTokenRecord().getApiKey()!=null) {
             ApiClient.getService().updatePushToken(
@@ -353,14 +353,14 @@ public class LoginActivity extends BaseAppCompatActivity {
             ).enqueue(new Callback<BasicResponse>() {
                 @Override
                 public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                    Log.d(TAG, "onResponse code : " + response.code());
+                    Logger.d(TAG, "onResponse code : " + response.code());
 
                     if (response.code() == 200) {
                         BasicResponse body = response.body();
-                        Log.d(TAG, "push token update success");
+                        Logger.d(TAG, "push token update success");
 
                     } else {
-                        Log.d(TAG, "push token update fail");
+                        Logger.d(TAG, "push token update fail");
 
                     }
                 }
@@ -368,8 +368,8 @@ public class LoginActivity extends BaseAppCompatActivity {
                 @Override
                 public void onFailure(Call<BasicResponse> call, Throwable t) {
 
-                    Log.d(TAG, "onfail : " + t.getMessage());
-                    Log.d(TAG, "fail " + t.getClass().getName());
+                    Logger.d(TAG, "onfail : " + t.getMessage());
+                    Logger.d(TAG, "fail " + t.getClass().getName());
 
                 }
             });
@@ -377,12 +377,12 @@ public class LoginActivity extends BaseAppCompatActivity {
     }
 
     void procLoginCaldav(String userId, String userPw, String loginPlatform){
-        Log.i(TAG, "procLoginCaldav");
+        Logger.i(TAG, "procLoginCaldav");
         procLogin(userId, userPw, loginPlatform, "null", "null");
     }
 
     void procLoginGoogle(String subject, String authCode){
-        Log.i(TAG, "procLoginGoogle");
+        Logger.i(TAG, "procLoginGoogle");
         procLogin("null", "null", LoginPlatform.GOOGLE.value, subject, authCode);
     }
 
@@ -393,17 +393,17 @@ public class LoginActivity extends BaseAppCompatActivity {
         if (requestCode == Util.RC_INTENT_GOOGLE_SIGNIN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
 
-            Log.d(TAG, "handleSignInResult:" + result.isSuccess());
-            Log.d(TAG, "handleSignInResult:" + result.getStatus().getStatus());
+            Logger.d(TAG, "handleSignInResult:" + result.isSuccess());
+            Logger.d(TAG, "handleSignInResult:" + result.getStatus().getStatus());
 
 
             if (result.isSuccess()) {
                 GoogleSignInAccount acct = result.getSignInAccount();
-                Log.d(TAG, acct.getDisplayName());
-                Log.i(TAG, "id token : " + acct.getIdToken());
-                Log.i(TAG, "serverauthcode : " + acct.getServerAuthCode());
-                Log.i(TAG, "id : " + acct.getId());
-                Log.d(TAG, "email : " + acct.getEmail());
+                Logger.d(TAG, acct.getDisplayName());
+                Logger.i(TAG, "id token : " + acct.getIdToken());
+                Logger.i(TAG, "serverauthcode : " + acct.getServerAuthCode());
+                Logger.i(TAG, "id : " + acct.getId());
+                Logger.d(TAG, "email : " + acct.getEmail());
 
                 procLoginGoogle(acct.getId(), acct.getServerAuthCode());
 

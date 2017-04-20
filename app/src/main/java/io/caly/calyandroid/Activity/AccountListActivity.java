@@ -10,7 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import io.caly.calyandroid.Util.Logger;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -106,13 +106,13 @@ public class AccountListActivity extends BaseAppCompatActivity {
     }
 
     void loadAccountList(){
-        Log.i(TAG, "loadAccountList");
+        Logger.i(TAG, "loadAccountList");
         ApiClient.getService().accountList(
                 TokenRecord.getTokenRecord().getApiKey()
         ).enqueue(new Callback<AccountResponse>() {
             @Override
             public void onResponse(Call<AccountResponse> call, Response<AccountResponse> response) {
-                Log.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG,"onResponse code : " + response.code());
 
                 if(response.code() == 200){
                     AccountResponse body = response.body();
@@ -155,7 +155,7 @@ public class AccountListActivity extends BaseAppCompatActivity {
 
                 }
                 else{
-                    Log.e(TAG,"status code : " + response.code());
+                    Logger.e(TAG,"status code : " + response.code());
                     Toast.makeText(
                             getBaseContext(),
                             getString(R.string.toast_msg_server_internal_error),
@@ -167,8 +167,8 @@ public class AccountListActivity extends BaseAppCompatActivity {
             @Override
             public void onFailure(Call<AccountResponse> call, Throwable t) {
 
-                Log.e(TAG,"onfail : " + t.getMessage());
-                Log.e(TAG, "fail " + t.getClass().getName());
+                Logger.e(TAG,"onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
 
                 Toast.makeText(
                         getBaseContext(),
@@ -191,7 +191,7 @@ public class AccountListActivity extends BaseAppCompatActivity {
 
     @Subscribe
     public void onAccountLIstRefreshEventCallback(AccountListRefreshEvent event){
-        Log.i(TAG, "onAccountLIstRefreshEventCallback");
+        Logger.i(TAG, "onAccountLIstRefreshEventCallback");
         loadAccountList();
     }
 
@@ -201,8 +201,11 @@ public class AccountListActivity extends BaseAppCompatActivity {
         loadAccountList();
     }
 
+    int responseResult = 2;
+
     @Override
     public void onBackPressed() {
+        setResult(responseResult);
         super.onBackPressed();
 
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
