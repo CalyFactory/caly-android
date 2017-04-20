@@ -308,7 +308,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
         void startAccountListActivity(){
             Intent intent = new Intent(context, AccountListActivity.class);
-            context.startActivity(intent);
+            ((Activity)context).startActivityForResult(intent, 1);
             ((Activity)context).overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
         }
 

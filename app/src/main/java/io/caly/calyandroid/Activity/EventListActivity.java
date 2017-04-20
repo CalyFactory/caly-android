@@ -16,6 +16,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import io.caly.calyandroid.Util.Logger;
+
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -976,6 +978,24 @@ public class EventListActivity extends BaseAppCompatActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "requestCode : " + requestCode);
+        Log.d(TAG, "resultCode : " + resultCode);
+
+
+        switch (requestCode){
+            case 1: //setting activity
+                if(resultCode == 2){
+                    refreshEvent();
+                }
+                break;
+        }
+
+
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_eventlist_refresh:
@@ -983,7 +1003,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                 break;
             case R.id.menu_eventlist_setting:
                 Intent intent = new Intent(EventListActivity.this, LegacySettingActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 
                 break;

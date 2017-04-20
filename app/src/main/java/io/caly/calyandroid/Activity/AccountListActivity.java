@@ -201,8 +201,11 @@ public class AccountListActivity extends BaseAppCompatActivity {
         loadAccountList();
     }
 
+    int responseResult = 2;
+
     @Override
     public void onBackPressed() {
+        setResult(responseResult);
         super.onBackPressed();
 
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
