@@ -145,6 +145,9 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
             if(accountModel.loginPlatform.equals("google")){
                 holder.imvSync.setVisibility(View.INVISIBLE);
             }
+            else{
+                holder.imvSync.setVisibility(View.VISIBLE);
+            }
             holder.imvSync.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -290,7 +293,6 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
 
     void showWithDrawalDialog(){
 
-        BusProvider.getInstance().post(new AccountListLoadingEvent(true));
 
 
         WithDrawalDialog withDrawalDialog = new WithDrawalDialog(
@@ -299,7 +301,7 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
                     @Override
                     public void onPositive(WithDrawalDialog dialog, final String content) {
                         dialog.dismiss();
-                        BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(true));
+                        BusProvider.getInstance().post(new AccountListLoadingEvent(true));
                         ApiClient.getService().withdrawal(
                                 TokenRecord.getTokenRecord().getApiKey(),
                                 content
@@ -309,7 +311,6 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
                                 Logger.d(TAG,"onResponse code : " + response.code());
                                 BusProvider.getInstance().post(new AccountListLoadingEvent(false));
 
-                                BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(false));
                                 BasicResponse body = response.body();
                                 switch (response.code()){
                                     case 200:
@@ -348,7 +349,6 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
                                 Logger.e(TAG, "fail " + t.getClass().getName());
                                 BusProvider.getInstance().post(new AccountListLoadingEvent(false));
 
-                                BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(false));
 
                                 Toast.makeText(
                                         context,
