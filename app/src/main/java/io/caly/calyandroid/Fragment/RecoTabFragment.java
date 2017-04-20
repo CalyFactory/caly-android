@@ -5,7 +5,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import io.caly.calyandroid.Util.Logger;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -117,7 +117,7 @@ public class RecoTabFragment extends BaseFragment {
                                 new Thread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        Log.i(TAG, "traking click");
+                                        Logger.i(TAG, "traking click");
                                         try {
                                             ApiClient.getService().tracking(
                                                     TokenRecord.getTokenRecord().getApiKey(),
@@ -147,7 +147,7 @@ public class RecoTabFragment extends BaseFragment {
     }
 
     void loadList(){
-        Log.i(TAG, "loadList");
+        Logger.i(TAG, "loadList");
 
         recyclerList.showShimmerAdapter();
 
@@ -158,7 +158,7 @@ public class RecoTabFragment extends BaseFragment {
         ).enqueue(new Callback<RecoResponse>() {
             @Override
             public void onResponse(Call<RecoResponse> call, Response<RecoResponse> response) {
-                Log.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG,"onResponse code : " + response.code());
 
                 RecoResponse body = response.body();
                 int dataSize = 0;
@@ -176,7 +176,7 @@ public class RecoTabFragment extends BaseFragment {
                         tvNodata.setVisibility(View.VISIBLE);
                         break;
                     default:
-                        Log.e(TAG,"status code : " + response.code());
+                        Logger.e(TAG,"status code : " + response.code());
                         Toast.makeText(
                                 getActivity(),
                                 getString(R.string.toast_msg_server_internal_error),
@@ -195,8 +195,8 @@ public class RecoTabFragment extends BaseFragment {
 
             @Override
             public void onFailure(Call<RecoResponse> call, Throwable t) {
-                Log.e(TAG,"onfail : " + t.getMessage());
-                Log.e(TAG, "fail " + t.getClass().getName());
+                Logger.e(TAG,"onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
 
                 hideShimmerAdapter();
                 Toast.makeText(

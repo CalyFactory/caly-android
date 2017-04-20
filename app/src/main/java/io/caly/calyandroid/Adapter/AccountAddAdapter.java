@@ -2,7 +2,7 @@ package io.caly.calyandroid.Adapter;
 
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import io.caly.calyandroid.Util.Logger;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

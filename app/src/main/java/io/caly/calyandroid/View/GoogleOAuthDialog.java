@@ -10,7 +10,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
+import io.caly.calyandroid.Util.Logger;
 import android.view.Window;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -86,7 +86,7 @@ public class GoogleOAuthDialog extends Dialog {
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon){
-                Log.d(TAG, "onPageStarted : " + url);
+                Logger.d(TAG, "onPageStarted : " + url);
 
                 if(url.contains("code=") && authComplete != true){
                     Uri uri = Uri.parse(url);
@@ -108,7 +108,7 @@ public class GoogleOAuthDialog extends Dialog {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
 
-                Log.d(TAG, "onPageFinished : " + url);
+                Logger.d(TAG, "onPageFinished : " + url);
             }
         });
     }

@@ -15,6 +15,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import io.caly.calyandroid.Util.Logger;
+
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -168,7 +170,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                 int position = layoutManager.findFirstVisibleItemPosition();
                 EventModel eventModel = recyclerAdapter.getItem(position);
 
-                Log.d(TAG, eventModel.startMonth+"월");
+                Logger.d(TAG, eventModel.startMonth+"월");
                 tvEventYear.setText(eventModel.startYear+"");
                 tvEventMonth.setText(eventModel.startMonth+"월");*/
             }
@@ -183,15 +185,15 @@ public class EventListActivity extends BaseAppCompatActivity {
                 int firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
                 int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
 
-                Log.d(TAG, "total : " + totalItemCount + " first : " + firstVisibleItem + " last : " + lastVisibleItem);
+                Logger.d(TAG, "total : " + totalItemCount + " first : " + firstVisibleItem + " last : " + lastVisibleItem);
                 if(totalItemCount<=1) return;
 
                 if(totalItemCount - 1 <= lastVisibleItem + LOADING_THRESHOLD){
-                    Log.d(TAG, "last item, loading more");
+                    Logger.d(TAG, "last item, loading more");
                     loadMoreEventList(currentTailPageNum);
                 }
                 else if(firstVisibleItem < LOADING_THRESHOLD){
-                    Log.d(TAG, "first item, loading prev");
+                    Logger.d(TAG, "first item, loading prev");
                     loadMoreEventList(currentHeadPageNum);
                 }
 
@@ -237,7 +239,7 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     void checkBanner(){
         String activeBanner = ConfigClient.getConfig().getString("active_banner");
-        Log.d(TAG, "active banner : " + activeBanner);
+        Logger.d(TAG, "active banner : " + activeBanner);
         if(activeBanner.length() < 1) return;
 
         bannerModel = ApiClient.getGson().fromJson(activeBanner, BannerModel.class);
@@ -247,7 +249,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                 todayDate.before(bannerModel.activationPeriod.endDate)) {
             if(!Prefer.get("banner_dismiss_"+bannerModel.banner_id, false)){
 
-                Log.i(TAG, "active banner");
+                Logger.i(TAG, "active banner");
 
                 Message message = new Message();
                 message.obj = bannerModel;
@@ -351,7 +353,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     };
 
     void loadMoreEventList(final int pageNum){
-        Log.i(TAG, "loadMoreEventList(" + pageNum + ")");
+        Logger.i(TAG, "loadMoreEventList(" + pageNum + ")");
 
         isLoading = true;
 
@@ -408,13 +410,13 @@ public class EventListActivity extends BaseAppCompatActivity {
                             isLoading=false;
                             break;
                         default:
-                            Log.e(TAG,"status code : " + response.code());
+                            Logger.e(TAG,"status code : " + response.code());
                             dataNotifyHandler.sendEmptyMessageDelayed(3,2000);
                             break;
                     }
 
                 } catch (IOException e) {
-                    Log.e(TAG, "error : " + e.getMessage());
+                    Logger.e(TAG, "error : " + e.getMessage());
                     e.printStackTrace();
                 }
             }
@@ -422,7 +424,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     }
 
     void loadEventList(){
-        Log.i(TAG, "loadEventList");
+        Logger.i(TAG, "loadEventList");
 
         recyclerList.showShimmerAdapter();
         ApiClient.getService().getEventList(
@@ -431,16 +433,16 @@ public class EventListActivity extends BaseAppCompatActivity {
         ).enqueue(new Callback<EventResponse>() {
             @Override
             public void onResponse(Call<EventResponse> call, Response<EventResponse> response) {
-                Log.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG,"onResponse code : " + response.code());
 
                 switch (response.code()){
                     case 200:
                         EventResponse body = response.body();
-                        Log.d(TAG, "json : " + new Gson().toJson(body));
+                        Logger.d(TAG, "json : " + new Gson().toJson(body));
                         int i=0;
                         body.payload.data = addHeaderToEventList(0, 0, body.payload.data);
                         for(EventModel eventModel : body.payload.data){
-                            Log.d(TAG, "json : " + new Gson().toJson(eventModel));
+                            Logger.d(TAG, "json : " + new Gson().toJson(eventModel));
                             Message message = dataNotifyHandler.obtainMessage();
                             message.what = 0;
                             message.arg1 = i;
@@ -465,7 +467,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                         tvNodata.setVisibility(View.VISIBLE);
                         break;
                     default:
-                        Log.e(TAG,"status code : " + response.code());
+                        Logger.e(TAG,"status code : " + response.code());
                         Toast.makeText(
                                 getBaseContext(),
                                 getString(R.string.toast_msg_server_internal_error),
@@ -480,8 +482,8 @@ public class EventListActivity extends BaseAppCompatActivity {
             @Override
             public void onFailure(Call<EventResponse> call, Throwable t) {
 
-                Log.e(TAG,"onfail : " + t.getMessage());
-                Log.e(TAG, "fail " + t.getClass().getName());
+                Logger.e(TAG,"onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
 
                 Toast.makeText(
                         getBaseContext(),
@@ -504,7 +506,7 @@ public class EventListActivity extends BaseAppCompatActivity {
             @Override
             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
 
-                Log.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG,"onResponse code : " + response.code());
 
                 linearRecoProgress.setVisibility(View.GONE);
 
@@ -518,7 +520,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                         linearSyncProgress.setVisibility(View.VISIBLE);
                         break;
                     default:
-                        Log.e(TAG,"status code : " + response.code());
+                        Logger.e(TAG,"status code : " + response.code());
                         Toast.makeText(
                                 getBaseContext(),
                                 getString(R.string.toast_msg_server_internal_error),
@@ -533,8 +535,8 @@ public class EventListActivity extends BaseAppCompatActivity {
 
             @Override
             public void onFailure(Call<BasicResponse> call, Throwable t) {
-                Log.e(TAG,"onfail : " + t.getMessage());
-                Log.e(TAG, "fail " + t.getClass().getName());
+                Logger.e(TAG,"onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
 
                 Toast.makeText(
                         getBaseContext(),
@@ -546,13 +548,13 @@ public class EventListActivity extends BaseAppCompatActivity {
     }
 
     void requestSyncCalendar(){
-        Log.i(TAG, "requestSyncCalendar");
+        Logger.i(TAG, "requestSyncCalendar");
         ApiClient.getService().sync(
                 TokenRecord.getTokenRecord().getApiKey()
         ).enqueue(new Callback<BasicResponse>() {
             @Override
             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                Log.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG,"onResponse code : " + response.code());
 
                 BasicResponse body = response.body();
 
@@ -568,8 +570,8 @@ public class EventListActivity extends BaseAppCompatActivity {
 
             @Override
             public void onFailure(Call<BasicResponse> call, Throwable t) {
-                Log.d(TAG,"onfail : " + t.getMessage());
-                Log.d(TAG, "fail " + t.getClass().getName());
+                Logger.d(TAG,"onfail : " + t.getMessage());
+                Logger.d(TAG, "fail " + t.getClass().getName());
 
                 Toast.makeText(
                         getBaseContext(),
@@ -582,13 +584,13 @@ public class EventListActivity extends BaseAppCompatActivity {
     }
 
     void checkCalendarSync(){
-        Log.i(TAG, "checkCalendarSync");
+        Logger.i(TAG, "checkCalendarSync");
         ApiClient.getService().checkSync(
                 TokenRecord.getTokenRecord().getApiKey()
         ).enqueue(new Callback<BasicResponse>() {
             @Override
             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                Log.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG,"onResponse code : " + response.code());
 
                 BasicResponse body = response.body();
 
@@ -622,8 +624,8 @@ public class EventListActivity extends BaseAppCompatActivity {
             @Override
             public void onFailure(Call<BasicResponse> call, Throwable t) {
 
-                Log.d(TAG,"onfail : " + t.getMessage());
-                Log.d(TAG, "fail " + t.getClass().getName());
+                Logger.d(TAG,"onfail : " + t.getMessage());
+                Logger.d(TAG, "fail " + t.getClass().getName());
 
                 linearRecoProgress.setVisibility(View.GONE);
                 Toast.makeText(
@@ -638,7 +640,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     }
 
     void syncGoogle(){
-        Log.i(TAG, "syncGoogle");
+        Logger.i(TAG, "syncGoogle");
 
         ApiClient.getService().checkSync(
                 TokenRecord.getTokenRecord().getApiKey()
@@ -674,8 +676,8 @@ public class EventListActivity extends BaseAppCompatActivity {
 
             @Override
             public void onFailure(Call<BasicResponse> call, Throwable t) {
-                Log.d(TAG,"onfail : " + t.getMessage());
-                Log.d(TAG, "fail " + t.getClass().getName());
+                Logger.d(TAG,"onfail : " + t.getMessage());
+                Logger.d(TAG, "fail " + t.getClass().getName());
 
                 linearRecoProgress.setVisibility(View.GONE);
                 Toast.makeText(
@@ -691,13 +693,13 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     @Deprecated
     void syncCaldav2(){
-        Log.i(TAG, "checkCalendarSync");
+        Logger.i(TAG, "checkCalendarSync");
         ApiClient.getService().sync(
                 TokenRecord.getTokenRecord().getApiKey()
         ).enqueue(new Callback<BasicResponse>() {
             @Override
             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                Log.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG,"onResponse code : " + response.code());
 
 
                 switch (response.code()){
@@ -720,8 +722,8 @@ public class EventListActivity extends BaseAppCompatActivity {
 
             @Override
             public void onFailure(Call<BasicResponse> call, Throwable t) {
-                Log.d(TAG,"onfail : " + t.getMessage());
-                Log.d(TAG, "fail " + t.getClass().getName());
+                Logger.d(TAG,"onfail : " + t.getMessage());
+                Logger.d(TAG, "fail " + t.getClass().getName());
 
                 linearRecoProgress.setVisibility(View.GONE);
                 Toast.makeText(
@@ -736,14 +738,14 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     @Deprecated
     void syncGoogle2(){
-        Log.i(TAG, "syncGoogle");
+        Logger.i(TAG, "syncGoogle");
 
         ApiClient.getService().sync(
                 TokenRecord.getTokenRecord().getApiKey()
         ).enqueue(new Callback<BasicResponse>() {
             @Override
             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                Log.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG,"onResponse code : " + response.code());
 
 
                 switch (response.code()){
@@ -766,8 +768,8 @@ public class EventListActivity extends BaseAppCompatActivity {
 
             @Override
             public void onFailure(Call<BasicResponse> call, Throwable t) {
-                Log.d(TAG,"onfail : " + t.getMessage());
-                Log.d(TAG, "fail " + t.getClass().getName());
+                Logger.d(TAG,"onfail : " + t.getMessage());
+                Logger.d(TAG, "fail " + t.getClass().getName());
                 retrySync();
 
                 linearRecoProgress.setVisibility(View.GONE);
@@ -791,7 +793,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                     Response<BasicResponse> response = ApiClient.getService().sync(
                             TokenRecord.getTokenRecord().getApiKey()
                     ).execute();
-                    Log.d(TAG, "requested : " + response.body());
+                    Logger.d(TAG, "requested : " + response.body());
                 } catch (IOException e) {
                     e.printStackTrace();
 
@@ -801,9 +803,9 @@ public class EventListActivity extends BaseAppCompatActivity {
     }
 
     void syncCalendar(){
-        Log.i(TAG, "syncCalendar");
+        Logger.i(TAG, "syncCalendar");
 
-        Log.d(TAG,"loginplatform : " + loginPlatform);
+        Logger.d(TAG,"loginplatform : " + loginPlatform);
         checkCalendarSync();
         //TODO : syncCaldav와 syncGoogle의 역할이 모호해져서 합칠 필요가 있음
         /*
@@ -862,7 +864,7 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     @Subscribe
     public void googleSyncDoneEventCallback(GoogleSyncDoneEvent event){
-        Log.i(TAG, "googleSyncDoneEventCallback");
+        Logger.i(TAG, "googleSyncDoneEventCallback");
 //        linearRecoProgress.setVisibility(View.GONE);
 //        checkRecoState();
         syncCalendar();
@@ -870,7 +872,7 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     @Subscribe
     public void recoReadyEventCallback(RecoReadyEvent event){
-        Log.i(TAG, "recoReadyEventCallback");
+        Logger.i(TAG, "recoReadyEventCallback");
         refreshEvent();
 //        checkRecoState();
     }
@@ -900,7 +902,7 @@ public class EventListActivity extends BaseAppCompatActivity {
         if(recyclerAdapter.getItemCount()==0) return;
         int position = layoutManager.findLastVisibleItemPosition();
         if(position==recyclerAdapter.getItemCount() - 1) return;
-        Log.d(TAG, "position : " + position + " item size : " + recyclerAdapter.getItemCount());
+        Logger.d(TAG, "position : " + position + " item size : " + recyclerAdapter.getItemCount());
         recyclerList.smoothScrollToPosition(position + 1);
 
 
@@ -947,7 +949,7 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.tv_banner_close)
     void onBannerCloseClick(){
-        Log.i(TAG, "onBannerCloseClick()");
+        Logger.i(TAG, "onBannerCloseClick()");
         TranslateAnimation animation = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0f,
                 Animation.RELATIVE_TO_SELF, 0f,
@@ -976,6 +978,24 @@ public class EventListActivity extends BaseAppCompatActivity {
     }
 
     @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "requestCode : " + requestCode);
+        Log.d(TAG, "resultCode : " + resultCode);
+
+
+        switch (requestCode){
+            case 1: //setting activity
+                if(resultCode == 2){
+                    refreshEvent();
+                }
+                break;
+        }
+
+
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_eventlist_refresh:
@@ -983,7 +1003,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                 break;
             case R.id.menu_eventlist_setting:
                 Intent intent = new Intent(EventListActivity.this, LegacySettingActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 
                 break;

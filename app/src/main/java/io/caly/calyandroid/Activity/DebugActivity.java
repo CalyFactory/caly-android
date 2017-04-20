@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
+import io.caly.calyandroid.Util.Logger;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -121,7 +121,7 @@ public class DebugActivity extends BaseAppCompatActivity {
     @OnClick(R.id.btn_debug_apply)
     void onApplyClick(){
         Prefer.set("app_server", edtServer.getText().toString());
-        Log.d(TAG, "server url : " + Prefer.get("app_server", getString(R.string.app_server)));
+        Logger.d(TAG, "server url : " + Prefer.get("app_server", getString(R.string.app_server)));
         ApiClient.resetService();
         restartApp();
     }
@@ -129,7 +129,7 @@ public class DebugActivity extends BaseAppCompatActivity {
     @OnClick(R.id.btn_debug_server_1)
     void onApplyClick1(){
         Prefer.set("app_server", "https://caly.io/");
-        Log.d(TAG, "server url : " + Prefer.get("app_server", getString(R.string.app_server)));
+        Logger.d(TAG, "server url : " + Prefer.get("app_server", getString(R.string.app_server)));
         ApiClient.resetService();
         restartApp();
     }
@@ -137,7 +137,7 @@ public class DebugActivity extends BaseAppCompatActivity {
     @OnClick(R.id.btn_debug_server_2)
     void onApplyClick2(){
         Prefer.set("app_server", "https://devapi.caly.io:55565/");
-        Log.d(TAG, "server url : " + Prefer.get("app_server", getString(R.string.app_server)));
+        Logger.d(TAG, "server url : " + Prefer.get("app_server", getString(R.string.app_server)));
         ApiClient.resetService();
         restartApp();
     }
@@ -145,7 +145,7 @@ public class DebugActivity extends BaseAppCompatActivity {
     @OnClick(R.id.btn_debug_server_3)
     void onApplyClick3(){
         Prefer.set("app_server", "https://devapi.caly.io:55567/");
-        Log.d(TAG, "server url : " + Prefer.get("app_server", getString(R.string.app_server)));
+        Logger.d(TAG, "server url : " + Prefer.get("app_server", getString(R.string.app_server)));
         ApiClient.resetService();
         restartApp();
     }
@@ -166,7 +166,7 @@ public class DebugActivity extends BaseAppCompatActivity {
                 new ResultCallback<Status>() {
                     @Override
                     public void onResult(Status status) {
-                        Log.d(TAG,"Signout message : " +status.getStatusMessage());
+                        Logger.d(TAG,"Signout message : " +status.getStatusMessage());
                     }
                 });
 

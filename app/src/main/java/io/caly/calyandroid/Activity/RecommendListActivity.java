@@ -12,7 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import io.caly.calyandroid.Util.Logger;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -196,7 +196,7 @@ public class RecommendListActivity extends BaseAppCompatActivity {
                 ).enqueue(new Callback<BasicResponse>() {
                     @Override
                     public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                        Log.d(TAG,"onResponse code : " + response.code());
+                        Logger.d(TAG,"onResponse code : " + response.code());
 
                         BasicResponse body = response.body();
                         switch (response.code()){
@@ -211,7 +211,7 @@ public class RecommendListActivity extends BaseAppCompatActivity {
 
                                 break;
                             default:
-                                Log.e(TAG,"status code : " + response.code());
+                                Logger.e(TAG,"status code : " + response.code());
                                 Toast.makeText(
                                         getBaseContext(),
                                         getString(R.string.toast_msg_server_internal_error),
@@ -223,8 +223,8 @@ public class RecommendListActivity extends BaseAppCompatActivity {
 
                     @Override
                     public void onFailure(Call<BasicResponse> call, Throwable t) {
-                        Log.e(TAG,"onfail : " + t.getMessage());
-                        Log.e(TAG, "fail " + t.getClass().getName());
+                        Logger.e(TAG,"onfail : " + t.getMessage());
+                        Logger.e(TAG, "fail " + t.getClass().getName());
 
                         Toast.makeText(
                                 getBaseContext(),

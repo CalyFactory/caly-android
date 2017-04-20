@@ -1,5 +1,6 @@
 package io.caly.calyandroid.Activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
@@ -9,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
+import io.caly.calyandroid.Util.Logger;
+
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -135,7 +138,7 @@ public class LegacySettingActivity extends BaseAppCompatActivity {
     GoogleApiClient.OnConnectionFailedListener onGoogleConnectionFailedListener = new GoogleApiClient.OnConnectionFailedListener() {
         @Override
         public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-            Log.d(TAG, "onConnectionFailed : " + connectionResult.getErrorMessage());
+            Logger.d(TAG, "onConnectionFailed : " + connectionResult.getErrorMessage());
         }
     };
 
@@ -152,11 +155,29 @@ public class LegacySettingActivity extends BaseAppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    int responseResult = 0;
+
     @Override
     public void onBackPressed() {
+        setResult(responseResult);
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "requestCode : " + requestCode);
+        Log.d(TAG, "resultCode : " + resultCode);
+
+        switch (requestCode){
+            case 1: //accountlistactivity
+                if(resultCode == 2){
+                    responseResult = 2;
+                }
+                break;
+        }
     }
 
     @Subscribe
