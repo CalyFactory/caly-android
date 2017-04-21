@@ -75,7 +75,7 @@ public class SplashActivity extends BaseAppCompatActivity {
         FirebaseMessaging.getInstance().subscribeToTopic("noti");
 
         if(isPermissionGranted()){
-            startSplash();
+            requestVersionCheck();
         }
         else{
             requestPermission();
@@ -190,6 +190,67 @@ public class SplashActivity extends BaseAppCompatActivity {
         }
 
     };
+
+
+    void requestVersionCheck(){
+        Logger.i(TAG, "requestLoginCheck");
+
+        ApiClient.getService().loginCheck(
+                "null",
+                "null",
+                Util.getUUID(),
+                "empty",
+                "null",
+                "null",
+                Util.getAppVersion()
+        ).enqueue(new retrofit2.Callback<SessionResponse>() {
+            @Override
+            public void onResponse(Call<SessionResponse> call, Response<SessionResponse> response) {
+                Logger.d(TAG,"onResponse code : " + response.code());
+
+                SessionResponse body = response.body();
+                switch (response.code()){
+                    case 200:
+                        startSplash();
+                        break;
+                    case 400: //세션이 없거나 만료됬음.
+                        startSplash();
+                        break;
+                    case 401: //비밀번호가 변경되어있음.
+                        startSplash();
+                        break;
+                    case 403:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_app_version_not_latest),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        requestUpdate();
+                        finish();
+                        break;
+                    default:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_server_internal_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<SessionResponse> call, Throwable t) {
+
+                Logger.e(TAG,"onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
+
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_network_error),
+                        Toast.LENGTH_LONG
+                ).show();
+            }
+        });
+    }
 
     void requestLoginCheck(String apiKey){
         Logger.i(TAG, "requestLoginCheck");
@@ -320,7 +381,7 @@ public class SplashActivity extends BaseAppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if(isPermissionGranted()){
-            startSplash();
+            requestVersionCheck();
         }
         else{
             requestPermission();
@@ -337,7 +398,7 @@ public class SplashActivity extends BaseAppCompatActivity {
         }else{
             if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED){
                 //allowed
-                startSplash();
+                requestVersionCheck();
 
             } else{
                 //set to never ask again
