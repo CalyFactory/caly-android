@@ -37,7 +37,7 @@ public class LoggingInterceptor implements Interceptor {
 
         String responseString = new String(response.body().bytes());
 
-        Logger.i(TAG, "Response in " + (t2 - t1) + "\ncode : " + response.code() + "\n" + responseString);
+        Logger.i(TAG, "Response in " + request.url() + (t2 - t1) + "\ncode : " + response.code() + "\n" + responseString);
 
         return  response.newBuilder()
                 .body(ResponseBody.create(response.body().contentType(), responseString))
