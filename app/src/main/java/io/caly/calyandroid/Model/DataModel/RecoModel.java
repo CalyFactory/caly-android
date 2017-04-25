@@ -48,6 +48,12 @@ public class RecoModel {
     @SerializedName("img_url")
     public String imgUrl;
 
+    @SerializedName("lng")
+    public double lng;
+
+    @SerializedName("lat")
+    public double lat;
+
 
 
 }
