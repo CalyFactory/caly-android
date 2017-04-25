@@ -81,7 +81,7 @@ public class RecoMapFragment extends BaseFragment {
 
         pager.setClipToPadding(false);
         pager.setPadding(120,0,160,0);
-        pager.setPageMargin(100);
+        pager.setPageMargin(80);
         pager.setAdapter(new RecoMapListAdapter(LayoutInflater.from(getContext())));
     }
 
