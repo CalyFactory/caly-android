@@ -161,14 +161,14 @@ public class RecoListActivity extends BaseAppCompatActivity {
         switch (pageType){
             case LIST:
                 pageType = PAGE_TYPE.MAP;
-                item.setIcon(getResources().getDrawable(R.drawable.ic_map_white_24dp));
+                item.setIcon(getResources().getDrawable(R.drawable.ic_list_white_24dp));
 //                transaction.replace(R.id.linear_reco_container, recoMapFragment, "map");
                 transaction.hide(recoListFragment);
                 transaction.show(recoMapFragment);
                 break;
             case MAP:
                 pageType = PAGE_TYPE.LIST;
-                item.setIcon(getResources().getDrawable(R.drawable.ic_list_white_24dp));
+                item.setIcon(getResources().getDrawable(R.drawable.ic_map_white_24dp));
 //                transaction.replace(R.id.linear_reco_container, recoListFragment, "list");
                 transaction.show(recoListFragment);
                 transaction.hide(recoMapFragment);

@@ -149,7 +149,9 @@ public class RecoTabFragment extends BaseFragment {
     void loadList(){
         Logger.i(TAG, "loadList");
 
-        recyclerList.showShimmerAdapter();
+        if(category == Category.RESTAURANT) {
+            recyclerList.showShimmerAdapter();
+        }
 
         ApiClient.getService().getRecoList(
                 TokenRecord.getTokenRecord().getApiKey(),

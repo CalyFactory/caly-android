@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.Activity.TestActivity;
+import io.caly.calyandroid.Adapter.RecoMapListAdapter;
 import io.caly.calyandroid.Fragment.Base.BaseFragment;
 import io.caly.calyandroid.R;
 
@@ -39,6 +41,9 @@ public class RecoMapFragment extends BaseFragment {
 
     @Bind(R.id.mapview_recomap_map)
     MapView mapView;
+
+    @Bind(R.id.pager_recomap)
+    ViewPager pager;
 
     public RecoMapFragment(){
 
@@ -73,6 +78,11 @@ public class RecoMapFragment extends BaseFragment {
 
             }
         });
+
+        pager.setClipToPadding(false);
+        pager.setPadding(120,0,160,0);
+        pager.setPageMargin(100);
+        pager.setAdapter(new RecoMapListAdapter(LayoutInflater.from(getContext())));
     }
 
     void addMarker(GoogleMap googleMap){
