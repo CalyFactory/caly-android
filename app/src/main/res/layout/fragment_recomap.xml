@@ -3,9 +3,16 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:text="TextView"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView" />
+        android:layout_height="match_parent">
+
+        <com.google.android.gms.maps.MapView
+            android:layout_width="match_parent"
+            android:id="@+id/mapview_recomap_map"
+            android:layout_height="match_parent">
+
+        </com.google.android.gms.maps.MapView>
+    </FrameLayout>
+
 </LinearLayout>

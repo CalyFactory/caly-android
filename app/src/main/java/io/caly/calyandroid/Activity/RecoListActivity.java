@@ -157,6 +157,7 @@ public class RecoListActivity extends BaseAppCompatActivity {
     void changeView(){
         MenuItem item = toolbar.getMenu().findItem(R.id.menu_reco_changeview);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         switch (pageType){
             case LIST:
                 pageType = PAGE_TYPE.MAP;
