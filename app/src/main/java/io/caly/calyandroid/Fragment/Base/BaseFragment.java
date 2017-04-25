@@ -37,8 +37,6 @@ public class BaseFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         Logger.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
-
-        BusProvider.getInstance().register(this);
     }
 
     @Nullable
@@ -58,6 +56,8 @@ public class BaseFragment extends Fragment {
     public void onStart() {
         Logger.i(TAG, "onStart");
         super.onStart();
+
+        BusProvider.getInstance().register(this);
     }
 
     @Override

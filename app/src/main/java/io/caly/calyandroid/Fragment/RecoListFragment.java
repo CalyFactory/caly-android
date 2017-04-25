@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,16 +74,14 @@ public class RecoListFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = null;
 
-        if (v == null) {
-            v = inflater.inflate(R.layout.fragment_reco, null);
+        Log.d(TAG, "oncreateviewff ");
+        View v;
+        v = inflater.inflate(R.layout.fragment_reco, null);
 
-            ButterKnife.bind(this, v);
+        ButterKnife.bind(this, v);
 
-            init();
-
-        }
+        init();
 
         return v;
     }
@@ -93,6 +92,7 @@ public class RecoListFragment extends BaseFragment {
     }
 
     void init(){
+        Log.d(TAG, "init ");
 
         //init tab layout
         tabLayout.addTab(tabLayout.newTab().setText("식당"));

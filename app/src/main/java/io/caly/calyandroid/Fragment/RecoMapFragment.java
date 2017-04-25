@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import butterknife.ButterKnife;
 import io.caly.calyandroid.Fragment.Base.BaseFragment;
+import io.caly.calyandroid.R;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -25,6 +27,18 @@ public class RecoMapFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
+        View v = null;
+
+        v = inflater.inflate(R.layout.fragment_recomap, null);
+
+        ButterKnife.bind(this, v);
+
+        init();
+
+        return v;
+    }
+
+    void init(){
+
     }
 }

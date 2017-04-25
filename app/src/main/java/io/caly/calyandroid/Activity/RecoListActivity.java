@@ -14,7 +14,10 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 
 import io.caly.calyandroid.Fragment.RecoListFragment;
+import io.caly.calyandroid.Fragment.RecoMapFragment;
 import io.caly.calyandroid.Util.Logger;
+
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -61,6 +64,11 @@ public class RecoListActivity extends BaseAppCompatActivity {
 
     EventModel eventData;
 
+    PAGE_TYPE pageType;
+
+    RecoListFragment recoListFragment;
+    RecoMapFragment recoMapFragment;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,10 +103,16 @@ public class RecoListActivity extends BaseAppCompatActivity {
                         EventModel.class
                 );
 
+        recoListFragment = new RecoListFragment().setData(eventData);
+        recoMapFragment = new RecoMapFragment();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.linear_reco_container, new RecoListFragment().setData(eventData));
+        transaction.add(R.id.linear_reco_container, recoListFragment, "list");
+        transaction.add(R.id.linear_reco_container, recoMapFragment, "map");
+        transaction.hide(recoMapFragment);
         transaction.commit();
+
+        pageType = PAGE_TYPE.LIST;
 
     }
 
@@ -120,9 +134,18 @@ public class RecoListActivity extends BaseAppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_reco, menu);
+        return true;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()){
+            case R.id.menu_reco_changeview:
+                changeView();
+                break;
             case android.R.id.home:
                 onBackPressed();
                 break;
@@ -130,6 +153,35 @@ public class RecoListActivity extends BaseAppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    void changeView(){
+        MenuItem item = toolbar.getMenu().findItem(R.id.menu_reco_changeview);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        switch (pageType){
+            case LIST:
+                pageType = PAGE_TYPE.MAP;
+                item.setIcon(getResources().getDrawable(R.drawable.ic_map_white_24dp));
+//                transaction.replace(R.id.linear_reco_container, recoMapFragment, "map");
+                transaction.hide(recoListFragment);
+                transaction.show(recoMapFragment);
+                break;
+            case MAP:
+                pageType = PAGE_TYPE.LIST;
+                item.setIcon(getResources().getDrawable(R.drawable.ic_list_white_24dp));
+//                transaction.replace(R.id.linear_reco_container, recoListFragment, "list");
+                transaction.show(recoListFragment);
+                transaction.hide(recoMapFragment);
+                break;
+        }
+        transaction.disallowAddToBackStack();
+        transaction.commit();
+    }
+
+    enum PAGE_TYPE{
+        LIST,
+        MAP
+    }
+
     /*
 
     void drawInDrawer(){
