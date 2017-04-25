@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -276,7 +275,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     };
 
     void startRecommandActivity(EventModel eventModel){
-        Intent intent = new Intent(EventListActivity.this, RecommendListActivity.class);
+        Intent intent = new Intent(EventListActivity.this, RecoListActivity.class);
         intent.putExtra("event", ApiClient.getGson().toJson(eventModel));
         startActivity(intent);
 

@@ -57,7 +57,7 @@ public class DebugActivity extends BaseAppCompatActivity {
             LoginActivity.class,
             SignupActivity.class,
             EventListActivity.class,
-            RecommendListActivity.class,
+            RecoListActivity.class,
             AccountAddActivity.class,
             AccountListActivity.class,
             GuideActivity.class,

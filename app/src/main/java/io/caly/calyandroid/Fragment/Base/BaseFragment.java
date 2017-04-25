@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+
+import io.caly.calyandroid.Util.BusProvider;
 import io.caly.calyandroid.Util.Logger;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +37,8 @@ public class BaseFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         Logger.i(TAG, "onCreate");
         super.onCreate(savedInstanceState);
+
+        BusProvider.getInstance().register(this);
     }
 
     @Nullable
@@ -66,6 +70,8 @@ public class BaseFragment extends Fragment {
     public void onStop() {
         Logger.i(TAG, "onStop");
         super.onStop();
+
+        BusProvider.getInstance().unregister(this);
     }
 
     @Override
