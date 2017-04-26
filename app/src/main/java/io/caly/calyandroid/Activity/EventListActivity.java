@@ -15,6 +15,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+
+import io.caly.calyandroid.Model.Event.AccountListRefreshEvent;
 import io.caly.calyandroid.Util.Logger;
 
 import android.util.Log;
@@ -875,6 +877,13 @@ public class EventListActivity extends BaseAppCompatActivity {
         Logger.i(TAG, "recoReadyEventCallback");
         refreshEvent();
 //        checkRecoState();
+    }
+
+    @Subscribe
+    public void accountListRefreshEventCallback(AccountListRefreshEvent event){
+        Logger.i(TAG, "accountListRefreshEventCallback : " + EventListActivity.super.hashCode());
+        syncCalendar();
+
     }
 
     /*

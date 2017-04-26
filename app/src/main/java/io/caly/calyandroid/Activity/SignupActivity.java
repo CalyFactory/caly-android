@@ -141,14 +141,14 @@ public class SignupActivity extends BaseAppCompatActivity {
             case BIRTH_NOT_SELECTED:
                 Toast.makeText(
                         getBaseContext(),
-                        getString(R.string.toast_msg_signup_policy_not_selected),
+                        getString(R.string.toast_msg_signup_birth_not_selected),
                         Toast.LENGTH_LONG
                 ).show();
                 break;
             case GENDER_NOT_SELECTED:
                 Toast.makeText(
                         getBaseContext(),
-                        getString(R.string.toast_msg_signup_policy_not_selected),
+                        getString(R.string.toast_msg_signup_gender_not_selected),
                         Toast.LENGTH_LONG
                 ).show();
                 break;
