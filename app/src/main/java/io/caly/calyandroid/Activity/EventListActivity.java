@@ -209,6 +209,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                     @Override
                     public void onItemClick(View view, int position) {
 
+                        if(recyclerAdapter.getItemCount()-1 < position) return;
                         EventModel eventModel = recyclerAdapter.getItem(position);
 
                         if(eventModel.recoState == RecoState.STATE_DONE_RECOMMEND){
@@ -455,6 +456,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                         }
                         if(body.payload.data.size()==0){
                             tvNodata.setVisibility(View.VISIBLE);
+                            recyclerList.hideShimmerAdapter();
                         }
                         else{
                             tvNodata.setVisibility(View.GONE);
@@ -466,6 +468,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                                 getString(R.string.toast_msg_no_more_data),
                                 Toast.LENGTH_LONG
                         ).show();
+                        recyclerList.hideShimmerAdapter();
                         tvNodata.setVisibility(View.VISIBLE);
                         break;
                     default:
@@ -991,7 +994,6 @@ public class EventListActivity extends BaseAppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "requestCode : " + requestCode);
         Log.d(TAG, "resultCode : " + resultCode);
-
 
         switch (requestCode){
             case 1: //setting activity
