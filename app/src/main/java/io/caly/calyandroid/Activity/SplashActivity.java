@@ -279,6 +279,12 @@ public class SplashActivity extends BaseAppCompatActivity {
                                 getString(R.string.toast_msg_session_invalid),
                                 Toast.LENGTH_LONG
                         ).show();
+
+                        TokenRecord.destoryToken();
+                        Prefer.getSharedPreferences().edit().clear().commit();
+                        Prefer.set("isDidRun", true);
+
+                        finish();
                         break;
                     case 401: //비밀번호가 변경되어있음.
                         Toast.makeText(
