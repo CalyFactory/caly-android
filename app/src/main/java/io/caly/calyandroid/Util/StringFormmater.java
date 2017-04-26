@@ -81,6 +81,9 @@ public class StringFormmater {
     }
 
     public static String hashTagFormat(String hashtags){
+        if(hashtags==null){
+            return "";
+        }
         String[] tags = hashtags.split(",");
         for(int i=0;i<tags.length;i++){
             tags[i] = "#" + tags[i].trim();
