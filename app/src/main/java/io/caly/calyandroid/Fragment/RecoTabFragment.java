@@ -112,7 +112,7 @@ public class RecoTabFragment extends BaseFragment {
                         recyclerList,
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
-                            public void onItemClick(View view, int position) {
+                            public void onItemClick(View view, final int position) {
 
                                 new Thread(new Runnable() {
                                     @Override
@@ -122,7 +122,7 @@ public class RecoTabFragment extends BaseFragment {
                                             ApiClient.getService().tracking(
                                                     TokenRecord.getTokenRecord().getApiKey(),
                                                     eventData.eventHashKey,
-                                                    "recohashkey",
+                                                    recyclerAdapter.getItem(position).recoHashKey,
                                                     TrackingType.CLICK.value,
                                                     0
                                             ).execute();
