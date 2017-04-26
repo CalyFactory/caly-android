@@ -614,56 +614,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                         linearSyncProgress.setVisibility(View.VISIBLE);
                         requestSyncCalendar();
                         break;
-                    default:
-                        linearRecoProgress.setVisibility(View.GONE);
-                        Toast.makeText(
-                                getBaseContext(),
-                                getString(R.string.toast_msg_server_internal_error),
-                                Toast.LENGTH_LONG
-                        ).show();
-                        retrySync();
-                        break;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<BasicResponse> call, Throwable t) {
-
-                Logger.d(TAG,"onfail : " + t.getMessage());
-                Logger.d(TAG, "fail " + t.getClass().getName());
-
-                linearRecoProgress.setVisibility(View.GONE);
-                Toast.makeText(
-                        getBaseContext(),
-                        getString(R.string.toast_msg_network_error),
-                        Toast.LENGTH_LONG
-                ).show();
-                retrySync();
-            }
-        });
-
-    }
-
-    void syncGoogle(){
-        Logger.i(TAG, "syncGoogle");
-
-        ApiClient.getService().checkSync(
-                TokenRecord.getTokenRecord().getApiKey()
-        ).enqueue(new Callback<BasicResponse>() {
-            @Override
-            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-
-                switch (response.code()){
-                    case 200: //추천 종료됨
-                        linearRecoProgress.setVisibility(View.GONE);
-                        linearSyncProgress.setVisibility(View.GONE);
-                        loadEventList();
-                        break;
-                    case 201: //추천중
-                        linearRecoProgress.setVisibility(View.VISIBLE);
-                        linearSyncProgress.setVisibility(View.GONE);
-                        break;
-                    case 202: //동기화중
+                    case 203: //동기화가 진행중
                         linearRecoProgress.setVisibility(View.GONE);
                         linearSyncProgress.setVisibility(View.VISIBLE);
                         break;
@@ -681,6 +632,7 @@ public class EventListActivity extends BaseAppCompatActivity {
 
             @Override
             public void onFailure(Call<BasicResponse> call, Throwable t) {
+
                 Logger.d(TAG,"onfail : " + t.getMessage());
                 Logger.d(TAG, "fail " + t.getClass().getName());
 
@@ -694,117 +646,6 @@ public class EventListActivity extends BaseAppCompatActivity {
             }
         });
 
-    }
-
-    @Deprecated
-    void syncCaldav2(){
-        Logger.i(TAG, "checkCalendarSync");
-        ApiClient.getService().sync(
-                TokenRecord.getTokenRecord().getApiKey()
-        ).enqueue(new Callback<BasicResponse>() {
-            @Override
-            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                Logger.d(TAG,"onResponse code : " + response.code());
-
-
-                switch (response.code()){
-                    case 200:
-                        BasicResponse body = response.body();
-
-                        checkRecoState();
-                        break;
-                    default:
-                        linearRecoProgress.setVisibility(View.GONE);
-                        Toast.makeText(
-                                getBaseContext(),
-                                getString(R.string.toast_msg_server_internal_error),
-                                Toast.LENGTH_LONG
-                        ).show();
-                        retrySync();
-                        break;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<BasicResponse> call, Throwable t) {
-                Logger.d(TAG,"onfail : " + t.getMessage());
-                Logger.d(TAG, "fail " + t.getClass().getName());
-
-                linearRecoProgress.setVisibility(View.GONE);
-                Toast.makeText(
-                        getBaseContext(),
-                        getString(R.string.toast_msg_network_error),
-                        Toast.LENGTH_LONG
-                ).show();
-                retrySync();
-            }
-        });
-    }
-
-    @Deprecated
-    void syncGoogle2(){
-        Logger.i(TAG, "syncGoogle");
-
-        ApiClient.getService().sync(
-                TokenRecord.getTokenRecord().getApiKey()
-        ).enqueue(new Callback<BasicResponse>() {
-            @Override
-            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                Logger.d(TAG,"onResponse code : " + response.code());
-
-
-                switch (response.code()){
-                    case 200:
-                        BasicResponse body = response.body();
-
-                        checkRecoState();
-                        break;
-                    default:
-                        linearRecoProgress.setVisibility(View.GONE);
-                        Toast.makeText(
-                                getBaseContext(),
-                                getString(R.string.toast_msg_server_internal_error),
-                                Toast.LENGTH_LONG
-                        ).show();
-                        retrySync();
-                        break;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<BasicResponse> call, Throwable t) {
-                Logger.d(TAG,"onfail : " + t.getMessage());
-                Logger.d(TAG, "fail " + t.getClass().getName());
-                retrySync();
-
-                linearRecoProgress.setVisibility(View.GONE);
-                Toast.makeText(
-                        getBaseContext(),
-                        getString(R.string.toast_msg_network_error),
-                        Toast.LENGTH_LONG
-                ).show();
-            }
-        });
-        /*
-        Toast.makeText(
-                getBaseContext(),
-                getString(R.string.toast_msg_google_sync_alert),
-                Toast.LENGTH_LONG
-        ).show();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Response<BasicResponse> response = ApiClient.getService().sync(
-                            TokenRecord.getTokenRecord().getApiKey()
-                    ).execute();
-                    Logger.d(TAG, "requested : " + response.body());
-                } catch (IOException e) {
-                    e.printStackTrace();
-
-                }
-            }
-        }).start();*/
     }
 
     void syncCalendar(){
@@ -828,25 +669,27 @@ public class EventListActivity extends BaseAppCompatActivity {
     }
 
     void retrySync(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("동기화를 실패했습니다. 재시도 하시겠습니까?");
-        builder.setTitle("재시도");
-        builder.setPositiveButton("재시도", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-                syncCalendar();
+        if(!this.isFinishing()){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("동기화를 실패했습니다. 재시도 하시겠습니까?");
+            builder.setTitle("재시도");
+            builder.setPositiveButton("재시도", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                    syncCalendar();
 
-            }
-        });
-        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-                finish();
-            }
-        });
-        builder.show();
+                }
+            });
+            builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                    finish();
+                }
+            });
+            builder.show();
+        }
     }
 
     void refreshEvent(){
