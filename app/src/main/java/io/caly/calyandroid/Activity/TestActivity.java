@@ -8,6 +8,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+
+import io.caly.calyandroid.Model.Event.TestEvent;
 import io.caly.calyandroid.Util.Logger;
 import android.view.View;
 import android.webkit.WebView;
@@ -24,6 +26,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.squareup.otto.Produce;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -63,9 +67,9 @@ public class TestActivity extends BaseAppCompatActivity {
     void init(){
         ButterKnife.bind(this);
 
-        Logger.d(TAG, "uuid : " +Util.getUUID());
 
-        initMap();
+        Logger.d(TAG, "page hashcode : " +super.hashCode());
+//        initMap();
     }
     @Bind(R.id.map)
     MapView mapView;
@@ -80,6 +84,15 @@ public class TestActivity extends BaseAppCompatActivity {
         });
     }
 
+    @Produce
+    public TestEvent getTestEvent(){
+
+    }
+
+    @Subscribe
+    public void onTestEvent(TestEvent event){
+        Logger.d(TAG, "event received : " + super.hashCode());
+    }
 
     FirebaseRemoteConfig remoteConfig;
 

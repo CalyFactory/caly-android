@@ -10,6 +10,8 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
+
+import io.caly.calyandroid.Model.Event.TestEvent;
 import io.caly.calyandroid.Util.Logger;
 
 import com.google.firebase.messaging.RemoteMessage;
@@ -91,6 +93,9 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 else{
                     BusProvider.getInstance().post(new RecoReadyEvent());
                 }
+                break;
+            case "test":
+                BusProvider.getInstance().post(new TestEvent());
                 break;
         }
 

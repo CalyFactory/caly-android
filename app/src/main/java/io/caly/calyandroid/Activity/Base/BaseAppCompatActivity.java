@@ -42,7 +42,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        Logger.i(TAG, "onStart");
+        Logger.i(TAG, "onStart : " + super.hashCode());
         super.onStart();
 
         BusProvider.getInstance().register(this);
@@ -51,7 +51,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
-        Logger.i(TAG, "onStop");
+        Logger.i(TAG, "onStop : " + super.hashCode());
         super.onStop();
 
         BusProvider.getInstance().unregister(this);

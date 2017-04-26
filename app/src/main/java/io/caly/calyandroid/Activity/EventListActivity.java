@@ -14,6 +14,10 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+
+import io.caly.calyandroid.Model.Event.AccountListLoadingEvent;
+import io.caly.calyandroid.Model.Event.AccountListRefreshEvent;
+import io.caly.calyandroid.Model.Event.TestEvent;
 import io.caly.calyandroid.Util.Logger;
 
 import android.util.Log;
@@ -128,6 +132,7 @@ public class EventListActivity extends BaseAppCompatActivity {
 
         init();
 
+        Logger.d(TAG, "hashcode : " + EventListActivity.super.hashCode());
     }
 
     void init(){
@@ -497,55 +502,6 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     }
 
-    @Deprecated
-    void checkRecoState(){
-        ApiClient.getService().checkRepoState(
-                TokenRecord.getTokenRecord().getApiKey()
-        ).enqueue(new Callback<BasicResponse>() {
-            @Override
-            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-
-                Logger.d(TAG,"onResponse code : " + response.code());
-
-                linearRecoProgress.setVisibility(View.GONE);
-
-                BasicResponse body = response.body();
-                switch (response.code()){
-                    case 200:
-                        linearSyncProgress.setVisibility(View.GONE);
-                        loadEventList();
-                        break;
-                    case 201:
-                        linearSyncProgress.setVisibility(View.VISIBLE);
-                        break;
-                    default:
-                        Logger.e(TAG,"status code : " + response.code());
-                        Toast.makeText(
-                                getBaseContext(),
-                                getString(R.string.toast_msg_server_internal_error),
-                                Toast.LENGTH_LONG
-                        ).show();
-                        break;
-                }
-
-
-
-            }
-
-            @Override
-            public void onFailure(Call<BasicResponse> call, Throwable t) {
-                Logger.e(TAG,"onfail : " + t.getMessage());
-                Logger.e(TAG, "fail " + t.getClass().getName());
-
-                Toast.makeText(
-                        getBaseContext(),
-                        getString(R.string.toast_msg_network_error),
-                        Toast.LENGTH_LONG
-                ).show();
-            }
-        });
-    }
-
     void requestSyncCalendar(){
         Logger.i(TAG, "requestSyncCalendar");
         ApiClient.getService().sync(
@@ -583,13 +539,13 @@ public class EventListActivity extends BaseAppCompatActivity {
     }
 
     void checkCalendarSync(){
-        Logger.i(TAG, "checkCalendarSync");
+        Logger.i(TAG, "checkCalendarSync" + EventListActivity.super.hashCode());
         ApiClient.getService().checkSync(
                 TokenRecord.getTokenRecord().getApiKey()
         ).enqueue(new Callback<BasicResponse>() {
             @Override
             public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                Logger.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG,"onResponse code : " + response.code() +" " + EventListActivity.super.hashCode());
 
                 BasicResponse body = response.body();
 
@@ -600,6 +556,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                         loadEventList();
                         break;
                     case 201: //추천중
+                        Logger.d(TAG, "201 hashcode : " + EventListActivity.super.hashCode());
                         linearRecoProgress.setVisibility(View.VISIBLE);
                         linearSyncProgress.setVisibility(View.GONE);
                         break;
@@ -608,56 +565,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                         linearSyncProgress.setVisibility(View.VISIBLE);
                         requestSyncCalendar();
                         break;
-                    default:
-                        linearRecoProgress.setVisibility(View.GONE);
-                        Toast.makeText(
-                                getBaseContext(),
-                                getString(R.string.toast_msg_server_internal_error),
-                                Toast.LENGTH_LONG
-                        ).show();
-                        retrySync();
-                        break;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<BasicResponse> call, Throwable t) {
-
-                Logger.d(TAG,"onfail : " + t.getMessage());
-                Logger.d(TAG, "fail " + t.getClass().getName());
-
-                linearRecoProgress.setVisibility(View.GONE);
-                Toast.makeText(
-                        getBaseContext(),
-                        getString(R.string.toast_msg_network_error),
-                        Toast.LENGTH_LONG
-                ).show();
-                retrySync();
-            }
-        });
-
-    }
-
-    void syncGoogle(){
-        Logger.i(TAG, "syncGoogle");
-
-        ApiClient.getService().checkSync(
-                TokenRecord.getTokenRecord().getApiKey()
-        ).enqueue(new Callback<BasicResponse>() {
-            @Override
-            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-
-                switch (response.code()){
-                    case 200: //추천 종료됨
-                        linearRecoProgress.setVisibility(View.GONE);
-                        linearSyncProgress.setVisibility(View.GONE);
-                        loadEventList();
-                        break;
-                    case 201: //추천중
-                        linearRecoProgress.setVisibility(View.VISIBLE);
-                        linearSyncProgress.setVisibility(View.GONE);
-                        break;
-                    case 202: //동기화중
+                    case 203: //동기화가 진행중
                         linearRecoProgress.setVisibility(View.GONE);
                         linearSyncProgress.setVisibility(View.VISIBLE);
                         break;
@@ -675,6 +583,7 @@ public class EventListActivity extends BaseAppCompatActivity {
 
             @Override
             public void onFailure(Call<BasicResponse> call, Throwable t) {
+
                 Logger.d(TAG,"onfail : " + t.getMessage());
                 Logger.d(TAG, "fail " + t.getClass().getName());
 
@@ -688,117 +597,6 @@ public class EventListActivity extends BaseAppCompatActivity {
             }
         });
 
-    }
-
-    @Deprecated
-    void syncCaldav2(){
-        Logger.i(TAG, "checkCalendarSync");
-        ApiClient.getService().sync(
-                TokenRecord.getTokenRecord().getApiKey()
-        ).enqueue(new Callback<BasicResponse>() {
-            @Override
-            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                Logger.d(TAG,"onResponse code : " + response.code());
-
-
-                switch (response.code()){
-                    case 200:
-                        BasicResponse body = response.body();
-
-                        checkRecoState();
-                        break;
-                    default:
-                        linearRecoProgress.setVisibility(View.GONE);
-                        Toast.makeText(
-                                getBaseContext(),
-                                getString(R.string.toast_msg_server_internal_error),
-                                Toast.LENGTH_LONG
-                        ).show();
-                        retrySync();
-                        break;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<BasicResponse> call, Throwable t) {
-                Logger.d(TAG,"onfail : " + t.getMessage());
-                Logger.d(TAG, "fail " + t.getClass().getName());
-
-                linearRecoProgress.setVisibility(View.GONE);
-                Toast.makeText(
-                        getBaseContext(),
-                        getString(R.string.toast_msg_network_error),
-                        Toast.LENGTH_LONG
-                ).show();
-                retrySync();
-            }
-        });
-    }
-
-    @Deprecated
-    void syncGoogle2(){
-        Logger.i(TAG, "syncGoogle");
-
-        ApiClient.getService().sync(
-                TokenRecord.getTokenRecord().getApiKey()
-        ).enqueue(new Callback<BasicResponse>() {
-            @Override
-            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                Logger.d(TAG,"onResponse code : " + response.code());
-
-
-                switch (response.code()){
-                    case 200:
-                        BasicResponse body = response.body();
-
-                        checkRecoState();
-                        break;
-                    default:
-                        linearRecoProgress.setVisibility(View.GONE);
-                        Toast.makeText(
-                                getBaseContext(),
-                                getString(R.string.toast_msg_server_internal_error),
-                                Toast.LENGTH_LONG
-                        ).show();
-                        retrySync();
-                        break;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<BasicResponse> call, Throwable t) {
-                Logger.d(TAG,"onfail : " + t.getMessage());
-                Logger.d(TAG, "fail " + t.getClass().getName());
-                retrySync();
-
-                linearRecoProgress.setVisibility(View.GONE);
-                Toast.makeText(
-                        getBaseContext(),
-                        getString(R.string.toast_msg_network_error),
-                        Toast.LENGTH_LONG
-                ).show();
-            }
-        });
-        /*
-        Toast.makeText(
-                getBaseContext(),
-                getString(R.string.toast_msg_google_sync_alert),
-                Toast.LENGTH_LONG
-        ).show();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Response<BasicResponse> response = ApiClient.getService().sync(
-                            TokenRecord.getTokenRecord().getApiKey()
-                    ).execute();
-                    Logger.d(TAG, "requested : " + response.body());
-                } catch (IOException e) {
-                    e.printStackTrace();
-
-                }
-            }
-        }).start();*/
     }
 
     void syncCalendar(){
@@ -822,25 +620,27 @@ public class EventListActivity extends BaseAppCompatActivity {
     }
 
     void retrySync(){
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("동기화를 실패했습니다. 재시도 하시겠습니까?");
-        builder.setTitle("재시도");
-        builder.setPositiveButton("재시도", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-                syncCalendar();
+        if(!this.isFinishing()) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(EventListActivity.this);
+            builder.setMessage("동기화를 실패했습니다. 재시도 하시겠습니까?");
+            builder.setTitle("재시도");
+            builder.setPositiveButton("재시도", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                    syncCalendar();
 
-            }
-        });
-        builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-                finish();
-            }
-        });
-        builder.show();
+                }
+            });
+            builder.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.dismiss();
+                    finish();
+                }
+            });
+            builder.show();
+        }
     }
 
     void refreshEvent(){
@@ -856,6 +656,12 @@ public class EventListActivity extends BaseAppCompatActivity {
         loadEventList();
     }
 
+
+    @Subscribe
+    public void onTestEvent(TestEvent event){
+        Logger.d(TAG, "event received : " + EventListActivity.super.hashCode());
+    }
+
     @Subscribe
     public void eventListRefreshCallback(EventListRefreshEvent event){
         refreshEvent();
@@ -864,7 +670,6 @@ public class EventListActivity extends BaseAppCompatActivity {
     @Subscribe
     public void googleSyncDoneEventCallback(GoogleSyncDoneEvent event){
         Logger.i(TAG, "googleSyncDoneEventCallback");
-//        linearRecoProgress.setVisibility(View.GONE);
 //        checkRecoState();
         syncCalendar();
     }
@@ -875,6 +680,14 @@ public class EventListActivity extends BaseAppCompatActivity {
         refreshEvent();
 //        checkRecoState();
     }
+
+    @Subscribe
+    public void accountListRefreshEventCallback(AccountListRefreshEvent event){
+        Logger.i(TAG, "accountListRefreshEventCallback : " + EventListActivity.super.hashCode());
+        syncCalendar();
+
+    }
+
 
     /*
     @OnClick(R.id.btn_eventlist_prev)
