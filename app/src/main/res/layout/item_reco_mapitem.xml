@@ -56,6 +56,7 @@
                             android:layout_width="wrap_content"
                             android:text="산내리 한정식"
                             android:textSize="15dp"
+                            android:id="@+id/tv_reco_title"
                             android:textColor="#000000"
                             android:textStyle="bold"
                             android:layout_height="wrap_content" />
@@ -63,6 +64,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:text="강남역에서 도보 5분거리"
+                            android:id="@+id/tv_reco_distance"
                             android:textSize="12dp"
                             android:textColor="#ababab"
                             android:layout_height="wrap_content" />
@@ -97,6 +99,7 @@
                     android:layout_width="wrap_content"
                     android:text="#강남역맛집 #한정식 #강남역 #강남맛집 #한정식맛집 #맛집"
                     android:textSize="12dp"
+                    android:id="@+id/tv_reco_hashtag"
                     android:textColor="#5da7e2"
                     android:layout_height="wrap_content" />
 

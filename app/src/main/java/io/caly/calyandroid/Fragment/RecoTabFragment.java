@@ -228,7 +228,7 @@ public class RecoTabFragment extends BaseFragment {
     }
 
     @Subscribe
-    public void recoListLoadDoneEvent(RecoListLoadStateChangeEvent doneEvent) {
+    public void recoListLoadStateChangeEvent(RecoListLoadStateChangeEvent doneEvent) {
         if (doneEvent.category == category) {
 
             switch (doneEvent.loadingState) {

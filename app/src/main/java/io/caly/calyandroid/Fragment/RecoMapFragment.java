@@ -11,6 +11,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,13 +22,18 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.Activity.TestActivity;
 import io.caly.calyandroid.Adapter.RecoMapListAdapter;
 import io.caly.calyandroid.Fragment.Base.BaseFragment;
+import io.caly.calyandroid.Model.Event.RecoListLoadStateChangeEvent;
+import io.caly.calyandroid.Model.Response.RecoResponse;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.Util.Logger;
+import retrofit2.Response;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -44,6 +50,8 @@ public class RecoMapFragment extends BaseFragment {
 
     @Bind(R.id.pager_recomap)
     ViewPager pager;
+
+    RecoMapListAdapter adapter;
 
     public RecoMapFragment(){
 
@@ -82,7 +90,8 @@ public class RecoMapFragment extends BaseFragment {
         pager.setClipToPadding(false);
         pager.setPadding(120,0,160,0);
         pager.setPageMargin(80);
-        pager.setAdapter(new RecoMapListAdapter(LayoutInflater.from(getContext())));
+        adapter = new RecoMapListAdapter(getContext(), LayoutInflater.from(getContext()));
+        pager.setAdapter(adapter);
     }
 
     void addMarker(GoogleMap googleMap){
@@ -115,5 +124,19 @@ public class RecoMapFragment extends BaseFragment {
         return bitmap;
     }
 
+    @Subscribe
+    public void recoListLoadStateChangeEvent(RecoListLoadStateChangeEvent doneEvent) {
+        switch (doneEvent.loadingState) {
+            case STATE_LOADING:
+                break;
+            case STATE_DONE:
+                Response<RecoResponse> response = doneEvent.response;
+                RecoResponse body = response.body();
+                adapter.addItems(body.payload.data);
+                break;
+            case STATE_ERROR:
+                break;
+        }
+    }
 
 }
