@@ -76,7 +76,6 @@
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:layout_marginBottom="5dp"
                             android:layout_width="wrap_content"
                             android:text="길찾기 >"
                             android:textSize="15dp"

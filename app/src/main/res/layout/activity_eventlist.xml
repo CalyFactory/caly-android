@@ -222,7 +222,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginTop="30dp"
-                android:background="@color/colorAccent"
+                android:background="@color/colorPrimary"
                 android:id="@+id/btn_eventlist_skipreco"
                 android:text="@string/text_reco_skip_button"
             />

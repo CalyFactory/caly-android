@@ -38,22 +38,25 @@
                         android:background="#2f2f2f"
                     />
 
+                    <View
+                        android:layout_width="match_parent"
+                        android:background="#4d57595e"
+                        android:layout_height="match_parent"/>
+
                     <ImageView
-                        android:layout_marginTop="2dp"
-                        android:layout_marginRight="2dp"
+                        android:layout_marginTop="11dp"
+                        android:layout_marginRight="11dp"
                         android:layout_gravity="right"
                         android:layout_width="24dp"
-                        android:id="@+id/imv_reco_more"
-                        android:src="@drawable/ic_more_horiz_white_48dp"
+                        android:id="@+id/imv_reco_share"
+                        android:src="@drawable/ic_share_white_48dp"
                         android:layout_height="24dp" />
 
                 </FrameLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_marginTop="5dp"
                     android:orientation="vertical"
-                    android:layout_marginBottom="5dp"
                     android:layout_height="match_parent">
 
                     <LinearLayout
@@ -64,44 +67,45 @@
                         <LinearLayout
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
+                            android:layout_weight="1"
                             android:layout_width="match_parent"
                             android:orientation="vertical"
                             android:layout_height="match_parent">
 
                             <TextView
+                                android:layout_marginTop="12dp"
                                 android:id="@+id/tv_reco_title"
                                 android:layout_width="wrap_content"
                                 android:text="스시 마이우"
                                 android:textColor="#1a1a1a"
                                 android:textSize="15dp"
                                 android:layout_height="wrap_content" />
+
                             <TextView
                                 android:id="@+id/tv_reco_distance"
                                 android:layout_width="wrap_content"
+                                android:layout_marginTop="5dp"
                                 android:text="선릉역에서 걸어서 3분거리"
                                 android:textColor="#999999"
-                                android:textSize="12dp"
+                                android:textSize="13dp"
                                 android:layout_height="wrap_content" />
                         </LinearLayout>
 
+
                         <LinearLayout
-                            android:layout_width="20dp"
+                            android:layout_width="wrap_content"
+                            android:paddingTop="14dp"
+                            android:layout_marginRight="14dp"
                             android:layout_height="match_parent">
-                            <!--
-                            <ImageView
-                                android:layout_width="20dp"
-                                android:layout_height="20dp"
-                                android:id="@+id/imv_reco_map"
-                                android:src="@drawable/icon_map"
-                                />
-                                -->
+
                             <TextView
                                 android:layout_width="wrap_content"
-                                android:text="지도 >"
+                                android:text="길찾기 >"
                                 android:textSize="12dp"
-                                android:textColor="#9b9b9b"
                                 android:id="@+id/tv_reco_map"
+                                android:textColor="#9b9b9b"
                                 android:layout_height="wrap_content" />
+
                         </LinearLayout>
                     </LinearLayout>
 
@@ -109,7 +113,7 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
                         android:layout_width="match_parent"
-                        android:layout_height="1dp"
+                        android:layout_height="0.3dp"
                         android:background="#cecece"
                         />
 
@@ -119,6 +123,7 @@
                         android:orientation="vertical"
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
+                        android:layout_marginBottom="10dp"
                         android:layout_height="match_parent">
 
 
