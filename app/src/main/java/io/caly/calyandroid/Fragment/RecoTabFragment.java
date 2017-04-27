@@ -4,8 +4,11 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+
+import io.caly.calyandroid.Model.Event.TestEvent;
 import io.caly.calyandroid.Util.Logger;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
+import com.squareup.otto.Subscribe;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,7 +28,7 @@ import io.caly.calyandroid.Fragment.Base.BaseFragment;
 import io.caly.calyandroid.Model.Category;
 import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.DataModel.RecoModel;
-import io.caly.calyandroid.Model.Event.RecoListLoadDoneEvent;
+import io.caly.calyandroid.Model.Event.RecoListLoadStateChangeEvent;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.RecoResponse;
 import io.caly.calyandroid.Model.TrackingType;
@@ -112,7 +116,7 @@ public class RecoTabFragment extends BaseFragment {
                         recyclerList,
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
-                            public void onItemClick(View view, int position) {
+                            public void onItemClick(View view, final int position) {
 
                                 new Thread(new Runnable() {
                                     @Override
@@ -122,7 +126,7 @@ public class RecoTabFragment extends BaseFragment {
                                             ApiClient.getService().tracking(
                                                     TokenRecord.getTokenRecord().getApiKey(),
                                                     eventData.eventHashKey,
-                                                    "recohashkey",
+                                                    recyclerAdapter.getItem(position).recoHashKey,
                                                     TrackingType.CLICK.value,
                                                     0
                                             ).execute();
@@ -143,16 +147,15 @@ public class RecoTabFragment extends BaseFragment {
                 )
         );
 
-        loadList();
     }
 
+    /*
     void loadList(){
         Logger.i(TAG, "loadList");
 
         if(category == Category.RESTAURANT) {
             recyclerList.showShimmerAdapter();
         }
-
         ApiClient.getService().getRecoList(
                 TokenRecord.getTokenRecord().getApiKey(),
                 eventData.eventHashKey,
@@ -188,9 +191,10 @@ public class RecoTabFragment extends BaseFragment {
                 }
 
                 BusProvider.getInstance().post(
-                        new RecoListLoadDoneEvent(
+                        new RecoListLoadStateChangeEvent(
                                 category,
-                                dataSize
+                                dataSize,
+                                true
                         )
                 );
             }
@@ -200,14 +204,67 @@ public class RecoTabFragment extends BaseFragment {
                 Logger.e(TAG,"onfail : " + t.getMessage());
                 Logger.e(TAG, "fail " + t.getClass().getName());
 
-                hideShimmerAdapter();
                 Toast.makeText(
                         getActivity(),
                         getResources().getString(R.string.toast_msg_network_error),
                         Toast.LENGTH_LONG
                 ).show();
+
+
+                BusProvider.getInstance().post(
+                        new RecoListLoadStateChangeEvent(
+                                category,
+                                0,
+                                true
+                        )
+                );
             }
         });
+    }*/
+
+    @Subscribe
+    public void testEventCallback(TestEvent event) {
+        Log.d(TAG," event received " );
+    }
+
+    @Subscribe
+    public void recoListLoadDoneEvent(RecoListLoadStateChangeEvent doneEvent) {
+        if (doneEvent.category == category) {
+
+            switch (doneEvent.loadingState) {
+                case STATE_LOADING:
+                    recyclerList.showShimmerAdapter();
+                    break;
+                case STATE_DONE:
+                    hideShimmerAdapter();
+
+                    Response<RecoResponse> response = doneEvent.response;
+                    RecoResponse body = response.body();
+                    switch (response.code()){
+                        case 200:
+                            recyclerAdapter.addItems(body.payload.data);
+                            if(body.payload.data.size()==0){
+                                tvNodata.setVisibility(View.VISIBLE);
+                            }
+                            break;
+                        case 201: // no data
+                            tvNodata.setVisibility(View.VISIBLE);
+                            break;
+                        default:
+                            Logger.e(TAG,"status code : " + response.code());
+                            Toast.makeText(
+                                    getActivity(),
+                                    getString(R.string.toast_msg_server_internal_error),
+                                    Toast.LENGTH_LONG
+                            ).show();
+                            break;
+                    }
+                    break;
+                case STATE_ERROR:
+                    hideShimmerAdapter();
+                    break;
+            }
+        }
     }
 
     void hideShimmerAdapter(){

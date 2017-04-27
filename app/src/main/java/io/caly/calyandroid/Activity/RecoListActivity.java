@@ -1,50 +1,36 @@
 package io.caly.calyandroid.Activity;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 
 import io.caly.calyandroid.Fragment.RecoListFragment;
 import io.caly.calyandroid.Fragment.RecoMapFragment;
+import io.caly.calyandroid.Model.Category;
+import io.caly.calyandroid.Model.Event.RecoDataLoadDoneEvent;
+import io.caly.calyandroid.Model.Event.TestEvent;
+import io.caly.calyandroid.Model.Response.RecoResponse;
+import io.caly.calyandroid.Util.BusProvider;
 import io.caly.calyandroid.Util.Logger;
 
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
-import android.widget.LinearLayout;
 import android.widget.Toast;
-
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
-import io.caly.calyandroid.Adapter.RecoTabPagerAdapter;
-import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Model.DataModel.EventModel;
-import io.caly.calyandroid.Model.DataModel.RecoModel;
-import io.caly.calyandroid.Model.Event.RecoListLoadDoneEvent;
-import io.caly.calyandroid.Model.Event.RecoMoreClickEvent;
+import io.caly.calyandroid.Model.Event.RecoListLoadStateChangeEvent;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
-import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
-import io.caly.calyandroid.Util.Util;
-import io.caly.calyandroid.View.FeedbackDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -114,7 +100,26 @@ public class RecoListActivity extends BaseAppCompatActivity {
 
         pageType = PAGE_TYPE.LIST;
 
+        Message msg1 = new Message();
+        msg1.obj = Category.RESTAURANT;
+
+        Message msg2 = new Message();
+        msg2.obj = Category.CAFE;
+
+        Message msg3 = new Message();
+        msg3.obj = Category.PLACE;
+        recoLoadHandler.sendMessage(msg1);
+        recoLoadHandler.sendMessage(msg2);
+        recoLoadHandler.sendMessage(msg3);
     }
+
+    Handler recoLoadHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            loadList((Category)msg.obj);
+        }
+    };
 
     @Override
     public void onBackPressed() {
@@ -172,6 +177,8 @@ public class RecoListActivity extends BaseAppCompatActivity {
 //                transaction.replace(R.id.linear_reco_container, recoListFragment, "list");
                 transaction.show(recoListFragment);
                 transaction.hide(recoMapFragment);
+
+                BusProvider.getInstance().post(new TestEvent());
                 break;
         }
         transaction.disallowAddToBackStack();
@@ -181,6 +188,92 @@ public class RecoListActivity extends BaseAppCompatActivity {
     enum PAGE_TYPE{
         LIST,
         MAP
+    }
+
+
+    void loadList(final Category category){
+
+
+        BusProvider.getInstance().post(
+                new RecoListLoadStateChangeEvent(
+                        category,
+                        0,
+                        null,
+                        RecoListLoadStateChangeEvent.LOADING_STATE.STATE_LOADING
+                )
+        );
+
+        ApiClient.getService().getRecoList(
+                TokenRecord.getTokenRecord().getApiKey(),
+                eventData.eventHashKey,
+                category.value
+        ).enqueue(new Callback<RecoResponse>() {
+            @Override
+            public void onResponse(Call<RecoResponse> call, Response<RecoResponse> response) {
+                Logger.d(TAG,"onResponse code : " + response.code());
+
+                RecoResponse body = response.body();
+
+                switch (response.code()){
+                    case 200:
+                    case 201: // no data
+                        BusProvider.getInstance().post(
+                                new RecoDataLoadDoneEvent(
+                                        category,
+                                        body
+                                )
+                        );
+
+                        BusProvider.getInstance().post(
+                                new RecoListLoadStateChangeEvent(
+                                        category,
+                                        body.payload.data.size(),
+                                        response,
+                                        RecoListLoadStateChangeEvent.LOADING_STATE.STATE_DONE
+                                )
+                        );
+                        break;
+                    default:
+                        Logger.e(TAG,"status code : " + response.code());
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_server_internal_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+
+                        BusProvider.getInstance().post(
+                                new RecoListLoadStateChangeEvent(
+                                        category,
+                                        0,
+                                        response,
+                                        RecoListLoadStateChangeEvent.LOADING_STATE.STATE_ERROR
+                                )
+                        );
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RecoResponse> call, Throwable t) {
+                Logger.e(TAG,"onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
+
+                Toast.makeText(
+                        getBaseContext(),
+                        getResources().getString(R.string.toast_msg_network_error),
+                        Toast.LENGTH_LONG
+                ).show();
+
+                BusProvider.getInstance().post(
+                        new RecoListLoadStateChangeEvent(
+                                category,
+                                0,
+                                null,
+                                RecoListLoadStateChangeEvent.LOADING_STATE.STATE_ERROR
+                        )
+                );
+            }
+        });
     }
 
     /*

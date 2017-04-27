@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import io.caly.calyandroid.Model.Event.TestEvent;
+import io.caly.calyandroid.Util.BusProvider;
 import io.caly.calyandroid.Util.Logger;
 import android.view.View;
 import android.webkit.WebView;
@@ -53,8 +54,6 @@ import retrofit2.Response;
 
 public class TestActivity extends BaseAppCompatActivity {
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,12 +85,13 @@ public class TestActivity extends BaseAppCompatActivity {
 
     @Produce
     public TestEvent getTestEvent(){
-
+        return new TestEvent();
     }
 
     @Subscribe
     public void onTestEvent(TestEvent event){
         Logger.d(TAG, "event received : " + super.hashCode());
+
     }
 
     FirebaseRemoteConfig remoteConfig;

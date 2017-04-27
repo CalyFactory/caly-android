@@ -8,9 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
@@ -20,12 +17,11 @@ import com.squareup.otto.Subscribe;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.caly.calyandroid.Activity.RecoListActivity;
 import io.caly.calyandroid.Adapter.RecoTabPagerAdapter;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Fragment.Base.BaseFragment;
 import io.caly.calyandroid.Model.DataModel.EventModel;
-import io.caly.calyandroid.Model.Event.RecoListLoadDoneEvent;
+import io.caly.calyandroid.Model.Event.RecoListLoadStateChangeEvent;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.R;
@@ -154,7 +150,7 @@ public class RecoListFragment extends BaseFragment {
     }
 
     @Subscribe
-    public void recoListLoadDoneEvent(RecoListLoadDoneEvent doneEvent){
+    public void recoListLoadDoneEvent(RecoListLoadStateChangeEvent doneEvent){
         switch (doneEvent.category){
             case RESTAURANT:
                 tabLayout.getTabAt(0).setText("식당("+doneEvent.dataCount+")");
