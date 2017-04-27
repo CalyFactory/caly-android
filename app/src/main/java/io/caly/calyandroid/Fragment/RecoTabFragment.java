@@ -239,32 +239,24 @@ public class RecoTabFragment extends BaseFragment {
 
             switch (doneEvent.loadingState) {
                 case STATE_LOADING:
-                    recyclerList.showShimmerAdapter();
+                    if(category == Category.RESTAURANT) {
+                        recyclerList.showShimmerAdapter();
+                    }
                     break;
                 case STATE_DONE:
                     hideShimmerAdapter();
 
                     Response<RecoResponse> response = doneEvent.response;
                     RecoResponse body = response.body();
-                    switch (response.code()){
-                        case 200:
-                            recyclerAdapter.addItems(body.payload.data);
-                            if(body.payload.data.size()==0){
-                                tvNodata.setVisibility(View.VISIBLE);
-                            }
-                            break;
-                        case 201: // no data
-                            tvNodata.setVisibility(View.VISIBLE);
-                            break;
-                        default:
-                            Logger.e(TAG,"status code : " + response.code());
-                            Toast.makeText(
-                                    getActivity(),
-                                    getString(R.string.toast_msg_server_internal_error),
-                                    Toast.LENGTH_LONG
-                            ).show();
-                            break;
+
+                    recyclerAdapter.addItems(body.payload.data);
+                    if(body.payload.data.size()==0){
+                        tvNodata.setVisibility(View.VISIBLE);
                     }
+
+                    break;
+                case STATE_EMPTY:
+                    tvNodata.setVisibility(View.VISIBLE);
                     break;
                 case STATE_ERROR:
                     hideShimmerAdapter();
@@ -274,7 +266,7 @@ public class RecoTabFragment extends BaseFragment {
     }
 
     void hideShimmerAdapter(){
-        hideShimmerHandler.sendEmptyMessageDelayed(0,1000);
+        hideShimmerHandler.sendEmptyMessageDelayed(0,0);
     }
 
     Handler hideShimmerHandler = new Handler(){

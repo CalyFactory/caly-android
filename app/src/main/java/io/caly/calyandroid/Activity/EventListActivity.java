@@ -824,7 +824,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     }
 
     void hideShimmerAdapter(){
-        hideShimmerHandler.sendEmptyMessageDelayed(0,2000);
+        hideShimmerHandler.sendEmptyMessageDelayed(0,0);
     }
 
     Handler hideShimmerHandler = new Handler(){

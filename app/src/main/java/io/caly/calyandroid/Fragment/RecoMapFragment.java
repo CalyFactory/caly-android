@@ -153,6 +153,8 @@ public class RecoMapFragment extends BaseFragment {
                 }
 
                 break;
+            case STATE_EMPTY:
+                break;
             case STATE_ERROR:
                 break;
         }

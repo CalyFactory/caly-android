@@ -29,6 +29,7 @@ public class RecoListLoadStateChangeEvent {
     public enum LOADING_STATE{
         STATE_LOADING,
         STATE_DONE,
+        STATE_EMPTY,
         STATE_ERROR
     }
 

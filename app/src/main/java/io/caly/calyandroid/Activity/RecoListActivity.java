@@ -13,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import io.caly.calyandroid.Fragment.RecoListFragment;
 import io.caly.calyandroid.Fragment.RecoMapFragment;
 import io.caly.calyandroid.Model.Category;
-import io.caly.calyandroid.Model.Event.RecoDataLoadDoneEvent;
 import io.caly.calyandroid.Model.Event.TestEvent;
 import io.caly.calyandroid.Model.Response.RecoResponse;
 import io.caly.calyandroid.Util.BusProvider;
@@ -216,13 +215,6 @@ public class RecoListActivity extends BaseAppCompatActivity {
 
                 switch (response.code()){
                     case 200:
-                    case 201: // no data
-                        BusProvider.getInstance().post(
-                                new RecoDataLoadDoneEvent(
-                                        category,
-                                        body
-                                )
-                        );
 
                         BusProvider.getInstance().post(
                                 new RecoListLoadStateChangeEvent(
@@ -230,6 +222,17 @@ public class RecoListActivity extends BaseAppCompatActivity {
                                         body.payload.data.size(),
                                         response,
                                         RecoListLoadStateChangeEvent.LOADING_STATE.STATE_DONE
+                                )
+                        );
+                        break;
+                    case 201: // no data
+
+                        BusProvider.getInstance().post(
+                                new RecoListLoadStateChangeEvent(
+                                        category,
+                                        0,
+                                        response,
+                                        RecoListLoadStateChangeEvent.LOADING_STATE.STATE_EMPTY
                                 )
                         );
                         break;
