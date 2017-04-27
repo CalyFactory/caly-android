@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +22,11 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.otto.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -59,6 +62,8 @@ public class RecoMapFragment extends BaseFragment {
 
     GoogleMap googleMap;
 
+    ArrayList<Marker> markerList;
+
     public RecoMapFragment(){
 
     }
@@ -86,6 +91,24 @@ public class RecoMapFragment extends BaseFragment {
                 mapView.onResume();
 
                 RecoMapFragment.this.googleMap = googleMap;
+
+                googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                    @Override
+                    public boolean onMarkerClick(Marker marker) {
+                        Log.d(TAG,"onMarkerClick");
+                        String recoHashKey = (String)marker.getTag();
+
+                        for(int i=0;i<adapter.recoList.size();i++){
+                            RecoModel recoModel = adapter.recoList.get(i);
+                            if(recoHashKey.equals(recoModel.recoHashKey)){
+                                pager.setCurrentItem(i);
+                                break;
+                            }
+                        }
+
+                        return false;
+                    }
+                });
             }
         });
 
@@ -94,6 +117,34 @@ public class RecoMapFragment extends BaseFragment {
         pager.setPageMargin(80);
         adapter = new RecoMapListAdapter(getContext(), LayoutInflater.from(getContext()));
         pager.setAdapter(adapter);
+
+        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Log.d(TAG,"onPageSelected");
+                String recoHashKey = adapter.recoList.get(position).recoHashKey;
+                for(int i=0;i<markerList.size();i++){
+                    String markerTag = (String)markerList.get(i).getTag();
+                    if(recoHashKey.equals(markerTag)){
+                        markerList.get(i).showInfoWindow();
+                        moveCamera(adapter.recoList.get(position));
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        markerList = new ArrayList<>();
     }
 
     void addMarker(RecoModel recoModel){
@@ -105,9 +156,10 @@ public class RecoMapFragment extends BaseFragment {
         markerOptions.position(position);
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getActivity(), markerView)));
 
-        googleMap.addMarker(markerOptions);
+        Marker marker = googleMap.addMarker(markerOptions);
+        marker.setTag(recoModel.recoHashKey);
 
-
+        markerList.add(marker);
     }
 
     void addMarkers(List<RecoModel> recoList){

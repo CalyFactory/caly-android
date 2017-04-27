@@ -1,235 +1,239 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <LinearLayout
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:orientation="vertical"
             android:layout_height="match_parent">
 
-            <include layout="@layout/toolbar"/>
-
-            <!--
             <LinearLayout
                 android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:background="@color/colorPrimary"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingTop="10dp"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2월"
-                    android:textSize="40dp"
-                    android:id="@+id/tv_eventlist_month"
-                    android:textStyle="bold"
-                    android:textColor="#ffffff"
-                    />
+                <include layout="@layout/toolbar" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tv_eventlist_year"
-                    android:text="2017"
-                    android:textStyle="bold"
-                    android:textColor="#ffffff"
-                    android:textSize="17dp"
-                    />
-
+                <!--
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
-                    android:gravity="right|center_vertical"
+                    android:orientation="vertical"
+                    android:background="@color/colorPrimary"
+                    android:paddingLeft="20dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="10dp"
                     android:layout_height="wrap_content">
 
-                    <ImageButton
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="?attr/selectableItemBackground"
-                        android:src="@drawable/ic_navigate_before_white_48dp"
-                        android:id="@+id/btn_eventlist_prev"
-                        />
-
-                    <ImageButton
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:background="?attr/selectableItemBackground"
-                        android:src="@drawable/ic_navigate_next_white_48dp"
-                        android:id="@+id/btn_eventlist_next"
-                        />
-
-                </LinearLayout>
-
-            </LinearLayout>
-            -->
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:background="#ffffff"
-                android:layout_height="match_parent">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <!--
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recycler_eventlist"
-                        android:scrollbars="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-                    -->
-
-                    <com.cooltechworks.views.shimmer.ShimmerRecyclerView
-                        android:id="@+id/recycler_eventlist"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:shimmer_demo_child_count="4"
-                        app:shimmer_demo_layout="@layout/item_eventlist_row3"
-                        app:shimmer_demo_layout_manager_type="linear_vertical"
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2월"
+                        android:textSize="40dp"
+                        android:id="@+id/tv_eventlist_month"
+                        android:textStyle="bold"
+                        android:textColor="#ffffff"
                         />
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:id="@+id/tv_eventlist_nodata"
-                        android:textSize="30sp"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginRight="30dp"
-                        android:visibility="gone"
-                        android:textColor="#000000"
-                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_eventlist_year"
+                        android:text="2017"
                         android:textStyle="bold"
-                        android:layout_gravity="center"
-                        android:text="일정이 없습니다. 일정을 추가해주시면 분석해드릴게요 :)"
-                        android:layout_height="wrap_content" />
+                        android:textColor="#ffffff"
+                        android:textSize="17dp"
+                        />
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:background="#323232"
-                        android:paddingLeft="15dp"
-                        android:id="@+id/linear_banner"
-                        android:paddingRight="15dp"
-                        android:focusable="true"
-                        android:visibility="gone"
-                        android:gravity="center_vertical"
-                        android:layout_height="40dp">
+                        android:orientation="horizontal"
+                        android:gravity="right|center_vertical"
+                        android:layout_height="wrap_content">
 
-                        <ImageView
-                            android:layout_width="22dp"
-                            android:src="@drawable/ic_new_releases_white_36dp"
-                            android:layout_height="22dp" />
+                        <ImageButton
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="?attr/selectableItemBackground"
+                            android:src="@drawable/ic_navigate_before_white_48dp"
+                            android:id="@+id/btn_eventlist_prev"
+                            />
 
-                        <TextView
-                            android:layout_marginLeft="15dp"
-                            android:textColor="#ffffff"
-                            android:layout_width="match_parent"
-                            android:singleLine="true"
-                            android:layout_weight="1"
-                            android:id="@+id/tv_banner_title"
-                            android:textSize="15dp"
-                            android:text=""
-                            android:layout_height="wrap_content" />
+                        <ImageButton
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:background="?attr/selectableItemBackground"
+                            android:src="@drawable/ic_navigate_next_white_48dp"
+                            android:id="@+id/btn_eventlist_next"
+                            />
 
-                        <TextView
-                            android:layout_marginLeft="15dp"
-                            android:textColor="#eeff41"
-                            android:layout_width="wrap_content"
-                            android:focusable="true"
-                            android:textSize="15dp"
-                            android:text="닫기"
-                            android:id="@+id/tv_banner_close"
-                            android:layout_height="wrap_content" />
                     </LinearLayout>
-                </FrameLayout>
+
+                </LinearLayout>
+                -->
+
+
+
+                <android.support.v4.widget.DrawerLayout
+                    android:id="@+id/drawer_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="#ffffff"
+                        android:orientation="vertical">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <!--
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/recycler_eventlist"
+                                android:scrollbars="vertical"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"/>
+                            -->
+
+                            <com.cooltechworks.views.shimmer.ShimmerRecyclerView
+                                android:id="@+id/recycler_eventlist"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                app:shimmer_demo_child_count="4"
+                                app:shimmer_demo_layout="@layout/item_eventlist_row3"
+                                app:shimmer_demo_layout_manager_type="linear_vertical" />
+
+                            <TextView
+                                android:id="@+id/tv_eventlist_nodata"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginLeft="30dp"
+                                android:layout_marginRight="30dp"
+                                android:gravity="center"
+                                android:text="일정이 없습니다. 일정을 추가해주시면 분석해드릴게요 :)"
+                                android:textColor="#000000"
+                                android:textSize="30sp"
+                                android:textStyle="bold"
+                                android:visibility="gone" />
+
+                            <LinearLayout
+                                android:id="@+id/linear_banner"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:background="#323232"
+                                android:focusable="true"
+                                android:gravity="center_vertical"
+                                android:paddingLeft="15dp"
+                                android:paddingRight="15dp"
+                                android:visibility="gone">
+
+                                <ImageView
+                                    android:layout_width="22dp"
+                                    android:layout_height="22dp"
+                                    android:src="@drawable/ic_new_releases_white_36dp" />
+
+                                <TextView
+                                    android:id="@+id/tv_banner_title"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="15dp"
+                                    android:layout_weight="1"
+                                    android:singleLine="true"
+                                    android:text=""
+                                    android:textColor="#ffffff"
+                                    android:textSize="15dp" />
+
+                                <TextView
+                                    android:id="@+id/tv_banner_close"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="15dp"
+                                    android:focusable="true"
+                                    android:text="닫기"
+                                    android:textColor="#eeff41"
+                                    android:textSize="15dp" />
+                            </LinearLayout>
+                        </FrameLayout>
+                    </LinearLayout>
+                    <include layout="@layout/container_drawer" />
+                </android.support.v4.widget.DrawerLayout>
             </LinearLayout>
-        </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:gravity="center"
-            android:background="#dd000000"
-            android:visibility="gone"
-            android:id="@+id/linear_eventlist_loader"
-            android:orientation="vertical"
-            android:layout_height="match_parent">
-
-            <com.github.ybq.android.spinkit.SpinKitView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/avi_eventlist"
-                style="@style/SpinKitView.Large.CubeGrid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:SpinKit_Color="@color/colorPrimary" />
-            <TextView
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
-                android:textColor="#ffffff"
-                android:textSize="40dp"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/text_wait_sync"
-                />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:background="#dd000000"
-            android:visibility="gone"
-            android:id="@+id/linear_eventlist_still"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:clickable="true"
-            android:layout_height="match_parent">
-
-            <com.github.ybq.android.spinkit.SpinKitView
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                style="@style/SpinKitView.Large.FoldingCube"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                app:SpinKit_Color="@color/colorPrimary" />
-            <TextView
-                android:layout_marginLeft="50dp"
-                android:layout_marginRight="50dp"
-                android:textColor="#ffffff"
-                android:textSize="40dp"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/text_reco_wait"
-                />
-
-            <Button
+            <LinearLayout
+                android:id="@+id/linear_eventlist_loader"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#ffffff"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="30dp"
-                android:background="@color/colorPrimary"
-                android:id="@+id/btn_eventlist_skipreco"
-                android:text="@string/text_reco_skip_button"
-            />
+                android:layout_height="match_parent"
+                android:background="#dd000000"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-        </LinearLayout>
-    </FrameLayout>
+                <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/avi_eventlist"
+                    style="@style/SpinKitView.Large.CubeGrid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:SpinKit_Color="@color/colorPrimary" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp"
+                    android:gravity="center"
+                    android:text="@string/text_wait_sync"
+                    android:textColor="#ffffff"
+                    android:textSize="40dp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linear_eventlist_still"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#dd000000"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    style="@style/SpinKitView.Large.FoldingCube"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    app:SpinKit_Color="@color/colorPrimary" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp"
+                    android:gravity="center"
+                    android:text="@string/text_reco_wait"
+                    android:textColor="#ffffff"
+                    android:textSize="40dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btn_eventlist_skipreco"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/text_reco_skip_button"
+                    android:textColor="#ffffff" />
+
+            </LinearLayout>
+        </FrameLayout>
 
 
 </LinearLayout>
