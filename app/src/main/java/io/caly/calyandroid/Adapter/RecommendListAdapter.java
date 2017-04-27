@@ -54,8 +54,11 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
         @Bind(R.id.imv_reco_food)
         ImageView imvFood;
 
-        @Bind(R.id.imv_reco_map)
-        ImageView imvMap;
+//        @Bind(R.id.imv_reco_map)
+//        ImageView imvMap;
+
+        @Bind(R.id.tv_reco_map)
+        TextView tvMap;
 
         @Bind(R.id.tv_reco_distance)
         TextView tvRecoDistance;
@@ -157,7 +160,7 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
         });
 
 
-        holder.imvMap.setOnClickListener(new View.OnClickListener() {
+        holder.tvMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

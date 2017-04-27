@@ -8,12 +8,15 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:padding="25dp"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="2dp"
         android:layout_height="wrap_content">
 
 
         <android.support.v7.widget.CardView
-            card:cardCornerRadius="5dp"
+            card:cardCornerRadius="0dp"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -25,10 +28,9 @@
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="280dp">
+                    android:layout_height="152dp">
 
                     <ImageView
-                        android:layout_marginBottom="12dp"
                         android:id="@+id/imv_reco_food"
                         android:scaleType="centerCrop"
                         android:layout_width="match_parent"
@@ -45,77 +47,88 @@
                         android:src="@drawable/ic_more_horiz_white_48dp"
                         android:layout_height="24dp" />
 
-                    <android.support.v7.widget.CardView
-                        card:cardCornerRadius="5dp"
-                        android:layout_weight="1"
-                        android:layout_gravity="bottom"
-                        android:layout_marginLeft="10dp"
-                        card:cardBackgroundColor="#626262"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="5dp"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="5dp"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="match_parent">
 
                         <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:gravity="center"
-                            android:paddingLeft="5dp"
-                            android:paddingRight="5dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
                             android:layout_height="match_parent">
 
                             <TextView
                                 android:id="@+id/tv_reco_title"
                                 android:layout_width="wrap_content"
                                 android:text="스시 마이우"
-                                android:textColor="#ffffff"
-                                android:textSize="15sp"
+                                android:textColor="#1a1a1a"
+                                android:textSize="15dp"
+                                android:layout_height="wrap_content" />
+                            <TextView
+                                android:id="@+id/tv_reco_distance"
+                                android:layout_width="wrap_content"
+                                android:text="선릉역에서 걸어서 3분거리"
+                                android:textColor="#999999"
+                                android:textSize="12dp"
                                 android:layout_height="wrap_content" />
                         </LinearLayout>
-                    </android.support.v7.widget.CardView>
 
-                </FrameLayout>
+                        <LinearLayout
+                            android:layout_width="20dp"
+                            android:layout_height="match_parent">
+                            <!--
+                            <ImageView
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:id="@+id/imv_reco_map"
+                                android:src="@drawable/icon_map"
+                                />
+                                -->
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:text="지도 >"
+                                android:textSize="12dp"
+                                android:textColor="#9b9b9b"
+                                android:id="@+id/tv_reco_map"
+                                android:layout_height="wrap_content" />
+                        </LinearLayout>
+                    </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:paddingLeft="10dp"
-                    android:layout_marginTop="5dp"
-                    android:paddingRight="10dp"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="5dp"
-                    android:layout_height="match_parent">
+                    <View
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#cecece"
+                        />
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_weight="1"
                         android:orientation="vertical"
-                        android:paddingRight="5dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
                         android:layout_height="match_parent">
 
-                        <TextView
-                            android:id="@+id/tv_reco_distance"
-                            android:layout_width="wrap_content"
-                            android:text="선릉역에서 걸어서 3분거리"
-                            android:textColor="#2f2f2f"
-                            android:textSize="15dp"
-                            android:layout_height="wrap_content" />
 
                         <TextView
-                            android:layout_marginTop="5dp"
                             android:id="@+id/tv_reco_hashtag"
                             android:layout_width="wrap_content"
                             android:text="#맛있음 #일식 #돈부리 #분위기좋은곳 #데이트코스 #맨날가는 #배고파여 #적을게없다 #뭐적지"
-                            android:textColor="#8f8f8f"
+                            android:textColor="#48a8e0"
                             android:textSize="12dp"
                             android:layout_height="wrap_content" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="20dp"
-                        android:layout_height="match_parent">
-                        <ImageView
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:id="@+id/imv_reco_map"
-                            android:src="@drawable/icon_map"
-                            />
                     </LinearLayout>
 
 
