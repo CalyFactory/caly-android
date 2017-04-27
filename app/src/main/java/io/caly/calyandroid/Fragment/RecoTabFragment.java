@@ -122,6 +122,11 @@ public class RecoTabFragment extends BaseFragment {
                                     @Override
                                     public void run() {
                                         Logger.i(TAG, "traking click");
+
+                                        if(recyclerAdapter.getItemCount() - 1 < position){
+                                            return;
+                                        }
+
                                         try {
                                             ApiClient.getService().tracking(
                                                     TokenRecord.getTokenRecord().getApiKey(),
@@ -156,6 +161,7 @@ public class RecoTabFragment extends BaseFragment {
         if(category == Category.RESTAURANT) {
             recyclerList.showShimmerAdapter();
         }
+
         ApiClient.getService().getRecoList(
                 TokenRecord.getTokenRecord().getApiKey(),
                 eventData.eventHashKey,

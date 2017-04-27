@@ -138,17 +138,17 @@ public class SignupActivity extends BaseAppCompatActivity {
     void onSignupClick(){
 
         switch (getInputState()){
-            case BIRTH_NOT_SELECTED:
-                Toast.makeText(
-                        getBaseContext(),
-                        getString(R.string.toast_msg_signup_policy_not_selected),
-                        Toast.LENGTH_LONG
-                ).show();
-                break;
             case GENDER_NOT_SELECTED:
                 Toast.makeText(
                         getBaseContext(),
-                        getString(R.string.toast_msg_signup_policy_not_selected),
+                        getString(R.string.toast_msg_signup_gender_not_selected),
+                        Toast.LENGTH_LONG
+                ).show();
+                break;
+            case BIRTH_NOT_SELECTED:
+                Toast.makeText(
+                        getBaseContext(),
+                        getString(R.string.toast_msg_signup_birth_not_selected),
                         Toast.LENGTH_LONG
                 ).show();
                 break;
@@ -266,8 +266,8 @@ public class SignupActivity extends BaseAppCompatActivity {
     }
 
     private INPUT_STATE getInputState(){
-        if(edtBirth.getText().toString().length()!=4) return INPUT_STATE.BIRTH_NOT_SELECTED;
         if(selectedGender==-1) return INPUT_STATE.GENDER_NOT_SELECTED;
+        if(edtBirth.getText().toString().length()!=4) return INPUT_STATE.BIRTH_NOT_SELECTED;
         if(cbPolicy.isChecked()==false) return INPUT_STATE.POLICY_NOT_SELECTED;
 
         return INPUT_STATE.ALL_SELECTED;

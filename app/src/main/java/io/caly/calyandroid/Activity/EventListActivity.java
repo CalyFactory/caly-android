@@ -15,7 +15,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
-import io.caly.calyandroid.Model.Event.AccountListLoadingEvent;
 import io.caly.calyandroid.Model.Event.AccountListRefreshEvent;
 import io.caly.calyandroid.Model.Event.TestEvent;
 import io.caly.calyandroid.Util.Logger;
@@ -211,6 +210,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                     @Override
                     public void onItemClick(View view, int position) {
 
+                        if(recyclerAdapter.getItemCount()-1 < position) return;
                         EventModel eventModel = recyclerAdapter.getItem(position);
 
                         if(eventModel.recoState == RecoState.STATE_DONE_RECOMMEND){
@@ -457,6 +457,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                         }
                         if(body.payload.data.size()==0){
                             tvNodata.setVisibility(View.VISIBLE);
+                            recyclerList.hideShimmerAdapter();
                         }
                         else{
                             tvNodata.setVisibility(View.GONE);
@@ -468,6 +469,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                                 getString(R.string.toast_msg_no_more_data),
                                 Toast.LENGTH_LONG
                         ).show();
+                        recyclerList.hideShimmerAdapter();
                         tvNodata.setVisibility(View.VISIBLE);
                         break;
                     default:
@@ -620,8 +622,8 @@ public class EventListActivity extends BaseAppCompatActivity {
     }
 
     void retrySync(){
-        if(!this.isFinishing()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(EventListActivity.this);
+        if(!this.isFinishing()){
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("동기화를 실패했습니다. 재시도 하시겠습니까?");
             builder.setTitle("재시도");
             builder.setPositiveButton("재시도", new DialogInterface.OnClickListener() {
@@ -687,8 +689,6 @@ public class EventListActivity extends BaseAppCompatActivity {
         syncCalendar();
 
     }
-
-
     /*
     @OnClick(R.id.btn_eventlist_prev)
     void onEventPrevClick(){
@@ -794,7 +794,6 @@ public class EventListActivity extends BaseAppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "requestCode : " + requestCode);
         Log.d(TAG, "resultCode : " + resultCode);
-
 
         switch (requestCode){
             case 1: //setting activity
