@@ -24,11 +24,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.otto.Subscribe;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.Activity.TestActivity;
 import io.caly.calyandroid.Adapter.RecoMapListAdapter;
 import io.caly.calyandroid.Fragment.Base.BaseFragment;
+import io.caly.calyandroid.Model.Category;
+import io.caly.calyandroid.Model.DataModel.RecoModel;
 import io.caly.calyandroid.Model.Event.RecoListLoadStateChangeEvent;
 import io.caly.calyandroid.Model.Response.RecoResponse;
 import io.caly.calyandroid.R;
@@ -52,6 +56,8 @@ public class RecoMapFragment extends BaseFragment {
     ViewPager pager;
 
     RecoMapListAdapter adapter;
+
+    GoogleMap googleMap;
 
     public RecoMapFragment(){
 
@@ -78,12 +84,8 @@ public class RecoMapFragment extends BaseFragment {
             public void onMapReady(GoogleMap googleMap) {
                 MapsInitializer.initialize(getActivity());
                 mapView.onResume();
-                addMarker(googleMap);
 
-                CameraUpdate center = CameraUpdateFactory.newLatLngZoom(new LatLng(37.4900407, 127.0099624), 14);
-                googleMap.animateCamera(center);
-
-
+                RecoMapFragment.this.googleMap = googleMap;
             }
         });
 
@@ -94,18 +96,24 @@ public class RecoMapFragment extends BaseFragment {
         pager.setAdapter(adapter);
     }
 
-    void addMarker(GoogleMap googleMap){
+    void addMarker(RecoModel recoModel){
         View markerView = LayoutInflater.from(getActivity()).inflate(R.layout.item_map_marker, null);
-        LatLng position = new LatLng(37.4900407, 127.0099624);
+        LatLng position = new LatLng(recoModel.lat, recoModel.lng);
 
         MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.title("title1");
+        markerOptions.title(recoModel.title);
         markerOptions.position(position);
         markerOptions.icon(BitmapDescriptorFactory.fromBitmap(createDrawableFromView(getActivity(), markerView)));
 
         googleMap.addMarker(markerOptions);
 
 
+    }
+
+    void addMarkers(List<RecoModel> recoList){
+        for(RecoModel recoModel : recoList){
+            addMarker(recoModel);
+        }
     }
 
     private Bitmap createDrawableFromView(Context context, View view) {
@@ -124,6 +132,11 @@ public class RecoMapFragment extends BaseFragment {
         return bitmap;
     }
 
+    public void moveCamera(RecoModel recoModel){
+        CameraUpdate center = CameraUpdateFactory.newLatLngZoom(new LatLng(recoModel.lat, recoModel.lng), 14);
+        googleMap.animateCamera(center);
+    }
+
     @Subscribe
     public void recoListLoadStateChangeEvent(RecoListLoadStateChangeEvent doneEvent) {
         switch (doneEvent.loadingState) {
@@ -133,6 +146,12 @@ public class RecoMapFragment extends BaseFragment {
                 Response<RecoResponse> response = doneEvent.response;
                 RecoResponse body = response.body();
                 adapter.addItems(body.payload.data);
+                addMarkers(body.payload.data);
+
+                if(doneEvent.category == Category.RESTAURANT) {
+                    moveCamera(body.payload.data.get(0));
+                }
+
                 break;
             case STATE_ERROR:
                 break;
