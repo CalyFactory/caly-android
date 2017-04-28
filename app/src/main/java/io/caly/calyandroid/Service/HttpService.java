@@ -156,6 +156,15 @@ public interface HttpService {
             @Field("pageNum") int pageNum
     );
 
+    @FormUrlEncoded
+    @POST("v1.0/events/setLog")
+    Call<BasicResponse> setLog(
+            @Field("apikey") String apiKey,
+            @Field("eventHashKey") String eventHashKey,
+            @Field("action") int action,
+            @Field("category") int category,
+            @Field("label") int label
+    );
 
 
     /*
@@ -204,6 +213,7 @@ public interface HttpService {
     );
 
     //tracking
+    @Deprecated
     @FormUrlEncoded
     @POST("v1.0/reco/tracking")
     Call<BasicResponse> tracking(
