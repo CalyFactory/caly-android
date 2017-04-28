@@ -24,6 +24,9 @@ public class RecoModel {
     @SerializedName("source_url")
     public String sourceUrl;
 
+    @SerializedName("source_user_id")
+    public String sourceUserId;
+
     @SerializedName("price")
     public int price;
 

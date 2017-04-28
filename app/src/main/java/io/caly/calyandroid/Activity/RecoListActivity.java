@@ -87,6 +87,7 @@ public class RecoListActivity extends BaseAppCompatActivity {
                         getIntent().getStringExtra("event"),
                         EventModel.class
                 );
+        toolbar.setTitle(eventData.summaryText);
 
         recoListFragment = new RecoListFragment().setData(eventData);
         recoMapFragment = new RecoMapFragment();
