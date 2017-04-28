@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -117,6 +119,9 @@ public class EventListActivity extends BaseAppCompatActivity {
     @Bind(R.id.tv_banner_close)
     TextView tvBannerClose;
 
+    @Bind(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
+
     EventListAdapter recyclerAdapter;
     LinearLayoutManager layoutManager;
 
@@ -153,6 +158,28 @@ public class EventListActivity extends BaseAppCompatActivity {
         upArrow.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
+        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,
+                drawerLayout, toolbar, R.string.app_name, R.string.app_name) {
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                Log.d(TAG, "drawer opened");
+                super.onDrawerOpened(drawerView);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                Log.d(TAG, "drawer closed");
+                super.onDrawerClosed(drawerView);
+
+            }
+
+        };
+
+        drawerLayout.setDrawerListener(mDrawerToggle);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        mDrawerToggle.syncState();
 
         //set recyclerview
         recyclerList.setHasFixedSize(true);

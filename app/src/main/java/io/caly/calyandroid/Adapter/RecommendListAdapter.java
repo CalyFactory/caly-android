@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -66,9 +67,13 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
         @Bind(R.id.tv_reco_hashtag)
         TextView tvRecoHashtag;
 
+        @Bind(R.id.imv_reco_share)
+        ImageView imvShare;
+
+        /*
         @Bind(R.id.imv_reco_more)
         ImageView imvRecoMore;
-
+*/
         Context context;
 
         public ViewHolder(Context context, View view){
@@ -151,6 +156,7 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
             }
         });
 
+        /*
         holder.imvRecoMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -158,7 +164,7 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
 
             }
         });
-
+*/
 
         holder.tvMap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -182,6 +188,32 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
                                 .set("1","1")
                                 .build()
                 );
+            }
+        });
+
+        holder.imvShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String[] snsList = {
+                        "com.kakao.talk", //kakaotalk
+                };
+                boolean sended = false;
+                for(String snsPackage : snsList){
+                    if(Util.isPackageInstalled(snsPackage)){
+
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("text/plain");
+                        intent.putExtra(Intent.EXTRA_TEXT,"[캘리] 여기어때요? \n" + dataList.get(position).deepUrl);
+                        intent.setPackage("com.kakao.talk");
+
+                        context.startActivity(intent);
+                        sended = true;
+                    }
+                }
+                if(!sended){
+                    Toast.makeText(context, "공유 할 수 있는 SNS가 설치 되어있지 않습니다.",Toast.LENGTH_LONG).show();
+                }
             }
         });
 

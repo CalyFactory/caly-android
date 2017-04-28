@@ -42,7 +42,7 @@ public class RecoMapListAdapter extends PagerAdapter{
     LayoutInflater inflater;
 
     Context context;
-    private ArrayList<RecoModel> recoList;
+    public ArrayList<RecoModel> recoList;
 
     public class ViewHolder{
 
