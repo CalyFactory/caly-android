@@ -1,23 +1,35 @@
 package io.caly.calyandroid.Activity;
 
+import android.Manifest;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 
 import io.caly.calyandroid.Fragment.RecoListFragment;
 import io.caly.calyandroid.Fragment.RecoMapFragment;
 import io.caly.calyandroid.Model.Category;
+import io.caly.calyandroid.Model.Event.MapPermissionGrantedEvent;
 import io.caly.calyandroid.Model.Event.TestEvent;
 import io.caly.calyandroid.Model.Response.RecoResponse;
 import io.caly.calyandroid.Util.BusProvider;
 import io.caly.calyandroid.Util.Logger;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -30,6 +42,7 @@ import io.caly.calyandroid.Model.Event.RecoListLoadStateChangeEvent;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -165,16 +178,15 @@ public class RecoListActivity extends BaseAppCompatActivity {
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
         switch (pageType){
             case LIST:
+                checkGPSPermission();
                 pageType = PAGE_TYPE.MAP;
                 item.setIcon(getResources().getDrawable(R.drawable.ic_list_white_24dp));
-//                transaction.replace(R.id.linear_reco_container, recoMapFragment, "map");
                 transaction.hide(recoListFragment);
                 transaction.show(recoMapFragment);
                 break;
             case MAP:
                 pageType = PAGE_TYPE.LIST;
                 item.setIcon(getResources().getDrawable(R.drawable.ic_map_white_24dp));
-//                transaction.replace(R.id.linear_reco_container, recoListFragment, "list");
                 transaction.show(recoListFragment);
                 transaction.hide(recoMapFragment);
 
@@ -183,6 +195,26 @@ public class RecoListActivity extends BaseAppCompatActivity {
         }
         transaction.disallowAddToBackStack();
         transaction.commit();
+    }
+
+    void checkGPSPermission(){
+        Log.d(TAG, "checkGPSPermission");
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+
+            BusProvider.getInstance().post(new MapPermissionGrantedEvent());
+
+        }
+        else{
+            Log.d(TAG, "request permission");
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                    },
+                    Util.RC_PERMISSION_FINE_LOCATION
+            );
+        }
     }
 
     enum PAGE_TYPE{
@@ -278,6 +310,24 @@ public class RecoListActivity extends BaseAppCompatActivity {
                 );
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_PHONE_STATE)){
+            //denied
+
+        }else{
+            if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED){
+                //allowed
+                BusProvider.getInstance().post(new MapPermissionGrantedEvent());
+            } else{
+                //set to never ask again
+
+            }
+        }
+
     }
 
     /*

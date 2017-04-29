@@ -1,11 +1,14 @@
 package io.caly.calyandroid.Fragment;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -36,6 +39,7 @@ import io.caly.calyandroid.Adapter.RecoMapListAdapter;
 import io.caly.calyandroid.Fragment.Base.BaseFragment;
 import io.caly.calyandroid.Model.Category;
 import io.caly.calyandroid.Model.DataModel.RecoModel;
+import io.caly.calyandroid.Model.Event.MapPermissionGrantedEvent;
 import io.caly.calyandroid.Model.Event.RecoListLoadStateChangeEvent;
 import io.caly.calyandroid.Model.Response.RecoResponse;
 import io.caly.calyandroid.R;
@@ -64,7 +68,7 @@ public class RecoMapFragment extends BaseFragment {
 
     ArrayList<Marker> markerList;
 
-    public RecoMapFragment(){
+    public RecoMapFragment() {
 
     }
 
@@ -83,7 +87,7 @@ public class RecoMapFragment extends BaseFragment {
         return v;
     }
 
-    void init(){
+    void init() {
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -95,12 +99,12 @@ public class RecoMapFragment extends BaseFragment {
                 googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(Marker marker) {
-                        Log.d(TAG,"onMarkerClick");
-                        String recoHashKey = (String)marker.getTag();
+                        Log.d(TAG, "onMarkerClick");
+                        String recoHashKey = (String) marker.getTag();
 
-                        for(int i=0;i<adapter.recoList.size();i++){
+                        for (int i = 0; i < adapter.recoList.size(); i++) {
                             RecoModel recoModel = adapter.recoList.get(i);
-                            if(recoHashKey.equals(recoModel.recoHashKey)){
+                            if (recoHashKey.equals(recoModel.recoHashKey)) {
                                 pager.setCurrentItem(i);
                                 break;
                             }
@@ -109,11 +113,22 @@ public class RecoMapFragment extends BaseFragment {
                         return false;
                     }
                 });
+                googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+                    @Override
+                    public boolean onMyLocationButtonClick() {
+                        if(RecoMapFragment.this.googleMap.getMyLocation() == null){
+                            return false;
+                        }
+                        LatLng loc = new LatLng(RecoMapFragment.this.googleMap.getMyLocation().getLatitude(),RecoMapFragment.this.googleMap.getMyLocation().getLongitude());
+                        RecoMapFragment.this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
+                        return true;
+                    }
+                });
             }
         });
 
         pager.setClipToPadding(false);
-        pager.setPadding(120,0,160,0);
+        pager.setPadding(120, 0, 160, 0);
         pager.setPageMargin(80);
         adapter = new RecoMapListAdapter(getContext(), LayoutInflater.from(getContext()));
         pager.setAdapter(adapter);
@@ -126,11 +141,11 @@ public class RecoMapFragment extends BaseFragment {
 
             @Override
             public void onPageSelected(int position) {
-                Log.d(TAG,"onPageSelected");
+                Log.d(TAG, "onPageSelected");
                 String recoHashKey = adapter.recoList.get(position).recoHashKey;
-                for(int i=0;i<markerList.size();i++){
-                    String markerTag = (String)markerList.get(i).getTag();
-                    if(recoHashKey.equals(markerTag)){
+                for (int i = 0; i < markerList.size(); i++) {
+                    String markerTag = (String) markerList.get(i).getTag();
+                    if (recoHashKey.equals(markerTag)) {
                         markerList.get(i).showInfoWindow();
                         moveCamera(adapter.recoList.get(position));
                         break;
@@ -147,7 +162,7 @@ public class RecoMapFragment extends BaseFragment {
         markerList = new ArrayList<>();
     }
 
-    void addMarker(RecoModel recoModel){
+    void addMarker(RecoModel recoModel) {
         View markerView = LayoutInflater.from(getActivity()).inflate(R.layout.item_map_marker, null);
         LatLng position = new LatLng(recoModel.lat, recoModel.lng);
 
@@ -162,8 +177,8 @@ public class RecoMapFragment extends BaseFragment {
         markerList.add(marker);
     }
 
-    void addMarkers(List<RecoModel> recoList){
-        for(RecoModel recoModel : recoList){
+    void addMarkers(List<RecoModel> recoList) {
+        for (RecoModel recoModel : recoList) {
             addMarker(recoModel);
         }
     }
@@ -184,9 +199,21 @@ public class RecoMapFragment extends BaseFragment {
         return bitmap;
     }
 
-    public void moveCamera(RecoModel recoModel){
+    public void moveCamera(RecoModel recoModel) {
         CameraUpdate center = CameraUpdateFactory.newLatLngZoom(new LatLng(recoModel.lat, recoModel.lng), 14);
         googleMap.animateCamera(center);
+    }
+
+    @Subscribe
+    public void mapPermissionGrantedEventCallback(MapPermissionGrantedEvent event) {
+        if (
+                ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+            Log.e(TAG, "permission not granted");
+            return;
+        }
+        googleMap.setMyLocationEnabled(true);
     }
 
     @Subscribe
