@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -129,6 +130,9 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     BannerModel bannerModel;
 
+    @Bind(R.id.fab_eventlist_today)
+    FloatingActionButton fabToday;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -203,6 +207,12 @@ public class EventListActivity extends BaseAppCompatActivity {
                 Logger.d(TAG, eventModel.startMonth+"월");
                 tvEventYear.setText(eventModel.startYear+"");
                 tvEventMonth.setText(eventModel.startMonth+"월");*/
+                if(getStartDateListIndex() == layoutManager.findFirstVisibleItemPosition()){
+
+                }
+                else {
+                    fabToday.show();
+                }
             }
 
             @Override
@@ -266,6 +276,8 @@ public class EventListActivity extends BaseAppCompatActivity {
         }
 
         checkBanner();
+
+        fabToday.hide();
     }
 
     void checkBanner(){
@@ -778,6 +790,27 @@ public class EventListActivity extends BaseAppCompatActivity {
     public void onSkipRecoClick(){
         linearSyncProgress.setVisibility(View.GONE);
         loadEventList();
+
+    }
+
+    @OnClick(R.id.fab_eventlist_today)
+    public void onTodayButtonClick(){
+        recyclerList.smoothScrollToPosition(getStartDateListIndex());
+        fabToday.hide();
+    }
+
+    int getStartDateListIndex(){
+        Date todayDate = new Date();
+        for(int i=0;i<recyclerAdapter.getItemCount();i++){
+            EventModel eventModel = recyclerAdapter.getItem(i);
+            if(eventModel.isHeader) continue;
+
+            if(eventModel.startDateTime.after(todayDate)){
+                if(i==0) return 0;
+                return i-1;
+            }
+        }
+        return 0;
     }
 
     @Override

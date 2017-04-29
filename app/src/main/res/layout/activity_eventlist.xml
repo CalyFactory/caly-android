@@ -84,7 +84,7 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#ffffff"
+                        android:background="#f7f7f7"
                         android:orientation="vertical">
 
                         <FrameLayout
@@ -158,6 +158,16 @@
                                     android:textColor="#eeff41"
                                     android:textSize="15dp" />
                             </LinearLayout>
+
+
+                            <android.support.design.widget.FloatingActionButton
+                                android:id="@+id/fab_eventlist_today"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="16dp"
+                                android:layout_gravity="bottom|end"
+                                app:backgroundTint="@color/colorPrimary"/>
+
                         </FrameLayout>
                     </LinearLayout>
                     <include layout="@layout/container_drawer" />
