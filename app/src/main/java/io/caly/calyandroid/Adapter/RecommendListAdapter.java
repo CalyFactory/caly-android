@@ -58,6 +58,9 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
 //        @Bind(R.id.imv_reco_map)
 //        ImageView imvMap;
 
+        @Bind(R.id.tv_reco_insta)
+        TextView tvInsta;
+
         @Bind(R.id.tv_reco_map)
         TextView tvMap;
 
@@ -122,6 +125,7 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
         holder.tvRecoTitle.setText(recoModel.title);
         holder.tvRecoDistance.setText(recoModel.distance);
         holder.tvRecoHashtag.setText(StringFormmater.hashTagFormat(recoModel.tagNames));
+        holder.tvInsta.setText(recoModel.sourceUserId);
 
         Picasso.with(context)
                 .load(context.getString(R.string.app_server) + "img/" + recoModel.imgUrl)
