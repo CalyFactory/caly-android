@@ -89,6 +89,8 @@ public class EventListActivity extends BaseAppCompatActivity {
     @Bind(R.id.recycler_eventlist)
     ShimmerRecyclerView recyclerList;
 
+    @Bind(R.id.tv_eventlist_today)
+    TextView tvToday;
 
     @Bind(R.id.tv_eventlist_year)
     TextView tvEventYear;
@@ -196,7 +198,7 @@ public class EventListActivity extends BaseAppCompatActivity {
         recyclerList.setLayoutManager(layoutManager);
 
 
-        recyclerAdapter = new EventListAdapter(new ArrayList<EventModel>());
+        recyclerAdapter = new EventListAdapter(getBaseContext(), new ArrayList<EventModel>());
         recyclerList.setAdapter(recyclerAdapter);
 
         recyclerList.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -216,6 +218,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                 }
                 else {
                     fabToday.show();
+                    tvToday.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -282,6 +285,7 @@ public class EventListActivity extends BaseAppCompatActivity {
         checkBanner();
 
         fabToday.hide();
+        tvToday.setVisibility(View.GONE);
     }
 
     void checkBanner(){
@@ -802,6 +806,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     public void onTodayButtonClick(){
         recyclerList.smoothScrollToPosition(getStartDateListIndex());
         fabToday.hide();
+        tvToday.setVisibility(View.GONE);
     }
 
     int getStartDateListIndex(){

@@ -3,4 +3,30 @@
     <color name="colorPrimary">#56b7e6</color>
     <color name="colorPrimaryDark">#42a3d3</color>
     <color name="colorAccent">#ffffff</color>
+
+    <color name="dark_sky_blue">#56b7e6</color>
+    <color name="water_blue">#1488d2</color>
+    <color name="white_0">#00ffffff</color>
+    <color name="dark_sky_blue_two">#42a3d3</color>
+    <color name="slate_grey_30">#4d57595e</color>
+    <color name="warm_grey">#9b9b9b</color>
+    <color name="dark_sky_blue_three">#48a8e0</color>
+    <color name="orange">#f26906</color>
+    <color name="irish_green">#009f2a</color>
+    <color name="cerulean">#0194d8</color>
+    <color name="greyish_brown">#434343</color>
+    <color name="azure">#009ce5</color>
+    <color name="white_50">#80ffffff</color>
+    <color name="black_two">#3a3838</color>
+    <color name="white_31">#4fffffff</color>
+    <color name="white">#ffffff</color>
+    <color name="white_86">#dcffffff</color>
+    <color name="greyish_brown_two">#404040</color>
+    <color name="white_two">#e3e3e3</color>
+    <color name="greyish_brown_three">#414141</color>
+    <color name="black">#1a1a1a</color>
+    <color name="warm_grey_two">#999999</color>
+    <color name="white_three">#e2e2e2</color>
+    <color name="warm_grey_three">#9a9a9a</color>
+    <color name="white_5">#0dffffff</color>
 </resources>

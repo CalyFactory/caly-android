@@ -1,12 +1,15 @@
 package io.caly.calyandroid.Adapter;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -31,6 +34,7 @@ import io.caly.calyandroid.Util.Util;
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder> {
 
     private ArrayList<EventModel> dataList;
+    private Context context;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -74,6 +78,14 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         @Bind(R.id.tv_eventrow_state)
         TextView tvState;
 
+        @Nullable
+        @Bind(R.id.imv_eventrow_state)
+        ImageView imvState;
+
+        @Nullable
+        @Bind(R.id.tv_eventrow_recocount)
+        TextView tvRecoCount;
+
         public ViewHolder(View view){
             super(view);
 
@@ -81,7 +93,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         }
     }
 
-    public EventListAdapter(ArrayList<EventModel> dataList){
+    public EventListAdapter(Context context, ArrayList<EventModel> dataList){
+        this.context = context;
         this.dataList = dataList;
     }
 
@@ -191,20 +204,22 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
                 switch (eventModel.recoState){
                     case STATE_BEING_RECOMMEND:
-//                        holder.cardRow.setCardBackgroundColor(Color.LTGRAY);
-                        holder.linearState.setVisibility(View.VISIBLE);
-                        holder.linearState.setBackgroundColor(Color.GRAY);
-                        holder.tvState.setText("분\n석\n중");
+                        holder.linearState.setBackgroundColor(ContextCompat.getColor(context, R.color.white_two));
+                        holder.tvState.setText("추천중");
+                        holder.tvRecoCount.setText("");
+                        holder.imvState.setImageResource(R.drawable.ic_message);
                         break;
                     case STATE_NOTHING_TO_RECOMMEND:
-//                        holder.cardRow.setCardBackgroundColor(Color.LTGRAY);
-                        holder.linearState.setVisibility(View.GONE);
+                        holder.linearState.setBackgroundColor(ContextCompat.getColor(context, R.color.white_two));
+                        holder.tvState.setText("일정확인");
+                        holder.tvRecoCount.setText("");
+                        holder.imvState.setImageResource(R.drawable.question_mark);
                         break;
                     case STATE_DONE_RECOMMEND:
-//                        holder.cardRow.setCardBackgroundColor(Color.rgb(157,181,192));
-                        holder.linearState.setVisibility(View.VISIBLE);
-                        holder.linearState.setBackgroundColor(Color.BLACK);
-                        holder.tvState.setText(eventModel.totalRecoCnt + "\n개\n추\n천\n됨");
+                        holder.linearState.setBackgroundColor(ContextCompat.getColor(context, R.color.dark_sky_blue));
+                        holder.tvState.setText("추천완료");
+                        holder.tvRecoCount.setText("" + eventModel.totalRecoCnt);
+                        holder.imvState.setImageResource(R.drawable.oval_3);
                         break;
                 }
                 break;

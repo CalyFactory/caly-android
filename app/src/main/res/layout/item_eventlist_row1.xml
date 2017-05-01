@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingPrefix"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -15,7 +17,6 @@
         <LinearLayout
             android:layout_width="61dp"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
@@ -24,15 +25,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="11dp"
-                android:textColor="#404040"
+                android:textColor="@color/greyish_brown_two"
                 android:textSize="21dp" />
 
             <TextView
                 android:id="@+id/tv_eventrow_daystring"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#414141"
-                fontPath="fonts/Roboto-Bold.ttf"
+                android:textColor="@color/greyish_brown_three"
+                fontPath="@string/font_nanum_extra_bold"
                 android:textSize="10dp" />
 
         </LinearLayout>
@@ -40,13 +41,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#e3e3e3"
+            android:background="@color/white_two"
             android:padding="0.5dp"
             android:layout_marginRight="11dp">
 
             <LinearLayout
                 android:id="@+id/linear_eventlist_row"
-                android:background="#ffffff"
+                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -68,7 +69,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="13dp"
-                            android:textColor="#282727"
+                            android:textColor="@color/black"
+                            fontPath="@string/font_nanum_extra_bold"
                             android:textSize="15dp" />
 
                         <LinearLayout
@@ -88,7 +90,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="3dp"
-                                android:textColor="#b4b4b4"
+                                android:textColor="@color/warm_grey_two"
                                 android:textSize="12dp" />
 
                         </LinearLayout>
@@ -112,7 +114,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginLeft="3dp"
-                                android:textColor="#b4b4b4"
+                                android:textColor="@color/warm_grey_two"
                                 android:textSize="12dp" />
 
                         </LinearLayout>
@@ -120,9 +122,10 @@
 
                     <LinearLayout
                         android:id="@+id/linear_eventrow_state"
-                        android:layout_width="52dp"
+                        android:layout_width="53dp"
+                        android:background="@color/white_two"
                         android:layout_height="match_parent"
-                        android:background="#ff0000"
+                        android:orientation="vertical"
                         android:gravity="center">
 
                         <FrameLayout
@@ -130,18 +133,30 @@
                             android:layout_height="wrap_content">
 
                             <ImageView
+                                android:id="@+id/imv_eventrow_state"
+                                android:layout_width="wrap_content"
+                                android:src="@drawable/ic_message"
+                                android:layout_height="wrap_content" />
+
+                            <TextView
+                                android:layout_gravity="center"
+                                android:text="25"
+                                android:gravity="center"
+                                android:id="@+id/tv_eventrow_recocount"
+                                android:textSize="11dp"
+                                android:textColor="@color/dark_sky_blue"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content" />
 
                         </FrameLayout>
                         <TextView
+                            android:layout_marginTop="5dp"
                             android:id="@+id/tv_eventrow_state"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="분\n석\n중"
-                            android:textColor="#ffffff"
-                            android:textSize="15dp" />
+                            android:textColor="@color/white"
+                            android:textSize="8dp" />
                     </LinearLayout>
                 </LinearLayout>
 

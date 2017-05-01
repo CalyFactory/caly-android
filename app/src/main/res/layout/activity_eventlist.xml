@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    tools:ignore="MissingPrefix"
     android:orientation="vertical">
 
 
@@ -136,14 +138,31 @@
                                     android:textSize="15dp" />
                             </LinearLayout>
 
-
-                            <android.support.design.widget.FloatingActionButton
-                                android:id="@+id/fab_eventlist_today"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_margin="16dp"
+                            <FrameLayout
+                                android:layout_width="88dp"
                                 android:layout_gravity="bottom|end"
-                                app:backgroundTint="@color/colorPrimary"/>
+                                android:layout_height="88dp">
+
+                                <android.support.design.widget.FloatingActionButton
+                                    android:id="@+id/fab_eventlist_today"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:elevation="6dp"
+                                    app:backgroundTint="@color/white"/>
+
+                                <TextView
+                                    android:id="@+id/tv_eventlist_today"
+                                    android:layout_gravity="center"
+                                    android:layout_width="wrap_content"
+                                    android:elevation="7dp"
+                                    android:textSize="15dp"
+                                    fontPath="@string/font_nanum_extra_bold"
+                                    android:textColor="@color/dark_sky_blue_three"
+                                    android:text="오늘"
+                                    android:layout_height="wrap_content"/>
+
+                            </FrameLayout>
 
                         </FrameLayout>
                     </LinearLayout>
