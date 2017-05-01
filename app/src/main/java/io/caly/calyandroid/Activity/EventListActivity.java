@@ -23,6 +23,7 @@ import io.caly.calyandroid.Model.Event.TestEvent;
 import io.caly.calyandroid.Util.Logger;
 
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -88,20 +89,13 @@ public class EventListActivity extends BaseAppCompatActivity {
     @Bind(R.id.recycler_eventlist)
     ShimmerRecyclerView recyclerList;
 
-    /*
+
     @Bind(R.id.tv_eventlist_year)
     TextView tvEventYear;
 
     @Bind(R.id.tv_eventlist_month)
     TextView tvEventMonth;
 
-    @Bind(R.id.btn_eventlist_prev)
-    ImageButton imvEventPrev;
-
-    @Bind(R.id.btn_eventlist_next)
-    ImageButton imvEventNext;
-
-    */
     @Bind(R.id.linear_eventlist_loader) // 동기화
     LinearLayout linearSyncProgress;
 
@@ -156,11 +150,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                 return false;
             }
         });
-
         setSupportActionBar(toolbar);
-        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp);
-        upArrow.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-        getSupportActionBar().setHomeAsUpIndicator(upArrow);
 
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,
                 drawerLayout, toolbar, R.string.app_name, R.string.app_name) {
@@ -183,6 +173,20 @@ public class EventListActivity extends BaseAppCompatActivity {
         drawerLayout.setDrawerListener(mDrawerToggle);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        mDrawerToggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
+        mDrawerToggle.setDrawerIndicatorEnabled(false);
+        mDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(drawerLayout.isDrawerOpen(Gravity.LEFT)){
+                    drawerLayout.closeDrawer(Gravity.LEFT);
+                }
+                else {
+                    drawerLayout.openDrawer(Gravity.LEFT);
+                }
+            }
+        });
+
         mDrawerToggle.syncState();
 
         //set recyclerview
@@ -199,14 +203,14 @@ public class EventListActivity extends BaseAppCompatActivity {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-/*
+
                 if(recyclerAdapter.getItemCount()==0) return;
                 int position = layoutManager.findFirstVisibleItemPosition();
                 EventModel eventModel = recyclerAdapter.getItem(position);
 
                 Logger.d(TAG, eventModel.startMonth+"월");
                 tvEventYear.setText(eventModel.startYear+"");
-                tvEventMonth.setText(eventModel.startMonth+"월");*/
+                tvEventMonth.setText(eventModel.startMonth+"월");
                 if(getStartDateListIndex() == layoutManager.findFirstVisibleItemPosition()){
 
                 }
@@ -873,12 +877,13 @@ public class EventListActivity extends BaseAppCompatActivity {
             case R.id.menu_eventlist_refresh:
                 refreshEvent();
                 break;
+            /*
             case R.id.menu_eventlist_setting:
                 Intent intent = new Intent(EventListActivity.this, LegacySettingActivity.class);
                 startActivityForResult(intent, 1);
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 
-                break;
+                break;*/
         }
 
         return super.onOptionsItemSelected(item);
