@@ -14,7 +14,9 @@ import io.caly.calyandroid.Model.DataModel.AccountModel;
  */
 
 public class StringFormmater {
-    
+
+    public final static String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug"," Sept", "Oct", "Nov", "Dec"};
+
     public static String hostnameAuthGenerator(String userId, String hostname){
         if(userId.indexOf("@")==-1){
             return userId+"@"+hostname;
@@ -49,9 +51,9 @@ public class StringFormmater {
 
     public static String yearMonthFormat(int year, int month){
         return String.format(
-                "%04d년 %02d월",
+                "%04d %s",
                 year,
-                month
+                months[month-1]
 
         );
     }

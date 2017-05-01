@@ -70,12 +70,23 @@ public class Util {
         if (!outViews.isEmpty()) {
             final TextView titleView = (TextView) outViews.get(0);
             titleView.setGravity(Gravity.CENTER_HORIZONTAL);
-            titleView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 18);
             final Toolbar.LayoutParams layoutParams = (Toolbar.LayoutParams) titleView.getLayoutParams();
             layoutParams.width = ViewGroup.LayoutParams.MATCH_PARENT;
             layoutParams.setMargins(0,0,0,0);
             toolbar.requestLayout();
         }
+    }
+
+    public static void setToolbarFontSize(Toolbar toolbar, int fontSize){
+        final CharSequence title = toolbar.getTitle();
+        final ArrayList<View> outViews = new ArrayList<>(1);
+        toolbar.findViewsWithText(outViews, title, View.FIND_VIEWS_WITH_TEXT);
+        if (!outViews.isEmpty()) {
+            final TextView titleView = (TextView) outViews.get(0);
+            titleView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, fontSize);
+            toolbar.requestLayout();
+        }
+
     }
 
     public static String getUUID(){

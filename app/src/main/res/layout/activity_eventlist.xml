@@ -20,11 +20,6 @@
 
                 <include layout="@layout/toolbar" />
 
-
-
-
-
-
                 <android.support.v4.widget.DrawerLayout
                     android:id="@+id/drawer_layout"
                     android:layout_width="match_parent"
@@ -38,30 +33,31 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:orientation="vertical"
+                            android:paddingTop="12dp"
+                            android:paddingBottom="19dp"
                             android:background="@color/colorPrimary"
-                            android:paddingLeft="20dp"
-                            android:paddingRight="20dp"
-                            android:paddingTop="10dp"
-                            android:layout_height="89dp">
+                            android:gravity="center_horizontal"
+                            android:layout_height="wrap_content">
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="2월"
-                                android:textSize="40dp"
-                                android:id="@+id/tv_eventlist_month"
+                                android:text=""
+                                android:textSize="15dp"
+                                android:id="@+id/tv_eventlist_yearmonth"
                                 android:textStyle="bold"
-                                android:textColor="#ffffff"
+                                android:textColor="@color/white"
                                 />
 
                             <TextView
+                                android:layout_marginTop="6dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/tv_eventlist_year"
-                                android:text="2017"
+                                android:text="총 12개의 일정이 있습니다."
                                 android:textStyle="bold"
-                                android:textColor="#ffffff"
-                                android:textSize="17dp"
+                                android:textColor="@color/white_86"
+                                android:textSize="10dp"
                                 />
 
                         </LinearLayout>

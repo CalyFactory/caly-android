@@ -63,6 +63,7 @@ import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.ConfigClient;
 import io.caly.calyandroid.Util.EventListener.RecyclerItemClickListener;
+import io.caly.calyandroid.Util.StringFormmater;
 import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -97,8 +98,8 @@ public class EventListActivity extends BaseAppCompatActivity {
     @Bind(R.id.tv_eventlist_year)
     TextView tvEventYear;
 
-    @Bind(R.id.tv_eventlist_month)
-    TextView tvEventMonth;
+    @Bind(R.id.tv_eventlist_yearmonth)
+    TextView tvEventYearMonth;
 
     @Bind(R.id.linear_eventlist_loader) // 동기화
     LinearLayout linearSyncProgress;
@@ -146,7 +147,7 @@ public class EventListActivity extends BaseAppCompatActivity {
         ButterKnife.bind(this);
 
         //set toolbar
-        toolbar.setTitle("일정 목록");
+        toolbar.setTitle("5");
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -155,6 +156,7 @@ public class EventListActivity extends BaseAppCompatActivity {
             }
         });
         Util.centerToolbarTitle(toolbar);
+        Util.setToolbarFontSize(toolbar, 30);
         TypefaceUtils.load(getResources().getAssets(), getString(R.string.font_nanum_extra_bold));
         setSupportActionBar(toolbar);
 
@@ -220,11 +222,13 @@ public class EventListActivity extends BaseAppCompatActivity {
 
                 if(recyclerAdapter.getItemCount()!=0) {
                     int position = layoutManager.findFirstVisibleItemPosition();
+                    if(position<0) return;
                     EventModel eventModel = recyclerAdapter.getItem(position);
 
                     Logger.d(TAG, eventModel.startMonth + "월");
-                    tvEventYear.setText(eventModel.startYear + "");
-                    tvEventMonth.setText(eventModel.startMonth + "월");
+                    toolbar.setTitle("" + eventModel.startMonth);
+//                    tvEventYear.setText(eventModel.startYear + "");
+                    tvEventYearMonth.setText(StringFormmater.yearMonthFormat(eventModel.startYear, eventModel.startMonth));
                     if (getStartDateListIndex() == layoutManager.findFirstVisibleItemPosition()) {
 
                         fabToday.hide();

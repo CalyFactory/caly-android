@@ -110,6 +110,7 @@ public class RecoMapListAdapter extends PagerAdapter{
                 intent.putExtra("recoHashKey", recoModel.recoHashKey);
                 intent.putExtra("eventHashKey", recoModel.eventHashKey);
                 context.startActivity(intent);
+                ((Activity)context).overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 
                 Tracker t = ((CalyApplication) ((Activity) context).getApplication()).getDefaultTracker();
                 t.setScreenName(this.getClass().getName());

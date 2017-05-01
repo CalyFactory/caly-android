@@ -1,5 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    tools:ignore="MissingPrefix"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="7dp"
+        android:paddingRight="7dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="2dp"
+        android:layout_height="wrap_content">
+
+
+        <android.support.v7.widget.CardView
+            card:cardCornerRadius="0dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:layout_height="match_parent">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="131dp">
+
+                    <ImageView
+                        android:id="@+id/imv_reco_food"
+                        android:scaleType="centerCrop"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:background="@color/slate_grey_30"
+                        android:layout_height="match_parent"/>
+
+                    <ImageView
+                        android:layout_marginTop="12dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_gravity="right"
+                        android:layout_width="18dp"
+                        android:id="@+id/imv_reco_share"
+                        android:src="@drawable/ic_share_white_48dp"
+                        android:layout_height="21dp" />
+
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="vertical"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:orientation="horizontal"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_marginLeft="17dp"
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:orientation="vertical"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:layout_marginTop="12dp"
+                                android:id="@+id/tv_reco_title"
+                                android:layout_width="wrap_content"
+                                android:text="스시 마이우"
+                                android:textColor="#1a1a1a"
+                                android:textSize="15dp"
+                                fontPath="@string/font_nanum_extra_bold"
+                                android:layout_height="wrap_content" />
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="5dp"
+                                android:gravity="center_vertical"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_width="17dp"
+                                    android:src="@drawable/ic_checkin"
+                                    android:layout_height="17dp" />
+
+                                <TextView
+                                    android:id="@+id/tv_reco_distance"
+                                    android:layout_marginLeft="4dp"
+                                    android:layout_width="wrap_content"
+                                    android:text="선릉역에서 걸어서 3분거리"
+                                    android:textColor="@color/warm_grey_two"
+                                    android:textSize="13dp"
+                                    android:layout_height="wrap_content" />
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:paddingTop="14dp"
+                            android:layout_marginRight="18dp"
+                            android:layout_height="match_parent">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:text="길찾기 >"
+                                android:textSize="12dp"
+                                android:id="@+id/tv_reco_map"
+                                android:textColor="@color/warm_grey"
+                                android:layout_height="wrap_content" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.3dp"
+                        android:background="#cecece"
+                        />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_height="match_parent">
+
+
+                        <TextView
+                            android:id="@+id/tv_reco_hashtag"
+                            android:layout_width="wrap_content"
+                            android:text="#맛있음 #일식 #돈부리 #분위기좋은곳 #데이트코스 #맨날가는 #배고파여 #적을게없다 #뭐적지"
+                            android:textColor="@color/dark_sky_blue"
+                            android:textSize="12dp"
+                            fontPath="@string/font_nanum_extra_bold"
+                            android:layout_height="wrap_content" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+
+</LinearLayout>
+<!--
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -109,3 +275,5 @@
     </LinearLayout>
 
 </LinearLayout>
+
+-->

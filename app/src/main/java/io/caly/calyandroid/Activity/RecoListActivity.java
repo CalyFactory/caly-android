@@ -89,6 +89,7 @@ public class RecoListActivity extends BaseAppCompatActivity {
             }
         });
         Util.centerToolbarTitle(toolbar);
+        Util.setToolbarFontSize(toolbar, 18);
         TypefaceUtils.load(getResources().getAssets(), getString(R.string.font_nanum_extra_bold));
 
         setSupportActionBar(toolbar);
@@ -183,13 +184,13 @@ public class RecoListActivity extends BaseAppCompatActivity {
             case LIST:
                 checkGPSPermission();
                 pageType = PAGE_TYPE.MAP;
-                item.setIcon(getResources().getDrawable(R.drawable.ic_list_white_24dp));
+                item.setIcon(getResources().getDrawable(R.drawable.group_4));
                 transaction.hide(recoListFragment);
                 transaction.show(recoMapFragment);
                 break;
             case MAP:
                 pageType = PAGE_TYPE.LIST;
-                item.setIcon(getResources().getDrawable(R.drawable.ic_map_white_24dp));
+                item.setIcon(getResources().getDrawable(R.drawable.ic_checkin_map));
                 transaction.show(recoListFragment);
                 transaction.hide(recoMapFragment);
 
