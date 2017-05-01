@@ -210,20 +210,6 @@ public class EventListActivity extends BaseAppCompatActivity {
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
 
-                if(recyclerAdapter.getItemCount()==0) return;
-                int position = layoutManager.findFirstVisibleItemPosition();
-                EventModel eventModel = recyclerAdapter.getItem(position);
-
-                Logger.d(TAG, eventModel.startMonth+"월");
-                tvEventYear.setText(eventModel.startYear+"");
-                tvEventMonth.setText(eventModel.startMonth+"월");
-                if(getStartDateListIndex() == layoutManager.findFirstVisibleItemPosition()){
-
-                }
-                else {
-                    fabToday.show();
-                    tvToday.setVisibility(View.VISIBLE);
-                }
             }
 
             @Override
@@ -231,6 +217,26 @@ public class EventListActivity extends BaseAppCompatActivity {
                 super.onScrolled(recyclerView, dx, dy);
 
                 if(isLoading) return;
+
+                if(recyclerAdapter.getItemCount()!=0) {
+                    int position = layoutManager.findFirstVisibleItemPosition();
+                    EventModel eventModel = recyclerAdapter.getItem(position);
+
+                    Logger.d(TAG, eventModel.startMonth + "월");
+                    tvEventYear.setText(eventModel.startYear + "");
+                    tvEventMonth.setText(eventModel.startMonth + "월");
+                    if (getStartDateListIndex() == layoutManager.findFirstVisibleItemPosition()) {
+
+                        fabToday.hide();
+                        tvToday.setVisibility(View.GONE);
+                    } else {
+                        Log.d(TAG, "show fab");
+                        fabToday.show();
+                        if (fabToday.isShown()) {
+                            tvToday.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
 
                 int totalItemCount = layoutManager.getItemCount();
                 int firstVisibleItem = layoutManager.findFirstVisibleItemPosition();
@@ -809,6 +815,7 @@ public class EventListActivity extends BaseAppCompatActivity {
     @OnClick(R.id.fab_eventlist_today)
     public void onTodayButtonClick(){
         recyclerList.smoothScrollToPosition(getStartDateListIndex());
+        Logger.d(TAG, "fab hide");
         fabToday.hide();
         tvToday.setVisibility(View.GONE);
     }
