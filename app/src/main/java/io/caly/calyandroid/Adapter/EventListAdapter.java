@@ -59,8 +59,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         View viewIndicator;
 
         @Nullable
-        @Bind(R.id.card_eventlist_row)
-        CardView cardRow;
+        @Bind(R.id.linear_eventlist_row)
+        LinearLayout cardRow;
 
         @Nullable
         @Bind(R.id.tv_eventrow_yearmonth)
@@ -191,17 +191,17 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
                 switch (eventModel.recoState){
                     case STATE_BEING_RECOMMEND:
-                        holder.cardRow.setCardBackgroundColor(Color.LTGRAY);
+//                        holder.cardRow.setCardBackgroundColor(Color.LTGRAY);
                         holder.linearState.setVisibility(View.VISIBLE);
                         holder.linearState.setBackgroundColor(Color.GRAY);
                         holder.tvState.setText("분\n석\n중");
                         break;
                     case STATE_NOTHING_TO_RECOMMEND:
-                        holder.cardRow.setCardBackgroundColor(Color.LTGRAY);
+//                        holder.cardRow.setCardBackgroundColor(Color.LTGRAY);
                         holder.linearState.setVisibility(View.GONE);
                         break;
                     case STATE_DONE_RECOMMEND:
-                        holder.cardRow.setCardBackgroundColor(Color.rgb(157,181,192));
+//                        holder.cardRow.setCardBackgroundColor(Color.rgb(157,181,192));
                         holder.linearState.setVisibility(View.VISIBLE);
                         holder.linearState.setBackgroundColor(Color.BLACK);
                         holder.tvState.setText(eventModel.totalRecoCnt + "\n개\n추\n천\n됨");
@@ -210,8 +210,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                 break;
             case 2:
                 holder.tvYearMonth.setText(
-                        StringFormmater.yearMonthFormat(
-                                eventModel.startYear,
+                        StringFormmater.monthFormat(
                                 eventModel.startMonth
                         )
                 );

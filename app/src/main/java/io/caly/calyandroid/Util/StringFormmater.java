@@ -39,6 +39,14 @@ public class StringFormmater {
         );
     }
 
+    public static String monthFormat(int month){
+        return String.format(
+                "%d월",
+                month
+
+        );
+    }
+
     public static String yearMonthFormat(int year, int month){
         return String.format(
                 "%04d년 %02d월",
