@@ -62,7 +62,6 @@ public class DebugActivity extends BaseAppCompatActivity {
             AccountListActivity.class,
             GuideActivity.class,
             LegacySettingActivity.class,
-            MapActivity.class,
             NoticeActivity.class,
             PolicyActivity.class,
             LegacySettingActivity.class,

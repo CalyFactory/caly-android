@@ -1,5 +1,6 @@
 package io.caly.calyandroid.Activity.Base;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import io.caly.calyandroid.Activity.SplashActivity;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.Util.BusProvider;
 import io.caly.calyandroid.Util.Logger;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -92,5 +94,10 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Logger.i(TAG, "onActivityResult(" + requestCode + ", " + resultCode + ")");
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
     }
 }

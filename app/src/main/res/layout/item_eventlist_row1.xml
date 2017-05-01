@@ -24,7 +24,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="11dp"
-                android:text="19"
                 android:textColor="#404040"
                 android:textSize="21dp" />
 
@@ -32,8 +31,8 @@
                 android:id="@+id/tv_eventrow_daystring"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="금요일"
                 android:textColor="#414141"
+                fontPath="fonts/Roboto-Bold.ttf"
                 android:textSize="10dp" />
 
         </LinearLayout>
@@ -104,6 +103,7 @@
 
                             <ImageView
                                 android:layout_width="16dp"
+                                android:padding="1.5dp"
                                 android:layout_height="16dp"
                                 android:src="@drawable/ic_timer" />
 
@@ -125,6 +125,15 @@
                         android:background="#ff0000"
                         android:gravity="center">
 
+                        <FrameLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content" />
+
+                        </FrameLayout>
                         <TextView
                             android:id="@+id/tv_eventrow_state"
                             android:layout_width="wrap_content"

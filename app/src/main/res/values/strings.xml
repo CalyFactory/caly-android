@@ -44,5 +44,9 @@
     <string name="ga_action_button_click">ga_action_button_click</string>
     <string name="ga_action_reco_view">ga_action_reco_view</string>
 
+    <!-- fonts -->
+    <string name="font_nanum_bold">fonts/NanumSquareOTFBold.otf</string>
+    <string name="font_nanum_extra_bold">fonts/NanumSquareOTFExtraBold.otf</string>
+    <string name="font_nanum_regular">fonts/NanumSquareOTFRegular.otf</string>
 
 </resources>
