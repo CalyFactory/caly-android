@@ -4,6 +4,6 @@
     <item
         android:id="@+id/menu_reco_changeview"
         android:title="보기변경"
-        android:icon="@drawable/ic_map_white_24dp"
+        android:icon="@drawable/ic_checkin_map"
         app:showAsAction="ifRoom" />
 </menu>

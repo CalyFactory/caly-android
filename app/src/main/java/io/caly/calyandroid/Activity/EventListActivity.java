@@ -63,9 +63,11 @@ import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.ConfigClient;
 import io.caly.calyandroid.Util.EventListener.RecyclerItemClickListener;
+import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import uk.co.chrisjenx.calligraphy.TypefaceUtils;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -152,6 +154,8 @@ public class EventListActivity extends BaseAppCompatActivity {
                 return false;
             }
         });
+        Util.centerToolbarTitle(toolbar);
+        TypefaceUtils.load(getResources().getAssets(), getString(R.string.font_nanum_extra_bold));
         setSupportActionBar(toolbar);
 
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,

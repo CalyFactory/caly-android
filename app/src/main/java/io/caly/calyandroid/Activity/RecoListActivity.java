@@ -46,6 +46,7 @@ import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import uk.co.chrisjenx.calligraphy.TypefaceUtils;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -87,6 +88,8 @@ public class RecoListActivity extends BaseAppCompatActivity {
                 return false;
             }
         });
+        Util.centerToolbarTitle(toolbar);
+        TypefaceUtils.load(getResources().getAssets(), getString(R.string.font_nanum_extra_bold));
 
         setSupportActionBar(toolbar);
         final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp);
