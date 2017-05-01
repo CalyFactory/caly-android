@@ -1,24 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.gms.maps.MapView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:id="@+id/mapview_recomap_map"
             android:layout_height="match_parent">
 
-        </com.google.android.gms.maps.MapView>
+            <com.google.android.gms.maps.MapView
+                android:layout_width="match_parent"
+                android:id="@+id/mapview_recomap_map"
+                android:layout_height="match_parent">
 
+            </com.google.android.gms.maps.MapView>
+
+            <io.github.yavski.fabspeeddial.FabSpeedDial
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:id="@+id/fab_map_filter"
+                app:fabGravity="top_start"
+                app:fabMenu="@menu/menu_mapfilter"
+                app:miniFabBackgroundTint="@android:color/white"
+                app:miniFabDrawableTint="?attr/colorPrimaryDark"
+                app:miniFabTitleTextColor="?attr/colorPrimaryDark" />
+
+        </FrameLayout>
         <android.support.v4.view.ViewPager
             android:id="@+id/pager_recomap"
             android:layout_gravity="bottom"
             android:layout_width="match_parent"
-            android:layout_height="270dp">
+            android:layout_height="250dp">
 
         </android.support.v4.view.ViewPager>
 

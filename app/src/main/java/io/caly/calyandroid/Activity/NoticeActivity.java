@@ -100,6 +100,29 @@ public class NoticeActivity extends BaseAppCompatActivity {
 
     void loadNotice(){
         linearLoading.setVisibility(View.VISIBLE);
+
+
+
+        ApiClient.getService().setLog("0").enqueue(new Callback<BasicResponse>() {
+            @Override
+            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+
+                switch (response.code()){
+                    case 200:
+                        break;
+                    default:
+
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponse> call, Throwable t) {
+
+            }
+        });
+
+
         ApiClient.getService().notices(
                 TokenRecord.getTokenRecord().getApiKey()
         ).enqueue(new Callback<NoticeResponse>() {

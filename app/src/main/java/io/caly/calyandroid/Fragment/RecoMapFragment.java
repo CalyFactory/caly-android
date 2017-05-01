@@ -8,11 +8,13 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -44,6 +46,8 @@ import io.caly.calyandroid.Model.Event.RecoListLoadStateChangeEvent;
 import io.caly.calyandroid.Model.Response.RecoResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.Logger;
+import io.github.yavski.fabspeeddial.FabSpeedDial;
+import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
 import retrofit2.Response;
 
 /**
@@ -62,11 +66,15 @@ public class RecoMapFragment extends BaseFragment {
     @Bind(R.id.pager_recomap)
     ViewPager pager;
 
+    @Bind(R.id.fab_map_filter)
+    FabSpeedDial fabFilter;
+
     RecoMapListAdapter adapter;
 
     GoogleMap googleMap;
 
     ArrayList<Marker> markerList;
+    List<RecoModel> recoList;
 
     public RecoMapFragment() {
 
@@ -128,8 +136,8 @@ public class RecoMapFragment extends BaseFragment {
         });
 
         pager.setClipToPadding(false);
-        pager.setPadding(120, 0, 160, 0);
-        pager.setPageMargin(80);
+        pager.setPadding(80, 0, 120, 0);
+        pager.setPageMargin(40);
         adapter = new RecoMapListAdapter(getContext(), LayoutInflater.from(getContext()));
         pager.setAdapter(adapter);
 
@@ -160,6 +168,48 @@ public class RecoMapFragment extends BaseFragment {
         });
 
         markerList = new ArrayList<>();
+
+        fabFilter.setMenuListener(new SimpleMenuListenerAdapter(){
+            @Override
+            public boolean onMenuItemSelected(MenuItem menuItem) {
+                switch (menuItem.getItemId()){
+                    case R.id.menu_filter_all:
+                        filterList(null);
+                        break;
+                    case R.id.menu_filter_restaurant:
+                        filterList(Category.RESTAURANT);
+                        break;
+                    case R.id.menu_filter_cafe:
+                        filterList(Category.CAFE);
+                        break;
+                    case R.id.menu_filter_place:
+                        filterList(Category.PLACE);
+                        break;
+                }
+                return super.onMenuItemSelected(menuItem);
+            }
+        });
+    }
+
+    void filterList(Category category){
+
+        adapter.recoList = new ArrayList<>();
+        googleMap.clear();
+
+        for(int i=0;i<recoList.size();i++){
+            Log.d(TAG, "category : " + recoList.get(i).category);
+            if(category == null){
+                adapter.addItem(recoList.get(i));
+                addMarker(recoList.get(i));
+            }
+            else if(recoList.get(i).category == category.value){
+                adapter.addItem(recoList.get(i));
+                addMarker(recoList.get(i));
+            }
+        }
+        if(adapter.recoList.size()>0) {
+            moveCamera(adapter.recoList.get(0));
+        }
     }
 
     void addMarker(RecoModel recoModel) {
@@ -224,11 +274,14 @@ public class RecoMapFragment extends BaseFragment {
             case STATE_DONE:
                 Response<RecoResponse> response = doneEvent.response;
                 RecoResponse body = response.body();
+                recoList = body.payload.data;
                 adapter.addItems(body.payload.data);
                 addMarkers(body.payload.data);
 
                 if(doneEvent.category == Category.RESTAURANT) {
-                    moveCamera(body.payload.data.get(0));
+                    if (body.payload.data.size() > 0) {
+                        moveCamera(body.payload.data.get(0));
+                    }
                 }
 
                 break;

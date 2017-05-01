@@ -563,6 +563,7 @@ public class EventListActivity extends BaseAppCompatActivity {
                         break;
                 }
             }
+            
 
             @Override
             public void onFailure(Call<BasicResponse> call, Throwable t) {
