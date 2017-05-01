@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import io.caly.calyandroid.Util.Logger;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +12,6 @@ import android.widget.Toast;
 
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -27,11 +24,11 @@ import io.caly.calyandroid.Model.DataModel.RecoModel;
 import io.caly.calyandroid.Model.Event.RecoListLoadDoneEvent;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.RecoResponse;
-import io.caly.calyandroid.Model.TrackingType;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.BusProvider;
 import io.caly.calyandroid.Util.EventListener.RecyclerItemClickListener;
+import io.caly.calyandroid.Util.Logger;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -113,24 +110,6 @@ public class RecoTabFragment extends BaseFragment {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, final int position) {
-
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Logger.i(TAG, "traking click");
-                                        try {
-                                            ApiClient.getService().tracking(
-                                                    TokenRecord.getTokenRecord().getApiKey(),
-                                                    eventData.eventHashKey,
-                                                    recyclerAdapter.getItem(position).recoHashKey,
-                                                    TrackingType.CLICK.value,
-                                                    0
-                                            ).execute();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }).start();
 
 
                             }

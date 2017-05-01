@@ -6,7 +6,6 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import io.caly.calyandroid.Util.Logger;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,14 +19,18 @@ import com.github.ybq.android.spinkit.SpinKitView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
+import io.caly.calyandroid.Model.LogType;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.Logger;
 import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static java.sql.Types.NULL;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -117,21 +120,26 @@ public class WebViewActivity extends BaseAppCompatActivity {
 
             long endSecond = System.currentTimeMillis();
             long residenseTime = endSecond - startSecond;
-
-            ApiClient.getService().tracking(
+            ApiClient.getService().setRecoLog(
                     TokenRecord.getTokenRecord().getApiKey(),
                     getIntent().getStringExtra("eventHashKey"),
-                    getIntent().getStringExtra("recoHashKey"),
-                    "residense",
-                    residenseTime
+                    LogType.CATEGORY_CELL.value,
+                    LogType.RECO_LABEL_GOBLOG.value,
+                    LogType.ACTION_CLICK.value,
+                    residenseTime,
+                    getIntent().getStringExtra("recoHashKey")
             ).enqueue(new Callback<BasicResponse>() {
                 @Override
                 public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                    Logger.d(TAG,"onResponse code : " + response.code());
+                    Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
 
                 }
 
                 @Override
                 public void onFailure(Call<BasicResponse> call, Throwable t) {
+                    Logger.e(TAG,"onfail : " + t.getMessage());
+                    Logger.e(TAG, "fail " + t.getClass().getName());
 
                 }
             });
@@ -153,6 +161,29 @@ public class WebViewActivity extends BaseAppCompatActivity {
                 onBackPressed();
                 break;
             case R.id.menu_recodetail_share:
+                ApiClient.getService().setRecoLog(
+                        TokenRecord.getTokenRecord().getApiKey(),
+                        getIntent().getStringExtra("eventHashKey"),
+                        LogType.CATEGORY_CELL.value,
+                        LogType.RECO_LABEL_SHARE.value,
+                        LogType.ACTION_CLICK.value,
+                        NULL,
+                        getIntent().getStringExtra("recoHashKey")
+                ).enqueue(new Callback<BasicResponse>() {
+                    @Override
+                    public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                        Logger.d(TAG,"onResponse code : " + response.code());
+                        Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<BasicResponse> call, Throwable t) {
+                        Logger.e(TAG,"onfail : " + t.getMessage());
+                        Logger.e(TAG, "fail " + t.getClass().getName());
+
+                    }
+                });
                 String[] snsList = {
                     "com.kakao.talk", //kakaotalk
                 };

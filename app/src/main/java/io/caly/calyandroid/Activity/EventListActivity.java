@@ -8,17 +8,12 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-
-import io.caly.calyandroid.Model.Event.AccountListRefreshEvent;
-import io.caly.calyandroid.Util.Logger;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -48,17 +43,21 @@ import io.caly.calyandroid.Activity.Base.BaseAppCompatActivity;
 import io.caly.calyandroid.Adapter.EventListAdapter;
 import io.caly.calyandroid.Model.DataModel.BannerModel;
 import io.caly.calyandroid.Model.DataModel.EventModel;
+import io.caly.calyandroid.Model.Event.AccountListRefreshEvent;
 import io.caly.calyandroid.Model.Event.EventListRefreshEvent;
 import io.caly.calyandroid.Model.Event.GoogleSyncDoneEvent;
 import io.caly.calyandroid.Model.Event.RecoReadyEvent;
+import io.caly.calyandroid.Model.LogType;
+import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.RecoState;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.EventResponse;
-import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
 import io.caly.calyandroid.Util.ConfigClient;
 import io.caly.calyandroid.Util.EventListener.RecyclerItemClickListener;
+import io.caly.calyandroid.Util.Logger;
+import io.caly.calyandroid.Util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -279,6 +278,14 @@ public class EventListActivity extends BaseAppCompatActivity {
     };
 
     void startRecommandActivity(EventModel eventModel){
+
+        Logger.d(TAG, "eventHashkey = >");
+        requestSetEventLog (TokenRecord.getTokenRecord().getApiKey(),
+                eventModel.eventHashKey,
+                LogType.CATEGORY_CELL.value,
+                LogType.LABEL_EVENT_CELL.value,
+                LogType.ACTION_CLICK.value);
+
         Intent intent = new Intent(EventListActivity.this, RecommendListActivity.class);
         intent.putExtra("event", ApiClient.getGson().toJson(eventModel));
         startActivity(intent);
@@ -648,6 +655,30 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     }
 
+    void requestSetEventLog (String apikey, String eventHashkey, int category, int label, int action) {
+        ApiClient.getService().setEventLog(
+                apikey,
+                eventHashkey,
+                category,
+                label,
+                action
+        ).enqueue(new Callback<BasicResponse>() {
+            @Override
+            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                Logger.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
+
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponse> call, Throwable t) {
+                Logger.e(TAG,"onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
+
+            }
+        });
+    }
+
     void syncCalendar(){
         Logger.i(TAG, "syncCalendar");
 
@@ -822,6 +853,14 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.linear_banner)
     void onBannerClick(){
+
+
+        requestSetEventLog (TokenRecord.getTokenRecord().getApiKey(),
+                            null,
+                            LogType.CATEGORY_VIEW.value,
+                            LogType.LABEL_EVENT_BANNER.value,
+                            LogType.ACTION_CLICK.value);
+
         switch (bannerModel.action.type){
             case "intent":
                 startBannerActivity();
@@ -853,6 +892,11 @@ public class EventListActivity extends BaseAppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_eventlist_refresh:
+                requestSetEventLog (TokenRecord.getTokenRecord().getApiKey(),
+                                    null,
+                                    LogType.CATEGORY_VIEW.value,
+                                    LogType.LABEL_EVENT_SYNC.value,
+                                    LogType.ACTION_CLICK.value);
                 refreshEvent();
                 break;
             case R.id.menu_eventlist_setting:
