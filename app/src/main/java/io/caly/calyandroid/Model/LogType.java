@@ -22,6 +22,7 @@ public enum LogType {
     //Category가 Cell 일경우
     LABEL_EVENT_BANNER(0),
     LABEL_EVENT_SYNC(1),
+    LABEL_EVENT_BANNER_CLOSE(2),
 
     //Cell일경우
     RECO_LABEL_GOBLOG(0),

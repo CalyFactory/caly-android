@@ -165,7 +165,7 @@ public class WebViewActivity extends BaseAppCompatActivity {
                         TokenRecord.getTokenRecord().getApiKey(),
                         getIntent().getStringExtra("eventHashKey"),
                         LogType.CATEGORY_CELL.value,
-                        LogType.RECO_LABEL_SHARE.value,
+                        LogType.RECO_LABEL_SHARE_KAKAO.value,
                         LogType.ACTION_CLICK.value,
                         NULL,
                         getIntent().getStringExtra("recoHashKey")

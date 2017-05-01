@@ -835,6 +835,14 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.tv_banner_close)
     void onBannerCloseClick(){
+
+        requestSetEventLog (TokenRecord.getTokenRecord().getApiKey(),
+                null,
+                LogType.CATEGORY_VIEW.value,
+                LogType.LABEL_EVENT_BANNER_CLOSE.value,
+                LogType.ACTION_CLICK.value);
+
+
         Logger.i(TAG, "onBannerCloseClick()");
         TranslateAnimation animation = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0f,
