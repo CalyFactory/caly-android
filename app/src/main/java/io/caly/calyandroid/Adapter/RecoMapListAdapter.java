@@ -152,4 +152,9 @@ public class RecoMapListAdapter extends PagerAdapter{
 
         container.removeView((View)object);
     }
+
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
 }

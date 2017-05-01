@@ -193,7 +193,8 @@ public class RecoMapFragment extends BaseFragment {
 
     void filterList(Category category){
 
-        adapter.recoList = new ArrayList<>();
+        adapter.recoList.clear();
+        adapter.notifyDataSetChanged();
         googleMap.clear();
 
         for(int i=0;i<recoList.size();i++){
@@ -202,7 +203,8 @@ public class RecoMapFragment extends BaseFragment {
                 adapter.addItem(recoList.get(i));
                 addMarker(recoList.get(i));
             }
-            else if(recoList.get(i).category == category.value){
+            else if(recoList.get(i).category.equals(category.value)){
+                Log.d(TAG, "same category!");
                 adapter.addItem(recoList.get(i));
                 addMarker(recoList.get(i));
             }
@@ -274,7 +276,8 @@ public class RecoMapFragment extends BaseFragment {
             case STATE_DONE:
                 Response<RecoResponse> response = doneEvent.response;
                 RecoResponse body = response.body();
-                recoList = body.payload.data;
+                if(recoList == null) recoList = new ArrayList<>();
+                recoList.addAll(body.payload.data);
                 adapter.addItems(body.payload.data);
                 addMarkers(body.payload.data);
 
