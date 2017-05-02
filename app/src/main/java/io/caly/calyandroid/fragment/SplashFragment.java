@@ -20,6 +20,9 @@ import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -29,21 +32,27 @@ import net.jspiner.prefer.Prefer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.caly.calyandroid.BuildConfig;
+import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.activity.EventListActivity;
 import io.caly.calyandroid.activity.GuideActivity;
 import io.caly.calyandroid.activity.LoginActivity;
+import io.caly.calyandroid.activity.SignupActivity;
 import io.caly.calyandroid.activity.SplashActivity;
 import io.caly.calyandroid.contract.SplashContract;
 import io.caly.calyandroid.fragment.base.BaseFragment;
+import io.caly.calyandroid.model.LoginPlatform;
 import io.caly.calyandroid.model.orm.TokenRecord;
 import io.caly.calyandroid.model.response.BasicResponse;
 import io.caly.calyandroid.model.response.SessionResponse;
 import io.caly.calyandroid.util.ApiClient;
 import io.caly.calyandroid.util.ConfigClient;
 import io.caly.calyandroid.util.Logger;
+import io.caly.calyandroid.util.StringFormmater;
 import io.caly.calyandroid.util.Util;
+import io.caly.calyandroid.view.LoginDialog;
 import io.caly.calyandroid.view.PasswordChangeDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,13 +71,14 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
     SplashContract.Presenter presenter;
 
 
-    long startTimeMillisec;
-
     @Bind(R.id.linear_splash_logo)
     LinearLayout linearLogo;
 
     @Bind(R.id.linear_splash_login)
     LinearLayout linearLogin;
+
+    @Bind(R.id.linear_loading_parent)
+    LinearLayout linearLoading;
 
     public static SplashFragment getInstance(){
         return new SplashFragment();
@@ -88,7 +98,8 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
 
     void init(){
 
-        startTimeMillisec = System.currentTimeMillis();
+        presenter.setStartTime();
+        presenter.initGoogleLogin(getActivity());
 
         //firebase init
         Logger.i(TAG, "pushToken : " + FirebaseInstanceId.getInstance().getToken());
@@ -100,6 +111,58 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
         else{
             presenter.requestPermission(getActivity());
         }
+    }
+
+    @OnClick(R.id.linear_splash_login_google)
+    void onGoogleLoginClick(){
+        Logger.d(TAG,"onclick");
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(
+                presenter.getGoogleApiClient()
+        );
+        startActivityForResult(signInIntent, Util.RC_INTENT_GOOGLE_SIGNIN);
+
+        presenter.trackingLoginButtonClick(getActivity(), Util.getCurrentMethodName());
+    }
+
+    @OnClick(R.id.linear_splash_login_naver)
+    void onNaverLoginClick(){
+        LoginDialog dialog = new LoginDialog(getActivity(), "Naver로 로그인", new LoginDialog.LoginDialogCallback() {
+            @Override
+            public void onPositive(LoginDialog dialog, String userId, String userPw) {
+                dialog.dismiss();
+
+                presenter.procLoginCaldav(StringFormmater.hostnameAuthGenerator(userId, "naver.com"), userPw, LoginPlatform.CALDAV_NAVER.value);
+            }
+
+            @Override
+            public void onNegative(LoginDialog dialog) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
+        presenter.trackingLoginButtonClick(getActivity(), Util.getCurrentMethodName());
+
+    }
+
+    @OnClick(R.id.linear_splash_login_apple)
+    void onAppleLoginClick(){
+        LoginDialog dialog = new LoginDialog(getActivity(), "Apple로 로그인", new LoginDialog.LoginDialogCallback() {
+            @Override
+            public void onPositive(LoginDialog dialog, String userId, String userPw) {
+                dialog.dismiss();
+
+                presenter.procLoginCaldav(userId, userPw, LoginPlatform.CALDAV_ICAL.value);
+            }
+
+            @Override
+            public void onNegative(LoginDialog dialog) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+
+        presenter.trackingLoginButtonClick(getActivity(), Util.getCurrentMethodName());
     }
 
     @Override
@@ -124,38 +187,11 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
 
     @Override
     public void startSplash(){
-        //update remote config
-        ConfigClient.getConfig()
-                .fetch(
-                        BuildConfig.DEBUG?
-                                0:
-                                getResources()
-                                        .getInteger(
-                                                R.integer.firebase_remoteconfig_cache_expiretime
-                                        )
-                ).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                Logger.i(TAG, "remoteConfig fetch result : " + task.isSuccessful());
-                                                if(task.isSuccessful()){
-                                                    ConfigClient.getConfig().activateFetched();
-                                                }
-
-                                                long diffTimeMillisec = System.currentTimeMillis() - startTimeMillisec;
-                                                Logger.d(TAG, "isdidrun : " + Prefer.get("isDidRun", false));
-                                                if(Prefer.get("isDidRun", false)){
-                                                    timerHandler.sendEmptyMessageDelayed(0,diffTimeMillisec>1000?1000:1000-diffTimeMillisec);
-                                                }
-                                                else{
-                                                    timerHandler.sendEmptyMessageDelayed(1,diffTimeMillisec>1500?1500:1500-diffTimeMillisec);
-                                                }
-                                                Prefer.set("isDidRun", true);
-                                            }
-                                        }
-        );
+        presenter.updateRemoteConfig(getContext());
     }
 
-    void startLoginAnimation(){
+    @Override
+    public void startLoginAnimation(){
         TranslateAnimation animation = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0f,
                 Animation.RELATIVE_TO_SELF, 0f,
@@ -174,6 +210,17 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
 
         linearLogin.startAnimation(fadeOut);
 
+    }
+
+    @Override
+    public void startSignupActivity(String userId, String userPw, String loginPlatform, String authCode){
+        Intent intent = new Intent(getActivity(), SignupActivity.class);
+        intent.putExtra("userId", userId);
+        intent.putExtra("userPw", userPw);
+        intent.putExtra("loginPlatform", loginPlatform);
+        intent.putExtra("authCode", authCode);
+        startActivity(intent);
+        getActivity().finish();
     }
 
     @Override
@@ -208,38 +255,6 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
 
         getActivity().finish();
     }
-
-    Handler timerHandler = new Handler(){
-
-        @Override
-        public void handleMessage(Message msg) {
-
-            // 첫 실행일 경우
-            if(msg.what == 1){
-                startGuideActivity();
-            }
-            else{
-                TokenRecord tokenRecord = TokenRecord.getTokenRecord();
-
-                //로그인 정보가 없을 경우
-                if(tokenRecord.getApiKey() == null){
-                    Logger.d(TAG, "no login");
-                    startLoginAnimation();
-                }
-                else{
-                    Logger.d(TAG,"session : " + tokenRecord.getApiKey());
-
-                    presenter.requestLoginCheck(tokenRecord.getApiKey());
-
-                }
-
-            }
-
-
-            super.handleMessage(msg);
-        }
-
-    };
 
     @Override
     public void showChangePasswordDialog(){
@@ -294,6 +309,16 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
                     }
                 });
         dialog.show();
+    }
+
+    @Override
+    public void changeProgressState(boolean isLoading) {
+        if(isLoading){
+            linearLoading.setVisibility(View.VISIBLE);
+        }
+        else {
+            linearLoading.setVisibility(View.GONE);
+        }
     }
 
 }

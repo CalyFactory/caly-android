@@ -30,6 +30,10 @@ import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -95,11 +99,59 @@ public class SplashActivity extends BaseAppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if(presenter.isPermissionGranted(this)){
-            presenter.requestVersionCheck();
-        }
-        else{
-            presenter.requestPermission(this);
+        switch (requestCode){
+            case Util.RC_PERMISSION_PHONE_STATE:
+                if(presenter.isPermissionGranted(this)){
+                    presenter.requestVersionCheck();
+                }
+                else{
+                    presenter.requestPermission(this);
+                }
+                break;
+            case Util.RC_INTENT_GOOGLE_SIGNIN:
+                GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+
+                Logger.d(TAG, "handleSignInResult:" + result.isSuccess());
+                Logger.d(TAG, "handleSignInResult:" + result.getStatus().getStatus());
+
+
+                if (result.isSuccess()) {
+                    GoogleSignInAccount acct = result.getSignInAccount();
+                    Logger.d(TAG, acct.getDisplayName());
+                    Logger.i(TAG, "id token : " + acct.getIdToken());
+                    Logger.i(TAG, "serverauthcode : " + acct.getServerAuthCode());
+                    Logger.i(TAG, "id : " + acct.getId());
+                    Logger.d(TAG, "email : " + acct.getEmail());
+
+                    presenter.procLoginGoogle(acct.getId(), acct.getServerAuthCode());
+
+                } else {
+                    switch (result.getStatus().getStatusCode()){
+                        case GoogleSignInStatusCodes.SIGN_IN_CANCELLED:
+                            Toast.makeText(
+                                    getBaseContext(),
+                                    getString(R.string.toast_msg_login_canceled),
+                                    Toast.LENGTH_LONG
+                            ).show();
+                            break;
+                        case GoogleSignInStatusCodes.SIGN_IN_FAILED:
+                            Toast.makeText(
+                                    getBaseContext(),
+                                    getString(R.string.toast_msg_login_fail),
+                                    Toast.LENGTH_LONG
+                            ).show();
+                            break;
+                        default:
+                            Toast.makeText(
+                                    getBaseContext(),
+                                    getString(R.string.toast_msg_unknown_error),
+                                    Toast.LENGTH_LONG
+                            ).show();
+                            break;
+                    }
+
+                }
+                break;
         }
     }
 

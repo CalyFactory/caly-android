@@ -47,6 +47,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="gone"
             android:layout_gravity="bottom"
             android:layout_width="match_parent"
             android:orientation="vertical"
@@ -132,5 +133,7 @@
 
 
         </LinearLayout>
+
+        <include layout="@layout/progress_loading"/>
     </FrameLayout>
 </LinearLayout>
