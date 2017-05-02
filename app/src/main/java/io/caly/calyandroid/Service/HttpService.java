@@ -1,6 +1,5 @@
 package io.caly.calyandroid.Service;
 
-import io.caly.calyandroid.Model.Category;
 import io.caly.calyandroid.Model.Response.AccountResponse;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.Model.Response.EventResponse;
@@ -11,9 +10,7 @@ import io.caly.calyandroid.Model.Response.SyncResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -156,6 +153,17 @@ public interface HttpService {
             @Field("pageNum") int pageNum
     );
 
+    @FormUrlEncoded
+    @POST("v1.0/events/setLog")
+    Call<BasicResponse> setEventLog(
+            @Field("apikey") String apiKey,
+            @Field("eventHashkey") String eventHashkey,
+            @Field("category") int category,
+            @Field("label") int label,
+            @Field("action") int action
+
+    );
+
 
 
     /*
@@ -222,6 +230,17 @@ public interface HttpService {
             @Field("apikey") String apiKey
     );
 
+    @FormUrlEncoded
+    @POST("v1.0/reco/setLog")
+    Call<BasicResponse> setRecoLog(
+            @Field("apikey") String apiKey,
+            @Field("eventHashkey") String eventHashkey,
+            @Field("category") int category,
+            @Field("label") int label,
+            @Field("action") int action,
+            @Field("residenseTime") long residenseTime,
+            @Field("recoHashkey") String recohashkey
+    );
     /*
     =============================
               SETTING
