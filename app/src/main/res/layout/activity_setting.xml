@@ -5,7 +5,7 @@
     <include layout="@layout/toolbar"/>
 
     <fragment
-        android:name="io.caly.calyandroid.Fragment.SettingFragment"
+        android:name="io.caly.calyandroid.fragment.SettingFragment"
         android:tag=".SettingsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
