@@ -5,132 +5,13 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <FrameLayout
         android:layout_width="match_parent"
-        android:background="@drawable/background"
-        android:orientation="vertical"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/frame_splash_container"
+        >
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:id="@+id/linear_splash_logo"
-            android:layout_gravity="center_vertical"
-            android:gravity="center_horizontal"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:layout_width="120dp"
-                android:layout_height="66dp"
-                android:src="@drawable/caly_logo"/>
-
-            <TextView
-                android:layout_marginTop="30dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="13sp"
-                android:textColor="@color/white"
-                android:text="언제 어디서나"
-                />
-
-            <TextView
-                android:layout_marginTop="3dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="14sp"
-                fontPath="@string/font_nanum_extra_bold"
-                android:textColor="@color/white"
-                android:text="당신을 위한 추천을" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_gravity="bottom"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:id="@+id/linear_splash_login"
-            android:layout_marginBottom="76dp"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:id="@+id/linear_splash_login_google"
-                android:layout_marginLeft="46dp"
-                android:layout_marginRight="46dp"
-                android:background="@drawable/button_normal"
-                android:layout_width="match_parent"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_height="47dp">
-
-                <ImageView
-                    android:layout_width="17dp"
-                    android:src="@drawable/google"
-                    android:layout_height="17dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_marginLeft="14dp"
-                    android:textSize="15dp"
-                    android:textColor="@color/white"
-                    android:text="구글 아이디로 로그인"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/linear_splash_login_naver"
-                android:layout_marginTop="14dp"
-                android:layout_marginLeft="46dp"
-                android:layout_marginRight="46dp"
-                android:background="@drawable/button_normal"
-                android:layout_width="match_parent"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_height="47dp">
-
-                <ImageView
-                    android:layout_width="17dp"
-                    android:src="@drawable/google"
-                    android:layout_height="17dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_marginLeft="14dp"
-                    android:textSize="15dp"
-                    android:textColor="@color/white"
-                    android:text="구글 아이디로 로그인"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-            <LinearLayout
-                android:id="@+id/linear_splash_login_apple"
-                android:layout_marginTop="14dp"
-                android:layout_marginLeft="46dp"
-                android:layout_marginRight="46dp"
-                android:background="@drawable/button_normal"
-                android:layout_width="match_parent"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:layout_height="47dp">
-
-                <ImageView
-                    android:layout_width="17dp"
-                    android:src="@drawable/google"
-                    android:layout_height="17dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_marginLeft="14dp"
-                    android:textSize="15dp"
-                    android:textColor="@color/white"
-                    android:text="구글 아이디로 로그인"
-                    android:layout_height="wrap_content" />
-
-            </LinearLayout>
-
-
-
-        </LinearLayout>
     </FrameLayout>
-
 
 </LinearLayout>
