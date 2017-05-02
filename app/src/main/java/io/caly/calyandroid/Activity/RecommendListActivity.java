@@ -1,6 +1,5 @@
 package io.caly.calyandroid.Activity;
 
-import android.animation.Animator;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Intent;
@@ -12,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import io.caly.calyandroid.Util.Logger;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
@@ -34,15 +32,19 @@ import io.caly.calyandroid.Model.DataModel.EventModel;
 import io.caly.calyandroid.Model.DataModel.RecoModel;
 import io.caly.calyandroid.Model.Event.RecoListLoadDoneEvent;
 import io.caly.calyandroid.Model.Event.RecoMoreClickEvent;
+import io.caly.calyandroid.Model.LogType;
 import io.caly.calyandroid.Model.ORM.TokenRecord;
 import io.caly.calyandroid.Model.Response.BasicResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.Util.ApiClient;
+import io.caly.calyandroid.Util.Logger;
 import io.caly.calyandroid.Util.Util;
 import io.caly.calyandroid.View.FeedbackDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static java.sql.Types.NULL;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -125,6 +127,32 @@ public class RecommendListActivity extends BaseAppCompatActivity {
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+
+                Logger.d(TAG,"getPosition"+String.valueOf(tab.getPosition()));
+                int RECO_LOG_LABEL = 0;
+                switch (tab.getPosition()){
+                    //restaurant
+                    case 0:
+                        RECO_LOG_LABEL  = LogType.RECO_LABEL_TAP_RESTAURANT.value;
+                        break;
+                    //caffee
+                    case 1:
+                        RECO_LOG_LABEL  = LogType.RECO_LABEL_TAP_CAFE.value;
+                        break;
+                    //activity
+                    case 2:
+                        RECO_LOG_LABEL  = LogType.RECO_LABEL_TAP_PLACE.value;
+                        break;
+
+                }
+                requestSetRecoLog(TokenRecord.getTokenRecord().getApiKey(),
+                        eventData.eventHashKey,
+                        LogType.CATEGORY_VIEW.value,
+                        RECO_LOG_LABEL,
+                        LogType.ACTION_CLICK.value,
+                        NULL,
+                        null);
+
                 pagerRecoList.setCurrentItem(tab.getPosition());
             }
 
@@ -326,9 +354,42 @@ public class RecommendListActivity extends BaseAppCompatActivity {
 
         drawOutDrawer();
     }
+    void requestSetRecoLog (String apikey, String eventHashkey, int category, int label, int action, int residenseTime, String recoHashkey){
+        ApiClient.getService().setRecoLog(
+                apikey,
+                eventHashkey,
+                category,
+                label,
+                action,
+                residenseTime,
+                recoHashkey
+        ).enqueue(new Callback<BasicResponse>() {
+            @Override
+            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                Logger.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
 
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponse> call, Throwable t) {
+                Logger.e(TAG,"onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
+
+            }
+        });
+    }
     @OnClick(R.id.layout_draweritem_3)
     void onDrawerItemClick3(){
+
+        requestSetRecoLog(TokenRecord.getTokenRecord().getApiKey(),
+                        recoModel.eventHashKey,
+                        LogType.CATEGORY_CELL.value,
+                        LogType.RECO_LABEL_SHARE_KAKAO.value,
+                        LogType.ACTION_CLICK.value,
+                        NULL,
+                        recoModel.recoHashKey);
+
         String[] snsList = {
                 "com.kakao.talk", //kakaotalk
         };
