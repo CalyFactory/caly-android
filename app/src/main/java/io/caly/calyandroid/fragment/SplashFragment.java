@@ -119,7 +119,7 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
         Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(
                 presenter.getGoogleApiClient()
         );
-        startActivityForResult(signInIntent, Util.RC_INTENT_GOOGLE_SIGNIN);
+        getActivity().startActivityForResult(signInIntent, Util.RC_INTENT_GOOGLE_SIGNIN);
 
         presenter.trackingLoginButtonClick(getActivity(), Util.getCurrentMethodName());
     }
@@ -198,7 +198,7 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
                 Animation.RELATIVE_TO_SELF, 0f,
                 Animation.RELATIVE_TO_SELF, -0.8f
         );
-        animation.setDuration(800);
+        animation.setDuration(600);
         animation.setFillAfter(true);
         linearLogo.startAnimation(animation);
 
@@ -206,7 +206,7 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
         linearLogin.setVisibility(View.VISIBLE);
         AlphaAnimation fadeOut = new AlphaAnimation(0f, 1f);
         fadeOut.setStartOffset(200);
-        fadeOut.setDuration(600);
+        fadeOut.setDuration(300);
 
         linearLogin.startAnimation(fadeOut);
 

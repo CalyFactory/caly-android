@@ -256,7 +256,7 @@ public class SplashPresenter extends BasePresenter implements SplashContract.Pre
                                     timerHandler.sendEmptyMessageDelayed(0,diffTimeMillisec>1000?1000:1000-diffTimeMillisec);
                                 }
                                 else{
-                                    timerHandler.sendEmptyMessageDelayed(1,diffTimeMillisec>1500?1500:1500-diffTimeMillisec);
+                                    timerHandler.sendEmptyMessageDelayed(1,diffTimeMillisec>2000?2000:2000-diffTimeMillisec);
                                 }
                                 Prefer.set("isDidRun", true);
                             }

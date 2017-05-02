@@ -23,6 +23,7 @@ import io.caly.calyandroid.fragment.SplashFragment;
 import io.caly.calyandroid.presenter.SplashPresenter;
 import io.caly.calyandroid.util.Logger;
 
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -98,6 +99,7 @@ public class SplashActivity extends BaseAppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "onActivityResult : " + requestCode);
 
         switch (requestCode){
             case Util.RC_PERMISSION_PHONE_STATE:
@@ -113,7 +115,6 @@ public class SplashActivity extends BaseAppCompatActivity {
 
                 Logger.d(TAG, "handleSignInResult:" + result.isSuccess());
                 Logger.d(TAG, "handleSignInResult:" + result.getStatus().getStatus());
-
 
                 if (result.isSuccess()) {
                     GoogleSignInAccount acct = result.getSignInAccount();
