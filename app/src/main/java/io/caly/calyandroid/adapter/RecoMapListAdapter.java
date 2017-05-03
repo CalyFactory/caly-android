@@ -114,6 +114,8 @@ public class RecoMapListAdapter extends PagerAdapter{
 
                 Tracker t = ((CalyApplication) ((Activity) context).getApplication()).getDefaultTracker();
                 t.setScreenName(this.getClass().getName());
+//                t.send(new HitBuilders().EventBuilder()
+//                );
                 t.send(
                         new HitBuilders.SocialBuilder()
                                 .setNetwork(context.getString(R.string.app_name))

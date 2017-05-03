@@ -3,11 +3,14 @@ package io.caly.calyandroid.activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
+import butterknife.OnClick;
 import io.caly.calyandroid.model.event.TestEvent;
 import io.caly.calyandroid.util.Logger;
 
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
@@ -40,13 +43,23 @@ import retrofit2.Response;
 
 public class TestActivity extends BaseAppCompatActivity {
 
+    @Bind(R.id.button)
+    Button button;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
+        ButterKnife.bind(this);
         init();
-        mapView.onCreate(savedInstanceState);
+//        mapView.onCreate(savedInstanceState);
+    }
+
+    @OnClick(R.id.button)
+    void onButtonClick(){
+        Crashlytics.logException(new NullPointerException("HelloError"));
+        test();
     }
 
     void init(){
@@ -56,7 +69,8 @@ public class TestActivity extends BaseAppCompatActivity {
         Logger.d(TAG, "page hashcode : " +super.hashCode());
 //        initMap();
     }
-    @Bind(R.id.map)
+
+//    @Bind(R.id.map)
     MapView mapView;
 
     void initMap(){
@@ -112,7 +126,6 @@ public class TestActivity extends BaseAppCompatActivity {
         });
     }
 
-
     void test(){
 
         ApiClient.getService().test(
@@ -127,6 +140,7 @@ public class TestActivity extends BaseAppCompatActivity {
                     case 200:
                         break;
                     default:
+                        Crashlytics.logException(new Exception("HelloError"));
                         Logger.e(TAG,"status code : " + response.code());
                         Toast.makeText(
                                 getBaseContext(),
@@ -147,6 +161,8 @@ public class TestActivity extends BaseAppCompatActivity {
                         getString(R.string.toast_msg_network_error),
                         Toast.LENGTH_LONG
                 ).show();
+
+                Crashlytics.logException(new Exception("HelloError"));
             }
         });
     }
