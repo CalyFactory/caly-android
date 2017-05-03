@@ -20,6 +20,7 @@ import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.auth.api.Auth;
@@ -27,6 +28,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.MalformedJsonException;
 
 import net.jspiner.prefer.Prefer;
 
@@ -42,6 +45,8 @@ import io.caly.calyandroid.activity.LoginActivity;
 import io.caly.calyandroid.activity.SignupActivity;
 import io.caly.calyandroid.activity.SplashActivity;
 import io.caly.calyandroid.contract.SplashContract;
+import io.caly.calyandroid.exception.HttpResponseParsingException;
+import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.fragment.base.BaseFragment;
 import io.caly.calyandroid.model.LoginPlatform;
 import io.caly.calyandroid.model.orm.TokenRecord;
@@ -284,11 +289,17 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
                                         showToast(R.string.toast_msg_login_fail, Toast.LENGTH_LONG);
                                         showChangePasswordDialog();
                                         break;
+                                    default:
+                                        Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
+                                        break;
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<BasicResponse> call, Throwable t) {
+                                if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
+                                    Crashlytics.logException(new HttpResponseParsingException(call, t));
+                                }
 
                                 Logger.e(TAG,"onfail : " + t.getMessage());
                                 Logger.e(TAG, "fail " + t.getClass().getName());

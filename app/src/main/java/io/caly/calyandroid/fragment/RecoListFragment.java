@@ -11,8 +11,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.MalformedJsonException;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
@@ -20,6 +23,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.adapter.RecoTabPagerAdapter;
 import io.caly.calyandroid.CalyApplication;
+import io.caly.calyandroid.exception.HttpResponseParsingException;
+import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.model.LogType;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.fragment.base.BaseFragment;
@@ -221,6 +226,7 @@ public class RecoListFragment extends BaseFragment {
 
                                 break;
                             default:
+                                Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
                                 Logger.e(TAG,"status code : " + response.code());
                                 Toast.makeText(
                                         getContext(),
@@ -233,6 +239,9 @@ public class RecoListFragment extends BaseFragment {
 
                     @Override
                     public void onFailure(Call<BasicResponse> call, Throwable t) {
+                        if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
+                            Crashlytics.logException(new HttpResponseParsingException(call, t));
+                        }
                         Logger.e(TAG,"onfail : " + t.getMessage());
                         Logger.e(TAG, "fail " + t.getClass().getName());
 
@@ -278,10 +287,22 @@ public class RecoListFragment extends BaseFragment {
                 Logger.d(TAG,"onResponse code : " + response.code());
                 Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
 
+                switch (response.body().code){
+                    case 200:
+                        break;
+                    default:
+                        Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
+                        break;
+                }
+
             }
 
             @Override
             public void onFailure(Call<BasicResponse> call, Throwable t) {
+                if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
+                    Crashlytics.logException(new HttpResponseParsingException(call, t));
+                }
+
                 Logger.e(TAG,"onfail : " + t.getMessage());
                 Logger.e(TAG, "fail " + t.getClass().getName());
 

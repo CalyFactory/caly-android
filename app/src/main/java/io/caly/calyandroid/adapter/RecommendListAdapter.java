@@ -11,8 +11,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.MalformedJsonException;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -20,6 +23,8 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.caly.calyandroid.exception.HttpResponseParsingException;
+import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.model.LogType;
 import io.caly.calyandroid.activity.WebViewActivity;
 import io.caly.calyandroid.CalyApplication;
@@ -155,11 +160,21 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
                     public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
                         Logger.d(TAG,"onResponse code : " + response.code());
                         Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
+                        switch (response.body().code){
+                            case 200:
+                                break;
+                            default:
+                                Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
+                                break;
+                        }
 
                     }
 
                     @Override
                     public void onFailure(Call<BasicResponse> call, Throwable t) {
+                        if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
+                            Crashlytics.logException(new HttpResponseParsingException(call, t));
+                        }
                         Logger.e(TAG,"onfail : " + t.getMessage());
                         Logger.e(TAG, "fail " + t.getClass().getName());
 
@@ -218,10 +233,21 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
                         Logger.d(TAG,"onResponse code : " + response.code());
                         Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
 
+                        switch (response.body().code){
+                            case 200:
+                                break;
+                            default:
+                                Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
+                                break;
+                        }
+
                     }
 
                     @Override
                     public void onFailure(Call<BasicResponse> call, Throwable t) {
+                        if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
+                            Crashlytics.logException(new HttpResponseParsingException(call, t));
+                        }
                         Logger.e(TAG,"onfail : " + t.getMessage());
                         Logger.e(TAG, "fail " + t.getClass().getName());
 

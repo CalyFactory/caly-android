@@ -8,6 +8,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+
+import io.caly.calyandroid.exception.HttpResponseParsingException;
+import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.util.Logger;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +20,10 @@ import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.crashlytics.android.Crashlytics;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.MalformedJsonException;
 
 import net.jspiner.prefer.Prefer;
 
@@ -176,6 +183,7 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
                                     ).show();
                                     break;
                                 default:
+                                    Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
                                     Logger.e(TAG,"status code : " + response.code());
                                     Toast.makeText(
                                             context,
@@ -188,6 +196,9 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
 
                         @Override
                         public void onFailure(Call<SyncResponse> call, Throwable t) {
+                            if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
+                                Crashlytics.logException(new HttpResponseParsingException(call, t));
+                            }
                             Logger.e(TAG,"onfail : " + t.getMessage());
                             Logger.e(TAG, "fail " + t.getClass().getName());
 
@@ -247,6 +258,7 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
 
                                             break;
                                         default:
+                                            Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
                                             Toast.makeText(
                                                     context,
                                                     context.getString(R.string.toast_msg_server_internal_error),
@@ -258,6 +270,10 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
 
                                 @Override
                                 public void onFailure(Call<BasicResponse> call, Throwable t) {
+                                    if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
+                                        Crashlytics.logException(new HttpResponseParsingException(call, t));
+                                    }
+
                                     Logger.d(TAG,"onfail : " + t.getMessage());
                                     Logger.d(TAG, "fail " + t.getClass().getName());
 
@@ -328,6 +344,7 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
 
                                         break;
                                     default:
+                                        Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
                                         Logger.e(TAG,"status code : " + response.code());
                                         Toast.makeText(
                                                 context,
@@ -340,6 +357,9 @@ public class AccountListAdapter extends RecyclerView.Adapter<AccountListAdapter.
 
                             @Override
                             public void onFailure(Call<BasicResponse> call, Throwable t) {
+                                if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
+                                    Crashlytics.logException(new HttpResponseParsingException(call, t));
+                                }
                                 Logger.e(TAG,"onfail : " + t.getMessage());
                                 Logger.e(TAG, "fail " + t.getClass().getName());
                                 BusProvider.getInstance().post(new AccountListLoadingEvent(false));

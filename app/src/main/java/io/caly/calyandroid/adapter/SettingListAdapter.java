@@ -10,6 +10,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SwitchCompat;
+
+import io.caly.calyandroid.exception.HttpResponseParsingException;
+import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.util.Logger;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +20,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.MalformedJsonException;
 
 import net.jspiner.prefer.Prefer;
 
@@ -161,6 +167,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                                         signOutGoogle();
                                     }
                                     else{
+                                        Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
                                         Logger.e(TAG,"status code : " + response.code());
                                         Toast.makeText(
                                                 context,
@@ -172,6 +179,9 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
                                 @Override
                                 public void onFailure(Call<BasicResponse> call, Throwable t) {
+                                    if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
+                                        Crashlytics.logException(new HttpResponseParsingException(call, t));
+                                    }
 
                                     Logger.e(TAG,"onfail : " + t.getMessage());
                                     Logger.e(TAG, "fail " + t.getClass().getName());
@@ -234,6 +244,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
                                                     break;
                                                 default:
+                                                    Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
                                                     Logger.e(TAG,"status code : " + response.code());
                                                     Toast.makeText(
                                                             context,
@@ -246,6 +257,9 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
                                         @Override
                                         public void onFailure(Call<BasicResponse> call, Throwable t) {
+                                            if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
+                                                Crashlytics.logException(new HttpResponseParsingException(call, t));
+                                            }
                                             Logger.e(TAG,"onfail : " + t.getMessage());
                                             Logger.e(TAG, "fail " + t.getClass().getName());
                                             BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(false));

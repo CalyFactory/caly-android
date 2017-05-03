@@ -159,6 +159,7 @@ public class TestActivity extends BaseAppCompatActivity {
                 Logger.e(TAG,"onfail : " + t.getMessage());
                 Logger.e(TAG, "fail " + t.getClass().getName());
 
+
                 if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
                     Crashlytics.logException(new HttpResponseParsingException(call, t));
                 }

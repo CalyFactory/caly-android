@@ -6,12 +6,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import io.caly.calyandroid.exception.HttpResponseParsingException;
+import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.util.Logger;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.auth.api.Auth;
@@ -26,6 +29,8 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.MalformedJsonException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -231,6 +236,7 @@ public class LoginActivity extends BaseAppCompatActivity {
                         ).show();
                         break;
                     default:
+                        Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
                         Toast.makeText(
                                 getBaseContext(),
                                 getString(R.string.toast_msg_server_internal_error),
@@ -243,6 +249,11 @@ public class LoginActivity extends BaseAppCompatActivity {
 
             @Override
             public void onFailure(Call<SessionResponse> call, Throwable t) {
+
+
+                if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
+                    Crashlytics.logException(new HttpResponseParsingException(call, t));
+                }
                 Logger.e(TAG,"onfail : " + t.getMessage());
                 Logger.e(TAG, "fail " + t.getClass().getName());
 
@@ -311,6 +322,7 @@ public class LoginActivity extends BaseAppCompatActivity {
                         signOutGoogle();
                         break;
                     default:
+                        Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
                         Toast.makeText(
                                 getBaseContext(),
                                 getString(R.string.toast_msg_server_internal_error),
@@ -325,6 +337,10 @@ public class LoginActivity extends BaseAppCompatActivity {
 
             @Override
             public void onFailure(Call<SessionResponse> call, Throwable t) {
+                if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
+                    Crashlytics.logException(new HttpResponseParsingException(call, t));
+                }
+
                 Logger.e(TAG,"onfail : " + t.getMessage());
                 Logger.e(TAG, "fail " + t.getClass().getName());
 
@@ -357,6 +373,7 @@ public class LoginActivity extends BaseAppCompatActivity {
                         Logger.d(TAG, "push token update success");
 
                     } else {
+                        Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
                         Logger.d(TAG, "push token update fail");
 
                     }
@@ -364,6 +381,9 @@ public class LoginActivity extends BaseAppCompatActivity {
 
                 @Override
                 public void onFailure(Call<BasicResponse> call, Throwable t) {
+                    if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
+                        Crashlytics.logException(new HttpResponseParsingException(call, t));
+                    }
 
                     Logger.d(TAG, "onfail : " + t.getMessage());
                     Logger.d(TAG, "fail " + t.getClass().getName());

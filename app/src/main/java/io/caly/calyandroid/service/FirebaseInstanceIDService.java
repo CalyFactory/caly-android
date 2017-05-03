@@ -1,9 +1,14 @@
 package io.caly.calyandroid.service;
 
+import io.caly.calyandroid.exception.HttpResponseParsingException;
+import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.util.Logger;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.MalformedJsonException;
 
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.model.response.BasicResponse;
@@ -53,6 +58,7 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
                         Logger.d(TAG, "push token update success");
 
                     } else {
+                        Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
                         Logger.d(TAG, "push token update fail");
 
                     }
@@ -60,6 +66,9 @@ public class FirebaseInstanceIDService extends FirebaseInstanceIdService {
 
                 @Override
                 public void onFailure(Call<BasicResponse> call, Throwable t) {
+                    if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
+                        Crashlytics.logException(new HttpResponseParsingException(call, t));
+                    }
 
                     Logger.d(TAG, "onfail : " + t.getMessage());
                     Logger.d(TAG, "fail " + t.getClass().getName());

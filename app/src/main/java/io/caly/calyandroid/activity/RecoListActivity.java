@@ -15,6 +15,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 
+import io.caly.calyandroid.exception.HttpResponseParsingException;
+import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.fragment.RecoListFragment;
 import io.caly.calyandroid.fragment.RecoMapFragment;
 import io.caly.calyandroid.model.Category;
@@ -28,6 +30,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import com.crashlytics.android.Crashlytics;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.MalformedJsonException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -269,6 +275,7 @@ public class RecoListActivity extends BaseAppCompatActivity {
                         );
                         break;
                     default:
+                        Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
                         Logger.e(TAG,"status code : " + response.code());
                         Toast.makeText(
                                 getBaseContext(),
@@ -290,6 +297,9 @@ public class RecoListActivity extends BaseAppCompatActivity {
 
             @Override
             public void onFailure(Call<RecoResponse> call, Throwable t) {
+                if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
+                    Crashlytics.logException(new HttpResponseParsingException(call, t));
+                }
                 Logger.e(TAG,"onfail : " + t.getMessage());
                 Logger.e(TAG, "fail " + t.getClass().getName());
 

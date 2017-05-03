@@ -9,6 +9,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+
+import io.caly.calyandroid.exception.HttpResponseParsingException;
+import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.util.Logger;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +19,9 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.MalformedJsonException;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -111,53 +117,55 @@ public class AccountListActivity extends BaseAppCompatActivity {
             public void onResponse(Call<AccountResponse> call, Response<AccountResponse> response) {
                 Logger.d(TAG,"onResponse code : " + response.code());
 
-                if(response.code() == 200){
-                    AccountResponse body = response.body();
+                switch (response.code()){
+                    case 200:
+                        AccountResponse body = response.body();
 
-                    ArrayList<AccountModel> googleAccountList = new ArrayList<AccountModel>();
-                    ArrayList<AccountModel> naverAccountList = new ArrayList<AccountModel>();
-                    ArrayList<AccountModel> appleAccountList = new ArrayList<AccountModel>();
+                        ArrayList<AccountModel> googleAccountList = new ArrayList<AccountModel>();
+                        ArrayList<AccountModel> naverAccountList = new ArrayList<AccountModel>();
+                        ArrayList<AccountModel> appleAccountList = new ArrayList<AccountModel>();
 
-                    for(AccountModel accountModel : body.payload.data){
-                        switch (LoginPlatform.getInstance(accountModel.loginPlatform)){
-                            case CALDAV_NAVER:
-                                naverAccountList.add(accountModel);
-                                break;
-                            case CALDAV_ICAL:
-                                appleAccountList.add(accountModel);
-                                break;
-                            case GOOGLE:
-                                googleAccountList.add(accountModel);
-                                break;
+                        for(AccountModel accountModel : body.payload.data){
+                            switch (LoginPlatform.getInstance(accountModel.loginPlatform)){
+                                case CALDAV_NAVER:
+                                    naverAccountList.add(accountModel);
+                                    break;
+                                case CALDAV_ICAL:
+                                    appleAccountList.add(accountModel);
+                                    break;
+                                case GOOGLE:
+                                    googleAccountList.add(accountModel);
+                                    break;
+                            }
                         }
-                    }
 
-                    ArrayList<AccountModel> accountList = new ArrayList<AccountModel>();
+                        ArrayList<AccountModel> accountList = new ArrayList<AccountModel>();
 
-                    if(googleAccountList.size()!=0){
-                        accountList.add(new AccountModel("Google Calendar 계정"));
-                        accountList.addAll(googleAccountList);
-                    }
-                    if(naverAccountList.size()!=0){
-                        accountList.add(new AccountModel("Naver Calendar 계정"));
-                        accountList.addAll(naverAccountList);
-                    }
-                    if(appleAccountList.size()!=0){
-                        accountList.add(new AccountModel("Apple Calendar 계정"));
-                        accountList.addAll(appleAccountList);
-                    }
+                        if(googleAccountList.size()!=0){
+                            accountList.add(new AccountModel("Google Calendar 계정"));
+                            accountList.addAll(googleAccountList);
+                        }
+                        if(naverAccountList.size()!=0){
+                            accountList.add(new AccountModel("Naver Calendar 계정"));
+                            accountList.addAll(naverAccountList);
+                        }
+                        if(appleAccountList.size()!=0){
+                            accountList.add(new AccountModel("Apple Calendar 계정"));
+                            accountList.addAll(appleAccountList);
+                        }
 
-                    recyclerAdapter.setData(accountList);
-                    recyclerAdapter.notifyDataSetChanged();
-
-                }
-                else{
-                    Logger.e(TAG,"status code : " + response.code());
-                    Toast.makeText(
-                            getBaseContext(),
-                            getString(R.string.toast_msg_server_internal_error),
-                            Toast.LENGTH_LONG
-                    ).show();
+                        recyclerAdapter.setData(accountList);
+                        recyclerAdapter.notifyDataSetChanged();
+                        break;
+                    default:
+                        Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
+                        Logger.e(TAG,"status code : " + response.code());
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_server_internal_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
                 }
             }
 
@@ -166,6 +174,11 @@ public class AccountListActivity extends BaseAppCompatActivity {
 
                 Logger.e(TAG,"onfail : " + t.getMessage());
                 Logger.e(TAG, "fail " + t.getClass().getName());
+
+
+                if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
+                    Crashlytics.logException(new HttpResponseParsingException(call, t));
+                }
 
                 Toast.makeText(
                         getBaseContext(),

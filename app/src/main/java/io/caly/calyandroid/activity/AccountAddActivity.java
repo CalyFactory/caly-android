@@ -11,12 +11,15 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+
+import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.util.Logger;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.auth.api.Auth;
@@ -282,6 +285,7 @@ public class AccountAddActivity extends BaseAppCompatActivity {
                         ).show();
                         break;
                     default:
+                        Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
                         Logger.e(TAG,"status code : " + response.code());
                         Toast.makeText(
                                 getBaseContext(),

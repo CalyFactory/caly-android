@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 
 import io.caly.calyandroid.activity.base.BaseAppCompatActivity;
+import io.caly.calyandroid.exception.HttpResponseParsingException;
+import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.model.orm.TokenRecord;
 import io.caly.calyandroid.model.response.BasicResponse;
 import io.caly.calyandroid.util.ApiClient;
@@ -20,7 +22,10 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
+import com.crashlytics.android.Crashlytics;
 import com.github.ybq.android.spinkit.SpinKitView;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.MalformedJsonException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -134,11 +139,21 @@ public class WebViewActivity extends BaseAppCompatActivity {
                 public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
                     Logger.d(TAG,"onResponse code : " + response.code());
                     Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
+                    switch (response.body().code){
+                        case 200:
+                            break;
+                        default:
+                            Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
+                            break;
+                    }
 
                 }
 
                 @Override
                 public void onFailure(Call<BasicResponse> call, Throwable t) {
+                    if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
+                        Crashlytics.logException(new HttpResponseParsingException(call, t));
+                    }
                     Logger.e(TAG,"onfail : " + t.getMessage());
                     Logger.e(TAG, "fail " + t.getClass().getName());
 
@@ -175,11 +190,22 @@ public class WebViewActivity extends BaseAppCompatActivity {
                     public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
                         Logger.d(TAG,"onResponse code : " + response.code());
                         Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
+                        switch (response.body().code){
+                            case 200:
+                                break;
+                            default:
+                                Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
+                                break;
+                        }
 
                     }
 
                     @Override
                     public void onFailure(Call<BasicResponse> call, Throwable t) {
+                        if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
+                            Crashlytics.logException(new HttpResponseParsingException(call, t));
+                        }
+
                         Logger.e(TAG,"onfail : " + t.getMessage());
                         Logger.e(TAG, "fail " + t.getClass().getName());
 
