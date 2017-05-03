@@ -1,5 +1,7 @@
 package io.caly.calyandroid.util.eventListener;
 
+import android.util.Log;
+
 import io.caly.calyandroid.util.Logger;
 
 import java.io.IOException;
@@ -39,9 +41,13 @@ public class LoggingInterceptor implements Interceptor {
 
         Logger.i(TAG, "Response " + request.url() + " in " + (t2 - t1)/1000000000f + "\ncode : " + response.code() + "\n" + responseString);
 
+
         return  response.newBuilder()
                 .body(ResponseBody.create(response.body().contentType(), responseString))
                 .build();
+
     }
+
+
 
 }

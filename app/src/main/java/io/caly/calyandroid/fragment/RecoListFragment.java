@@ -287,7 +287,7 @@ public class RecoListFragment extends BaseFragment {
                 Logger.d(TAG,"onResponse code : " + response.code());
                 Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
 
-                switch (response.body().code){
+                switch (response.code()){
                     case 200:
                         break;
                     default:

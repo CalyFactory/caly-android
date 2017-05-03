@@ -160,7 +160,7 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
                     public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
                         Logger.d(TAG,"onResponse code : " + response.code());
                         Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
-                        switch (response.body().code){
+                        switch (response.code()){
                             case 200:
                                 break;
                             default:
@@ -233,7 +233,7 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
                         Logger.d(TAG,"onResponse code : " + response.code());
                         Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
 
-                        switch (response.body().code){
+                        switch (response.code()){
                             case 200:
                                 break;
                             default:
