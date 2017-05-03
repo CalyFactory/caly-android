@@ -19,7 +19,7 @@
             style="@style/SpinKitView.Large.FoldingCube"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:SpinKit_Color="@color/colorPrimary" />
+            app:SpinKit_Color="@color/dark_sky_blue_three" />
 
     </LinearLayout>
 

@@ -57,10 +57,6 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         TextView tvEventLocation;
 
         @Nullable
-        @Bind(R.id.line_eventlist)
-        View viewIndicator;
-
-        @Nullable
         @Bind(R.id.linear_eventlist_row)
         LinearLayout cardRow;
 
@@ -165,12 +161,10 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                 }
 
                 if (isNewDay){
-//                    holder.viewIndicator.setVisibility(View.VISIBLE);
                     holder.tvEventDayString.setVisibility(View.VISIBLE);
                     holder.tvEventDay.setVisibility(View.VISIBLE);
                 }
                 else{
-//                    holder.viewIndicator.setVisibility(View.INVISIBLE);
                     holder.tvEventDayString.setVisibility(View.INVISIBLE);
                     holder.tvEventDay.setVisibility(View.INVISIBLE);
                 }
@@ -214,7 +208,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                         holder.imvState.setImageResource(R.drawable.question_mark);
                         break;
                     case STATE_DONE_RECOMMEND:
-                        holder.linearState.setBackgroundColor(ContextCompat.getColor(context, R.color.dark_sky_blue));
+                        holder.linearState.setBackgroundColor(ContextCompat.getColor(context, R.color.tealish));
                         holder.tvState.setText("추천완료");
                         holder.tvRecoCount.setText("" + eventModel.totalRecoCnt);
                         holder.imvState.setImageResource(R.drawable.oval_3);

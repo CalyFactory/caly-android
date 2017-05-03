@@ -203,14 +203,14 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
                 Animation.RELATIVE_TO_SELF, 0f,
                 Animation.RELATIVE_TO_SELF, -0.8f
         );
-        animation.setDuration(600);
+        animation.setDuration(800);
         animation.setFillAfter(true);
         linearLogo.startAnimation(animation);
 
 
         linearLogin.setVisibility(View.VISIBLE);
         AlphaAnimation fadeOut = new AlphaAnimation(0f, 1f);
-        fadeOut.setStartOffset(200);
+        fadeOut.setStartOffset(400);
         fadeOut.setDuration(300);
 
         linearLogin.startAnimation(fadeOut);

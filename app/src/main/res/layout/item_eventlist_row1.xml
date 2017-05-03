@@ -8,14 +8,18 @@
     android:orientation="vertical">
 
     <LinearLayout
-        android:layout_marginTop="3dp"
-        android:layout_marginBottom="4dp"
+        android:background="?android:attr/selectableItemBackground"
+        android:layout_marginBottom="0.8dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        tools:background="@color/white"
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="61dp"
+            android:paddingLeft="17dp"
+            android:layout_width="43dp"
             android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:orientation="vertical">
@@ -24,11 +28,12 @@
                 android:id="@+id/tv_eventrow_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="11dp"
+                android:layout_marginTop="13dp"
                 android:textColor="@color/greyish_brown_two"
-                android:textSize="21dp" />
+                android:textSize="20dp" />
 
             <TextView
+                android:layout_marginTop="1dp"
                 android:id="@+id/tv_eventrow_daystring"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -39,15 +44,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white_two"
-            android:padding="0.5dp"
-            android:layout_marginRight="11dp">
-
-            <LinearLayout
                 android:id="@+id/linear_eventlist_row"
-                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -61,14 +58,14 @@
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:orientation="vertical"
-                        android:paddingLeft="21dp">
+                        android:paddingLeft="42dp">
 
 
                         <TextView
                             android:id="@+id/tv_eventrow_summary"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="13dp"
+                            android:layout_marginTop="15dp"
                             android:textColor="@color/black"
                             fontPath="@string/font_nanum_extra_bold"
                             android:textSize="15dp" />
@@ -76,7 +73,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
+                            android:layout_marginTop="7dp"
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
 
@@ -98,7 +95,7 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
+                            android:layout_marginTop="4dp"
                             android:layout_marginBottom="11dp"
                             android:gravity="center_vertical"
                             android:orientation="horizontal">
@@ -122,7 +119,7 @@
 
                     <LinearLayout
                         android:id="@+id/linear_eventrow_state"
-                        android:layout_width="53dp"
+                        android:layout_width="63dp"
                         android:background="@color/white_two"
                         android:layout_height="match_parent"
                         android:orientation="vertical"
@@ -134,9 +131,9 @@
 
                             <ImageView
                                 android:id="@+id/imv_eventrow_state"
-                                android:layout_width="wrap_content"
+                                android:layout_width="19dp"
                                 android:src="@drawable/ic_message"
-                                android:layout_height="wrap_content" />
+                                android:layout_height="19dp" />
 
                             <TextView
                                 android:layout_gravity="center"
@@ -150,18 +147,17 @@
 
                         </FrameLayout>
                         <TextView
-                            android:layout_marginTop="5dp"
+                            android:layout_marginTop="4dp"
                             android:id="@+id/tv_eventrow_state"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
                             android:textColor="@color/white"
-                            android:textSize="8dp" />
+                            android:textSize="9dp" />
                     </LinearLayout>
                 </LinearLayout>
 
-            </LinearLayout>
-        </LinearLayout>
+</LinearLayout>
 
     </LinearLayout>
 

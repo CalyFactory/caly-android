@@ -37,10 +37,10 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_recolist_feedback"
+            app:useCompatPadding="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_margin="16dp"
             app:backgroundTint="@color/colorPrimary"
             android:src="@drawable/icon_inquiry" />
 

@@ -14,6 +14,7 @@ import java.util.Date;
 public class StringFormmater {
 
     public final static String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug"," Sept", "Oct", "Nov", "Dec"};
+    public final static String[] fullMonths = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
     public static String hostnameAuthGenerator(String userId, String hostname){
         if(userId.indexOf("@")==-1){
@@ -30,7 +31,7 @@ public class StringFormmater {
         endCalendar.setTime(endDate==null?startDate:endDate);
 
         return String.format(
-                "%02d:%02d~%02d:%02d",
+                "%02d:%02d-%02d:%02d",
                 startCalendar.get(Calendar.HOUR_OF_DAY),
                 startCalendar.get(Calendar.MINUTE),
                 endCalendar.get(Calendar.HOUR_OF_DAY),
@@ -41,17 +42,18 @@ public class StringFormmater {
 
     public static String monthFormat(int month){
         return String.format(
-                "%d월",
-                month
+                "%d %s",
+                month,
+                fullMonths[month - 1]
 
         );
     }
 
     public static String yearMonthFormat(int year, int month){
         return String.format(
-                "%04d %s",
+                "%04d년 %d월",
                 year,
-                months[month-1]
+                month
 
         );
     }

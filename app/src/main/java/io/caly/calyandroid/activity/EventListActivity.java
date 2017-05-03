@@ -97,11 +97,8 @@ EventListActivity extends BaseAppCompatActivity {
     @Bind(R.id.recycler_eventlist)
     ShimmerRecyclerView recyclerList;
 
-    @Bind(R.id.tv_eventlist_today)
-    TextView tvToday;
-
-    @Bind(R.id.tv_eventlist_year)
-    TextView tvEventYear;
+    @Bind(R.id.tv_eventlist_month)
+    TextView tvEventMonth;
 
     @Bind(R.id.tv_eventlist_yearmonth)
     TextView tvEventYearMonth;
@@ -152,7 +149,7 @@ EventListActivity extends BaseAppCompatActivity {
         ButterKnife.bind(this);
 
         //set toolbar
-        toolbar.setTitle("5");
+        toolbar.setTitle("");
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -231,19 +228,14 @@ EventListActivity extends BaseAppCompatActivity {
                     EventModel eventModel = recyclerAdapter.getItem(position);
 
                     Logger.d(TAG, eventModel.startMonth + "월");
-                    toolbar.setTitle("" + eventModel.startMonth);
-//                    tvEventYear.setText(eventModel.startYear + "");
+//                    toolbar.setTitle(StringFormmater.yearMonthFormat(eventModel.startYear, eventModel.startMonth));
+                    tvEventMonth.setText(StringFormmater.fullMonths[eventModel.startMonth - 1]);
                     tvEventYearMonth.setText(StringFormmater.yearMonthFormat(eventModel.startYear, eventModel.startMonth));
                     if (getStartDateListIndex() == layoutManager.findFirstVisibleItemPosition()) {
 
                         fabToday.hide();
-                        tvToday.setVisibility(View.GONE);
                     } else {
-                        Log.d(TAG, "show fab");
                         fabToday.show();
-                        if (fabToday.isShown()) {
-                            tvToday.setVisibility(View.VISIBLE);
-                        }
                     }
                 }
 
@@ -304,7 +296,6 @@ EventListActivity extends BaseAppCompatActivity {
         checkBanner();
 
         fabToday.hide();
-        tvToday.setVisibility(View.GONE);
     }
 
     void checkBanner(){
@@ -873,7 +864,6 @@ EventListActivity extends BaseAppCompatActivity {
         recyclerList.smoothScrollToPosition(getStartDateListIndex());
         Logger.d(TAG, "fab hide");
         fabToday.hide();
-        tvToday.setVisibility(View.GONE);
     }
 
     int getStartDateListIndex(){

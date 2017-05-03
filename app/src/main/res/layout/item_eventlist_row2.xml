@@ -3,34 +3,25 @@
     xmlns:card="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="40dp">
 
     <LinearLayout
-        android:layout_marginTop="14dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginBottom="6dp"
-        android:layout_marginRight="12dp"
+        android:paddingTop="19dp"
+        android:paddingLeft="18dp"
+        android:paddingBottom="7dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
         <TextView
-            android:layout_marginLeft="2dp"
             android:layout_width="wrap_content"
             android:text="5월"
             android:id="@+id/tv_eventrow_yearmonth"
             android:textSize="13dp"
-            android:textColor="#9a9a9a"
+            android:textColor="#a8a8a8"
             android:layout_height="wrap_content" />
 
-        <View
-            android:layout_marginTop="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="#d3d3d3"
-            android:id="@+id/line_eventlist"
-            />
     </LinearLayout>
 
 
