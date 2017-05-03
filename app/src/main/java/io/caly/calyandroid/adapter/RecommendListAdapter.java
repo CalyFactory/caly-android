@@ -180,13 +180,12 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
                 Tracker t = ((CalyApplication)((Activity)context).getApplication()).getDefaultTracker();
                 t.setScreenName(this.getClass().getName());
                 t.send(
-                        new HitBuilders.SocialBuilder()
-                                .setNetwork(context.getString(R.string.app_name))
+                        new HitBuilders.EventBuilder()
                                 .setAction(context.getString(R.string.ga_action_reco_view))
                                 .set("&userId", TokenRecord.getTokenRecord().getUserId())
                                 .set("&loginPlatform", TokenRecord.getTokenRecord().getLoginPlatform())
+                                .set("&eventHashKey", recoModel.eventHashKey)
                                 .set("&recoHashKey", recoModel.recoHashKey)
-                                .setTarget(recoModel.recoHashKey)
                                 .build()
                 );
             }

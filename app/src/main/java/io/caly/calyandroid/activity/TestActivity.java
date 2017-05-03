@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 
 import butterknife.OnClick;
+import io.caly.calyandroid.exception.HttpResponseParsingException;
+import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.model.event.TestEvent;
 import io.caly.calyandroid.util.Logger;
 
@@ -19,6 +21,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.MalformedJsonException;
 import com.squareup.otto.Produce;
 import com.squareup.otto.Subscribe;
 
@@ -58,7 +62,6 @@ public class TestActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.button)
     void onButtonClick(){
-        Crashlytics.logException(new NullPointerException("HelloError"));
         test();
     }
 
@@ -140,7 +143,7 @@ public class TestActivity extends BaseAppCompatActivity {
                     case 200:
                         break;
                     default:
-                        Crashlytics.logException(new Exception("HelloError"));
+                        Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
                         Logger.e(TAG,"status code : " + response.code());
                         Toast.makeText(
                                 getBaseContext(),
@@ -156,13 +159,15 @@ public class TestActivity extends BaseAppCompatActivity {
                 Logger.e(TAG,"onfail : " + t.getMessage());
                 Logger.e(TAG, "fail " + t.getClass().getName());
 
+                if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
+                    Crashlytics.logException(new HttpResponseParsingException(call, t));
+                }
+
                 Toast.makeText(
                         getBaseContext(),
                         getString(R.string.toast_msg_network_error),
                         Toast.LENGTH_LONG
                 ).show();
-
-                Crashlytics.logException(new Exception("HelloError"));
             }
         });
     }

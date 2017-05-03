@@ -10,7 +10,9 @@ import io.caly.calyandroid.model.response.SyncResponse;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -23,10 +25,19 @@ import retrofit2.http.POST;
 public interface HttpService {
 
     //TEST
-    @FormUrlEncoded
-    @POST("v1.0/")
+    @GET("/")
     Call<BasicResponse> test(
-            @Field("key") String key
+            @Query("key") String key
+    );
+
+    @GET("/")
+    Call<BasicResponse> test1(
+            @Query("key") String key
+    );
+
+    @GET("/")
+    Call<BasicResponse> test2(
+            @Query("key") String key
     );
 
     /*

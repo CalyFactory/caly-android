@@ -43,6 +43,7 @@ public class ApiClient {
 
             gsonObject = new GsonBuilder()
                     .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                    .setLenient()
                     .registerTypeAdapter(EventModel.class, new EventDeserialize())
                     .registerTypeAdapter(RecoState.class, new RecoStateDeserializer())
                     .create();
