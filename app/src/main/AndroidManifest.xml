@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme">
 
         <!-- Activity Launcher -->
-        <activity android:name=".Activity.ActivityLauncher">
+        <activity android:name=".activity.ActivityLauncher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,99 +27,99 @@
         </activity>
 
         <!-- DEBUG Activity -->
-        <activity android:name=".Activity.DebugActivity">
+        <activity android:name=".activity.DebugActivity">
         </activity>
 
         <!-- Splash Activity -->
         <activity
-            android:name=".Activity.SplashActivity"
+            android:name=".activity.SplashActivity"
             android:screenOrientation="portrait">
         </activity>
 
         <!-- Login Activity -->
         <activity
-            android:name=".Activity.LoginActivity"
+            android:name=".activity.LoginActivity"
             android:screenOrientation="portrait">
 
         </activity>
 
         <!-- Event List Activity -->
         <activity
-            android:name=".Activity.EventListActivity"
+            android:name=".activity.EventListActivity"
             android:screenOrientation="portrait">
 
         </activity>
 
         <!-- Guide Activity -->
         <activity
-            android:name=".Activity.GuideActivity"
+            android:name=".activity.GuideActivity"
             android:screenOrientation="portrait">
 
         </activity>
 
         <!-- Setting Activity -->
         <activity
-            android:name=".Activity.LegacySettingActivity"
+            android:name=".activity.LegacySettingActivity"
             android:screenOrientation="portrait">
 
         </activity>
 
         <!-- Setting Activity -->
         <activity
-            android:name=".Activity.SettingActivity"
+            android:name=".activity.SettingActivity"
             android:screenOrientation="portrait">
 
         </activity>
 
         <!-- Signup Activity -->
         <activity
-            android:name=".Activity.SignupActivity"
+            android:name=".activity.SignupActivity"
             android:screenOrientation="portrait">
         </activity>
 
         <!-- Policy Activity -->
         <activity
-            android:name=".Activity.PolicyActivity"
+            android:name=".activity.PolicyActivity"
             android:screenOrientation="portrait">
         </activity>
 
         <!-- AccountAdd Activity -->
         <activity
-            android:name=".Activity.AccountAddActivity"
+            android:name=".activity.AccountAddActivity"
             android:screenOrientation="portrait">
 
         </activity>
 
         <!-- AccountList Activity -->
         <activity
-            android:name=".Activity.AccountListActivity"
+            android:name=".activity.AccountListActivity"
             android:screenOrientation="portrait">
         </activity>
 
         <!-- Announce Activity -->
         <activity
-            android:name=".Activity.NoticeActivity"
+            android:name=".activity.NoticeActivity"
             android:screenOrientation="portrait">
 
         </activity>
 
         <!-- RecommandList Activity -->
         <activity
-            android:name=".Activity.RecoListActivity"
+            android:name=".activity.RecoListActivity"
             android:screenOrientation="portrait">
 
         </activity>
 
         <!-- Map Activity -->
         <activity
-            android:name=".Activity.MapActivity"
+            android:name=".activity.MapActivity"
             android:screenOrientation="portrait">
 
         </activity>
 
         <!-- WebView Activity -->
         <activity
-            android:name=".Activity.WebViewActivity"
+            android:name=".activity.WebViewActivity"
             android:screenOrientation="portrait">
 
         </activity>
@@ -128,14 +128,14 @@
         <!-- FCM Push Service -->
 
         <service
-            android:name=".Service.FirebaseMessagingService">
+            android:name=".service.FirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
 
         <service
-            android:name=".Service.FirebaseInstanceIDService">
+            android:name=".service.FirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
             </intent-filter>
@@ -150,7 +150,7 @@
         <!-- TEST -->
 
         <!-- Test Activity -->
-        <activity android:name=".Activity.TestActivity">
+        <activity android:name=".activity.TestActivity">
         </activity>
 
 
