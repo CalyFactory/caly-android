@@ -1,9 +1,5 @@
 package io.caly.calyandroid.fragment;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -11,7 +7,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -23,16 +18,13 @@ import com.squareup.otto.Subscribe;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.caly.calyandroid.activity.WebViewActivity;
 import io.caly.calyandroid.adapter.RecoTabPagerAdapter;
 import io.caly.calyandroid.CalyApplication;
-import io.caly.calyandroid.Model.LogType;
+import io.caly.calyandroid.model.LogType;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.fragment.base.BaseFragment;
 import io.caly.calyandroid.model.dataModel.EventModel;
-import io.caly.calyandroid.model.dataModel.RecoModel;
 import io.caly.calyandroid.model.event.RecoListLoadStateChangeEvent;
-import io.caly.calyandroid.model.event.RecoMoreClickEvent;
 import io.caly.calyandroid.model.orm.TokenRecord;
 import io.caly.calyandroid.model.response.BasicResponse;
 import io.caly.calyandroid.util.ApiClient;
@@ -43,10 +35,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.content.Context.CLIPBOARD_SERVICE;
-import static io.caly.calyandroid.model.Category.CAFE;
-import static io.caly.calyandroid.model.Category.PLACE;
-import static io.caly.calyandroid.model.Category.RESTAURANT;
 import static java.sql.Types.NULL;
 
 /**

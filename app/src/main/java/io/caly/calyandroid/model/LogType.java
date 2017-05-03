@@ -1,4 +1,4 @@
-package io.caly.calyandroid.Model;
+package io.caly.calyandroid.model;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.

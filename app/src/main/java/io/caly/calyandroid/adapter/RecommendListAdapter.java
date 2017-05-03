@@ -20,7 +20,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.caly.calyandroid.Model.LogType;
+import io.caly.calyandroid.model.LogType;
 import io.caly.calyandroid.activity.WebViewActivity;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.R;

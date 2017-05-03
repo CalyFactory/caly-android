@@ -58,7 +58,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.caly.calyandroid.Model.LogType;
+import io.caly.calyandroid.model.LogType;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.util.StringFormmater;
 import io.caly.calyandroid.util.Util;
@@ -76,7 +76,9 @@ import uk.co.chrisjenx.calligraphy.TypefaceUtils;
  * @since 17. 2. 11
  */
 
-public class EventListActivity extends BaseAppCompatActivity {
+public class
+
+EventListActivity extends BaseAppCompatActivity {
 
     private int currentTailPageNum = 1;
     private int currentHeadPageNum = -1;

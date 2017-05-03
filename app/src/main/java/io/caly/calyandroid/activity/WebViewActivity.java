@@ -24,7 +24,7 @@ import com.github.ybq.android.spinkit.SpinKitView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.caly.calyandroid.Model.LogType;
+import io.caly.calyandroid.model.LogType;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.util.Util;
 import retrofit2.Call;
