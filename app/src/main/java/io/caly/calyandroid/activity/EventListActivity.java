@@ -16,10 +16,22 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
+import io.caly.calyandroid.activity.base.BaseAppCompatActivity;
+import io.caly.calyandroid.adapter.EventListAdapter;
+import io.caly.calyandroid.model.RecoState;
+import io.caly.calyandroid.model.dataModel.BannerModel;
+import io.caly.calyandroid.model.dataModel.EventModel;
 import io.caly.calyandroid.model.event.AccountListRefreshEvent;
+import io.caly.calyandroid.model.event.EventListRefreshEvent;
+import io.caly.calyandroid.model.event.GoogleSyncDoneEvent;
+import io.caly.calyandroid.model.event.RecoReadyEvent;
 import io.caly.calyandroid.model.event.TestEvent;
+import io.caly.calyandroid.model.orm.TokenRecord;
+import io.caly.calyandroid.model.response.BasicResponse;
+import io.caly.calyandroid.model.response.EventResponse;
+import io.caly.calyandroid.util.ApiClient;
+import io.caly.calyandroid.util.ConfigClient;
 import io.caly.calyandroid.util.Logger;
-
 import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
@@ -46,23 +58,11 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.caly.calyandroid.activity.base.BaseAppCompatActivity;
-import io.caly.calyandroid.adapter.EventListAdapter;
-import io.caly.calyandroid.model.dataModel.BannerModel;
-import io.caly.calyandroid.model.dataModel.EventModel;
-import io.caly.calyandroid.model.event.EventListRefreshEvent;
-import io.caly.calyandroid.model.event.GoogleSyncDoneEvent;
-import io.caly.calyandroid.model.event.RecoReadyEvent;
-import io.caly.calyandroid.model.RecoState;
-import io.caly.calyandroid.model.response.BasicResponse;
-import io.caly.calyandroid.model.response.EventResponse;
-import io.caly.calyandroid.model.orm.TokenRecord;
+import io.caly.calyandroid.Model.LogType;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.util.ApiClient;
-import io.caly.calyandroid.util.ConfigClient;
-import io.caly.calyandroid.util.eventListener.RecyclerItemClickListener;
 import io.caly.calyandroid.util.StringFormmater;
 import io.caly.calyandroid.util.Util;
+import io.caly.calyandroid.util.eventListener.RecyclerItemClickListener;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -339,6 +339,14 @@ public class EventListActivity extends BaseAppCompatActivity {
     };
 
     void startRecommandActivity(EventModel eventModel){
+
+        Logger.d(TAG, "eventHashkey = >");
+        requestSetEventLog (TokenRecord.getTokenRecord().getApiKey(),
+                eventModel.eventHashKey,
+                LogType.CATEGORY_CELL.value,
+                LogType.LABEL_EVENT_CELL.value,
+                LogType.ACTION_CLICK.value);
+
         Intent intent = new Intent(EventListActivity.this, RecoListActivity.class);
         intent.putExtra("event", ApiClient.getGson().toJson(eventModel));
         startActivity(intent);
@@ -661,6 +669,30 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     }
 
+    void requestSetEventLog (String apikey, String eventHashkey, int category, int label, int action) {
+        ApiClient.getService().setEventLog(
+                apikey,
+                eventHashkey,
+                category,
+                label,
+                action
+        ).enqueue(new Callback<BasicResponse>() {
+            @Override
+            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                Logger.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
+
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponse> call, Throwable t) {
+                Logger.e(TAG,"onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
+
+            }
+        });
+    }
+
     void syncCalendar(){
         Logger.i(TAG, "syncCalendar");
 
@@ -844,6 +876,14 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.tv_banner_close)
     void onBannerCloseClick(){
+
+        requestSetEventLog (TokenRecord.getTokenRecord().getApiKey(),
+                null,
+                LogType.CATEGORY_VIEW.value,
+                LogType.LABEL_EVENT_BANNER_CLOSE.value,
+                LogType.ACTION_CLICK.value);
+
+
         Logger.i(TAG, "onBannerCloseClick()");
         TranslateAnimation animation = new TranslateAnimation(
                 Animation.RELATIVE_TO_SELF, 0f,
@@ -862,6 +902,14 @@ public class EventListActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.linear_banner)
     void onBannerClick(){
+
+
+        requestSetEventLog (TokenRecord.getTokenRecord().getApiKey(),
+                            null,
+                            LogType.CATEGORY_VIEW.value,
+                            LogType.LABEL_EVENT_BANNER.value,
+                            LogType.ACTION_CLICK.value);
+
         switch (bannerModel.action.type){
             case "intent":
                 startBannerActivity();
@@ -893,6 +941,11 @@ public class EventListActivity extends BaseAppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_eventlist_refresh:
+                requestSetEventLog (TokenRecord.getTokenRecord().getApiKey(),
+                                    null,
+                                    LogType.CATEGORY_VIEW.value,
+                                    LogType.LABEL_EVENT_SYNC.value,
+                                    LogType.ACTION_CLICK.value);
                 refreshEvent();
                 break;
             /*

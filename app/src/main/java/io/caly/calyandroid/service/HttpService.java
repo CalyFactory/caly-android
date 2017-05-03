@@ -155,14 +155,14 @@ public interface HttpService {
 
     @FormUrlEncoded
     @POST("v1.0/events/setLog")
-    Call<BasicResponse> setLog(
+    Call<BasicResponse> setEventLog(
             @Field("apikey") String apiKey,
-            @Field("eventHashKey") String eventHashKey,
-            @Field("action") int action,
+            @Field("eventHashkey") String eventHashkey,
             @Field("category") int category,
-            @Field("label") int label
-    );
+            @Field("label") int label,
+            @Field("action") int action
 
+    );
 
     /*
     =============================
@@ -229,6 +229,17 @@ public interface HttpService {
             @Field("apikey") String apiKey
     );
 
+    @FormUrlEncoded
+    @POST("v1.0/reco/setLog")
+    Call<BasicResponse> setRecoLog(
+            @Field("apikey") String apiKey,
+            @Field("eventHashkey") String eventHashkey,
+            @Field("category") int category,
+            @Field("label") int label,
+            @Field("action") int action,
+            @Field("residenseTime") long residenseTime,
+            @Field("recoHashkey") String recohashkey
+    );
     /*
     =============================
               SETTING

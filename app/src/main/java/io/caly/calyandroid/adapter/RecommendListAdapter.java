@@ -20,13 +20,22 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.caly.calyandroid.Model.LogType;
 import io.caly.calyandroid.activity.WebViewActivity;
 import io.caly.calyandroid.CalyApplication;
+import io.caly.calyandroid.R;
 import io.caly.calyandroid.model.dataModel.RecoModel;
 import io.caly.calyandroid.model.orm.TokenRecord;
-import io.caly.calyandroid.R;
+import io.caly.calyandroid.model.response.BasicResponse;
+import io.caly.calyandroid.util.ApiClient;
+import io.caly.calyandroid.util.Logger;
 import io.caly.calyandroid.util.StringFormmater;
 import io.caly.calyandroid.util.Util;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static java.sql.Types.NULL;
 
 /**
  * Created by jspiner on 2017. 2. 27..
@@ -132,6 +141,31 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
             @Override
             public void onClick(View view) {
 
+
+                ApiClient.getService().setRecoLog(
+                        TokenRecord.getTokenRecord().getApiKey(),
+                        recoModel.eventHashKey,
+                        LogType.CATEGORY_CELL.value,
+                        LogType.RECO_LABEL_GOBLOG.value,
+                        LogType.ACTION_CLICK.value,
+                        0,
+                        recoModel.recoHashKey
+                ).enqueue(new Callback<BasicResponse>() {
+                    @Override
+                    public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                        Logger.d(TAG,"onResponse code : " + response.code());
+                        Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<BasicResponse> call, Throwable t) {
+                        Logger.e(TAG,"onfail : " + t.getMessage());
+                        Logger.e(TAG, "fail " + t.getClass().getName());
+
+                    }
+                });
+
                 RecoModel recoModel = dataList.get(position);
 
 //                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(recoModel.deepUrl));
@@ -171,6 +205,30 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
         holder.tvMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                ApiClient.getService().setRecoLog(
+                        TokenRecord.getTokenRecord().getApiKey(),
+                        recoModel.eventHashKey,
+                        LogType.CATEGORY_CELL.value,
+                        LogType.RECO_LABEL_GOPLACEMAP.value,
+                        LogType.ACTION_CLICK.value,
+                        NULL,
+                        recoModel.recoHashKey
+                ).enqueue(new Callback<BasicResponse>() {
+                    @Override
+                    public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                        Logger.d(TAG,"onResponse code : " + response.code());
+                        Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<BasicResponse> call, Throwable t) {
+                        Logger.e(TAG,"onfail : " + t.getMessage());
+                        Logger.e(TAG, "fail " + t.getClass().getName());
+
+                    }
+                });
+
 
                 RecoModel recoModel = dataList.get(position);
 //                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(recoModel.mapUrl));

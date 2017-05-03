@@ -5,7 +5,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 
+import io.caly.calyandroid.adapter.RecommendListAdapter;
+import io.caly.calyandroid.fragment.base.BaseFragment;
+import io.caly.calyandroid.model.Category;
+import io.caly.calyandroid.model.dataModel.EventModel;
+import io.caly.calyandroid.model.dataModel.RecoModel;
+import io.caly.calyandroid.model.event.RecoListLoadStateChangeEvent;
 import io.caly.calyandroid.model.event.TestEvent;
+import io.caly.calyandroid.model.response.RecoResponse;
 import io.caly.calyandroid.util.Logger;
 
 import android.util.Log;
@@ -17,22 +24,11 @@ import android.widget.TextView;
 import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.squareup.otto.Subscribe;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.caly.calyandroid.adapter.RecommendListAdapter;
-import io.caly.calyandroid.fragment.base.BaseFragment;
-import io.caly.calyandroid.model.Category;
-import io.caly.calyandroid.model.dataModel.EventModel;
-import io.caly.calyandroid.model.dataModel.RecoModel;
-import io.caly.calyandroid.model.event.RecoListLoadStateChangeEvent;
-import io.caly.calyandroid.model.orm.TokenRecord;
-import io.caly.calyandroid.model.response.RecoResponse;
-import io.caly.calyandroid.model.TrackingType;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.util.ApiClient;
 import io.caly.calyandroid.util.eventListener.RecyclerItemClickListener;
 import retrofit2.Response;
 
@@ -113,29 +109,6 @@ public class RecoTabFragment extends BaseFragment {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, final int position) {
-
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        Logger.i(TAG, "traking click");
-
-                                        if(recyclerAdapter.getItemCount() - 1 < position){
-                                            return;
-                                        }
-
-                                        try {
-                                            ApiClient.getService().tracking(
-                                                    TokenRecord.getTokenRecord().getApiKey(),
-                                                    eventData.eventHashKey,
-                                                    recyclerAdapter.getItem(position).recoHashKey,
-                                                    TrackingType.CLICK.value,
-                                                    0
-                                            ).execute();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }).start();
 
 
                             }

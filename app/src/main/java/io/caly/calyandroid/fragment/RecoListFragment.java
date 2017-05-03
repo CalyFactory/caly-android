@@ -1,11 +1,17 @@
 package io.caly.calyandroid.fragment;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -17,14 +23,18 @@ import com.squareup.otto.Subscribe;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.caly.calyandroid.activity.WebViewActivity;
 import io.caly.calyandroid.adapter.RecoTabPagerAdapter;
 import io.caly.calyandroid.CalyApplication;
+import io.caly.calyandroid.Model.LogType;
+import io.caly.calyandroid.R;
 import io.caly.calyandroid.fragment.base.BaseFragment;
 import io.caly.calyandroid.model.dataModel.EventModel;
+import io.caly.calyandroid.model.dataModel.RecoModel;
 import io.caly.calyandroid.model.event.RecoListLoadStateChangeEvent;
+import io.caly.calyandroid.model.event.RecoMoreClickEvent;
 import io.caly.calyandroid.model.orm.TokenRecord;
 import io.caly.calyandroid.model.response.BasicResponse;
-import io.caly.calyandroid.R;
 import io.caly.calyandroid.util.ApiClient;
 import io.caly.calyandroid.util.Logger;
 import io.caly.calyandroid.util.Util;
@@ -32,6 +42,12 @@ import io.caly.calyandroid.view.FeedbackDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.content.Context.CLIPBOARD_SERVICE;
+import static io.caly.calyandroid.model.Category.CAFE;
+import static io.caly.calyandroid.model.Category.PLACE;
+import static io.caly.calyandroid.model.Category.RESTAURANT;
+import static java.sql.Types.NULL;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -51,7 +67,6 @@ public class RecoListFragment extends BaseFragment {
 /*
     @Bind(R.id.layout_drawer)
     LinearLayout layoutDrawer;
-
     @Bind(R.id.layout_drawer_inside)
     LinearLayout layoutDrawerInside;*/
 
@@ -105,6 +120,32 @@ public class RecoListFragment extends BaseFragment {
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
+
+                Logger.d(TAG,"getPosition"+String.valueOf(tab.getPosition()));
+                int RECO_LOG_LABEL = 0;
+                switch (tab.getPosition()){
+                    //restaurant
+                    case 0:
+                        RECO_LOG_LABEL  = LogType.RECO_LABEL_TAP_RESTAURANT.value;
+                        break;
+                    //caffee
+                    case 1:
+                        RECO_LOG_LABEL  = LogType.RECO_LABEL_TAP_CAFE.value;
+                        break;
+                    //activity
+                    case 2:
+                        RECO_LOG_LABEL  = LogType.RECO_LABEL_TAP_PLACE.value;
+                        break;
+
+                }
+                requestSetRecoLog(TokenRecord.getTokenRecord().getApiKey(),
+                        eventData.eventHashKey,
+                        LogType.CATEGORY_VIEW.value,
+                        RECO_LOG_LABEL,
+                        LogType.ACTION_CLICK.value,
+                        NULL,
+                        null);
+
                 pagerRecoList.setCurrentItem(tab.getPosition());
             }
 
@@ -234,4 +275,138 @@ public class RecoListFragment extends BaseFragment {
         );
     }
 
+    void requestSetRecoLog (String apikey, String eventHashkey, int category, int label, int action, int residenseTime, String recoHashkey){
+        ApiClient.getService().setRecoLog(
+                apikey,
+                eventHashkey,
+                category,
+                label,
+                action,
+                residenseTime,
+                recoHashkey
+        ).enqueue(new Callback<BasicResponse>() {
+            @Override
+            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                Logger.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
+
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponse> call, Throwable t) {
+                Logger.e(TAG,"onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
+
+            }
+        });
+    }
+/*
+    @Override
+    public void onBackPressed() {
+
+        if(layoutDrawer.getVisibility() == View.VISIBLE){
+            drawOutDrawer();
+        }
+        else{
+            super.onBackPressed();
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
+        }
+
+
+    }*/
+/*
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case android.R.id.home:
+                onBackPressed();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+/*
+    void drawInDrawer(){
+
+        layoutDrawer.setVisibility(View.VISIBLE);
+
+        Util.setStatusBarColor(this, Color.BLACK);
+
+        layoutDrawerInside.startAnimation(drawerInAnimation);
+    }
+
+    void drawOutDrawer(){
+        layoutDrawerInside.startAnimation(drawerOutAnimation);
+    }
+*/
+    /*
+    RecoModel recoModel;
+
+    @Subscribe
+    public void onRecoMoreClickCallback(RecoMoreClickEvent event){
+        this.recoModel = event.recoModel;
+        drawInDrawer();
+    }
+
+    @OnClick(R.id.layout_drawer)
+    void onDrawerClick(){
+        drawOutDrawer();
+    }
+
+    @OnClick(R.id.layout_draweritem_1)
+    void onDrawerItemClick1(){
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+
+        clipboardManager.setPrimaryClip(ClipData.newPlainText("text", recoModel.deepUrl));
+        Toast.makeText(getBaseContext(), "복사되었습니다.",Toast.LENGTH_LONG).show();
+
+        drawOutDrawer();
+    }
+
+    @OnClick(R.id.layout_draweritem_2)
+    void onDrawerItemClick2(){
+
+        Intent intent = new Intent(this, WebViewActivity.class);
+        intent.putExtra("url", recoModel.sourceUrl);
+        startActivity(intent);
+
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+
+        drawOutDrawer();
+    }
+    @OnClick(R.id.layout_draweritem_3)
+    void onDrawerItemClick3(){
+
+        requestSetRecoLog(TokenRecord.getTokenRecord().getApiKey(),
+                        recoModel.eventHashKey,
+                        LogType.CATEGORY_CELL.value,
+                        LogType.RECO_LABEL_SHARE_KAKAO.value,
+                        LogType.ACTION_CLICK.value,
+                        NULL,
+                        recoModel.recoHashKey);
+
+        String[] snsList = {
+                "com.kakao.talk", //kakaotalk
+        };
+        boolean sended = false;
+        for(String snsPackage : snsList){
+            if(Util.isPackageInstalled(snsPackage)){
+
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT,"[캘리] 여기어때요? \n" + recoModel.deepUrl);
+                intent.setPackage("com.kakao.talk");
+
+                startActivity(intent);
+                sended = true;
+            }
+        }
+        if(!sended){
+            Toast.makeText(getBaseContext(), "공유 할 수 있는 SNS가 설치 되어있지 않습니다.",Toast.LENGTH_LONG).show();
+        }
+
+        drawOutDrawer();
+    }
+*/
 }
