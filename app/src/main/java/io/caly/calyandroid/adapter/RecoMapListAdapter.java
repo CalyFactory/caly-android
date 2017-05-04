@@ -116,7 +116,8 @@ public class RecoMapListAdapter extends PagerAdapter{
                 t.setScreenName(this.getClass().getName());
                 t.send(
                         new HitBuilders.EventBuilder()
-                                .setAction(context.getString(R.string.ga_action_reco_view))
+                                .setCategory(context.getString(R.string.ga_action_reco_view))
+                                .setAction("recoItemMapClick")
                                 .set("&userId", TokenRecord.getTokenRecord().getUserId())
                                 .set("&loginPlatform", TokenRecord.getTokenRecord().getLoginPlatform())
                                 .set("&eventHashKey", recoModel.eventHashKey)
