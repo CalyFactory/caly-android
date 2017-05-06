@@ -1,6 +1,7 @@
 package io.caly.calyandroid.activity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -20,6 +21,8 @@ import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.fragment.RecoListFragment;
 import io.caly.calyandroid.fragment.RecoMapFragment;
 import io.caly.calyandroid.model.Category;
+import io.caly.calyandroid.model.dataModel.RecoListWrapModel;
+import io.caly.calyandroid.model.dataModel.RecoModel;
 import io.caly.calyandroid.model.event.MapPermissionGrantedEvent;
 import io.caly.calyandroid.model.event.TestEvent;
 import io.caly.calyandroid.model.response.RecoResponse;
@@ -32,8 +35,12 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.MalformedJsonException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -67,7 +74,9 @@ public class RecoListActivity extends BaseAppCompatActivity {
     PAGE_TYPE pageType;
 
     RecoListFragment recoListFragment;
-    RecoMapFragment recoMapFragment;
+//    RecoMapFragment recoMapFragment;
+
+    List<RecoModel> recoList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -108,12 +117,12 @@ public class RecoListActivity extends BaseAppCompatActivity {
         toolbar.setTitle(eventData.summaryText);
 
         recoListFragment = new RecoListFragment().setData(eventData);
-        recoMapFragment = new RecoMapFragment();
+//        recoMapFragment = new RecoMapFragment();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.linear_reco_container, recoListFragment, "list");
-        transaction.add(R.id.linear_reco_container, recoMapFragment, "map");
-        transaction.hide(recoMapFragment);
+//        transaction.add(R.id.linear_reco_container, recoMapFragment, "map");
+//        transaction.hide(recoMapFragment);
         transaction.commit();
 
         pageType = PAGE_TYPE.LIST;
@@ -167,7 +176,7 @@ public class RecoListActivity extends BaseAppCompatActivity {
 
         switch (item.getItemId()){
             case R.id.menu_reco_changeview:
-                changeView();
+                startMapActivity();
                 break;
             case android.R.id.home:
                 onBackPressed();
@@ -187,15 +196,14 @@ public class RecoListActivity extends BaseAppCompatActivity {
                 pageType = PAGE_TYPE.MAP;
                 item.setIcon(getResources().getDrawable(R.drawable.group_4));
                 transaction.hide(recoListFragment);
-                transaction.show(recoMapFragment);
+//                transaction.show(recoMapFragment);
                 break;
             case MAP:
                 pageType = PAGE_TYPE.LIST;
                 item.setIcon(getResources().getDrawable(R.drawable.ic_checkin_map));
                 transaction.show(recoListFragment);
-                transaction.hide(recoMapFragment);
+//                transaction.hide(recoMapFragment);
 
-                BusProvider.getInstance().post(new TestEvent());
                 break;
         }
         transaction.disallowAddToBackStack();
@@ -253,7 +261,8 @@ public class RecoListActivity extends BaseAppCompatActivity {
 
                 switch (response.code()){
                     case 200:
-
+                        if(recoList == null) recoList = new ArrayList<RecoModel>();
+                        recoList.addAll(body.payload.data);
                         BusProvider.getInstance().post(
                                 new RecoListLoadStateChangeEvent(
                                         category,
@@ -338,6 +347,15 @@ public class RecoListActivity extends BaseAppCompatActivity {
         }
 
     }
+
+    void startMapActivity(){
+        Intent intent = new Intent(RecoListActivity.this, RecoMapActivity.class);
+        intent.putExtra("data", new Gson().toJson(new RecoListWrapModel(recoList)));
+        startActivity(intent);
+        overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
+    }
+
+
 
     /*
 

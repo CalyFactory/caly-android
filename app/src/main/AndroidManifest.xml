@@ -112,7 +112,7 @@
 
         <!-- Map Activity -->
         <activity
-            android:name=".activity.MapActivity"
+            android:name=".activity.RecoMapActivity"
             android:screenOrientation="portrait">
 
         </activity>

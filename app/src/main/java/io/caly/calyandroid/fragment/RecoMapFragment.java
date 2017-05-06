@@ -128,6 +128,9 @@ public class RecoMapFragment extends BaseFragment {
                         return true;
                     }
                 });
+
+                addData(recoList);
+                moveCamera(recoList.get(0));
             }
         });
 
@@ -185,6 +188,11 @@ public class RecoMapFragment extends BaseFragment {
                 return super.onMenuItemSelected(menuItem);
             }
         });
+    }
+
+    public RecoMapFragment setData(List<RecoModel> recoList){
+        this.recoList = recoList;
+        return this;
     }
 
     void filterList(Category category){
@@ -272,23 +280,28 @@ public class RecoMapFragment extends BaseFragment {
             case STATE_DONE:
                 Response<RecoResponse> response = doneEvent.response;
                 RecoResponse body = response.body();
-                if(recoList == null) recoList = new ArrayList<>();
-                recoList.addAll(body.payload.data);
-                adapter.addItems(body.payload.data);
-                addMarkers(body.payload.data);
+                addData(body.payload.data);
 
                 if(doneEvent.category == Category.RESTAURANT) {
                     if (body.payload.data.size() > 0) {
                         moveCamera(body.payload.data.get(0));
                     }
                 }
-
                 break;
             case STATE_EMPTY:
                 break;
             case STATE_ERROR:
                 break;
         }
+    }
+
+    void addData(List<RecoModel> recoList){
+
+        if(this.recoList == null) this.recoList = new ArrayList<>();
+        this.recoList.addAll(recoList);
+        adapter.addItems(recoList);
+        addMarkers(recoList);
+
     }
 
 }
