@@ -202,6 +202,7 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
                                 .set("&loginPlatform", TokenRecord.getTokenRecord().getLoginPlatform())
                                 .set("&eventHashKey", recoModel.eventHashKey)
                                 .set("&recoHashKey", recoModel.recoHashKey)
+                                .setCustomDimension(1, recoModel.eventHashKey)
                                 .build()
                 );
             }
@@ -271,7 +272,11 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
                         new HitBuilders.EventBuilder()
                                 .setCategory(context.getString(R.string.ga_action_button_click))
                                 .setAction("onMapClick")
-                                .set("1","1")
+                                .set("&userId", TokenRecord.getTokenRecord().getUserId())
+                                .set("&loginPlatform", TokenRecord.getTokenRecord().getLoginPlatform())
+                                .set("&eventHashKey", recoModel.eventHashKey)
+                                .set("&recoHashKey", recoModel.recoHashKey)
+                                .setCustomDimension(1, recoModel.eventHashKey)
                                 .build()
                 );
             }
