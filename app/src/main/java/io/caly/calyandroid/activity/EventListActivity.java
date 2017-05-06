@@ -74,6 +74,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import uk.co.chrisjenx.calligraphy.TypefaceUtils;
 
+import static io.caly.calyandroid.model.RecoState.STATE_BEING_RECOMMEND;
+
 /**
  * Copyright 2017 JSpiner. All rights reserved.
  *
@@ -275,10 +277,17 @@ EventListActivity extends BaseAppCompatActivity {
                         if(recyclerAdapter.getItemCount()-1 < position) return;
                         EventModel eventModel = recyclerAdapter.getItem(position);
 
-                        if(eventModel.recoState == RecoState.STATE_DONE_RECOMMEND){
-                            startRecommandActivity(eventModel);
+                        switch (eventModel.recoState){
+                            case STATE_BEING_RECOMMEND: //추천중
+                                Toast.makeText(getBaseContext(), "추천중 (사유고민하기)", Toast.LENGTH_LONG).show();
+                                break;
+                            case STATE_DONE_RECOMMEND: //추천완료
+                                startRecommandActivity(eventModel);
+                                break;
+                            case STATE_NOTHING_TO_RECOMMEND: //추천불가
+                                Toast.makeText(getBaseContext(), "추천불가 (사유고민하기)", Toast.LENGTH_LONG).show();
+                                break;
                         }
-
 
                     }
 

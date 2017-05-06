@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingPrefix"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:paddingLeft="40dp"
@@ -23,19 +26,20 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:textStyle="bold"
+                android:textSize="16dp"
+                fontPath="@string/font_nanum_extra_bold"
                 android:id="@+id/tv_setting_title"
-                android:textColor="#000000"
-                android:text="환경설정1"
-                />
+                android:textColor="#222222"
+                android:text="환경설정1" />
 
             <TextView
+                android:layout_marginTop="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="18dp"
+                android:textSize="11dp"
+                fontPath="@string/font_nanum_regular"
                 android:id="@+id/tv_setting_desc"
-                android:textColor="#000000"
+                android:textColor="#5a5a5a"
                 android:text="설정을 끄거나 킬 수 있습니다."
                 />
 

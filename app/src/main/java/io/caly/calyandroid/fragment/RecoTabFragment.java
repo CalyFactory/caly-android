@@ -11,10 +11,13 @@ import io.caly.calyandroid.model.Category;
 import io.caly.calyandroid.model.dataModel.EventModel;
 import io.caly.calyandroid.model.dataModel.RecoModel;
 import io.caly.calyandroid.model.event.RecoListLoadStateChangeEvent;
+import io.caly.calyandroid.model.event.RecoListScrollEvent;
 import io.caly.calyandroid.model.event.TestEvent;
 import io.caly.calyandroid.model.response.RecoResponse;
+import io.caly.calyandroid.util.BusProvider;
 import io.caly.calyandroid.util.Logger;
 
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -120,6 +123,29 @@ public class RecoTabFragment extends BaseFragment {
                         }
                 )
         );
+
+        recyclerList.addOnScrollListener(new RecyclerView.OnScrollListener() {
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                if(dy<0){
+                    Log.d(TAG, "scroll up");
+                    BusProvider.getInstance().post(new RecoListScrollEvent(true));
+                }
+                else { //scroll down
+                    Log.d(TAG, "scroll down");
+                    BusProvider.getInstance().post(new RecoListScrollEvent(false));
+                }
+
+            }
+        });
 
     }
 

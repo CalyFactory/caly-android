@@ -2,6 +2,7 @@ package io.caly.calyandroid.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -30,6 +31,7 @@ import io.caly.calyandroid.R;
 import io.caly.calyandroid.fragment.base.BaseFragment;
 import io.caly.calyandroid.model.dataModel.EventModel;
 import io.caly.calyandroid.model.event.RecoListLoadStateChangeEvent;
+import io.caly.calyandroid.model.event.RecoListScrollEvent;
 import io.caly.calyandroid.model.orm.TokenRecord;
 import io.caly.calyandroid.model.response.BasicResponse;
 import io.caly.calyandroid.util.ApiClient;
@@ -68,6 +70,9 @@ public class RecoListFragment extends BaseFragment {
     /*
     TranslateAnimation drawerInAnimation;
     TranslateAnimation drawerOutAnimation;*/
+
+    @Bind(R.id.fab_recolist_feedback)
+    FloatingActionButton fabFeedback;
 
     EventModel eventData;
 
@@ -181,6 +186,16 @@ public class RecoListFragment extends BaseFragment {
 
             }
         });*/
+    }
+
+    @Subscribe
+    public void recoListScrollEventCallback(RecoListScrollEvent event){
+        if(event.isUp){
+            fabFeedback.show();
+        }
+        else{
+            fabFeedback.hide();
+        }
     }
 
     @Subscribe

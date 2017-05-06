@@ -33,17 +33,17 @@
                 android:layout_height="wrap_content"
                 android:textSize="13sp"
                 android:textColor="@color/white"
-                android:text="언제 어디서나"
+                android:text="이번 주말에 어떤 약속 있으세요?"
                 />
 
             <TextView
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="9dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 fontPath="@string/font_nanum_extra_bold"
                 android:textColor="@color/white"
-                android:text="당신을 위한 추천을" />
+                android:text="캘리가 갈 곳을 추천해 드릴게요!" />
         </LinearLayout>
 
         <LinearLayout
@@ -61,11 +61,12 @@
                 android:layout_marginRight="46dp"
                 android:background="@drawable/btn_login"
                 android:layout_width="match_parent"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:layout_height="47dp">
 
                 <ImageView
+                    android:layout_marginLeft="15dp"
                     android:layout_width="17dp"
                     android:src="@drawable/google"
                     android:layout_height="17dp" />
@@ -75,7 +76,7 @@
                     android:layout_marginLeft="14dp"
                     android:textSize="15dp"
                     android:textColor="@color/white"
-                    android:text="구글 아이디로 로그인"
+                    android:text="구글 캘린더 가져오기"
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
@@ -86,13 +87,14 @@
                 android:layout_marginRight="46dp"
                 android:background="@drawable/btn_login"
                 android:layout_width="match_parent"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:layout_height="47dp">
 
                 <ImageView
+                    android:layout_marginLeft="15dp"
                     android:layout_width="17dp"
-                    android:src="@drawable/google"
+                    android:src="@drawable/naver_logo"
                     android:layout_height="17dp" />
 
                 <TextView
@@ -100,7 +102,7 @@
                     android:layout_marginLeft="14dp"
                     android:textSize="15dp"
                     android:textColor="@color/white"
-                    android:text="구글 아이디로 로그인"
+                    android:text="네이버 캘린더 가져오기"
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
@@ -111,21 +113,22 @@
                 android:layout_marginRight="46dp"
                 android:background="@drawable/btn_login"
                 android:layout_width="match_parent"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:orientation="horizontal"
                 android:layout_height="47dp">
 
                 <ImageView
-                    android:layout_width="17dp"
-                    android:src="@drawable/google"
-                    android:layout_height="17dp" />
+                    android:layout_marginLeft="15dp"
+                    android:layout_width="15dp"
+                    android:src="@drawable/group"
+                    android:layout_height="19dp" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_marginLeft="14dp"
                     android:textSize="15dp"
                     android:textColor="@color/white"
-                    android:text="구글 아이디로 로그인"
+                    android:text="애플 캘린더 가져오기"
                     android:layout_height="wrap_content" />
 
             </LinearLayout>

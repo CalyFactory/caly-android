@@ -1,22 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingPrefix"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
-
+        android:layout_marginTop="8dp"
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:orientation="vertical"
         android:paddingLeft="40dp"
         android:paddingRight="40dp"
         android:layout_height="wrap_content">
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#dfdfdf"
-        />
-
 
         <LinearLayout
             android:layout_marginTop="15dp"
@@ -30,12 +26,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20dp"
+                android:textSize="12dp"
+                fontPath="@string/font_nanum_extra_bold"
                 android:textStyle="bold"
                 android:id="@+id/tv_setting_title"
-                android:textColor="@color/colorPrimaryDark"
-                android:text="환경설정1"
-                />
+                android:textColor="#e64b4a"
+                android:text="환경설정1" />
 
         </LinearLayout>
 

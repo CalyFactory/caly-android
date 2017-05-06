@@ -4,7 +4,8 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:layout_width="24dp"
+        android:id="@+id/imv_map_marker"
+        android:layout_width="33dp"
         android:src="@drawable/ic_place_black_48dp"
-        android:layout_height="24dp" />
+        android:layout_height="33dp" />
 </FrameLayout>

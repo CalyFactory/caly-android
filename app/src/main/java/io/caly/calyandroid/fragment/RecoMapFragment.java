@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -40,6 +41,7 @@ import io.caly.calyandroid.model.Category;
 import io.caly.calyandroid.model.dataModel.RecoModel;
 import io.caly.calyandroid.model.event.MapPermissionGrantedEvent;
 import io.caly.calyandroid.model.event.RecoListLoadStateChangeEvent;
+import io.caly.calyandroid.model.event.RecoListScrollEvent;
 import io.caly.calyandroid.model.response.RecoResponse;
 import io.caly.calyandroid.R;
 import io.github.yavski.fabspeeddial.FabSpeedDial;
@@ -220,6 +222,18 @@ public class RecoMapFragment extends BaseFragment {
 
     void addMarker(RecoModel recoModel) {
         View markerView = LayoutInflater.from(getActivity()).inflate(R.layout.item_map_marker, null);
+        ImageView imvMarker = ((ImageView)markerView.findViewById(R.id.imv_map_marker));
+        switch (recoModel.category){
+            case "restaurant":
+                imvMarker.setImageResource(R.drawable.ic_checkin_r);
+                break;
+            case "cafe":
+                imvMarker.setImageResource(R.drawable.ic_checkin_c);
+                break;
+            case "place":
+                imvMarker.setImageResource(R.drawable.ic_checkin_p);
+                break;
+        }
         LatLng position = new LatLng(recoModel.lat, recoModel.lng);
 
         MarkerOptions markerOptions = new MarkerOptions();
@@ -256,7 +270,7 @@ public class RecoMapFragment extends BaseFragment {
     }
 
     public void moveCamera(RecoModel recoModel) {
-        CameraUpdate center = CameraUpdateFactory.newLatLngZoom(new LatLng(recoModel.lat, recoModel.lng), 14);
+        CameraUpdate center = CameraUpdateFactory.newLatLngZoom(new LatLng(recoModel.lat, recoModel.lng), 16);
         googleMap.animateCamera(center);
     }
 
