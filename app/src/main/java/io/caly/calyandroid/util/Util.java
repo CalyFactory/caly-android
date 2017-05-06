@@ -41,7 +41,8 @@ public class Util {
     //로그에 쓰일 tag
     private static final String TAG = CalyApplication.class.getSimpleName() + "/" + Util.class.getSimpleName();
 
-    public static String[] dayOfDate = {"SUN","MON","TUE","WEN","TUR","FRI","SAT"};
+    public static String[] dayOfDate = {"일요일","월요일","화요일","수요일","목요일","금요일","토요일"};
+    public static String[] dayOfDateEng = {"SUN","MON","TUE","WEN","TUR","FRI","SAT"};
 
     // intent result code
     public static final int RC_INTENT_GOOGLE_SIGNIN = 10011;

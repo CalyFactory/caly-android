@@ -41,6 +41,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -121,8 +122,11 @@ EventListActivity extends BaseAppCompatActivity {
     @Bind(R.id.tv_banner_close)
     TextView tvBannerClose;
 
-    @Bind(R.id.drawer_layout)
-    DrawerLayout drawerLayout;
+//    @Bind(R.id.drawer_layout)
+//    DrawerLayout drawerLayout;
+
+    @Bind(R.id.imv_toolbar_logo)
+    ImageView imvLogo;
 
     EventListAdapter recyclerAdapter;
     LinearLayoutManager layoutManager;
@@ -157,11 +161,14 @@ EventListActivity extends BaseAppCompatActivity {
                 return false;
             }
         });
+
         Util.centerToolbarTitle(toolbar);
         Util.setToolbarFontSize(toolbar, 30);
+        imvLogo.setVisibility(View.VISIBLE);
         TypefaceUtils.load(getResources().getAssets(), getString(R.string.font_nanum_extra_bold));
         setSupportActionBar(toolbar);
 
+        /*
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,
                 drawerLayout, toolbar, R.string.app_name, R.string.app_name) {
 
@@ -197,7 +204,7 @@ EventListActivity extends BaseAppCompatActivity {
             }
         });
 
-        mDrawerToggle.syncState();
+        mDrawerToggle.syncState();*/
 
         //set recyclerview
         recyclerList.setHasFixedSize(true);
@@ -960,13 +967,13 @@ EventListActivity extends BaseAppCompatActivity {
                                     LogType.ACTION_CLICK.value);
                 refreshEvent();
                 break;
-            /*
+
             case R.id.menu_eventlist_setting:
                 Intent intent = new Intent(EventListActivity.this, LegacySettingActivity.class);
                 startActivityForResult(intent, 1);
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 
-                break;*/
+                break;
         }
 
         return super.onOptionsItemSelected(item);

@@ -6,11 +6,10 @@
         android:title="새로고침"
         android:icon="@drawable/ic_rotate"
         app:showAsAction="ifRoom" />
-    <!--
+
     <item
         android:id="@+id/menu_eventlist_setting"
         android:title="앱 설정"
-        android:icon="@drawable/ic_settings_white_24dp"
+        android:icon="@drawable/ic_drawer"
         app:showAsAction="ifRoom" />
-        -->
 </menu>

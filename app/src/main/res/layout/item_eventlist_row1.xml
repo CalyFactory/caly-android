@@ -7,43 +7,47 @@
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:background="?android:attr/selectableItemBackground"
-        android:layout_marginBottom="0.8dp"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:focusable="true"
-        tools:background="@color/white"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:paddingLeft="17dp"
-            android:layout_width="43dp"
+            android:background="@color/white"
+            android:layout_marginBottom="0.8dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:clickable="true"
+            android:focusable="true"
+            tools:background="@color/white"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_eventrow_day"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="13dp"
-                android:textColor="@color/greyish_brown_two"
-                android:textSize="20dp" />
+            <LinearLayout
+                android:paddingLeft="17dp"
+                android:layout_width="45dp"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
-            <TextView
-                android:layout_marginTop="1dp"
-                android:id="@+id/tv_eventrow_daystring"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/greyish_brown_three"
-                fontPath="@string/font_nanum_extra_bold"
-                android:textSize="10dp" />
+                <TextView
+                    android:id="@+id/tv_eventrow_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="13dp"
+                    android:textColor="@color/greyish_brown_two"
+                    android:textSize="20dp" />
 
-        </LinearLayout>
+                <TextView
+                    android:layout_marginTop="1dp"
+                    android:id="@+id/tv_eventrow_daystring"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#767676"
+                    fontPath="@string/font_nanum_extra_bold"
+                    android:textSize="9dp" />
 
-        <LinearLayout
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/linear_eventlist_row"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -78,8 +82,8 @@
                             android:orientation="horizontal">
 
                             <ImageView
-                                android:layout_width="16dp"
-                                android:layout_height="16dp"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
                                 android:src="@drawable/ic_checkin" />
 
                             <TextView
@@ -101,9 +105,8 @@
                             android:orientation="horizontal">
 
                             <ImageView
-                                android:layout_width="16dp"
-                                android:padding="1.5dp"
-                                android:layout_height="16dp"
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
                                 android:src="@drawable/ic_timer" />
 
                             <TextView
@@ -117,49 +120,76 @@
                         </LinearLayout>
                     </LinearLayout>
 
-                    <LinearLayout
+                    <FrameLayout
                         android:id="@+id/linear_eventrow_state"
                         android:layout_width="63dp"
                         android:background="@color/white_two"
                         android:layout_height="match_parent"
-                        android:orientation="vertical"
-                        android:gravity="center">
+                        android:orientation="vertical">
 
-                        <FrameLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
+                        <ImageView
+                            android:layout_width="15dp"
+                            android:visibility="gone"
+                            android:layout_marginLeft="23dp"
+                            android:id="@+id/imv_eventrow_unknown"
+                            android:layout_marginTop="16dp"
+                            android:layout_height="15dp"
+                            android:src="@drawable/question_mark_1"/>
 
-                            <ImageView
-                                android:id="@+id/imv_eventrow_state"
-                                android:layout_width="19dp"
-                                android:src="@drawable/ic_message"
-                                android:layout_height="19dp" />
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:gravity="center"
+                            android:layout_height="match_parent">
 
+                            <FrameLayout
+                                android:layout_gravity="center"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:layout_gravity="center"
+                                    android:id="@+id/imv_eventrow_state"
+                                    android:layout_width="19dp"
+                                    android:src="@drawable/ic_message"
+                                    android:layout_height="19dp" />
+
+                                <TextView
+                                    android:layout_gravity="center"
+                                    android:text="25"
+                                    android:gravity="center"
+                                    android:id="@+id/tv_eventrow_recocount"
+                                    android:textSize="11dp"
+                                    android:textColor="@color/dark_sky_blue"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content" />
+
+                            </FrameLayout>
                             <TextView
                                 android:layout_gravity="center"
-                                android:text="25"
-                                android:gravity="center"
-                                android:id="@+id/tv_eventrow_recocount"
-                                android:textSize="11dp"
-                                android:textColor="@color/dark_sky_blue"
+                                android:layout_marginTop="4dp"
+                                android:id="@+id/tv_eventrow_state"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content" />
-
-                        </FrameLayout>
-                        <TextView
-                            android:layout_marginTop="4dp"
-                            android:id="@+id/tv_eventrow_state"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:textColor="@color/white"
-                            android:textSize="9dp" />
-                    </LinearLayout>
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textColor="@color/white"
+                                android:textSize="9dp" />
+                        </LinearLayout>
+                    </FrameLayout>
                 </LinearLayout>
 
-</LinearLayout>
+            </LinearLayout>
 
-    </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:clickable="true"
+            android:layout_width="match_parent"
+            android:background="?android:attr/selectableItemBackground"
+            android:layout_height="match_parent">
+
+        </LinearLayout>
+    </FrameLayout>
 
 
 </LinearLayout>

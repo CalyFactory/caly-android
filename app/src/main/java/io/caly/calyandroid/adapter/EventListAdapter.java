@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -66,7 +67,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
         @Nullable
         @Bind(R.id.linear_eventrow_state)
-        LinearLayout linearState;
+        FrameLayout linearState;
 
         @Nullable
         @Bind(R.id.tv_eventrow_state)
@@ -79,6 +80,10 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         @Nullable
         @Bind(R.id.tv_eventrow_recocount)
         TextView tvRecoCount;
+
+        @Nullable
+        @Bind(R.id.imv_eventrow_unknown)
+        ImageView imvUnknown;
 
         public ViewHolder(View view){
             super(view);
@@ -171,12 +176,19 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
                 //주말
                 int dayOfDate = Util.dayOfDate(eventModel.startYear, eventModel.startMonth, eventModel.startDay);
-                if (dayOfDate == 0 || dayOfDate == 6){
-                    holder.tvEventDayString.setTextColor(Color.rgb(223,115,101));
+
+                switch (dayOfDate){
+                    case 6: //토
+                        holder.tvEventDay.setTextColor(context.getResources().getColor(R.color.dark_sky_blue_four));
+                        break;
+                    case 0: //일
+                        holder.tvEventDay.setTextColor(context.getResources().getColor(R.color.pale_red));
+                        break;
+                    default:
+                        holder.tvEventDay.setTextColor(context.getResources().getColor(R.color.greyish_brown_two));
+                        break;
                 }
-                else{
-                    holder.tvEventDayString.setTextColor(Color.rgb(111,111,111));
-                }
+
                 holder.tvEventDayString.setText(Util.dayOfDate[dayOfDate]);
 
                 holder.tvEventDay.setText(String.valueOf(eventModel.startDay));
@@ -200,26 +212,29 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                         holder.tvState.setText("추천중");
                         holder.tvRecoCount.setText("");
                         holder.imvState.setImageResource(R.drawable.ic_message);
+                        holder.imvState.setVisibility(View.VISIBLE);
+                        holder.imvUnknown.setVisibility(View.GONE);
                         break;
                     case STATE_NOTHING_TO_RECOMMEND:
-                        holder.linearState.setBackgroundColor(ContextCompat.getColor(context, R.color.white_two));
-                        holder.tvState.setText("일정확인");
+                        holder.imvUnknown.setVisibility(View.VISIBLE);
+                        holder.linearState.setBackgroundColor(Color.TRANSPARENT);
+                        holder.imvState.setVisibility(View.GONE);
+                        holder.tvState.setText("");
                         holder.tvRecoCount.setText("");
-                        holder.imvState.setImageResource(R.drawable.question_mark);
                         break;
                     case STATE_DONE_RECOMMEND:
                         holder.linearState.setBackgroundColor(ContextCompat.getColor(context, R.color.tealish));
                         holder.tvState.setText("추천완료");
                         holder.tvRecoCount.setText("" + eventModel.totalRecoCnt);
                         holder.imvState.setImageResource(R.drawable.oval_3);
+                        holder.imvState.setVisibility(View.VISIBLE);
+                        holder.imvUnknown.setVisibility(View.GONE);
                         break;
                 }
                 break;
             case 2:
                 holder.tvYearMonth.setText(
-                        StringFormmater.monthFormat(
-                                eventModel.startMonth
-                        )
+                                eventModel.startMonth + "월"
                 );
                 break;
         }
