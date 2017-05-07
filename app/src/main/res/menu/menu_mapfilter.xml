@@ -3,19 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_filter_all"
-        android:icon="@drawable/group_7"
-        android:title="모두 보기"/>
-    <item
-        android:id="@+id/menu_filter_restaurant"
-        android:icon="@drawable/table"
-        android:title="레스토랑만 보기" />
-    <item
-        android:id="@+id/menu_filter_cafe"
-        android:icon="@drawable/coffee_cup"
-        android:title="카페만 보기" />
-    <item
-        android:id="@+id/menu_filter_place"
-        android:icon="@drawable/group_7"
-        android:title="플레이스만 보기"/>
+        android:id="@+id/menu_filter"
+        app:showAsAction="withText|ifRoom"
+        android:icon="@drawable/triangle"
+        android:title="필터">
+        <menu>
+            <group>
+                <item
+                    android:id="@+id/menu_filter_all"
+                    android:title="전체보기"/>
+                <item
+                    android:id="@+id/menu_filter_restaurant"
+                    android:title="레스토랑" />
+                <item
+                    android:id="@+id/menu_filter_cafe"
+                    android:title="카페" />
+                <item
+                    android:id="@+id/menu_filter_place"
+                    android:title="플레이스"/>
+            </group>
+        </menu>
+    </item>
 </menu>

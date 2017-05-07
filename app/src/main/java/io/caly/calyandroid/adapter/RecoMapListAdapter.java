@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
@@ -25,6 +26,7 @@ import io.caly.calyandroid.model.dataModel.RecoModel;
 import io.caly.calyandroid.model.orm.TokenRecord;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.util.StringFormmater;
+import io.caly.calyandroid.util.Util;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -59,6 +61,9 @@ public class RecoMapListAdapter extends PagerAdapter{
 
         @Bind(R.id.tv_reco_hashtag)
         TextView tvRecoHashtag;
+
+        @Bind(R.id.imv_reco_share)
+        ImageView imvShare;
 
 
         public ViewHolder(View view){
@@ -126,6 +131,34 @@ public class RecoMapListAdapter extends PagerAdapter{
                 );
             }
         });
+
+
+        holder.imvShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String[] snsList = {
+                        "com.kakao.talk", //kakaotalk
+                };
+                boolean sended = false;
+                for(String snsPackage : snsList){
+                    if(Util.isPackageInstalled(snsPackage)){
+
+                        Intent intent = new Intent(Intent.ACTION_SEND);
+                        intent.setType("text/plain");
+                        intent.putExtra(Intent.EXTRA_TEXT,"[캘리] 여기어때요? \n" + recoList.get(position).deepUrl);
+                        intent.setPackage("com.kakao.talk");
+
+                        context.startActivity(intent);
+                        sended = true;
+                    }
+                }
+                if(!sended){
+                    Toast.makeText(context, "공유 할 수 있는 SNS가 설치 되어있지 않습니다.",Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
     }
 
     public void addItem(RecoModel object){

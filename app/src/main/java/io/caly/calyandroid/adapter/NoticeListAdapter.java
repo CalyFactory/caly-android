@@ -117,7 +117,7 @@ public class NoticeListAdapter extends RecyclerView.Adapter<NoticeListAdapter.Vi
             });
 
             holder.tvTitle.setText(noticeModel.noticeTitle);
-            holder.tvDate.setText(StringFormmater.simpleDateFormat(noticeModel.createDateTime));
+            holder.tvDate.setText("업데이트 날짜 " +StringFormmater.simpleDateFormat(noticeModel.createDateTime));
         }
         else{
             holder.tvDescription.setText(noticeModel.noticeDescription);

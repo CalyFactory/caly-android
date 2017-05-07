@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -42,8 +43,10 @@ import io.caly.calyandroid.model.dataModel.RecoModel;
 import io.caly.calyandroid.model.event.MapPermissionGrantedEvent;
 import io.caly.calyandroid.model.event.RecoListLoadStateChangeEvent;
 import io.caly.calyandroid.model.event.RecoListScrollEvent;
+import io.caly.calyandroid.model.event.RecoMapFilterChangeEvent;
 import io.caly.calyandroid.model.response.RecoResponse;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.util.Util;
 import io.github.yavski.fabspeeddial.FabSpeedDial;
 import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
 import retrofit2.Response;
@@ -64,8 +67,18 @@ public class RecoMapFragment extends BaseFragment {
     @Bind(R.id.pager_recomap)
     ViewPager pager;
 
-    @Bind(R.id.fab_map_filter)
-    FabSpeedDial fabFilter;
+    @Bind(R.id.linear_map_category_1) //restaurent
+    LinearLayout linearCategory1;
+
+    @Bind(R.id.linear_map_category_2) //cafe
+    LinearLayout linearCategory2;
+
+    @Bind(R.id.linear_map_category_3) //place
+    LinearLayout linearCategory3;
+
+
+//    @Bind(R.id.fab_map_filter)
+//    FabSpeedDial fabFilter;
 
     RecoMapListAdapter adapter;
 
@@ -137,8 +150,15 @@ public class RecoMapFragment extends BaseFragment {
         });
 
         pager.setClipToPadding(false);
-        pager.setPadding(50, 0, 50, 0);
-        pager.setPageMargin(10);
+        pager.setPadding(
+                (int)Util.convertDpToPixel(27f, getContext()),
+                0,
+                (int)Util.convertDpToPixel(25.5f, getContext()),
+                0
+        );
+        pager.setPageMargin(
+                (int)Util.convertDpToPixel(9f, getContext())
+        );
         adapter = new RecoMapListAdapter(getContext(), LayoutInflater.from(getContext()));
         pager.setAdapter(adapter);
 
@@ -170,6 +190,7 @@ public class RecoMapFragment extends BaseFragment {
 
         markerList = new ArrayList<>();
 
+        /*
         fabFilter.setMenuListener(new SimpleMenuListenerAdapter(){
             @Override
             public boolean onMenuItemSelected(MenuItem menuItem) {
@@ -189,7 +210,7 @@ public class RecoMapFragment extends BaseFragment {
                 }
                 return super.onMenuItemSelected(menuItem);
             }
-        });
+        });*/
     }
 
     public RecoMapFragment setData(List<RecoModel> recoList){
@@ -284,6 +305,36 @@ public class RecoMapFragment extends BaseFragment {
             return;
         }
         googleMap.setMyLocationEnabled(true);
+    }
+
+    @Subscribe
+    public void recoMapFilterChangeEventCallback(RecoMapFilterChangeEvent event){
+        switch (event.index){
+            case 0:
+                linearCategory1.setVisibility(View.VISIBLE);
+                linearCategory2.setVisibility(View.VISIBLE);
+                linearCategory3.setVisibility(View.VISIBLE);
+                filterList(null);
+                break;
+            case 1:
+                linearCategory1.setVisibility(View.VISIBLE);
+                linearCategory2.setVisibility(View.GONE);
+                linearCategory3.setVisibility(View.GONE);
+                filterList(Category.RESTAURANT);
+                break;
+            case 2:
+                linearCategory1.setVisibility(View.GONE);
+                linearCategory2.setVisibility(View.VISIBLE);
+                linearCategory3.setVisibility(View.GONE);
+                filterList(Category.CAFE);
+                break;
+            case 3:
+                linearCategory1.setVisibility(View.GONE);
+                linearCategory2.setVisibility(View.GONE);
+                linearCategory3.setVisibility(View.VISIBLE);
+                filterList(Category.PLACE);
+                break;
+        }
     }
 
     @Subscribe

@@ -35,10 +35,11 @@
     <string name="notification_msg_google_sync_done">캘린더 동기화가 완료됬습니다!</string>
 
     <!-- view text -->
-    <string name="text_reco_wait">캘리가 추천해드릴만한 장소를 열심히 고민하는 중입니다.\n30분 안에는 끝나요!</string>
+    <string name="text_reco_wait1">캘리가 추천해드릴만한\n장소를 열심히 고민하는 중입니다.</string>
+    <string name="text_reco_wait2">30분안에 끝나요!</string>
     <string name="text_wait_sync">일정정보를 가져오는 중입니다.잠시만 기다려 주세요 :)</string>
     <string name="text_splash_slogan">언제 어디서나 추천을!</string>
-    <string name="text_reco_skip_button">네, 다 되면 알려주세요.</string>
+    <string name="text_reco_skip_button">네 알겠습니다</string>
 
     <!-- GA tag -->
     <string name="ga_action_button_click">ga_action_button_click</string>

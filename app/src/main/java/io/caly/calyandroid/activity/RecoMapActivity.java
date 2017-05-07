@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.google.gson.Gson;
@@ -22,6 +23,8 @@ import io.caly.calyandroid.fragment.RecoListFragment;
 import io.caly.calyandroid.fragment.RecoMapFragment;
 import io.caly.calyandroid.model.dataModel.RecoListWrapModel;
 import io.caly.calyandroid.model.dataModel.RecoModel;
+import io.caly.calyandroid.model.event.RecoMapFilterChangeEvent;
+import io.caly.calyandroid.util.BusProvider;
 import io.caly.calyandroid.util.Util;
 import uk.co.chrisjenx.calligraphy.TypefaceUtils;
 
@@ -93,9 +96,26 @@ public class RecoMapActivity extends BaseAppCompatActivity {
             case android.R.id.home:
                 onBackPressed();
                 break;
+            case R.id.menu_filter_all:
+                BusProvider.getInstance().post(new RecoMapFilterChangeEvent(0));
+                break;
+            case R.id.menu_filter_restaurant:
+                BusProvider.getInstance().post(new RecoMapFilterChangeEvent(1));
+                break;
+            case R.id.menu_filter_cafe:
+                BusProvider.getInstance().post(new RecoMapFilterChangeEvent(2));
+                break;
+            case R.id.menu_filter_place:
+                BusProvider.getInstance().post(new RecoMapFilterChangeEvent(3));
+                break;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_mapfilter, menu);
+        return true;
+    }
 }
