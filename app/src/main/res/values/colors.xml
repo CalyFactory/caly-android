@@ -6,6 +6,7 @@
 
 
     <!-- Color palette -->
+    <color name="indicator">#C35D52</color>
     <color name="dark_sky_blue">#56b7e6</color>
     <color name="water_blue">#1488d2</color>
     <color name="white_0">#00ffffff</color>

@@ -3,8 +3,11 @@ package io.caly.calyandroid.view;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.method.TransformationMethod;
+import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
@@ -84,6 +87,33 @@ public class LoginDialog extends Dialog {
 
         //init layout
         tvLoginTitle.setText(loginTitle);
+
+        edtLoginPw.setTransformationMethod(new TransformationMethod() {
+            @Override
+            public CharSequence getTransformation(CharSequence source, View view) {
+                return new PasswordCharSequence(source);
+            }
+
+            class PasswordCharSequence implements CharSequence {
+                private CharSequence mSource;
+                public PasswordCharSequence(CharSequence source) {
+                    mSource = source; // Store char sequence
+                }
+                public char charAt(int index) {
+                    return '*'; // This is the important part
+                }
+                public int length() {
+                    return mSource.length(); // Return default
+                }
+                public CharSequence subSequence(int start, int end) {
+                    return mSource.subSequence(start, end); // Return default
+                }
+            }
+            @Override
+            public void onFocusChanged(View view, CharSequence charSequence, boolean b, int i, Rect rect) {
+
+            }
+        });
 
     }
 

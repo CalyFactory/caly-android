@@ -7,7 +7,7 @@
         android:title="filter"
         app:showAsAction="always"
         android:orderInCategory="50"
-        android:icon="@drawable/triangle">
+        android:icon="@drawable/group_13">
         <menu>
             <group>
 

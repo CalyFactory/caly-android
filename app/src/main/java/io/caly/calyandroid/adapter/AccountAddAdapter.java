@@ -64,7 +64,7 @@ public class AccountAddAdapter extends RecyclerView.Adapter<AccountAddAdapter.Vi
         ViewHolder viewHolder = null;
 
         view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_accountlist_header, parent, false);
+                .inflate(R.layout.item_accountadd_header, parent, false);
 
         viewHolder = new ViewHolder(view);
 

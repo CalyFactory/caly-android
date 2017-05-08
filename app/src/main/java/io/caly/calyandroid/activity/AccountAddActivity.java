@@ -97,6 +97,7 @@ public class AccountAddActivity extends BaseAppCompatActivity {
                 return false;
             }
         });
+        Util.centerToolbarTitle(toolbar);
 
         setSupportActionBar(toolbar);
 
@@ -274,6 +275,13 @@ public class AccountAddActivity extends BaseAppCompatActivity {
                         Toast.makeText(
                                 getBaseContext(),
                                 getString(R.string.toast_msg_add_account_error),
+                                Toast.LENGTH_LONG
+                        ).show();
+                        break;
+                    case 401:
+                        Toast.makeText(
+                                getBaseContext(),
+                                getString(R.string.toast_msg_login_fail),
                                 Toast.LENGTH_LONG
                         ).show();
                         break;

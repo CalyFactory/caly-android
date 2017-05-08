@@ -41,7 +41,7 @@
                     android:layout_height="49dp"
                     android:id="@+id/spinkit_recolist"
                     android:layout_gravity="center"
-                    app:SpinKit_Color="@color/dark_sky_blue"/>
+                    app:SpinKit_Color="@color/indicator"/>
             </FrameLayout>
             <!--
             <com.cooltechworks.views.shimmer.ShimmerRecyclerView

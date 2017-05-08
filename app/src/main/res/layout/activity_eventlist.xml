@@ -20,11 +20,7 @@
 
                 <include layout="@layout/toolbar" />
 
-                <android.support.v4.widget.DrawerLayout
-                    android:id="@+id/drawer_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-                    <LinearLayout
+                <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="#f5f5f5"
@@ -134,7 +130,7 @@
                                         android:layout_height="49dp"
                                         android:id="@+id/spinkit_eventlist"
                                         android:layout_gravity="center"
-                                        app:SpinKit_Color="@color/dark_sky_blue" />
+                                        app:SpinKit_Color="@color/indicator" />
                                 </FrameLayout>
                                 <!--
                                 <com.cooltechworks.views.shimmer.ShimmerRecyclerView
@@ -175,9 +171,7 @@
 
 
                         </FrameLayout>
-                    </LinearLayout>
-                    <include layout="@layout/container_drawer" />
-                </android.support.v4.widget.DrawerLayout>
+            </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
@@ -196,7 +190,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    app:SpinKit_Color="@color/colorPrimary" />
+                    app:SpinKit_Color="@color/indicator" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -226,7 +220,7 @@
                     android:layout_marginTop="160dp"
                     android:layout_height="49dp"
                     android:layout_gravity="center"
-                    app:SpinKit_Color="@color/colorPrimary" />
+                    app:SpinKit_Color="@color/indicator" />
 
                 <TextView
                     android:layout_width="wrap_content"
