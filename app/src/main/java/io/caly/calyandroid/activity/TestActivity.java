@@ -47,24 +47,24 @@ import retrofit2.Response;
 
 public class TestActivity extends BaseAppCompatActivity {
 
-    @Bind(R.id.button)
-    Button button;
+//    @Bind(R.id.button)
+//    Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
+        setContentView(R.layout.activity_signup);
 
         ButterKnife.bind(this);
         init();
 //        mapView.onCreate(savedInstanceState);
     }
-
+/*
     @OnClick(R.id.button)
     void onButtonClick(){
         test();
     }
-
+*/
     void init(){
         ButterKnife.bind(this);
 

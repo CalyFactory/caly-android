@@ -78,7 +78,7 @@ public class SignupActivity extends BaseAppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.legacy_activity_signup);
 
         init();
     }
