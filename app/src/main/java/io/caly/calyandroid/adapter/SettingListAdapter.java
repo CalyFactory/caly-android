@@ -14,9 +14,12 @@ import android.support.v7.widget.SwitchCompat;
 import io.caly.calyandroid.exception.HttpResponseParsingException;
 import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.util.Logger;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,6 +91,10 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
         @Bind(R.id.switch_setting_row)
         SwitchCompat switchRow;
 
+        @Nullable
+        @Bind(R.id.imv_setting_forward)
+        ImageView imvForward;
+
         public int position;
 
         Context context;
@@ -97,11 +104,17 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
             ButterKnife.bind(this, view);
             this.context = context;
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    onSettingRowClick();
+                }
+            });
         }
 
-        @Nullable
-        @OnClick(R.id.linear_setting_row)
         void onSettingRowClick(){
+            Log.d(TAG, "onSettingRowClick");
             switch (position){
                 case 0:
                     break;
@@ -387,6 +400,10 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
         if(position==5){
             holder.switchRow.setChecked(Prefer.get("isPushReceive", true));
+        }
+
+        if(position==1 || position==7){
+            holder.imvForward.setVisibility(View.VISIBLE);
         }
     }
 

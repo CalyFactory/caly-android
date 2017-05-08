@@ -32,6 +32,7 @@ import io.caly.calyandroid.model.orm.TokenRecord;
 import io.caly.calyandroid.model.response.NoticeResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.util.ApiClient;
+import io.caly.calyandroid.util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -78,6 +79,7 @@ public class NoticeActivity extends BaseAppCompatActivity {
                 return false;
             }
         });
+        Util.centerToolbarTitle(toolbar);
 
         setSupportActionBar(toolbar);
 

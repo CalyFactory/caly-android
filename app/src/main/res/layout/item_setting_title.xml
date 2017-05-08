@@ -6,11 +6,11 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="14dp"
         android:background="@color/white"
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:paddingLeft="40dp"
+        android:paddingLeft="27dp"
         android:paddingRight="40dp"
         android:layout_height="wrap_content">
 
@@ -28,7 +28,6 @@
                 android:layout_height="wrap_content"
                 android:textSize="12dp"
                 fontPath="@string/font_nanum_extra_bold"
-                android:textStyle="bold"
                 android:id="@+id/tv_setting_title"
                 android:textColor="#e64b4a"
                 android:text="환경설정1" />

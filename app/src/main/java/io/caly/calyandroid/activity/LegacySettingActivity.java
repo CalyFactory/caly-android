@@ -34,6 +34,7 @@ import io.caly.calyandroid.BuildConfig;
 import io.caly.calyandroid.model.dataModel.SettingItemModel;
 import io.caly.calyandroid.model.event.SettingLoadingStateChangeEvent;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.util.Util;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -82,6 +83,8 @@ public class LegacySettingActivity extends BaseAppCompatActivity {
                 return false;
             }
         });
+
+        Util.centerToolbarTitle(toolbar);
 
         setSupportActionBar(toolbar);
 
