@@ -44,7 +44,7 @@
 
                     <ImageView
                         android:layout_width="wrap_content"
-                        android:src="@drawable/ic_forward"
+                        android:src="@drawable/ic_forward_noti"
                         android:visibility="gone"
                         android:id="@+id/imv_setting_forward"
                         android:layout_height="wrap_content" />
