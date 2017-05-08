@@ -113,9 +113,6 @@ dependencies {
     //fab lib
     compile 'io.github.yavski:fab-speed-dial:1.0.6'
 
-    //recyclerview loading animation
-    compile project(':shimmer')
-
     testCompile 'junit:junit:4.12'
 }
 
