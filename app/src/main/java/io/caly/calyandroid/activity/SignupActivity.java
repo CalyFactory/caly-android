@@ -10,12 +10,15 @@ import android.text.Html;
 import io.caly.calyandroid.exception.HttpResponseParsingException;
 import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.util.Logger;
+
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -54,11 +57,12 @@ import retrofit2.Response;
 
 public class SignupActivity extends BaseAppCompatActivity {
 
+    /*
     @Bind(R.id.imv_signup_man)
     ImageView imvGenderMan;
 
     @Bind(R.id.imv_signup_woman)
-    ImageView imvGenderWoman;
+    ImageView imvGenderWoman;*/
 
     @Bind(R.id.edt_signup_birth)
     EditText edtBirth;
@@ -72,13 +76,19 @@ public class SignupActivity extends BaseAppCompatActivity {
     @Bind(R.id.linear_loading_parent)
     LinearLayout linearLoading;
 
+    @Bind(R.id.radio_signup_gender_man)
+    RadioButton radioGenderMan;
+
+    @Bind(R.id.radio_signup_gender_woman)
+    RadioButton radioGenderWoman;
+
     int selectedGender = -1;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.legacy_activity_signup);
+        setContentView(R.layout.activity_signup);
 
         init();
     }
@@ -91,10 +101,9 @@ public class SignupActivity extends BaseAppCompatActivity {
         Util.setStatusBarColor(this, getResources().getColor(R.color.colorPrimaryDark));
 
 
-        btnSignup.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
 
-        imvGenderMan.setColorFilter(Color.GRAY, android.graphics.PorterDuff.Mode.MULTIPLY);
-        imvGenderWoman.setColorFilter(Color.GRAY, android.graphics.PorterDuff.Mode.MULTIPLY);
+//        imvGenderMan.setColorFilter(Color.GRAY, android.graphics.PorterDuff.Mode.MULTIPLY);
+//        imvGenderWoman.setColorFilter(Color.GRAY, android.graphics.PorterDuff.Mode.MULTIPLY);
 
 
         cbPolicy.setText(Html.fromHtml("캘리의 <a href='signup'>이용정책</a>에 동의합니다."));
@@ -109,12 +118,13 @@ public class SignupActivity extends BaseAppCompatActivity {
         updateButton();
     }
 
+    /*
     @OnClick(R.id.imv_signup_man)
     void onGenderManClick(){
 
         selectedGender = Gender.MAN.value;
-        imvGenderMan.clearColorFilter();
-        imvGenderWoman.setColorFilter(Color.GRAY, android.graphics.PorterDuff.Mode.MULTIPLY);
+//        imvGenderMan.clearColorFilter();
+//        imvGenderWoman.setColorFilter(Color.GRAY, android.graphics.PorterDuff.Mode.MULTIPLY);
 
         updateButton();
 
@@ -124,11 +134,25 @@ public class SignupActivity extends BaseAppCompatActivity {
     void onGenderWomanClick(){
 
         selectedGender = Gender.WOMAN.value;
-        imvGenderMan.setColorFilter(Color.GRAY, android.graphics.PorterDuff.Mode.MULTIPLY);
-        imvGenderWoman.clearColorFilter();
+//        imvGenderMan.setColorFilter(Color.GRAY, android.graphics.PorterDuff.Mode.MULTIPLY);
+//        imvGenderWoman.clearColorFilter();
 
         updateButton();
+    }*/
+
+
+    @OnClick({R.id.radio_signup_gender_man, R.id.radio_signup_gender_woman})
+    void onGenderCheckChanged(){
+        Log.d(TAG,"changed");
+        if(radioGenderMan.isChecked()){
+            selectedGender = Gender.MAN.value;
+        }
+        else if(radioGenderWoman.isChecked()){
+            selectedGender = Gender.WOMAN.value;
+        }
+        updateButton();
     }
+
 
     @OnCheckedChanged(R.id.cb_signup_policy)
     void onPolicyCheckChanged(){
@@ -142,6 +166,7 @@ public class SignupActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.btn_signup_proc)
     void onSignupClick(){
+        Log.d(TAG,"onSignupClick");
 
         switch (getInputState()){
             case GENDER_NOT_SELECTED:
@@ -257,13 +282,15 @@ public class SignupActivity extends BaseAppCompatActivity {
     void updateButton(){
         if(checkEnable()){
 //            btnSignup.setEnabled(true);
-            btnSignup.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-            btnSignup.setTextColor(Color.WHITE);
+//            btnSignup.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+            btnSignup.setTextColor(getResources().getColor(R.color.white));
+            btnSignup.getBackground().setColorFilter(null);
         }
         else{
 //            btnSignup.setEnabled(false);
-            btnSignup.setBackgroundColor(Color.GRAY);
-            btnSignup.setTextColor(Color.BLACK);
+//            btnSignup.setBackgroundColor(Color.GRAY);
+            btnSignup.setTextColor(Color.GRAY);
+            btnSignup.getBackground().setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
         }
     }
 
