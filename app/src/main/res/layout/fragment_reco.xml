@@ -41,6 +41,7 @@
             app:useCompatPadding="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:borderWidth="2dp"
             android:layout_gravity="bottom|end"
             app:backgroundTint="@color/white"
             android:src="@drawable/callicon_06" />

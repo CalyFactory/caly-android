@@ -47,10 +47,13 @@ public class RecoTabFragment extends BaseFragment {
 
 
     @Bind(R.id.recycler_recommandlist)
-    ShimmerRecyclerView recyclerList;
+    RecyclerView recyclerList;
 
     @Bind(R.id.tv_reco_nodata)
     TextView tvNodata;
+
+    @Bind(R.id.spinkit_recolist)
+    View spinKitView;
 
     Category category;
     EventModel eventData;
@@ -149,6 +152,15 @@ public class RecoTabFragment extends BaseFragment {
 
     }
 
+    void showListLoadAnimation(){
+        spinKitView.setVisibility(View.VISIBLE);
+
+    }
+
+    void hideListLoadAnimation(){
+        spinKitView.setVisibility(View.GONE);
+    }
+
     @Subscribe
     public void testEventCallback(TestEvent event) {
         Log.d(TAG," event received " );
@@ -160,9 +172,7 @@ public class RecoTabFragment extends BaseFragment {
 
             switch (doneEvent.loadingState) {
                 case STATE_LOADING:
-                    if(category == Category.RESTAURANT) {
-                        recyclerList.showShimmerAdapter();
-                    }
+                      showListLoadAnimation();
                     break;
                 case STATE_DONE:
                     hideShimmerAdapter();
@@ -193,7 +203,7 @@ public class RecoTabFragment extends BaseFragment {
     Handler hideShimmerHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            recyclerList.hideShimmerAdapter();
+            hideListLoadAnimation();
         }
     };
 

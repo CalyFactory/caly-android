@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 
 import io.caly.calyandroid.activity.base.BaseAppCompatActivity;
 import io.caly.calyandroid.adapter.EventListAdapter;
+import io.caly.calyandroid.contract.SplashContract;
 import io.caly.calyandroid.exception.HttpResponseParsingException;
 import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.model.RecoState;
@@ -98,7 +99,7 @@ EventListActivity extends BaseAppCompatActivity {
     Toolbar toolbar;
 
     @Bind(R.id.recycler_eventlist)
-    ShimmerRecyclerView recyclerList;
+    RecyclerView recyclerList;
 
     @Bind(R.id.tv_eventlist_month)
     TextView tvEventMonth;
@@ -129,6 +130,9 @@ EventListActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.imv_toolbar_logo)
     ImageView imvLogo;
+
+    @Bind(R.id.spinkit_eventlist)
+    View spinKitView;
 
     EventListAdapter recyclerAdapter;
     LinearLayoutManager layoutManager;
@@ -508,10 +512,18 @@ EventListActivity extends BaseAppCompatActivity {
         }).start();
     }
 
+    void showListLoadAnimtaion(){
+        spinKitView.setVisibility(View.VISIBLE);
+    }
+
+    void hideListLoadAnimation(){
+        spinKitView.setVisibility(View.GONE);
+    }
+
     void loadEventList(){
         Logger.i(TAG, "loadEventList");
 
-        recyclerList.showShimmerAdapter();
+        showListLoadAnimtaion();
         ApiClient.getService().getEventList(
                 TokenRecord.getTokenRecord().getApiKey(),
                 0
@@ -538,7 +550,7 @@ EventListActivity extends BaseAppCompatActivity {
                         }
                         if(body.payload.data.size()==0){
                             tvNodata.setVisibility(View.VISIBLE);
-                            recyclerList.hideShimmerAdapter();
+                            hideListLoadAnimation();
                         }
                         else{
                             tvNodata.setVisibility(View.GONE);
@@ -550,7 +562,7 @@ EventListActivity extends BaseAppCompatActivity {
                                 getString(R.string.toast_msg_no_more_data),
                                 Toast.LENGTH_LONG
                         ).show();
-                        recyclerList.hideShimmerAdapter();
+                        hideListLoadAnimation();
                         tvNodata.setVisibility(View.VISIBLE);
                         break;
                     default:
@@ -775,7 +787,7 @@ EventListActivity extends BaseAppCompatActivity {
         currentTailPageNum = 1;
         currentHeadPageNum = -1;
 
-        recyclerList.showShimmerAdapter();
+        showListLoadAnimtaion();
         loadEventList();
     }
 
@@ -995,7 +1007,7 @@ EventListActivity extends BaseAppCompatActivity {
     Handler hideShimmerHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            recyclerList.hideShimmerAdapter();
+            hideListLoadAnimation();
         }
     };
 }

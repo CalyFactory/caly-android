@@ -1,13 +1,19 @@
 package io.caly.calyandroid.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -23,6 +29,7 @@ import io.caly.calyandroid.fragment.RecoListFragment;
 import io.caly.calyandroid.fragment.RecoMapFragment;
 import io.caly.calyandroid.model.dataModel.RecoListWrapModel;
 import io.caly.calyandroid.model.dataModel.RecoModel;
+import io.caly.calyandroid.model.event.MapPermissionGrantedEvent;
 import io.caly.calyandroid.model.event.RecoMapFilterChangeEvent;
 import io.caly.calyandroid.util.BusProvider;
 import io.caly.calyandroid.util.Util;
@@ -81,8 +88,49 @@ public class RecoMapActivity extends BaseAppCompatActivity {
         transaction.add(R.id.linear_recomap_container, recoMapFragment);
         transaction.commit();
 
+
+        checkGPSPermission();
+
     }
 
+    void checkGPSPermission(){
+        Log.d(TAG, "checkGPSPermission");
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+
+            BusProvider.getInstance().post(new MapPermissionGrantedEvent());
+
+        }
+        else{
+            Log.d(TAG, "request permission");
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION
+                    },
+                    Util.RC_PERMISSION_FINE_LOCATION
+            );
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_PHONE_STATE)){
+            //denied
+
+        }else{
+            if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED){
+                //allowed
+                BusProvider.getInstance().post(new MapPermissionGrantedEvent());
+            } else{
+                //set to never ask again
+
+            }
+        }
+
+    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -95,6 +143,8 @@ public class RecoMapActivity extends BaseAppCompatActivity {
         switch (item.getItemId()){
             case android.R.id.home:
                 onBackPressed();
+                break;
+            case R.id.menu_filter:
                 break;
             case R.id.menu_filter_all:
                 BusProvider.getInstance().post(new RecoMapFilterChangeEvent(0));

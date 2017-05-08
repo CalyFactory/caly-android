@@ -116,6 +116,27 @@
                                         android:textColor="#757575"
                                         android:textSize="13dp" />
                                 </LinearLayout>
+
+                                <FrameLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <android.support.v7.widget.RecyclerView
+                                        android:id="@+id/recycler_eventlist"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent" />
+
+
+                                    <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+                                        style="@style/SpinKitView.Large.ThreeBounce"
+                                        android:layout_width="123dp"
+                                        android:visibility="gone"
+                                        android:layout_height="49dp"
+                                        android:id="@+id/spinkit_eventlist"
+                                        android:layout_gravity="center"
+                                        app:SpinKit_Color="@color/dark_sky_blue" />
+                                </FrameLayout>
+                                <!--
                                 <com.cooltechworks.views.shimmer.ShimmerRecyclerView
                                     android:id="@+id/recycler_eventlist"
                                     android:layout_width="match_parent"
@@ -123,6 +144,7 @@
                                     app:shimmer_demo_child_count="4"
                                     app:shimmer_demo_layout="@layout/item_eventlist_row3"
                                     app:shimmer_demo_layout_manager_type="linear_vertical" />
+                                    -->
                             </LinearLayout>
 
                             <TextView
@@ -146,6 +168,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="bottom|end"
                                 app:useCompatPadding="true"
+                                app:borderWidth="2dp"
                                 android:src="@drawable/today"
                                 android:elevation="6dp"
                                 app:backgroundTint="@color/white"/>
@@ -166,7 +189,8 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
+                <com.github.ybq.android.spinkit.SpinKitView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/avi_eventlist"
                     style="@style/SpinKitView.Large.ThreeBounce"
                     android:layout_width="wrap_content"
@@ -192,14 +216,14 @@
                 android:layout_height="match_parent"
                 android:background="#dd000000"
                 android:clickable="true"
-                android:gravity="center"
                 android:orientation="vertical"
+                android:gravity="center_horizontal"
                 android:visibility="gone">
 
                 <com.github.ybq.android.spinkit.SpinKitView xmlns:app="http://schemas.android.com/apk/res-auto"
                     style="@style/SpinKitView.Large.ThreeBounce"
                     android:layout_width="123dp"
-                    android:layout_marginTop="60dp"
+                    android:layout_marginTop="160dp"
                     android:layout_height="49dp"
                     android:layout_gravity="center"
                     app:SpinKit_Color="@color/colorPrimary" />
@@ -229,10 +253,10 @@
                     android:id="@+id/btn_eventlist_skipreco"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginLeft="45dp"
+                    android:layout_marginRight="45dp"
                     android:layout_marginTop="130dp"
-                    android:background="@color/dark_peach"
+                    android:background="@drawable/btn_wait_skip"
                     android:text="@string/text_reco_skip_button"
                     android:textColor="#ffffff" />
 
