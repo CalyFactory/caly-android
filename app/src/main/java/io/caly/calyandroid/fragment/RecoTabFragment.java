@@ -24,7 +24,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -187,6 +186,7 @@ public class RecoTabFragment extends BaseFragment {
 
                     break;
                 case STATE_EMPTY:
+                    hideShimmerAdapter();
                     tvNodata.setVisibility(View.VISIBLE);
                     break;
                 case STATE_ERROR:

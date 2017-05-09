@@ -87,6 +87,8 @@ public class RecoMapFragment extends BaseFragment {
     ArrayList<Marker> markerList;
     List<RecoModel> recoList;
 
+    boolean isPermissionGranted = false;
+
     public RecoMapFragment() {
 
     }
@@ -146,6 +148,10 @@ public class RecoMapFragment extends BaseFragment {
 
                 addData(recoList);
                 moveCamera(recoList.get(0));
+
+                if(isPermissionGranted){
+                    mapPermissionGrantedEventCallback(null);
+                }
             }
         });
 
@@ -297,14 +303,20 @@ public class RecoMapFragment extends BaseFragment {
 
     @Subscribe
     public void mapPermissionGrantedEventCallback(MapPermissionGrantedEvent event) {
+        Log.d(TAG, "permission event");
         if (
-                ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             Log.e(TAG, "permission not granted");
             return;
         }
-        googleMap.setMyLocationEnabled(true);
+
+        if(googleMap == null){
+            isPermissionGranted = true;
+        }
+        else {
+            googleMap.setMyLocationEnabled(true);
+        }
     }
 
     @Subscribe

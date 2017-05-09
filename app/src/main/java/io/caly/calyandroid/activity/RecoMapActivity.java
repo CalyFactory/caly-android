@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -89,14 +91,24 @@ public class RecoMapActivity extends BaseAppCompatActivity {
         transaction.commit();
 
 
-        checkGPSPermission();
+        delayHandler.sendEmptyMessageDelayed(0, 10);
 
     }
 
+    Handler delayHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            checkGPSPermission();
+            super.handleMessage(msg);
+        }
+    };
+
     void checkGPSPermission(){
         Log.d(TAG, "checkGPSPermission");
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
+        Log.d(TAG, "ACCESS_FINE_LOCATION " + ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION));
+        Log.d(TAG, "ACCESS_COARSE_LOCATION " + ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION));
+        if (
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
             BusProvider.getInstance().post(new MapPermissionGrantedEvent());
 
@@ -106,7 +118,8 @@ public class RecoMapActivity extends BaseAppCompatActivity {
             ActivityCompat.requestPermissions(
                     this,
                     new String[]{
-                            Manifest.permission.ACCESS_FINE_LOCATION
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
                     },
                     Util.RC_PERMISSION_FINE_LOCATION
             );
@@ -117,15 +130,18 @@ public class RecoMapActivity extends BaseAppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 
-        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.READ_PHONE_STATE)){
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)){
             //denied
+            Log.d(TAG, "permission Denied");
 
         }else{
-            if(ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED){
+            if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
                 //allowed
+                Log.d(TAG, "permission allowd");
                 BusProvider.getInstance().post(new MapPermissionGrantedEvent());
             } else{
                 //set to never ask again
+                Log.d(TAG, "permission never ask");
 
             }
         }
