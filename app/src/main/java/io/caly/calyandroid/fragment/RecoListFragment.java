@@ -5,7 +5,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,13 +21,13 @@ import com.squareup.otto.Subscribe;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.caly.calyandroid.adapter.RecoTabPagerAdapter;
 import io.caly.calyandroid.CalyApplication;
+import io.caly.calyandroid.R;
+import io.caly.calyandroid.adapter.RecoTabPagerAdapter;
 import io.caly.calyandroid.exception.HttpResponseParsingException;
 import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
-import io.caly.calyandroid.model.LogType;
-import io.caly.calyandroid.R;
 import io.caly.calyandroid.fragment.base.BaseFragment;
+import io.caly.calyandroid.model.LogType;
 import io.caly.calyandroid.model.dataModel.EventModel;
 import io.caly.calyandroid.model.event.RecoListLoadStateChangeEvent;
 import io.caly.calyandroid.model.event.RecoListScrollEvent;
@@ -124,15 +123,15 @@ public class RecoListFragment extends BaseFragment {
                 switch (tab.getPosition()){
                     //restaurant
                     case 0:
-                        RECO_LOG_LABEL  = LogType.RECO_LABEL_TAP_RESTAURANT.value;
+                        RECO_LOG_LABEL  = LogType.LABEL_RECO_TAP_RESTAURANT.value;
                         break;
                     //caffee
                     case 1:
-                        RECO_LOG_LABEL  = LogType.RECO_LABEL_TAP_CAFE.value;
+                        RECO_LOG_LABEL  = LogType.LABEL_RECO_TAP_CAFE.value;
                         break;
                     //activity
                     case 2:
-                        RECO_LOG_LABEL  = LogType.RECO_LABEL_TAP_PLACE.value;
+                        RECO_LOG_LABEL  = LogType.LABEL_RECO_TAP_PLACE.value;
                         break;
 
                 }
@@ -287,8 +286,9 @@ public class RecoListFragment extends BaseFragment {
         );
     }
 
-    void requestSetRecoLog (String apikey, String eventHashkey, int category, int label, int action, int residenseTime, String recoHashkey){
+    void requestSetRecoLog (String apikey, String eventHashkey, int category, int label, int action, long residenseTime, String recoHashkey){
         ApiClient.getService().setRecoLog(
+                "세션키 자리야 성민아!!!!!!!",
                 apikey,
                 eventHashkey,
                 category,

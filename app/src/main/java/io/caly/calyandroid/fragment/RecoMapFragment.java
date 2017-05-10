@@ -13,12 +13,12 @@ import android.support.v4.view.ViewPager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -29,6 +29,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.MalformedJsonException;
 import com.squareup.otto.Subscribe;
 
 import java.util.ArrayList;
@@ -36,21 +38,28 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.caly.calyandroid.R;
 import io.caly.calyandroid.adapter.RecoMapListAdapter;
+import io.caly.calyandroid.exception.HttpResponseParsingException;
+import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.fragment.base.BaseFragment;
 import io.caly.calyandroid.model.Category;
+import io.caly.calyandroid.model.LogType;
 import io.caly.calyandroid.model.dataModel.RecoModel;
 import io.caly.calyandroid.model.event.MapPermissionGrantedEvent;
 import io.caly.calyandroid.model.event.RecoListLoadStateChangeEvent;
-import io.caly.calyandroid.model.event.RecoListScrollEvent;
 import io.caly.calyandroid.model.event.RecoMapFilterChangeEvent;
+import io.caly.calyandroid.model.orm.TokenRecord;
+import io.caly.calyandroid.model.response.BasicResponse;
 import io.caly.calyandroid.model.response.RecoResponse;
-import io.caly.calyandroid.R;
+import io.caly.calyandroid.util.ApiClient;
 import io.caly.calyandroid.util.Logger;
 import io.caly.calyandroid.util.Util;
-import io.github.yavski.fabspeeddial.FabSpeedDial;
-import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Response;
+
+import static java.sql.Types.NULL;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -90,6 +99,8 @@ public class RecoMapFragment extends BaseFragment {
 
     boolean isPermissionGranted = false;
 
+
+
     public RecoMapFragment() {
 
     }
@@ -110,6 +121,9 @@ public class RecoMapFragment extends BaseFragment {
     }
 
     void init() {
+
+
+
         mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
@@ -144,6 +158,25 @@ public class RecoMapFragment extends BaseFragment {
                         LatLng loc = new LatLng(RecoMapFragment.this.googleMap.getMyLocation().getLatitude(),RecoMapFragment.this.googleMap.getMyLocation().getLongitude());
                         RecoMapFragment.this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
                         return true;
+                    }
+                });
+                googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+                    @Override
+                    public boolean onMyLocationButtonClick() {
+                        Log.d(TAG, "click myLocation");
+                        if (recoList.size() != 0) {
+                            requestSetRecoLog(
+                                    TokenRecord.getTokenRecord().getApiKey(),
+                                    recoList.get(0).eventHashKey,
+                                    LogType.CATEGORY_RECO_MAP_VIEW.value,
+                                    LogType.LABEL_RECO_MAP_MY_LOCATION.value,
+                                    LogType.ACTION_CLICK.value,
+                                    NULL,
+                                    null
+                            );
+                        }
+
+                        return false;
                     }
                 });
 
@@ -223,6 +256,10 @@ public class RecoMapFragment extends BaseFragment {
     public RecoMapFragment setData(List<RecoModel> recoList){
         this.recoList = recoList;
         return this;
+    }
+
+    public List<RecoModel> getData(){
+        return  this.recoList;
     }
 
     void filterList(Category category){
@@ -324,24 +361,73 @@ public class RecoMapFragment extends BaseFragment {
     public void recoMapFilterChangeEventCallback(RecoMapFilterChangeEvent event){
         switch (event.index){
             case 0:
+
+                if (recoList.size() != 0) {
+                    requestSetRecoLog(
+                            TokenRecord.getTokenRecord().getApiKey(),
+                            recoList.get(0).eventHashKey,
+                            LogType.CATEGORY_RECO_MAP_VIEW.value,
+                            LogType.LABEL_RECO_MAP_FILTER_ALL.value,
+                            LogType.ACTION_CLICK.value,
+                            NULL,
+                            null
+                    );
+                }
+
                 linearCategory1.setVisibility(View.VISIBLE);
                 linearCategory2.setVisibility(View.VISIBLE);
                 linearCategory3.setVisibility(View.VISIBLE);
                 filterList(null);
                 break;
             case 1:
+                if (recoList.size() != 0) {
+                    requestSetRecoLog(
+                            TokenRecord.getTokenRecord().getApiKey(),
+                            recoList.get(0).eventHashKey,
+                            LogType.CATEGORY_RECO_MAP_VIEW.value,
+                            LogType.LABEL_RECO_MAP_FILTER_RESTAURANT.value,
+                            LogType.ACTION_CLICK.value,
+                            NULL,
+                            null
+                    );
+                }
+
                 linearCategory1.setVisibility(View.VISIBLE);
                 linearCategory2.setVisibility(View.GONE);
                 linearCategory3.setVisibility(View.GONE);
                 filterList(Category.RESTAURANT);
                 break;
             case 2:
+                if (recoList.size() != 0) {
+                    requestSetRecoLog(
+                            TokenRecord.getTokenRecord().getApiKey(),
+                            recoList.get(0).eventHashKey,
+                            LogType.CATEGORY_RECO_MAP_VIEW.value,
+                            LogType.LABEL_RECO_MAP_FILTER_CAFE.value,
+                            LogType.ACTION_CLICK.value,
+                            NULL,
+                            null
+                    );
+                }
+
                 linearCategory1.setVisibility(View.GONE);
                 linearCategory2.setVisibility(View.VISIBLE);
                 linearCategory3.setVisibility(View.GONE);
                 filterList(Category.CAFE);
                 break;
             case 3:
+                if (recoList.size() != 0) {
+                    requestSetRecoLog(
+                            TokenRecord.getTokenRecord().getApiKey(),
+                            recoList.get(0).eventHashKey,
+                            LogType.CATEGORY_RECO_MAP_VIEW.value,
+                            LogType.LABEL_RECO_MAP_FILTER_PLACE.value,
+                            LogType.ACTION_CLICK.value,
+                            NULL,
+                            null
+                    );
+                }
+
                 linearCategory1.setVisibility(View.GONE);
                 linearCategory2.setVisibility(View.GONE);
                 linearCategory3.setVisibility(View.VISIBLE);
@@ -379,7 +465,44 @@ public class RecoMapFragment extends BaseFragment {
         this.recoList.addAll(recoList);
         adapter.addItems(recoList);
         addMarkers(recoList);
+    }
+    void requestSetRecoLog (String apikey, String eventHashkey, int category, int label, int action, long residenseTime, String recoHashkey) {
+        ApiClient.getService().setRecoLog(
+                "세션키 자리야 성민아!!!!!!!",
+                apikey,
+                eventHashkey,
+                category,
+                label,
+                action,
+                residenseTime,
+                recoHashkey
+        ).enqueue(new Callback<BasicResponse>() {
+            @Override
+            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                Logger.d(TAG, "onResponse code : " + response.code());
+                Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
 
+                switch (response.code()) {
+                    case 200:
+                        break;
+                    default:
+                        Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponse> call, Throwable t) {
+                if (t instanceof MalformedJsonException || t instanceof JsonSyntaxException) {
+                    Crashlytics.logException(new HttpResponseParsingException(call, t));
+                }
+
+                Logger.e(TAG, "onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
+
+            }
+        });
     }
 
 }

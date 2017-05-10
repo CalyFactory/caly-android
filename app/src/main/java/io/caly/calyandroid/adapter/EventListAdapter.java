@@ -1,10 +1,7 @@
 package io.caly.calyandroid.adapter;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
-import android.location.Location;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
@@ -26,12 +23,10 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.CalyApplication;
-import io.caly.calyandroid.activity.EventListActivity;
-import io.caly.calyandroid.activity.RecoListActivity;
+import io.caly.calyandroid.R;
 import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.model.LogType;
 import io.caly.calyandroid.model.dataModel.EventModel;
-import io.caly.calyandroid.R;
 import io.caly.calyandroid.model.orm.TokenRecord;
 import io.caly.calyandroid.model.response.BasicResponse;
 import io.caly.calyandroid.util.ApiClient;
@@ -255,11 +250,23 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
 
                         switch (eventModel.recoState){
                             case STATE_BEING_RECOMMEND: //추천중
+                                requestSetEventLog (TokenRecord.getTokenRecord().getApiKey(),
+                                        eventModel.eventHashKey,
+                                        LogType.CATEGORY_CELL.value,
+                                        LogType.LABEL_EVENT_CELL_ANALYZING.value,
+                                        LogType.ACTION_CLICK.value);
+
                                 Toast.makeText(context, "추천중 (사유고민하기)", Toast.LENGTH_LONG).show();
                                 break;
                             case STATE_DONE_RECOMMEND: //추천완료
                                 break;
+
                             case STATE_NOTHING_TO_RECOMMEND: //추천불가
+                                requestSetEventLog (TokenRecord.getTokenRecord().getApiKey(),
+                                        eventModel.eventHashKey,
+                                        LogType.CATEGORY_CELL.value,
+                                        LogType.LABEL_EVENT_CELL_QUESTIONMARK.value,
+                                        LogType.ACTION_CLICK.value);
                                 Toast.makeText(context, "추천불가 (사유고민하기)", Toast.LENGTH_LONG).show();
                                 break;
                         }
@@ -309,6 +316,36 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     public int getItemCount() {
         return dataList.size();
     }
+    void requestSetEventLog (String apikey, String eventHashkey, int category, int label, int action) {
+        ApiClient.getService().setEventLog(
+                "세션키 자리야 성민아!!!!!!!",
+                apikey,
+                eventHashkey,
+                category,
+                label,
+                action
+        ).enqueue(new Callback<BasicResponse>() {
+            @Override
+            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                Logger.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
 
+                switch (response.code()){
+                    case 200:
+                        break;
+                    default:
+                        Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponse> call, Throwable t) {
+                Logger.e(TAG,"onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
+
+            }
+        });
+    }
 
 }

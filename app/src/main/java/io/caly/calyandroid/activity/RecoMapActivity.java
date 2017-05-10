@@ -20,7 +20,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.stream.MalformedJsonException;
 
 import java.util.List;
 
@@ -28,15 +31,23 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.activity.base.BaseAppCompatActivity;
-import io.caly.calyandroid.fragment.RecoListFragment;
+import io.caly.calyandroid.exception.HttpResponseParsingException;
+import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.fragment.RecoMapFragment;
+import io.caly.calyandroid.model.LogType;
 import io.caly.calyandroid.model.dataModel.RecoListWrapModel;
 import io.caly.calyandroid.model.dataModel.RecoModel;
 import io.caly.calyandroid.model.event.MapPermissionGrantedEvent;
 import io.caly.calyandroid.model.event.RecoMapFilterChangeEvent;
+import io.caly.calyandroid.model.orm.TokenRecord;
+import io.caly.calyandroid.model.response.BasicResponse;
+import io.caly.calyandroid.util.ApiClient;
 import io.caly.calyandroid.util.BusProvider;
 import io.caly.calyandroid.util.Logger;
 import io.caly.calyandroid.util.Util;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import uk.co.chrisjenx.calligraphy.TypefaceUtils;
 
 /**
@@ -53,6 +64,8 @@ public class RecoMapActivity extends BaseAppCompatActivity {
 
     RecoMapFragment recoMapFragment;
 
+    long startSecond;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +76,7 @@ public class RecoMapActivity extends BaseAppCompatActivity {
 
     void init() {
         ButterKnife.bind(this);
-
+        startSecond = System.currentTimeMillis();
         //set toolbar
         tvToolbarTitle.setText("지도로 보기");
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
@@ -153,6 +166,23 @@ public class RecoMapActivity extends BaseAppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.slide_in_down, R.anim.slide_out_down);
+
+        List<RecoModel> recoList  = recoMapFragment.getData();
+
+        long endSecond = System.currentTimeMillis();
+        long residenseTime = endSecond - startSecond;
+        if (recoList.size() != 0){
+            requestSetRecoLog(
+                    TokenRecord.getTokenRecord().getApiKey(),
+                    recoList.get(0).eventHashKey,
+                    LogType.CATEGORY_VIEW.value,
+                    LogType.LABEL_RECO_GOFULLMAP.value,
+                    LogType.ACTION_CLICK.value,
+                    residenseTime,
+                    null
+            );
+        }
+
     }
 
     @Override
@@ -185,5 +215,44 @@ public class RecoMapActivity extends BaseAppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_mapfilter, menu);
         return true;
+    }
+
+    void requestSetRecoLog (String apikey, String eventHashkey, int category, int label, int action, long residenseTime, String recoHashkey) {
+        ApiClient.getService().setRecoLog(
+                "세션키 자리야 성민아!!!!!!!",
+                apikey,
+                eventHashkey,
+                category,
+                label,
+                action,
+                residenseTime,
+                recoHashkey
+        ).enqueue(new Callback<BasicResponse>() {
+            @Override
+            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                Logger.d(TAG, "onResponse code : " + response.code());
+                Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
+
+                switch (response.code()) {
+                    case 200:
+                        break;
+                    default:
+                        Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponse> call, Throwable t) {
+                if (t instanceof MalformedJsonException || t instanceof JsonSyntaxException) {
+                    Crashlytics.logException(new HttpResponseParsingException(call, t));
+                }
+
+                Logger.e(TAG, "onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
+
+            }
+        });
     }
 }
