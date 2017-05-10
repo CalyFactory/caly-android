@@ -1,26 +1,46 @@
 package io.caly.calyandroid.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.location.Location;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.crashlytics.android.Crashlytics;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.caly.calyandroid.CalyApplication;
+import io.caly.calyandroid.activity.EventListActivity;
+import io.caly.calyandroid.activity.RecoListActivity;
+import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
+import io.caly.calyandroid.model.LogType;
 import io.caly.calyandroid.model.dataModel.EventModel;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.model.orm.TokenRecord;
+import io.caly.calyandroid.model.response.BasicResponse;
+import io.caly.calyandroid.util.ApiClient;
+import io.caly.calyandroid.util.Logger;
 import io.caly.calyandroid.util.StringFormmater;
 import io.caly.calyandroid.util.Util;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -31,6 +51,9 @@ import io.caly.calyandroid.util.Util;
  */
 
 public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.ViewHolder> {
+
+    //로그에 쓰일 tag
+    public final String TAG = CalyApplication.class.getSimpleName() + "/" + this.getClass().getSimpleName();
 
     private ArrayList<EventModel> dataList;
     private Context context;
@@ -70,6 +93,10 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         FrameLayout linearState;
 
         @Nullable
+        @Bind(R.id.linear_eventrow_ripple)
+        LinearLayout linearRipple;
+
+        @Nullable
         @Bind(R.id.tv_eventrow_state)
         TextView tvState;
 
@@ -84,6 +111,10 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         @Nullable
         @Bind(R.id.imv_eventrow_unknown)
         ImageView imvUnknown;
+
+        @Nullable
+        @Bind(R.id.linear_eventrow_row)
+        LinearLayout linearRow;
 
         public ViewHolder(View view){
             super(view);
@@ -142,8 +173,8 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        EventModel eventModel = dataList.get(position);
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        final EventModel eventModel = dataList.get(position);
 
         switch (getItemViewType(position)){
             case 1:
@@ -205,6 +236,35 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                 else{
                     holder.tvEventLocation.setText(eventModel.location);
                 }
+
+                holder.linearRipple.setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent motionEvent) {
+                        holder.linearRow.dispatchTouchEvent(motionEvent);
+                        return false;
+                    }
+                });
+                holder.linearState.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //추천완료, 추천중 클릭시만 처리
+                        Log.d(TAG, "onLinearStateClick");
+
+                        if(getItemCount()-1 < position) return;
+                        EventModel eventModel = getItem(position);
+
+                        switch (eventModel.recoState){
+                            case STATE_BEING_RECOMMEND: //추천중
+                                Toast.makeText(context, "추천중 (사유고민하기)", Toast.LENGTH_LONG).show();
+                                break;
+                            case STATE_DONE_RECOMMEND: //추천완료
+                                break;
+                            case STATE_NOTHING_TO_RECOMMEND: //추천불가
+                                Toast.makeText(context, "추천불가 (사유고민하기)", Toast.LENGTH_LONG).show();
+                                break;
+                        }
+                    }
+                });
 
                 switch (eventModel.recoState){
                     case STATE_BEING_RECOMMEND:
