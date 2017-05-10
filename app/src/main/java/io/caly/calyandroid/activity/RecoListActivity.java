@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -69,6 +70,9 @@ public class RecoListActivity extends BaseAppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
+    @Bind(R.id.tv_toolbar_title)
+    TextView tvToolbarTitle;
+
     EventModel eventData;
 
     PAGE_TYPE pageType;
@@ -90,19 +94,16 @@ public class RecoListActivity extends BaseAppCompatActivity {
         ButterKnife.bind(this);
 
         //set toolbar
-        toolbar.setTitle("추천 목록");
-        toolbar.setTitleTextColor(Color.WHITE);
+        tvToolbarTitle.setText("추천 목록");
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 return false;
             }
         });
-        Util.centerToolbarTitle(toolbar);
-        Util.setToolbarFontSize(toolbar, 18);
-        TypefaceUtils.load(getResources().getAssets(), getString(R.string.font_nanum_extra_bold));
 
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp);
         upArrow.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);
@@ -114,7 +115,7 @@ public class RecoListActivity extends BaseAppCompatActivity {
                         getIntent().getStringExtra("event"),
                         EventModel.class
                 );
-        toolbar.setTitle(eventData.summaryText);
+        tvToolbarTitle.setText(eventData.summaryText);
 
         recoListFragment = new RecoListFragment().setData(eventData);
 //        recoMapFragment = new RecoMapFragment();

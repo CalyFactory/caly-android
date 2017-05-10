@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -9,12 +10,22 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary">
 
+        <TextView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:id="@+id/tv_toolbar_title"
+            android:textColor="@color/white"
+            android:textSize="18dp"
+            fontPath="@string/font_nanum_extra_bold"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingPrefix" />
         <ImageView
             android:id="@+id/imv_toolbar_logo"
             android:visibility="gone"
             android:layout_width="52dp"
             android:src="@drawable/caly_logo"
             android:layout_height="28dp" />
+
 
     </android.support.v7.widget.Toolbar>
 </LinearLayout>

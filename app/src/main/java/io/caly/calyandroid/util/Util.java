@@ -66,6 +66,7 @@ public class Util {
         }
     }
 
+    @Deprecated
     public static void centerToolbarTitle(final Toolbar toolbar) {
         final CharSequence title = toolbar.getTitle();
         final ArrayList<View> outViews = new ArrayList<>(1);
@@ -80,6 +81,7 @@ public class Util {
         }
     }
 
+    @Deprecated
     public static void setToolbarFontSize(Toolbar toolbar, int fontSize){
         final CharSequence title = toolbar.getTitle();
         final ArrayList<View> outViews = new ArrayList<>(1);

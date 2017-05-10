@@ -18,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
@@ -58,6 +59,9 @@ public class RecoMapActivity extends BaseAppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
+    @Bind(R.id.tv_toolbar_title)
+    TextView tvToolbarTitle;
+
     RecoMapFragment recoMapFragment;
 
     long startSecond;
@@ -74,19 +78,16 @@ public class RecoMapActivity extends BaseAppCompatActivity {
         ButterKnife.bind(this);
         startSecond = System.currentTimeMillis();
         //set toolbar
-        toolbar.setTitle("지도로 보기");
-        toolbar.setTitleTextColor(Color.WHITE);
+        tvToolbarTitle.setText("지도로 보기");
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 return false;
             }
         });
-        Util.centerToolbarTitle(toolbar);
-        Util.setToolbarFontSize(toolbar, 18);
-        TypefaceUtils.load(getResources().getAssets(), getString(R.string.font_nanum_extra_bold));
 
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp);
         upArrow.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         getSupportActionBar().setHomeAsUpIndicator(upArrow);

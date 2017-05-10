@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="true"
+            android:id="@+id/linear_eventrow_row"
             android:focusable="true"
             tools:background="@color/white"
             android:orientation="horizontal">
@@ -183,10 +184,12 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linear_eventrow_ripple"
             android:clickable="true"
             android:layout_width="match_parent"
             android:background="?android:attr/selectableItemBackground"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
 
         </LinearLayout>
     </FrameLayout>
