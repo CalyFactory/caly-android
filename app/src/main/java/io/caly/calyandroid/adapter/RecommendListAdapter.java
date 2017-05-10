@@ -147,39 +147,15 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
             public void onClick(View view) {
 
 
-                ApiClient.getService().setRecoLog(
+                requestSetRecoLog (
                         TokenRecord.getTokenRecord().getApiKey(),
                         recoModel.eventHashKey,
                         LogType.CATEGORY_CELL.value,
-                        LogType.RECO_LABEL_GOBLOG.value,
+                        LogType.LABEL_RECO_DEEPLINK.value,
                         LogType.ACTION_CLICK.value,
-                        0,
+                        NULL,
                         recoModel.recoHashKey
-                ).enqueue(new Callback<BasicResponse>() {
-                    @Override
-                    public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                        Logger.d(TAG,"onResponse code : " + response.code());
-                        Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
-                        switch (response.code()){
-                            case 200:
-                                break;
-                            default:
-                                Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
-                                break;
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<BasicResponse> call, Throwable t) {
-                        if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
-                            Crashlytics.logException(new HttpResponseParsingException(call, t));
-                        }
-                        Logger.e(TAG,"onfail : " + t.getMessage());
-                        Logger.e(TAG, "fail " + t.getClass().getName());
-
-                    }
-                });
+                );
 
                 RecoModel recoModel = dataList.get(position);
 
@@ -221,40 +197,15 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
         holder.tvMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ApiClient.getService().setRecoLog(
+                requestSetRecoLog (
                         TokenRecord.getTokenRecord().getApiKey(),
                         recoModel.eventHashKey,
                         LogType.CATEGORY_CELL.value,
-                        LogType.RECO_LABEL_GOPLACEMAP.value,
+                        LogType.LABEL_RECO_ITEM_MAP.value,
                         LogType.ACTION_CLICK.value,
                         NULL,
                         recoModel.recoHashKey
-                ).enqueue(new Callback<BasicResponse>() {
-                    @Override
-                    public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                        Logger.d(TAG,"onResponse code : " + response.code());
-                        Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
-
-                        switch (response.code()){
-                            case 200:
-                                break;
-                            default:
-                                Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
-                                break;
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<BasicResponse> call, Throwable t) {
-                        if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
-                            Crashlytics.logException(new HttpResponseParsingException(call, t));
-                        }
-                        Logger.e(TAG,"onfail : " + t.getMessage());
-                        Logger.e(TAG, "fail " + t.getClass().getName());
-
-                    }
-                });
+                );
 
 
                 RecoModel recoModel = dataList.get(position);
@@ -285,7 +236,16 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
         holder.imvShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                RecoModel recoModel = dataList.get(position);
+                requestSetRecoLog (
+                        TokenRecord.getTokenRecord().getApiKey(),
+                        recoModel.eventHashKey,
+                        LogType.CATEGORY_CELL.value,
+                        LogType.LABEL_RECO_SHARE_KAKAO_INCELL.value,
+                        LogType.ACTION_CLICK.value,
+                        NULL,
+                        recoModel.recoHashKey
+                );
                 String[] snsList = {
                         "com.kakao.talk", //kakaotalk
                 };
@@ -318,6 +278,45 @@ public class RecommendListAdapter extends RecyclerView.Adapter<RecommendListAdap
     @Override
     public int getItemCount() {
         return dataList.size();
+    }
+
+    void requestSetRecoLog (String apikey, String eventHashkey, int category, int label, int action, long residenseTime, String recoHashkey){
+        ApiClient.getService().setRecoLog(
+                "세션키 자리야 성민아!!!!!!!",
+                apikey,
+                eventHashkey,
+                category,
+                label,
+                action,
+                residenseTime,
+                recoHashkey
+        ).enqueue(new Callback<BasicResponse>() {
+            @Override
+            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                Logger.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
+
+                switch (response.code()){
+                    case 200:
+                        break;
+                    default:
+                        Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponse> call, Throwable t) {
+                if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
+                    Crashlytics.logException(new HttpResponseParsingException(call, t));
+                }
+
+                Logger.e(TAG,"onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
+
+            }
+        });
     }
 
 }

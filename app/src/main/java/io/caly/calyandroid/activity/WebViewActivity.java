@@ -6,14 +6,6 @@ import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-
-import io.caly.calyandroid.activity.base.BaseAppCompatActivity;
-import io.caly.calyandroid.exception.HttpResponseParsingException;
-import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
-import io.caly.calyandroid.model.orm.TokenRecord;
-import io.caly.calyandroid.model.response.BasicResponse;
-import io.caly.calyandroid.util.ApiClient;
-import io.caly.calyandroid.util.Logger;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,8 +22,15 @@ import com.google.gson.stream.MalformedJsonException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.caly.calyandroid.model.LogType;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.activity.base.BaseAppCompatActivity;
+import io.caly.calyandroid.exception.HttpResponseParsingException;
+import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
+import io.caly.calyandroid.model.LogType;
+import io.caly.calyandroid.model.orm.TokenRecord;
+import io.caly.calyandroid.model.response.BasicResponse;
+import io.caly.calyandroid.util.ApiClient;
+import io.caly.calyandroid.util.Logger;
 import io.caly.calyandroid.util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -130,39 +129,15 @@ public class WebViewActivity extends BaseAppCompatActivity {
 
             long endSecond = System.currentTimeMillis();
             long residenseTime = endSecond - startSecond;
-            ApiClient.getService().setRecoLog(
+            requestSetRecoLog(
                     TokenRecord.getTokenRecord().getApiKey(),
                     getIntent().getStringExtra("eventHashKey"),
                     LogType.CATEGORY_CELL.value,
-                    LogType.RECO_LABEL_GOBLOG.value,
+                    LogType.LABEL_RECO_DEEPLINK.value,
                     LogType.ACTION_CLICK.value,
                     residenseTime,
                     getIntent().getStringExtra("recoHashKey")
-            ).enqueue(new Callback<BasicResponse>() {
-                @Override
-                public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                    Logger.d(TAG,"onResponse code : " + response.code());
-                    Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
-                    switch (response.code()){
-                        case 200:
-                            break;
-                        default:
-                            Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
-                            break;
-                    }
-
-                }
-
-                @Override
-                public void onFailure(Call<BasicResponse> call, Throwable t) {
-                    if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
-                        Crashlytics.logException(new HttpResponseParsingException(call, t));
-                    }
-                    Logger.e(TAG,"onfail : " + t.getMessage());
-                    Logger.e(TAG, "fail " + t.getClass().getName());
-
-                }
-            });
+            );
         }
     }
 
@@ -181,40 +156,15 @@ public class WebViewActivity extends BaseAppCompatActivity {
                 onBackPressed();
                 break;
             case R.id.menu_recodetail_share:
-                ApiClient.getService().setRecoLog(
+                requestSetRecoLog(
                         TokenRecord.getTokenRecord().getApiKey(),
                         getIntent().getStringExtra("eventHashKey"),
                         LogType.CATEGORY_CELL.value,
-                        LogType.RECO_LABEL_SHARE_KAKAO.value,
+                        LogType.LABEL_RECO_SHARE_KAKAO_INBLOG.value,
                         LogType.ACTION_CLICK.value,
                         NULL,
                         getIntent().getStringExtra("recoHashKey")
-                ).enqueue(new Callback<BasicResponse>() {
-                    @Override
-                    public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                        Logger.d(TAG,"onResponse code : " + response.code());
-                        Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
-                        switch (response.code()){
-                            case 200:
-                                break;
-                            default:
-                                Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
-                                break;
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<BasicResponse> call, Throwable t) {
-                        if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
-                            Crashlytics.logException(new HttpResponseParsingException(call, t));
-                        }
-
-                        Logger.e(TAG,"onfail : " + t.getMessage());
-                        Logger.e(TAG, "fail " + t.getClass().getName());
-
-                    }
-                });
+                );
                 String[] snsList = {
                     "com.kakao.talk", //kakaotalk
                 };
@@ -251,4 +201,43 @@ public class WebViewActivity extends BaseAppCompatActivity {
             return true;
         }
     }
+    void requestSetRecoLog (String apikey, String eventHashkey, int category, int label, int action, long residenseTime, String recoHashkey){
+        ApiClient.getService().setRecoLog(
+                "세션키 자리야 성민아!!!!!!!",
+                apikey,
+                eventHashkey,
+                category,
+                label,
+                action,
+                residenseTime,
+                recoHashkey
+        ).enqueue(new Callback<BasicResponse>() {
+            @Override
+            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                Logger.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
+
+                switch (response.code()){
+                    case 200:
+                        break;
+                    default:
+                        Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponse> call, Throwable t) {
+                if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
+                    Crashlytics.logException(new HttpResponseParsingException(call, t));
+                }
+
+                Logger.e(TAG,"onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
+
+            }
+        });
+    }
+
 }

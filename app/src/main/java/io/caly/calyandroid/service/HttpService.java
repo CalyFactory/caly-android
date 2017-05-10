@@ -167,6 +167,7 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("v1.0/events/setLog")
     Call<BasicResponse> setEventLog(
+            @Field("sessionKey") String sessionKey,
             @Field("apikey") String apiKey,
             @Field("eventHashkey") String eventHashkey,
             @Field("category") int category,
@@ -243,6 +244,7 @@ public interface HttpService {
     @FormUrlEncoded
     @POST("v1.0/reco/setLog")
     Call<BasicResponse> setRecoLog(
+            @Field("sessionKey") String sessionKey,
             @Field("apikey") String apiKey,
             @Field("eventHashkey") String eventHashkey,
             @Field("category") int category,
