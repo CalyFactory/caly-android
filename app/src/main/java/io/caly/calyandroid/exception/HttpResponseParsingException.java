@@ -20,16 +20,16 @@ public class HttpResponseParsingException extends Exception {
 
     public HttpResponseParsingException(Call httpCall, Throwable throwable){
         this(getLogMessage(httpCall, throwable));
-        Log.d(TAG, "HttpResponseParsingException(call, throwable)");
+        Logger.d(TAG, "HttpResponseParsingException(call, throwable)");
     }
 
     public HttpResponseParsingException(String msg){
         super(msg);
-        Log.d(TAG, "HttpResponseParsingException(msg)");
+        Logger.d(TAG, "HttpResponseParsingException(msg)");
     }
 
     private static String getLogMessage(Call httpCall, Throwable throwable){
-        Log.d(TAG, "getLogMessage()");
+        Logger.d(TAG, "getLogMessage()");
         StringBuilder builder = new StringBuilder();
 
         Request request = httpCall.request();
@@ -42,7 +42,7 @@ public class HttpResponseParsingException extends Exception {
         builder.append("\r\n");
 
 
-        Log.d(TAG, builder.toString());
+        Logger.d(TAG, builder.toString());
         return builder.toString();
     }
 

@@ -120,7 +120,7 @@ public class RecoMapFragment extends BaseFragment {
                 googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(Marker marker) {
-                        Log.d(TAG, "onMarkerClick");
+                        Logger.d(TAG, "onMarkerClick");
                         String recoHashKey = (String) marker.getTag();
 
                         for (int i = 0; i < adapter.recoList.size(); i++) {
@@ -176,7 +176,7 @@ public class RecoMapFragment extends BaseFragment {
 
             @Override
             public void onPageSelected(int position) {
-                Log.d(TAG, "onPageSelected");
+                Logger.d(TAG, "onPageSelected");
                 String recoHashKey = adapter.recoList.get(position).recoHashKey;
                 for (int i = 0; i < markerList.size(); i++) {
                     String markerTag = (String) markerList.get(i).getTag();
@@ -231,13 +231,13 @@ public class RecoMapFragment extends BaseFragment {
         googleMap.clear();
 
         for(int i=0;i<recoList.size();i++){
-            Log.d(TAG, "category : " + recoList.get(i).category);
+            Logger.d(TAG, "category : " + recoList.get(i).category);
             if(category == null){
                 adapter.addItem(recoList.get(i));
                 addMarker(recoList.get(i));
             }
             else if(recoList.get(i).category.equals(category.value)){
-                Log.d(TAG, "same category!");
+                Logger.d(TAG, "same category!");
                 adapter.addItem(recoList.get(i));
                 addMarker(recoList.get(i));
             }
@@ -303,11 +303,11 @@ public class RecoMapFragment extends BaseFragment {
 
     @Subscribe
     public void mapPermissionGrantedEventCallback(MapPermissionGrantedEvent event) {
-        Log.d(TAG, "permission event");
+        Logger.d(TAG, "permission event");
         if (
                 ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            Log.e(TAG, "permission not granted");
+            Logger.e(TAG, "permission not granted");
             return;
         }
 

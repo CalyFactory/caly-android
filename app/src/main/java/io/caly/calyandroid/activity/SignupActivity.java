@@ -143,7 +143,7 @@ public class SignupActivity extends BaseAppCompatActivity {
 
     @OnClick({R.id.radio_signup_gender_man, R.id.radio_signup_gender_woman})
     void onGenderCheckChanged(){
-        Log.d(TAG,"changed");
+        Logger.d(TAG,"changed");
         if(radioGenderMan.isChecked()){
             selectedGender = Gender.MAN.value;
         }
@@ -166,7 +166,7 @@ public class SignupActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.btn_signup_proc)
     void onSignupClick(){
-        Log.d(TAG,"onSignupClick");
+        Logger.d(TAG,"onSignupClick");
 
         switch (getInputState()){
             case GENDER_NOT_SELECTED:

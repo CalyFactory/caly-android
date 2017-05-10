@@ -114,7 +114,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
         }
 
         void onSettingRowClick(){
-            Log.d(TAG, "onSettingRowClick");
+            Logger.d(TAG, "onSettingRowClick");
             switch (position){
                 case 0:
                     break;

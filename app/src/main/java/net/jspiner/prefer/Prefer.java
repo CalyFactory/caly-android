@@ -102,27 +102,27 @@ public class Prefer {
         SharedPreferences.Editor editor = getSharedPreferences().edit();
 
         if(value instanceof Integer){
-            Log.d(TAG, "set integer value");
+            Logger.d(TAG, "set integer value");
             editor.putInt(key, (int)value);
         }
         else if(value instanceof String){
-            Log.d(TAG, "string");
+            Logger.d(TAG, "string");
             editor.putString(key, (String)value);
         }
         else if(value instanceof Boolean){
-            Log.d(TAG, "boolean");
+            Logger.d(TAG, "boolean");
             editor.putBoolean(key, (Boolean)value);
         }
         else if(value instanceof Float){
-            Log.d(TAG, "float");
+            Logger.d(TAG, "float");
             editor.putFloat(key, (Float)value);
         }
         else if(value instanceof Long){
-            Log.d(TAG, "long");
+            Logger.d(TAG, "long");
             editor.putLong(key, (Long)value);
         }
         else{
-            Log.d(TAG, "unknown");
+            Logger.d(TAG, "unknown");
             //editor.putString(key, new Gson().toJson(value));
         }
 
@@ -153,27 +153,27 @@ public class Prefer {
 
         Object returnValue = null;
         if(defaultValue instanceof Integer){
-            Log.d(TAG, "integer");
+            Logger.d(TAG, "integer");
             returnValue = preference.getInt(key, ((Integer) defaultValue).intValue());
         }
         else if(defaultValue instanceof String){
-            Log.d(TAG, "string");
+            Logger.d(TAG, "string");
             returnValue = preference.getString(key, ((String)defaultValue));
         }
         else if(defaultValue instanceof Boolean){
-            Log.d(TAG, "boolean");
+            Logger.d(TAG, "boolean");
             returnValue = preference.getBoolean(key, (Boolean)defaultValue);
         }
         else if(defaultValue instanceof Float){
-            Log.d(TAG, "float");
+            Logger.d(TAG, "float");
             returnValue = preference.getFloat(key, (Float)defaultValue);
         }
         else if(defaultValue instanceof Long){
-            Log.d(TAG, "long");
+            Logger.d(TAG, "long");
             returnValue = preference.getLong(key, (Long)defaultValue);
         }
         else{
-            Log.d(TAG, "unknown");
+            Logger.d(TAG, "unknown");
             returnValue = preference.getString(key, (String)defaultValue);
         }
 

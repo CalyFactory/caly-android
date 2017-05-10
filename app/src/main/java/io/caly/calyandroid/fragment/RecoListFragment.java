@@ -84,7 +84,7 @@ public class RecoListFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        Log.d(TAG, "oncreateviewff ");
+        Logger.d(TAG, "oncreateviewff ");
         View v;
         v = inflater.inflate(R.layout.fragment_reco, null);
 
@@ -101,7 +101,7 @@ public class RecoListFragment extends BaseFragment {
     }
 
     void init(){
-        Log.d(TAG, "init ");
+        Logger.d(TAG, "init ");
 
         //init tab layout
         tabLayout.addTab(tabLayout.newTab().setText("식당"));

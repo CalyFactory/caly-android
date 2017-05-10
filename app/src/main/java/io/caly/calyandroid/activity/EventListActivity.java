@@ -180,13 +180,13 @@ EventListActivity extends BaseAppCompatActivity {
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                Log.d(TAG, "drawer opened");
+                Logger.d(TAG, "drawer opened");
                 super.onDrawerOpened(drawerView);
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                Log.d(TAG, "drawer closed");
+                Logger.d(TAG, "drawer closed");
                 super.onDrawerClosed(drawerView);
 
             }
@@ -963,8 +963,8 @@ EventListActivity extends BaseAppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "requestCode : " + requestCode);
-        Log.d(TAG, "resultCode : " + resultCode);
+        Logger.d(TAG, "requestCode : " + requestCode);
+        Logger.d(TAG, "resultCode : " + resultCode);
 
         switch (requestCode){
             case 1: //setting activity

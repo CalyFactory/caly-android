@@ -248,7 +248,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                     @Override
                     public void onClick(View view) {
                         //추천완료, 추천중 클릭시만 처리
-                        Log.d(TAG, "onLinearStateClick");
+                        Logger.d(TAG, "onLinearStateClick");
 
                         if(getItemCount()-1 < position) return;
                         EventModel eventModel = getItem(position);

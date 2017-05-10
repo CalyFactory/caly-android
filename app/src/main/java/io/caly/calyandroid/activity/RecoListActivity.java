@@ -212,7 +212,7 @@ public class RecoListActivity extends BaseAppCompatActivity {
     }
 
     void checkGPSPermission(){
-        Log.d(TAG, "checkGPSPermission");
+        Logger.d(TAG, "checkGPSPermission");
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
 
@@ -220,7 +220,7 @@ public class RecoListActivity extends BaseAppCompatActivity {
 
         }
         else{
-            Log.d(TAG, "request permission");
+            Logger.d(TAG, "request permission");
             ActivityCompat.requestPermissions(
                     this,
                     new String[]{

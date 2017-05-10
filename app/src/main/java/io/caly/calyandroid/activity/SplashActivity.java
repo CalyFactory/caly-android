@@ -103,7 +103,7 @@ public class SplashActivity extends BaseAppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "onActivityResult : " + requestCode);
+        Logger.d(TAG, "onActivityResult : " + requestCode);
 
         switch (requestCode){
             case Util.RC_PERMISSION_PHONE_STATE:

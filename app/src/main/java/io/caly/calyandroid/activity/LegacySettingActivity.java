@@ -173,8 +173,8 @@ public class LegacySettingActivity extends BaseAppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "requestCode : " + requestCode);
-        Log.d(TAG, "resultCode : " + resultCode);
+        Logger.d(TAG, "requestCode : " + requestCode);
+        Logger.d(TAG, "resultCode : " + resultCode);
 
         switch (requestCode){
             case 1: //accountlistactivity

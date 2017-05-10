@@ -35,6 +35,7 @@ import io.caly.calyandroid.model.dataModel.RecoModel;
 import io.caly.calyandroid.model.event.MapPermissionGrantedEvent;
 import io.caly.calyandroid.model.event.RecoMapFilterChangeEvent;
 import io.caly.calyandroid.util.BusProvider;
+import io.caly.calyandroid.util.Logger;
 import io.caly.calyandroid.util.Util;
 import uk.co.chrisjenx.calligraphy.TypefaceUtils;
 
@@ -105,9 +106,9 @@ public class RecoMapActivity extends BaseAppCompatActivity {
     };
 
     void checkGPSPermission(){
-        Log.d(TAG, "checkGPSPermission");
-        Log.d(TAG, "ACCESS_FINE_LOCATION " + ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION));
-        Log.d(TAG, "ACCESS_COARSE_LOCATION " + ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION));
+        Logger.d(TAG, "checkGPSPermission");
+        Logger.d(TAG, "ACCESS_FINE_LOCATION " + ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION));
+        Logger.d(TAG, "ACCESS_COARSE_LOCATION " + ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION));
         if (
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
@@ -115,7 +116,7 @@ public class RecoMapActivity extends BaseAppCompatActivity {
 
         }
         else{
-            Log.d(TAG, "request permission");
+            Logger.d(TAG, "request permission");
             ActivityCompat.requestPermissions(
                     this,
                     new String[]{
@@ -133,16 +134,16 @@ public class RecoMapActivity extends BaseAppCompatActivity {
 
         if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)){
             //denied
-            Log.d(TAG, "permission Denied");
+            Logger.d(TAG, "permission Denied");
 
         }else{
             if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
                 //allowed
-                Log.d(TAG, "permission allowd");
+                Logger.d(TAG, "permission allowd");
                 BusProvider.getInstance().post(new MapPermissionGrantedEvent());
             } else{
                 //set to never ask again
-                Log.d(TAG, "permission never ask");
+                Logger.d(TAG, "permission never ask");
 
             }
         }
