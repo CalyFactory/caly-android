@@ -20,6 +20,9 @@ public enum LogType {
 
     //Category 가 view일경우
     LABEL_EVENT_CELL(0),
+    LABEL_EVENT_CELL_ANALYZING(1),
+    LABEL_EVENT_CELL_QUESTIONMARK(2),
+
 
     //Category가 Cell 일경우
     LABEL_EVENT_BANNER(0),
@@ -37,6 +40,7 @@ public enum LogType {
     LABEL_RECO_TAP_CAFE(2),
     LABEL_RECO_TAP_PLACE(3),
 
+    //LabelRecoMap
     LABEL_RECO_MAP_MY_LOCATION(0),
     LABEL_RECO_MAP_FILTER_ALL(1),
     LABEL_RECO_MAP_FILTER_RESTAURANT(2),
