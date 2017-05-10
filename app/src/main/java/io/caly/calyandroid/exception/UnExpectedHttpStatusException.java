@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.util.ApiClient;
+import io.caly.calyandroid.util.Logger;
 import io.caly.calyandroid.util.Util;
 import okhttp3.Request;
 import okhttp3.RequestBody;

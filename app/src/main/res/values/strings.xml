@@ -40,6 +40,12 @@
     <string name="text_wait_sync">일정정보를 가져오는 중입니다.잠시만 기다려 주세요 :)</string>
     <string name="text_splash_slogan">언제 어디서나 추천을!</string>
     <string name="text_reco_skip_button">네 알겠습니다</string>
+    <string name="text_guide_title_1">어디가지? 고민은 이제 그만!</string>
+    <string name="text_guide_subtitle_1">내가 쓰던 캘린더 일정 그대로\n장소를 추천받을 수 있어요</string>
+    <string name="text_guide_title_2">똑똑한 장소 추천 서비스 CALY가</string>
+    <string name="text_guide_subtitle_2">당신의 일정에 꼭 맞춰서\n핫플레이스를 알려드려요</string>
+    <string name="text_guide_title_3">이번 주말에 어떤 약속 있으세요?</string>
+    <string name="text_guide_subtitle_3">갈 곳을 아직 못 정하셨다면,\nCALY에게 물어보세요</string>
 
     <!-- GA tag -->
     <string name="ga_action_button_click">ga_action_button_click</string>

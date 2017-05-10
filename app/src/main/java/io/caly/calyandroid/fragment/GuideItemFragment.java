@@ -8,6 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -31,11 +33,8 @@ public class GuideItemFragment extends BaseFragment {
     @Bind(R.id.imv_guide_item)
     ImageView imvGuide;
 
-    @Bind(R.id.imv_guide_text)
-    ImageView imvGuideText;
-
-    @Bind(R.id.btn_guide_start)
-    Button btnStart;
+    @Bind(R.id.linear_guide_start)
+    LinearLayout btnStart;
 
     @Bind(R.id.imv_guide_indicator1)
     ImageView imvIndicator1;
@@ -45,6 +44,12 @@ public class GuideItemFragment extends BaseFragment {
 
     @Bind(R.id.imv_guide_indicator3)
     ImageView imvIndicator3;
+
+    @Bind(R.id.tv_guide_title)
+    TextView tvGuideTitle;
+
+    @Bind(R.id.tv_guide_subtitle)
+    TextView tvGuideSubTitle;
 
     int resourceId;
 
@@ -80,23 +85,27 @@ public class GuideItemFragment extends BaseFragment {
 
     void init(){
         int imageId = 0;
-        int textId = 0;
+        int titleId = 0;
+        int subTitleId = 0;
         switch (resourceId){
             case 0:
-                imageId = R.drawable.guide_1;
-                textId = R.drawable.guide_text_1;
+                imageId = R.drawable.guide_01;
+                titleId = R.string.text_guide_title_1;
+                subTitleId = R.string.text_guide_subtitle_1;
 
                 imvIndicator1.setImageResource(R.drawable.indicator_active);
                 break;
             case 1:
-                imageId = R.drawable.guide_2;
-                textId = R.drawable.guide_text_2;
+                imageId = R.drawable.guide_02;
+                titleId = R.string.text_guide_title_2;
+                subTitleId = R.string.text_guide_subtitle_2;
 
                 imvIndicator2.setImageResource(R.drawable.indicator_active);
                 break;
             case 2:
-                imageId = R.drawable.guide_3;
-                textId = R.drawable.guide_text_3;
+                imageId = R.drawable.guide_03;
+                titleId = R.string.text_guide_title_3;
+                subTitleId = R.string.text_guide_subtitle_3;
 
                 imvIndicator3.setImageResource(R.drawable.indicator_active);
 
@@ -105,19 +114,17 @@ public class GuideItemFragment extends BaseFragment {
                 break;
         }
 
+        tvGuideTitle.setText(getString(titleId));
+        tvGuideSubTitle.setText(getString(subTitleId));
         Picasso.with(getContext())
                 .load(imageId)
                 .resize(1080,1920)
                 .centerInside()
                 .into(imvGuide);
-
-        Picasso.with(getContext())
-                .load(textId)
-                .into(imvGuideText);
     }
 
 
-    @OnClick(R.id.btn_guide_start)
+    @OnClick(R.id.linear_guide_start)
     void onGuideStartClick(){
         Intent intent = new Intent(getActivity(), SplashActivity.class);
         startActivity(intent);

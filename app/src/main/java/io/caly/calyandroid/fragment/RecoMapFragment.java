@@ -46,6 +46,7 @@ import io.caly.calyandroid.model.event.RecoListScrollEvent;
 import io.caly.calyandroid.model.event.RecoMapFilterChangeEvent;
 import io.caly.calyandroid.model.response.RecoResponse;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.util.Logger;
 import io.caly.calyandroid.util.Util;
 import io.github.yavski.fabspeeddial.FabSpeedDial;
 import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter;

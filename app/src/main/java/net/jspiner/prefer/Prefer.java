@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import io.caly.calyandroid.util.Logger;
+
 /**
  * Copyright 2017 JSpiner. All rights reserved.
  *

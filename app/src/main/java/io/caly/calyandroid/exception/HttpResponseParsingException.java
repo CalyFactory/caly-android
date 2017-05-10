@@ -5,6 +5,7 @@ import android.util.Log;
 import java.io.IOException;
 
 import io.caly.calyandroid.CalyApplication;
+import io.caly.calyandroid.util.Logger;
 import io.caly.calyandroid.util.Util;
 import okhttp3.Request;
 import retrofit2.Call;
