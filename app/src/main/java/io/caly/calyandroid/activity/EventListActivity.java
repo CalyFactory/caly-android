@@ -70,6 +70,7 @@ import io.caly.calyandroid.R;
 import io.caly.calyandroid.util.StringFormmater;
 import io.caly.calyandroid.util.Util;
 import io.caly.calyandroid.util.eventListener.RecyclerItemClickListener;
+import io.caly.calyandroid.util.tracker.AnalysisTracker;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -155,6 +156,7 @@ EventListActivity extends BaseAppCompatActivity {
         init();
 
         Logger.d(TAG, "hashcode : " + EventListActivity.super.hashCode());
+        Logger.d(TAG, "SESSION : " + AnalysisTracker.getAppSession().getSessionKey());
     }
 
     void init(){
