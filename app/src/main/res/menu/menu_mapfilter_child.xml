@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_filter_all"
+        app:showAsAction="always"
+        android:title="전체보기"/>
+    <item
+        app:showAsAction="always"
+        android:id="@+id/menu_filter_restaurant"
+        android:title="레스토랑" />
+    <item
+        app:showAsAction="always"
+        android:id="@+id/menu_filter_cafe"
+        android:title="카페" />
+    <item
+        app:showAsAction="always"
+        android:id="@+id/menu_filter_place"
+        android:title="플레이스"/>
+</menu>

@@ -97,6 +97,9 @@ EventListActivity extends BaseAppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
+    @Bind(R.id.tv_toolbar_title)
+    TextView tvToolbarTitle;
+
     @Bind(R.id.recycler_eventlist)
     RecyclerView recyclerList;
 
@@ -158,8 +161,7 @@ EventListActivity extends BaseAppCompatActivity {
         ButterKnife.bind(this);
 
         //set toolbar
-        toolbar.setTitle("");
-        toolbar.setTitleTextColor(Color.WHITE);
+        tvToolbarTitle.setText("");
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -167,11 +169,9 @@ EventListActivity extends BaseAppCompatActivity {
             }
         });
 
-        Util.centerToolbarTitle(toolbar);
-        Util.setToolbarFontSize(toolbar, 30);
         imvLogo.setVisibility(View.VISIBLE);
-        TypefaceUtils.load(getResources().getAssets(), getString(R.string.font_nanum_extra_bold));
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         /*
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,
