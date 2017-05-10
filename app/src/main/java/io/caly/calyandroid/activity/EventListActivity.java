@@ -9,34 +9,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-
-import io.caly.calyandroid.activity.base.BaseAppCompatActivity;
-import io.caly.calyandroid.adapter.EventListAdapter;
-import io.caly.calyandroid.contract.SplashContract;
-import io.caly.calyandroid.exception.HttpResponseParsingException;
-import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
-import io.caly.calyandroid.model.RecoState;
-import io.caly.calyandroid.model.dataModel.BannerModel;
-import io.caly.calyandroid.model.dataModel.EventModel;
-import io.caly.calyandroid.model.event.AccountListRefreshEvent;
-import io.caly.calyandroid.model.event.EventListRefreshEvent;
-import io.caly.calyandroid.model.event.GoogleSyncDoneEvent;
-import io.caly.calyandroid.model.event.RecoReadyEvent;
-import io.caly.calyandroid.model.event.TestEvent;
-import io.caly.calyandroid.model.orm.TokenRecord;
-import io.caly.calyandroid.model.response.BasicResponse;
-import io.caly.calyandroid.model.response.EventResponse;
-import io.caly.calyandroid.util.ApiClient;
-import io.caly.calyandroid.util.ConfigClient;
-import io.caly.calyandroid.util.Logger;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,8 +41,25 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.caly.calyandroid.model.LogType;
 import io.caly.calyandroid.R;
+import io.caly.calyandroid.activity.base.BaseAppCompatActivity;
+import io.caly.calyandroid.adapter.EventListAdapter;
+import io.caly.calyandroid.exception.HttpResponseParsingException;
+import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
+import io.caly.calyandroid.model.LogType;
+import io.caly.calyandroid.model.dataModel.BannerModel;
+import io.caly.calyandroid.model.dataModel.EventModel;
+import io.caly.calyandroid.model.event.AccountListRefreshEvent;
+import io.caly.calyandroid.model.event.EventListRefreshEvent;
+import io.caly.calyandroid.model.event.GoogleSyncDoneEvent;
+import io.caly.calyandroid.model.event.RecoReadyEvent;
+import io.caly.calyandroid.model.event.TestEvent;
+import io.caly.calyandroid.model.orm.TokenRecord;
+import io.caly.calyandroid.model.response.BasicResponse;
+import io.caly.calyandroid.model.response.EventResponse;
+import io.caly.calyandroid.util.ApiClient;
+import io.caly.calyandroid.util.ConfigClient;
+import io.caly.calyandroid.util.Logger;
 import io.caly.calyandroid.util.StringFormmater;
 import io.caly.calyandroid.util.Util;
 import io.caly.calyandroid.util.eventListener.RecyclerItemClickListener;
@@ -73,8 +67,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import uk.co.chrisjenx.calligraphy.TypefaceUtils;
-
-import static io.caly.calyandroid.model.RecoState.STATE_BEING_RECOMMEND;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -704,6 +696,7 @@ EventListActivity extends BaseAppCompatActivity {
 
     void requestSetEventLog (String apikey, String eventHashkey, int category, int label, int action) {
         ApiClient.getService().setEventLog(
+                "세션키 자리야 성민아!!!!!!!",
                 apikey,
                 eventHashkey,
                 category,

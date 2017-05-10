@@ -15,20 +15,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
-
-import io.caly.calyandroid.exception.HttpResponseParsingException;
-import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
-import io.caly.calyandroid.fragment.RecoListFragment;
-import io.caly.calyandroid.fragment.RecoMapFragment;
-import io.caly.calyandroid.model.Category;
-import io.caly.calyandroid.model.dataModel.RecoListWrapModel;
-import io.caly.calyandroid.model.dataModel.RecoModel;
-import io.caly.calyandroid.model.event.MapPermissionGrantedEvent;
-import io.caly.calyandroid.model.event.TestEvent;
-import io.caly.calyandroid.model.response.RecoResponse;
-import io.caly.calyandroid.util.BusProvider;
-import io.caly.calyandroid.util.Logger;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,17 +30,31 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import io.caly.calyandroid.R;
 import io.caly.calyandroid.activity.base.BaseAppCompatActivity;
+import io.caly.calyandroid.exception.HttpResponseParsingException;
+import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
+import io.caly.calyandroid.fragment.RecoListFragment;
+import io.caly.calyandroid.model.Category;
+import io.caly.calyandroid.model.LogType;
 import io.caly.calyandroid.model.dataModel.EventModel;
+import io.caly.calyandroid.model.dataModel.RecoListWrapModel;
+import io.caly.calyandroid.model.dataModel.RecoModel;
+import io.caly.calyandroid.model.event.MapPermissionGrantedEvent;
 import io.caly.calyandroid.model.event.RecoListLoadStateChangeEvent;
 import io.caly.calyandroid.model.orm.TokenRecord;
-import io.caly.calyandroid.R;
+import io.caly.calyandroid.model.response.BasicResponse;
+import io.caly.calyandroid.model.response.RecoResponse;
 import io.caly.calyandroid.util.ApiClient;
+import io.caly.calyandroid.util.BusProvider;
+import io.caly.calyandroid.util.Logger;
 import io.caly.calyandroid.util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import uk.co.chrisjenx.calligraphy.TypefaceUtils;
+
+import static java.sql.Types.NULL;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -176,6 +176,13 @@ public class RecoListActivity extends BaseAppCompatActivity {
 
         switch (item.getItemId()){
             case R.id.menu_reco_changeview:
+                requestSetRecoLog(TokenRecord.getTokenRecord().getApiKey(),
+                        eventData.eventHashKey,
+                        LogType.CATEGORY_VIEW.value,
+                        LogType.LABEL_RECO_GOFULLMAP.value,
+                        LogType.ACTION_CLICK.value,
+                        NULL,
+                        null);
                 startMapActivity();
                 break;
             case android.R.id.home:
@@ -355,7 +362,44 @@ public class RecoListActivity extends BaseAppCompatActivity {
         overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
     }
 
+    void requestSetRecoLog (String apikey, String eventHashkey, int category, int label, int action, long residenseTime, String recoHashkey){
+        ApiClient.getService().setRecoLog(
+                "세션키 자리야 성민아!!!!!!!",
+                apikey,
+                eventHashkey,
+                category,
+                label,
+                action,
+                residenseTime,
+                recoHashkey
+        ).enqueue(new Callback<BasicResponse>() {
+            @Override
+            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                Logger.d(TAG,"onResponse code : " + response.code());
+                Logger.d(TAG, "param" + Util.requestBodyToString(call.request().body()));
 
+                switch (response.code()){
+                    case 200:
+                        break;
+                    default:
+                        Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
+                        break;
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<BasicResponse> call, Throwable t) {
+                if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
+                    Crashlytics.logException(new HttpResponseParsingException(call, t));
+                }
+
+                Logger.e(TAG,"onfail : " + t.getMessage());
+                Logger.e(TAG, "fail " + t.getClass().getName());
+
+            }
+        });
+    }
 
     /*
 
