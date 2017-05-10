@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.gms.maps.MapView
+                android:layout_width="match_parent"
+                android:id="@+id/mapview_recomap_map"
+                android:layout_height="match_parent">
+
+            </com.google.android.gms.maps.MapView>
+
+            <!--
+            <io.github.yavski.fabspeeddial.FabSpeedDial
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|start"
+                android:id="@+id/fab_map_filter"
+                app:fabGravity="top_start"
+                app:fabMenu="@menu/menu_mapfilter"
+                app:fabDrawable="@drawable/ic_checkin_map"
+                app:miniFabBackgroundTint="@android:color/white"
+                app:miniFabDrawableTint="?attr/colorPrimaryDark"
+                app:miniFabTitleTextColor="?attr/colorPrimaryDark" />
+            -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_gravity="bottom"
+                android:layout_marginBottom="250dp"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_height="wrap_content">
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_marginBottom="260dp"
+            android:orientation="vertical"
+            android:gravity="bottom"
+            android:layout_marginLeft="27dp"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/linear_map_category_1"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="9dp"
+                    android:layout_height="9dp"
+                    android:src="@drawable/retuarnat"/>
+
+                <TextView
+                    android:text="레스토랑"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/greyish_brown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:id="@+id/linear_map_category_2"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="9dp"
+                    android:layout_height="9dp"
+                    android:src="@drawable/place"/>
+
+                <TextView
+                    android:text="카페"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/greyish_brown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:id="@+id/linear_map_category_3"
+                android:layout_width="wrap_content"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="9dp"
+                    android:layout_height="9dp"
+                    android:src="@drawable/cafe"/>
+
+                <TextView
+                    android:text="플레이스"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/greyish_brown"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+            
+        </LinearLayout>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager_recomap"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="250dp">
+
+        </android.support.v4.view.ViewPager>
+
+    </FrameLayout>
+
+</LinearLayout>

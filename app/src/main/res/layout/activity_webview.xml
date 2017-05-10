@@ -19,11 +19,11 @@
 
         <com.github.ybq.android.spinkit.SpinKitView
             xmlns:app="http://schemas.android.com/apk/res-auto"
-            style="@style/SpinKitView.Large.FoldingCube"
+            style="@style/SpinKitView.Large.ThreeBounce"
             android:id="@+id/loading_webview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            app:SpinKit_Color="@color/colorPrimary" />
+            app:SpinKit_Color="@color/indicator" />
     </FrameLayout>
 </LinearLayout>

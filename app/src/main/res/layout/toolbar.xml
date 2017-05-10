@@ -9,6 +9,12 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary">
 
+        <ImageView
+            android:id="@+id/imv_toolbar_logo"
+            android:visibility="gone"
+            android:layout_width="52dp"
+            android:src="@drawable/caly_logo"
+            android:layout_height="28dp" />
 
     </android.support.v7.widget.Toolbar>
 </LinearLayout>

@@ -1,8 +1,7 @@
 package io.caly.calyandroid;
 
-import android.app.Application;
 import android.content.Context;
-import io.caly.calyandroid.Util.Logger;
+import io.caly.calyandroid.util.Logger;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -10,8 +9,10 @@ import com.google.android.gms.analytics.Tracker;
 import com.google.firebase.FirebaseApp;
 import com.orm.SugarApp;
 
-import io.caly.calyandroid.Util.EventListener.AppLifecycleListener;
+import io.caly.calyandroid.util.eventListener.AppLifecycleListener;
 import io.fabric.sdk.android.Fabric;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+
 import net.jspiner.prefer.Prefer;
 
 /**
@@ -55,6 +56,12 @@ public class CalyApplication extends SugarApp {
         //add activitylifecycle listener
         registerActivityLifecycleCallbacks(new AppLifecycleListener());
 
+
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/NanumSquareOTFBold.otf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
     }
 
     synchronized public Tracker getDefaultTracker() {

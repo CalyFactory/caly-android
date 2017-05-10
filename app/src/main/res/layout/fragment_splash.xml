@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    tools:ignore="MissingPrefix"
+    android:layout_height="match_parent">
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/background"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/linear_splash_logo"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="120dp"
+                android:layout_height="66dp"
+                android:src="@drawable/caly_logo"/>
+
+            <TextView
+                android:layout_marginTop="30dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:textColor="@color/white"
+                android:text="이번 주말에 어떤 약속 있으세요?"
+                />
+
+            <TextView
+                android:layout_marginTop="9dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                fontPath="@string/font_nanum_extra_bold"
+                android:textColor="@color/white"
+                android:text="캘리가 갈 곳을 추천해 드릴게요!" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:id="@+id/linear_splash_login"
+            android:layout_marginBottom="76dp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/linear_splash_login_google"
+                android:layout_marginLeft="46dp"
+                android:layout_marginRight="46dp"
+                android:background="@drawable/btn_login"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_height="47dp">
+
+                <ImageView
+                    android:layout_marginLeft="15dp"
+                    android:layout_width="17dp"
+                    android:src="@drawable/google"
+                    android:layout_height="17dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="14dp"
+                    android:textSize="15dp"
+                    android:textColor="@color/white"
+                    android:text="구글 캘린더 가져오기"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linear_splash_login_naver"
+                android:layout_marginTop="14dp"
+                android:layout_marginLeft="46dp"
+                android:layout_marginRight="46dp"
+                android:background="@drawable/btn_login"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_height="47dp">
+
+                <ImageView
+                    android:layout_marginLeft="15dp"
+                    android:layout_width="17dp"
+                    android:src="@drawable/naver_logo"
+                    android:layout_height="17dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="14dp"
+                    android:textSize="15dp"
+                    android:textColor="@color/white"
+                    android:text="네이버 캘린더 가져오기"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linear_splash_login_apple"
+                android:layout_marginTop="14dp"
+                android:layout_marginLeft="46dp"
+                android:layout_marginRight="46dp"
+                android:background="@drawable/btn_login"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:layout_height="47dp">
+
+                <ImageView
+                    android:layout_marginLeft="15dp"
+                    android:layout_width="15dp"
+                    android:src="@drawable/group"
+                    android:layout_height="19dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_marginLeft="14dp"
+                    android:textSize="15dp"
+                    android:textColor="@color/white"
+                    android:text="애플 캘린더 가져오기"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+        <include layout="@layout/progress_loading"/>
+    </FrameLayout>
+</LinearLayout>

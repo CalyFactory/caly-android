@@ -1,6 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ff6427</color>
-    <color name="colorPrimaryDark">#ff5225</color>
-    <color name="colorAccent">#303F9F</color>
+    <color name="colorPrimary">#e37468</color>
+    <color name="colorPrimaryDark">#d36b60</color>
+    <color name="colorAccent">#222222</color>
+
+
+    <!-- Color palette -->
+    <color name="indicator">#C35D52</color>
+    <color name="dark_sky_blue">#56b7e6</color>
+    <color name="water_blue">#1488d2</color>
+    <color name="white_0">#00ffffff</color>
+    <color name="dark_sky_blue_two">#42a3d3</color>
+    <color name="slate_grey_30">#4d57595e</color>
+    <color name="warm_grey">#9b9b9b</color>
+    <color name="dark_sky_blue_three">#48a8e0</color>
+    <color name="orange">#f26906</color>
+    <color name="irish_green">#009f2a</color>
+    <color name="cerulean">#0194d8</color>
+    <color name="greyish_brown">#434343</color>
+    <color name="azure">#009ce5</color>
+    <color name="white_50">#80ffffff</color>
+    <color name="black_two">#3a3838</color>
+    <color name="white_31">#4fffffff</color>
+    <color name="white">#ffffff</color>
+    <color name="white_86">#dcffffff</color>
+    <color name="greyish_brown_two">#404040</color>
+    <color name="white_two">#e3e3e3</color>
+    <color name="greyish_brown_three">#414141</color>
+    <color name="black">#1a1a1a</color>
+    <color name="warm_grey_two">#999999</color>
+    <color name="white_three">#e2e2e2</color>
+    <color name="warm_grey_three">#9a9a9a</color>
+    <color name="white_5">#0dffffff</color>
+    <color name="faded_orange">#ed635c</color>
+    <color name="tealish">#37cdbe</color>
+    <color name="dark_peach">#e37468</color>
+    <color name="dark_salmon">#d36b60</color>
+    <color name="dark_sky_blue_four">#3ba9e9</color>
+    <color name="pale_red">#e6544a</color>
+    <color name="white_four">#f1f1f1</color>
 </resources>
