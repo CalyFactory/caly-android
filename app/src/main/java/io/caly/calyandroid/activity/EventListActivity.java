@@ -1,5 +1,6 @@
 package io.caly.calyandroid.activity;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -97,6 +98,9 @@ EventListActivity extends BaseAppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
+    @Bind(R.id.tv_toolbar_title)
+    TextView tvToolbarTitle;
+
     @Bind(R.id.recycler_eventlist)
     RecyclerView recyclerList;
 
@@ -158,8 +162,7 @@ EventListActivity extends BaseAppCompatActivity {
         ButterKnife.bind(this);
 
         //set toolbar
-        toolbar.setTitle("");
-        toolbar.setTitleTextColor(Color.WHITE);
+        tvToolbarTitle.setText("");
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -167,11 +170,9 @@ EventListActivity extends BaseAppCompatActivity {
             }
         });
 
-        Util.centerToolbarTitle(toolbar);
-        Util.setToolbarFontSize(toolbar, 30);
         imvLogo.setVisibility(View.VISIBLE);
-        TypefaceUtils.load(getResources().getAssets(), getString(R.string.font_nanum_extra_bold));
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         /*
         ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,
@@ -218,7 +219,7 @@ EventListActivity extends BaseAppCompatActivity {
         recyclerList.setLayoutManager(layoutManager);
 
 
-        recyclerAdapter = new EventListAdapter(getBaseContext(), new ArrayList<EventModel>());
+        recyclerAdapter = new EventListAdapter(EventListActivity.this, new ArrayList<EventModel>());
         recyclerList.setAdapter(recyclerAdapter);
 
         recyclerList.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -276,19 +277,18 @@ EventListActivity extends BaseAppCompatActivity {
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-
                         if(recyclerAdapter.getItemCount()-1 < position) return;
                         EventModel eventModel = recyclerAdapter.getItem(position);
-
+                        // 여기서는 아이템 클릭 이벤트이기 때문에
+                        // 추천완료만 처리하고 분석중과 추천불가
+                        // EventListAdapter 안에서처리
                         switch (eventModel.recoState){
                             case STATE_BEING_RECOMMEND: //추천중
-                                Toast.makeText(getBaseContext(), "추천중 (사유고민하기)", Toast.LENGTH_LONG).show();
-                                break;
+                               break;
                             case STATE_DONE_RECOMMEND: //추천완료
                                 startRecommandActivity(eventModel);
                                 break;
                             case STATE_NOTHING_TO_RECOMMEND: //추천불가
-                                Toast.makeText(getBaseContext(), "추천불가 (사유고민하기)", Toast.LENGTH_LONG).show();
                                 break;
                         }
 
@@ -316,6 +316,24 @@ EventListActivity extends BaseAppCompatActivity {
 
         fabToday.hide();
     }
+
+    void startRecommandActivity(EventModel eventModel){
+
+        Logger.d(TAG, "eventHashkey = >");
+        requestSetEventLog (TokenRecord.getTokenRecord().getApiKey(),
+                eventModel.eventHashKey,
+                LogType.CATEGORY_CELL.value,
+                LogType.LABEL_EVENT_CELL.value,
+                LogType.ACTION_CLICK.value);
+
+        Intent intent = new Intent(this, RecoListActivity.class);
+        intent.putExtra("event", ApiClient.getGson().toJson(eventModel));
+        startActivity(intent);
+
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
+
+    }
+
 
     void checkBanner(){
         String activeBanner = ConfigClient.getConfig().getString("active_banner");
@@ -354,23 +372,6 @@ EventListActivity extends BaseAppCompatActivity {
             tvBannerTitle.setText(((BannerModel)msg.obj).title);
         }
     };
-
-    void startRecommandActivity(EventModel eventModel){
-
-        Logger.d(TAG, "eventHashkey = >");
-        requestSetEventLog (TokenRecord.getTokenRecord().getApiKey(),
-                eventModel.eventHashKey,
-                LogType.CATEGORY_CELL.value,
-                LogType.LABEL_EVENT_CELL.value,
-                LogType.ACTION_CLICK.value);
-
-        Intent intent = new Intent(EventListActivity.this, RecoListActivity.class);
-        intent.putExtra("event", ApiClient.getGson().toJson(eventModel));
-        startActivity(intent);
-
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-
-    }
 
     private List<EventModel> addHeaderToEventList(int lastYear, int lastMonth, List<EventModel> eventModelList){
 

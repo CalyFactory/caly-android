@@ -20,6 +20,7 @@ import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -51,6 +52,9 @@ public class WebViewActivity extends BaseAppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
+    @Bind(R.id.tv_toolbar_title)
+    TextView tvToolbarTitle;
+
     @Bind(R.id.web_webview)
     WebView webView;
 
@@ -75,8 +79,7 @@ public class WebViewActivity extends BaseAppCompatActivity {
         ButterKnife.bind(this);
 
         //set toolbar
-        toolbar.setTitle("");
-        toolbar.setTitleTextColor(Color.WHITE);
+        tvToolbarTitle.setText("");
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -85,6 +88,7 @@ public class WebViewActivity extends BaseAppCompatActivity {
         });
 
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp);
         upArrow.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);

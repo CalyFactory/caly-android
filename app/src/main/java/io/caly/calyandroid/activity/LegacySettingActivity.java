@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -49,6 +50,9 @@ public class LegacySettingActivity extends BaseAppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
+    @Bind(R.id.tv_toolbar_title)
+    TextView tvToolbarTitle;
+
     @Bind(R.id.recycler_settinglist)
     RecyclerView recyclerList;
 
@@ -75,8 +79,7 @@ public class LegacySettingActivity extends BaseAppCompatActivity {
 
 
         //set toolbar
-        toolbar.setTitle("환경 설정");
-        toolbar.setTitleTextColor(Color.WHITE);
+        tvToolbarTitle.setText("환경 설정");
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
@@ -84,9 +87,8 @@ public class LegacySettingActivity extends BaseAppCompatActivity {
             }
         });
 
-        Util.centerToolbarTitle(toolbar);
-
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp);
         upArrow.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);

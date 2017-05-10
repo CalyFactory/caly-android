@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -56,6 +57,9 @@ public class AccountListActivity extends BaseAppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
+    @Bind(R.id.tv_toolbar_title)
+    TextView tvToolbarTitle;
+
     @Bind(R.id.recycler_accountlist)
     RecyclerView recyclerList;
 
@@ -78,17 +82,16 @@ public class AccountListActivity extends BaseAppCompatActivity {
 
 
         //set toolbar
-        toolbar.setTitle("계정 목록");
-        toolbar.setTitleTextColor(Color.WHITE);
+        tvToolbarTitle.setText("계정 목록");
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 return false;
             }
         });
-        Util.centerToolbarTitle(toolbar);
 
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp);
         upArrow.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);

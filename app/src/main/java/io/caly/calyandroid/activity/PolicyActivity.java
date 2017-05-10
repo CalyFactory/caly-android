@@ -35,6 +35,9 @@ public class PolicyActivity extends BaseAppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
 
+    @Bind(R.id.tv_toolbar_title)
+    TextView tvToolbarTitle;
+
     @Bind(R.id.tv_policy)
     TextView tvPolicy;
 
@@ -50,10 +53,10 @@ public class PolicyActivity extends BaseAppCompatActivity {
         ButterKnife.bind(this);
 
         //init actionbar
-        toolbar.setTitle("개인정보 취급방침");
-        toolbar.setTitleTextColor(Color.WHITE);
+        tvToolbarTitle.setText("개인정보 취급방침");
 
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp);
         upArrow.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
