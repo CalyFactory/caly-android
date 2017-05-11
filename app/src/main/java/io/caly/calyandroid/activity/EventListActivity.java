@@ -695,7 +695,7 @@ EventListActivity extends BaseAppCompatActivity {
 
     void requestSetEventLog (String apikey, String eventHashkey, int category, int label, int action) {
         ApiClient.getService().setEventLog(
-                "세션키 자리야 성민아!!!!!!!",
+                AnalysisTracker.getAppSession().getSessionKey().toString(),
                 apikey,
                 eventHashkey,
                 category,

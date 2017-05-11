@@ -36,6 +36,7 @@ import io.caly.calyandroid.model.response.BasicResponse;
 import io.caly.calyandroid.util.ApiClient;
 import io.caly.calyandroid.util.Logger;
 import io.caly.calyandroid.util.Util;
+import io.caly.calyandroid.util.tracker.AnalysisTracker;
 import io.caly.calyandroid.view.FeedbackDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -288,7 +289,7 @@ public class RecoListFragment extends BaseFragment {
 
     void requestSetRecoLog (String apikey, String eventHashkey, int category, int label, int action, long residenseTime, String recoHashkey){
         ApiClient.getService().setRecoLog(
-                "세션키 자리야 성민아!!!!!!!",
+                AnalysisTracker.getAppSession().getSessionKey().toString(),
                 apikey,
                 eventHashkey,
                 category,

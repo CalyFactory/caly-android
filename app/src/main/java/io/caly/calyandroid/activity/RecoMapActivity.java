@@ -45,6 +45,7 @@ import io.caly.calyandroid.util.ApiClient;
 import io.caly.calyandroid.util.BusProvider;
 import io.caly.calyandroid.util.Logger;
 import io.caly.calyandroid.util.Util;
+import io.caly.calyandroid.util.tracker.AnalysisTracker;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -219,7 +220,7 @@ public class RecoMapActivity extends BaseAppCompatActivity {
 
     void requestSetRecoLog (String apikey, String eventHashkey, int category, int label, int action, long residenseTime, String recoHashkey) {
         ApiClient.getService().setRecoLog(
-                "세션키 자리야 성민아!!!!!!!",
+                AnalysisTracker.getAppSession().getSessionKey().toString(),
                 apikey,
                 eventHashkey,
                 category,
