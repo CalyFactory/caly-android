@@ -149,6 +149,7 @@ public class RecoMapFragment extends BaseFragment {
                         return false;
                     }
                 });
+                /*
                 googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
                     @Override
                     public boolean onMyLocationButtonClick() {
@@ -159,7 +160,7 @@ public class RecoMapFragment extends BaseFragment {
                         RecoMapFragment.this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
                         return true;
                     }
-                });
+                });*/
                 googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
                     @Override
                     public boolean onMyLocationButtonClick() {
@@ -181,7 +182,8 @@ public class RecoMapFragment extends BaseFragment {
                 });
 
                 addData(recoList);
-                moveCamera(recoList.get(0));
+                moveCameraWithoutAnimate(recoList.get(0));
+                markerList.get(0).showInfoWindow();
 
                 if(isPermissionGranted){
                     mapPermissionGrantedEventCallback(null);
@@ -263,24 +265,26 @@ public class RecoMapFragment extends BaseFragment {
     }
 
     void filterList(Category category){
+        //TODO : 이부분이 많이 느린데 별도의 쓰레드에서 처리해야하지 않을까
+        Log.d(TAG, "marker list size : " + markerList.size());
 
         adapter.recoList.clear();
         adapter.notifyDataSetChanged();
         googleMap.clear();
+        markerList.clear();
 
         for(int i=0;i<recoList.size();i++){
-            Logger.d(TAG, "category : " + recoList.get(i).category);
             if(category == null){
                 adapter.addItem(recoList.get(i));
                 addMarker(recoList.get(i));
             }
             else if(recoList.get(i).category.equals(category.value)){
-                Logger.d(TAG, "same category!");
                 adapter.addItem(recoList.get(i));
                 addMarker(recoList.get(i));
             }
         }
         if(adapter.recoList.size()>0) {
+            Log.d(TAG, "filtered, move camera");
             moveCamera(adapter.recoList.get(0));
             markerList.get(0).showInfoWindow();
         }
@@ -338,6 +342,12 @@ public class RecoMapFragment extends BaseFragment {
     public void moveCamera(RecoModel recoModel) {
         CameraUpdate center = CameraUpdateFactory.newLatLngZoom(new LatLng(recoModel.lat, recoModel.lng), 16);
         googleMap.animateCamera(center);
+    }
+
+    public void moveCameraWithoutAnimate(RecoModel recoModel){
+        CameraUpdate center = CameraUpdateFactory.newLatLngZoom(new LatLng(recoModel.lat, recoModel.lng), 16);
+        googleMap.moveCamera(center);
+
     }
 
     @Subscribe

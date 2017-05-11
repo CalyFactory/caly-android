@@ -26,8 +26,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:textColor="@color/white"
+            android:id="@+id/tv_progress_title"
             android:textSize="28dp"
-            android:text="데이터를 받아오는 중입니다"
+            android:text=""
             fontPath="@string/font_nanum_extra_bold"
             android:layout_height="wrap_content" />
 

@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -82,6 +83,9 @@ public class SignupActivity extends BaseAppCompatActivity {
     @Bind(R.id.radio_signup_gender_woman)
     RadioButton radioGenderWoman;
 
+    @Bind(R.id.tv_progress_title)
+    TextView tvProgressTitle;
+
     int selectedGender = -1;
 
 
@@ -114,6 +118,9 @@ public class SignupActivity extends BaseAppCompatActivity {
                 startActivityForResult(intent, Util.RC_INTENT_POLICY_RESPONSE);
             }
         });
+
+        tvProgressTitle.setText("회원가입 중입니다");
+
 
         updateButton();
     }

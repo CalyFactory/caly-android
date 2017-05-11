@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
                     android:gravity="center"
-                    android:text="문구 정해서 아무거나\n넣어주세요"
+                    android:text="최고의 일정기반 추천 서비스"
                     android:textColor="@color/white"
                     android:textSize="13dp" />
 

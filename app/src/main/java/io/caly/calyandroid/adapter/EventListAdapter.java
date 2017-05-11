@@ -256,7 +256,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                                         LogType.LABEL_EVENT_CELL_ANALYZING.value,
                                         LogType.ACTION_CLICK.value);
 
-                                Toast.makeText(context, "추천중 (사유고민하기)", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "캘리가 일정을 분석하는 중이에요", Toast.LENGTH_LONG).show();
                                 break;
                             case STATE_DONE_RECOMMEND: //추천완료
                                 break;
@@ -267,7 +267,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                                         LogType.CATEGORY_CELL.value,
                                         LogType.LABEL_EVENT_CELL_QUESTIONMARK.value,
                                         LogType.ACTION_CLICK.value);
-                                Toast.makeText(context, "추천불가 (사유고민하기)", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "일정 정보가 부족하여 추천 하기 어려워요 ㅜㅜ", Toast.LENGTH_LONG).show();
                                 break;
                         }
                     }
@@ -276,7 +276,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                 switch (eventModel.recoState){
                     case STATE_BEING_RECOMMEND:
                         holder.linearState.setBackgroundColor(ContextCompat.getColor(context, R.color.white_two));
-                        holder.tvState.setText("추천중");
+                        holder.tvState.setText("분석중");
                         holder.tvRecoCount.setText("");
                         holder.imvState.setImageResource(R.drawable.ic_message);
                         holder.imvState.setVisibility(View.VISIBLE);
