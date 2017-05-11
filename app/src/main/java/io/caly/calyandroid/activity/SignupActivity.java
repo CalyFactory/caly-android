@@ -1,5 +1,6 @@
 package io.caly.calyandroid.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -13,12 +14,14 @@ import io.caly.calyandroid.util.Logger;
 
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -82,6 +85,12 @@ public class SignupActivity extends BaseAppCompatActivity {
     @Bind(R.id.radio_signup_gender_woman)
     RadioButton radioGenderWoman;
 
+    @Bind(R.id.tv_progress_title)
+    TextView tvProgressTitle;
+
+    @Bind(R.id.linear_signup_edtarea)
+    LinearLayout linearEdtArea;
+
     int selectedGender = -1;
 
 
@@ -115,6 +124,9 @@ public class SignupActivity extends BaseAppCompatActivity {
             }
         });
 
+        tvProgressTitle.setText("회원가입 중입니다");
+
+
         updateButton();
     }
 
@@ -143,7 +155,7 @@ public class SignupActivity extends BaseAppCompatActivity {
 
     @OnClick({R.id.radio_signup_gender_man, R.id.radio_signup_gender_woman})
     void onGenderCheckChanged(){
-        Log.d(TAG,"changed");
+        Logger.d(TAG,"changed");
         if(radioGenderMan.isChecked()){
             selectedGender = Gender.MAN.value;
         }
@@ -166,7 +178,7 @@ public class SignupActivity extends BaseAppCompatActivity {
 
     @OnClick(R.id.btn_signup_proc)
     void onSignupClick(){
-        Log.d(TAG,"onSignupClick");
+        Logger.d(TAG,"onSignupClick");
 
         switch (getInputState()){
             case GENDER_NOT_SELECTED:
@@ -203,6 +215,13 @@ public class SignupActivity extends BaseAppCompatActivity {
                         .setAction(Util.getCurrentMethodName())
                         .build()
         );
+    }
+
+    @OnClick(R.id.linear_signup_edtarea)
+    void onEdtAreaClick(){
+        edtBirth.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(edtBirth, InputMethodManager.SHOW_IMPLICIT);
     }
 
     void requestSignup(){

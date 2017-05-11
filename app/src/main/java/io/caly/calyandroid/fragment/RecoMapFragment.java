@@ -55,6 +55,7 @@ import io.caly.calyandroid.model.response.RecoResponse;
 import io.caly.calyandroid.util.ApiClient;
 import io.caly.calyandroid.util.Logger;
 import io.caly.calyandroid.util.Util;
+import io.caly.calyandroid.util.tracker.AnalysisTracker;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -135,7 +136,7 @@ public class RecoMapFragment extends BaseFragment {
                 googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                     @Override
                     public boolean onMarkerClick(Marker marker) {
-                        Log.d(TAG, "onMarkerClick");
+                        Logger.d(TAG, "onMarkerClick");
                         String recoHashKey = (String) marker.getTag();
 
                         for (int i = 0; i < adapter.recoList.size(); i++) {
@@ -149,6 +150,7 @@ public class RecoMapFragment extends BaseFragment {
                         return false;
                     }
                 });
+                /*
                 googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
                     @Override
                     public boolean onMyLocationButtonClick() {
@@ -159,7 +161,7 @@ public class RecoMapFragment extends BaseFragment {
                         RecoMapFragment.this.googleMap.moveCamera(CameraUpdateFactory.newLatLng(loc));
                         return true;
                     }
-                });
+                });*/
                 googleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
                     @Override
                     public boolean onMyLocationButtonClick() {
@@ -181,7 +183,8 @@ public class RecoMapFragment extends BaseFragment {
                 });
 
                 addData(recoList);
-                moveCamera(recoList.get(0));
+                moveCameraWithoutAnimate(recoList.get(0));
+                markerList.get(0).showInfoWindow();
 
                 if(isPermissionGranted){
                     mapPermissionGrantedEventCallback(null);
@@ -210,7 +213,7 @@ public class RecoMapFragment extends BaseFragment {
 
             @Override
             public void onPageSelected(int position) {
-                Log.d(TAG, "onPageSelected");
+                Logger.d(TAG, "onPageSelected");
                 String recoHashKey = adapter.recoList.get(position).recoHashKey;
                 for (int i = 0; i < markerList.size(); i++) {
                     String markerTag = (String) markerList.get(i).getTag();
@@ -255,6 +258,7 @@ public class RecoMapFragment extends BaseFragment {
 
     public RecoMapFragment setData(List<RecoModel> recoList){
         this.recoList = recoList;
+        Logger.d(TAG, "data size : " + recoList.size());
         return this;
     }
 
@@ -263,25 +267,28 @@ public class RecoMapFragment extends BaseFragment {
     }
 
     void filterList(Category category){
+        //TODO : 이부분이 많이 느린데 별도의 쓰레드에서 처리해야하지 않을까
+        Log.d(TAG, "marker list size : " + markerList.size());
 
         adapter.recoList.clear();
         adapter.notifyDataSetChanged();
         googleMap.clear();
+        markerList.clear();
 
         for(int i=0;i<recoList.size();i++){
-            Log.d(TAG, "category : " + recoList.get(i).category);
             if(category == null){
                 adapter.addItem(recoList.get(i));
                 addMarker(recoList.get(i));
             }
             else if(recoList.get(i).category.equals(category.value)){
-                Log.d(TAG, "same category!");
                 adapter.addItem(recoList.get(i));
                 addMarker(recoList.get(i));
             }
         }
         if(adapter.recoList.size()>0) {
+            Log.d(TAG, "filtered, move camera");
             moveCamera(adapter.recoList.get(0));
+            markerList.get(0).showInfoWindow();
         }
     }
 
@@ -339,13 +346,19 @@ public class RecoMapFragment extends BaseFragment {
         googleMap.animateCamera(center);
     }
 
+    public void moveCameraWithoutAnimate(RecoModel recoModel){
+        CameraUpdate center = CameraUpdateFactory.newLatLngZoom(new LatLng(recoModel.lat, recoModel.lng), 16);
+        googleMap.moveCamera(center);
+
+    }
+
     @Subscribe
     public void mapPermissionGrantedEventCallback(MapPermissionGrantedEvent event) {
-        Log.d(TAG, "permission event");
+        Logger.d(TAG, "permission event");
         if (
                 ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
-            Log.e(TAG, "permission not granted");
+            Logger.e(TAG, "permission not granted");
             return;
         }
 
@@ -359,6 +372,7 @@ public class RecoMapFragment extends BaseFragment {
 
     @Subscribe
     public void recoMapFilterChangeEventCallback(RecoMapFilterChangeEvent event){
+        Logger.d(TAG, "recoMapFilterChangeEventCallback");
         switch (event.index){
             case 0:
 
@@ -438,6 +452,7 @@ public class RecoMapFragment extends BaseFragment {
 
     @Subscribe
     public void recoListLoadStateChangeEvent(RecoListLoadStateChangeEvent doneEvent) {
+        Logger.d(TAG, "recoListLoadStateChangeEvent");
         switch (doneEvent.loadingState) {
             case STATE_LOADING:
                 break;
@@ -449,6 +464,7 @@ public class RecoMapFragment extends BaseFragment {
                 if(doneEvent.category == Category.RESTAURANT) {
                     if (body.payload.data.size() > 0) {
                         moveCamera(body.payload.data.get(0));
+                        markerList.get(0).showInfoWindow();
                     }
                 }
                 break;
@@ -459,16 +475,17 @@ public class RecoMapFragment extends BaseFragment {
         }
     }
 
-    void addData(List<RecoModel> recoList){
 
+    //TODO : addData함수를 만들어놓고 안쓰고있다. 정리+수정필요 함수의기능이불명확한게이유인듯
+    void addData(List<RecoModel> recoList){
         if(this.recoList == null) this.recoList = new ArrayList<>();
-        this.recoList.addAll(recoList);
         adapter.addItems(recoList);
         addMarkers(recoList);
     }
+
     void requestSetRecoLog (String apikey, String eventHashkey, int category, int label, int action, long residenseTime, String recoHashkey) {
         ApiClient.getService().setRecoLog(
-                "세션키 자리야 성민아!!!!!!!",
+                AnalysisTracker.getAppSession().getSessionKey().toString(),
                 apikey,
                 eventHashkey,
                 category,

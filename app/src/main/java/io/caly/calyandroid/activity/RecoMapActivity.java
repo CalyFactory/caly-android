@@ -45,6 +45,7 @@ import io.caly.calyandroid.util.ApiClient;
 import io.caly.calyandroid.util.BusProvider;
 import io.caly.calyandroid.util.Logger;
 import io.caly.calyandroid.util.Util;
+import io.caly.calyandroid.util.tracker.AnalysisTracker;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -119,9 +120,9 @@ public class RecoMapActivity extends BaseAppCompatActivity {
     };
 
     void checkGPSPermission(){
-        Log.d(TAG, "checkGPSPermission");
-        Log.d(TAG, "ACCESS_FINE_LOCATION " + ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION));
-        Log.d(TAG, "ACCESS_COARSE_LOCATION " + ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION));
+        Logger.d(TAG, "checkGPSPermission");
+        Logger.d(TAG, "ACCESS_FINE_LOCATION " + ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION));
+        Logger.d(TAG, "ACCESS_COARSE_LOCATION " + ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION));
         if (
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
 
@@ -129,7 +130,7 @@ public class RecoMapActivity extends BaseAppCompatActivity {
 
         }
         else{
-            Log.d(TAG, "request permission");
+            Logger.d(TAG, "request permission");
             ActivityCompat.requestPermissions(
                     this,
                     new String[]{
@@ -147,16 +148,16 @@ public class RecoMapActivity extends BaseAppCompatActivity {
 
         if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)){
             //denied
-            Log.d(TAG, "permission Denied");
+            Logger.d(TAG, "permission Denied");
 
         }else{
             if(ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
                 //allowed
-                Log.d(TAG, "permission allowd");
+                Logger.d(TAG, "permission allowd");
                 BusProvider.getInstance().post(new MapPermissionGrantedEvent());
             } else{
                 //set to never ask again
-                Log.d(TAG, "permission never ask");
+                Logger.d(TAG, "permission never ask");
 
             }
         }
@@ -219,7 +220,7 @@ public class RecoMapActivity extends BaseAppCompatActivity {
 
     void requestSetRecoLog (String apikey, String eventHashkey, int category, int label, int action, long residenseTime, String recoHashkey) {
         ApiClient.getService().setRecoLog(
-                "세션키 자리야 성민아!!!!!!!",
+                AnalysisTracker.getAppSession().getSessionKey().toString(),
                 apikey,
                 eventHashkey,
                 category,

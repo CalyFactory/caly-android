@@ -138,11 +138,11 @@ public class RecoTabFragment extends BaseFragment {
                 super.onScrolled(recyclerView, dx, dy);
 
                 if(dy<0){
-                    Log.d(TAG, "scroll up");
+                    Logger.d(TAG, "scroll up");
                     BusProvider.getInstance().post(new RecoListScrollEvent(true));
                 }
                 else { //scroll down
-                    Log.d(TAG, "scroll down");
+                    Logger.d(TAG, "scroll down");
                     BusProvider.getInstance().post(new RecoListScrollEvent(false));
                 }
 
@@ -162,7 +162,7 @@ public class RecoTabFragment extends BaseFragment {
 
     @Subscribe
     public void testEventCallback(TestEvent event) {
-        Log.d(TAG," event received " );
+        Logger.d(TAG," event received " );
     }
 
     @Subscribe

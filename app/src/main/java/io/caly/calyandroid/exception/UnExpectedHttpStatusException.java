@@ -6,6 +6,7 @@ import java.io.IOException;
 
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.util.ApiClient;
+import io.caly.calyandroid.util.Logger;
 import io.caly.calyandroid.util.Util;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -23,16 +24,16 @@ public class UnExpectedHttpStatusException extends Exception {
 
     public UnExpectedHttpStatusException(Call httpCall, Response httpResponse){
         this(getLogMessage(httpCall, httpResponse));
-        Log.d(TAG, "UnExpectedHttpStatusException(call, response)");
+        Logger.d(TAG, "UnExpectedHttpStatusException(call, response)");
     }
 
     public UnExpectedHttpStatusException(String msg){
         super(msg);
-        Log.d(TAG, "UnExpectedHttpStatusException(msg)");
+        Logger.d(TAG, "UnExpectedHttpStatusException(msg)");
     }
 
     private static String getLogMessage(Call httpCall, Response httpResponse){
-        Log.d(TAG, "getLogMessage()");
+        Logger.d(TAG, "getLogMessage()");
         StringBuilder builder = new StringBuilder();
 
         Request request = httpCall.request();
@@ -52,7 +53,7 @@ public class UnExpectedHttpStatusException extends Exception {
             builder.append("response body : read error("+e.getMessage());
         }
 
-        Log.d(TAG, builder.toString());
+        Logger.d(TAG, builder.toString());
         return builder.toString();
     }
 

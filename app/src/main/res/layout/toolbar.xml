@@ -16,6 +16,7 @@
             android:id="@+id/tv_toolbar_title"
             android:textColor="@color/white"
             android:textSize="18dp"
+            android:lines="1"
             fontPath="@string/font_nanum_extra_bold"
             android:layout_height="wrap_content"
             tools:ignore="MissingPrefix" />

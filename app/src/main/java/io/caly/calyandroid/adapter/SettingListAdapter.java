@@ -15,7 +15,6 @@ import io.caly.calyandroid.exception.HttpResponseParsingException;
 import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.util.Logger;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,10 +37,9 @@ import java.util.ArrayList;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
-import butterknife.OnClick;
 import io.caly.calyandroid.activity.AccountAddActivity;
 import io.caly.calyandroid.activity.AccountListActivity;
-import io.caly.calyandroid.activity.LegacySettingActivity;
+import io.caly.calyandroid.activity.SettingActivity;
 import io.caly.calyandroid.activity.NoticeActivity;
 import io.caly.calyandroid.activity.SplashActivity;
 import io.caly.calyandroid.CalyApplication;
@@ -114,7 +112,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
         }
 
         void onSettingRowClick(){
-            Log.d(TAG, "onSettingRowClick");
+            Logger.d(TAG, "onSettingRowClick");
             switch (position){
                 case 0:
                     break;
@@ -156,7 +154,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
 
-                            BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(true));
+                            BusProvider.getInstance().post(new SettingLoadingStateChangeEvent("로그아웃 중입니다", true));
                             ApiClient.getService().logout(
                                     TokenRecord.getTokenRecord().getApiKey()
                             ).enqueue(new Callback<BasicResponse>() {
@@ -225,7 +223,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                                 @Override
                                 public void onPositive(WithDrawalDialog dialog, final String content) {
                                     dialog.dismiss();
-                                    BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(true));
+                                    BusProvider.getInstance().post(new SettingLoadingStateChangeEvent("탈퇴처리 중입니다", true));
                                     ApiClient.getService().withdrawal(
                                             TokenRecord.getTokenRecord().getApiKey(),
                                             content
@@ -341,7 +339,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
         void signOutGoogle(){
 
-            Auth.GoogleSignInApi.signOut(LegacySettingActivity.mGoogleApiClient).setResultCallback(
+            Auth.GoogleSignInApi.signOut(SettingActivity.mGoogleApiClient).setResultCallback(
                     new ResultCallback<Status>() {
                         @Override
                         public void onResult(Status status) {

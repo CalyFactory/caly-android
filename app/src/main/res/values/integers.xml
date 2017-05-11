@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <integer name="firebase_remoteconfig_cache_expiretime">43200</integer>
+    <integer name="firebase_remoteconfig_cache_expiretime">43200</integer><!-- 1800 == 12hour -->
+    <integer name="appsession_expiretime">1800</integer><!-- 1800 == 30minute -->
 </resources>

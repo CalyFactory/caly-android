@@ -76,6 +76,9 @@ public class AccountAddActivity extends BaseAppCompatActivity {
     @Bind(R.id.linear_loading_parent)
     LinearLayout linearLoading;
 
+    @Bind(R.id.tv_progress_title)
+    TextView tvProgressTitle;
+
     AccountAddAdapter recyclerAdapter;
     LinearLayoutManager layoutManager;
 
@@ -214,6 +217,8 @@ public class AccountAddActivity extends BaseAppCompatActivity {
                 .enableAutoManage(this , onGoogleConnectionFailedListener)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+
+        tvProgressTitle.setText("캘린더를 가져오는 중입니다");
     }
 
 

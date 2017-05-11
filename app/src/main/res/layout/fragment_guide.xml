@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    tools:ignore="MissingPrefix"
     android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:background="#f7f7f7"
         android:layout_height="match_parent">
 
         <FrameLayout
@@ -41,61 +44,60 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_marginTop="63dp"
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="15dp"
+                    android:textColor="#191919"
+                    android:id="@+id/tv_guide_title"
+                    />
+                <TextView
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15dp"
+                    fontPath="@string/font_nanum_regular"
+                    android:textColor="#191919"
+                    android:id="@+id/tv_guide_subtitle"
+                    />
+            </LinearLayout>
+
             <ImageView
-                android:layout_marginTop="60dp"
+                android:layout_marginTop="140dp"
                 android:adjustViewBounds="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/imv_guide_item"/>
 
 
-            <android.support.v7.widget.CardView
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginBottom="-15dp"
-                card:cardElevation="10dp"
+            <LinearLayout
                 android:layout_gravity="bottom"
-                card:cardBackgroundColor="#ffffff"
-                card:cardCornerRadius="15dp"
+                android:gravity="center"
+                android:visibility="gone"
+                android:id="@+id/linear_guide_start"
+                android:background="@color/white"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <LinearLayout
-                    android:layout_gravity="bottom"
+                android:orientation="vertical"
+                android:layout_height="60dp">
+
+                <TextView
                     android:gravity="center"
-                    android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_height="130dp">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:src="@drawable/guide_text_1"
-                        android:id="@+id/imv_guide_text"
-                        android:layout_height="wrap_content" />
-
-
-                    <Button
-                        android:layout_marginTop="15dp"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginRight="30dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:text="CALY에게 물어보기"
-                        android:textColor="#ffffff"
-                        android:background="@color/colorPrimary"
-                        android:visibility="gone"
-                        android:id="@+id/btn_guide_start"
-                        />
-                    <!--
-                    <FrameLayout
-                        android:visibility="gone"
-                        android:layout_width="match_parent"
-                        android:layout_marginTop="25dp"
-                        android:layout_height="match_parent">
-
-                    </FrameLayout>
--->
-                </LinearLayout>
-            </android.support.v7.widget.CardView>
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CALY 시작하기"
+                    android:textColor="#da5d55"
+                    android:textSize="19dp"
+                    fontPath="@string/font_nanum_extra_bold"
+/>
+            </LinearLayout>
         </FrameLayout>
 
     </LinearLayout>

@@ -58,6 +58,7 @@
                 <android.support.v7.widget.SwitchCompat
                     android:layout_marginRight="15dp"
                     android:id="@+id/switch_setting_row"
+                    android:foregroundTint="@color/dark_peach"
                     android:backgroundTint="@color/dark_peach"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

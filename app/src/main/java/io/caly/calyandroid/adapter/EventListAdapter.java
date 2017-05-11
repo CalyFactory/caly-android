@@ -33,6 +33,7 @@ import io.caly.calyandroid.util.ApiClient;
 import io.caly.calyandroid.util.Logger;
 import io.caly.calyandroid.util.StringFormmater;
 import io.caly.calyandroid.util.Util;
+import io.caly.calyandroid.util.tracker.AnalysisTracker;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -243,7 +244,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                     @Override
                     public void onClick(View view) {
                         //추천완료, 추천중 클릭시만 처리
-                        Log.d(TAG, "onLinearStateClick");
+                        Logger.d(TAG, "onLinearStateClick");
 
                         if(getItemCount()-1 < position) return;
                         EventModel eventModel = getItem(position);
@@ -256,7 +257,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                                         LogType.LABEL_EVENT_CELL_ANALYZING.value,
                                         LogType.ACTION_CLICK.value);
 
-                                Toast.makeText(context, "추천중 (사유고민하기)", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "캘리가 일정을 분석하는 중이에요", Toast.LENGTH_LONG).show();
                                 break;
                             case STATE_DONE_RECOMMEND: //추천완료
                                 break;
@@ -267,7 +268,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                                         LogType.CATEGORY_CELL.value,
                                         LogType.LABEL_EVENT_CELL_QUESTIONMARK.value,
                                         LogType.ACTION_CLICK.value);
-                                Toast.makeText(context, "추천불가 (사유고민하기)", Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "일정 정보가 부족하여 추천 하기 어려워요 ㅜㅜ", Toast.LENGTH_LONG).show();
                                 break;
                         }
                     }
@@ -276,7 +277,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
                 switch (eventModel.recoState){
                     case STATE_BEING_RECOMMEND:
                         holder.linearState.setBackgroundColor(ContextCompat.getColor(context, R.color.white_two));
-                        holder.tvState.setText("추천중");
+                        holder.tvState.setText("분석중");
                         holder.tvRecoCount.setText("");
                         holder.imvState.setImageResource(R.drawable.ic_message);
                         holder.imvState.setVisibility(View.VISIBLE);
@@ -318,7 +319,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
     }
     void requestSetEventLog (String apikey, String eventHashkey, int category, int label, int action) {
         ApiClient.getService().setEventLog(
-                "세션키 자리야 성민아!!!!!!!",
+                AnalysisTracker.getAppSession().getSessionKey().toString(),
                 apikey,
                 eventHashkey,
                 category,

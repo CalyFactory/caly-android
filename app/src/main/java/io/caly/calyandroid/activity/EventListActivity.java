@@ -1,9 +1,7 @@
 package io.caly.calyandroid.activity;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,7 +12,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -64,10 +61,10 @@ import io.caly.calyandroid.util.Logger;
 import io.caly.calyandroid.util.StringFormmater;
 import io.caly.calyandroid.util.Util;
 import io.caly.calyandroid.util.eventListener.RecyclerItemClickListener;
+import io.caly.calyandroid.util.tracker.AnalysisTracker;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import uk.co.chrisjenx.calligraphy.TypefaceUtils;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -147,6 +144,7 @@ EventListActivity extends BaseAppCompatActivity {
         init();
 
         Logger.d(TAG, "hashcode : " + EventListActivity.super.hashCode());
+        Logger.d(TAG, "SESSION : " + AnalysisTracker.getAppSession().getSessionKey());
     }
 
     void init(){
@@ -172,13 +170,13 @@ EventListActivity extends BaseAppCompatActivity {
 
             @Override
             public void onDrawerOpened(View drawerView) {
-                Log.d(TAG, "drawer opened");
+                Logger.d(TAG, "drawer opened");
                 super.onDrawerOpened(drawerView);
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
-                Log.d(TAG, "drawer closed");
+                Logger.d(TAG, "drawer closed");
                 super.onDrawerClosed(drawerView);
 
             }
@@ -271,6 +269,7 @@ EventListActivity extends BaseAppCompatActivity {
                     public void onItemClick(View view, int position) {
                         if(recyclerAdapter.getItemCount()-1 < position) return;
                         EventModel eventModel = recyclerAdapter.getItem(position);
+                        if(eventModel.isHeader) return;
                         // 여기서는 아이템 클릭 이벤트이기 때문에
                         // 추천완료만 처리하고 분석중과 추천불가
                         // EventListAdapter 안에서처리
@@ -697,7 +696,7 @@ EventListActivity extends BaseAppCompatActivity {
 
     void requestSetEventLog (String apikey, String eventHashkey, int category, int label, int action) {
         ApiClient.getService().setEventLog(
-                "세션키 자리야 성민아!!!!!!!",
+                AnalysisTracker.getAppSession().getSessionKey().toString(),
                 apikey,
                 eventHashkey,
                 category,
@@ -956,8 +955,8 @@ EventListActivity extends BaseAppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG, "requestCode : " + requestCode);
-        Log.d(TAG, "resultCode : " + resultCode);
+        Logger.d(TAG, "requestCode : " + requestCode);
+        Logger.d(TAG, "resultCode : " + resultCode);
 
         switch (requestCode){
             case 1: //setting activity
@@ -983,7 +982,7 @@ EventListActivity extends BaseAppCompatActivity {
                 break;
 
             case R.id.menu_eventlist_setting:
-                Intent intent = new Intent(EventListActivity.this, LegacySettingActivity.class);
+                Intent intent = new Intent(EventListActivity.this, SettingActivity.class);
                 startActivityForResult(intent, 1);
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 

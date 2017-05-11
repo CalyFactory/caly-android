@@ -528,7 +528,7 @@ public class SplashPresenter extends BasePresenter implements SplashContract.Pre
                     splashView.startLoginAnimation();
                 }
                 else{
-                    Logger.d(TAG,"session : " + tokenRecord.getApiKey());
+                    Logger.d(TAG,"apikey : " + tokenRecord.getApiKey());
 
                     requestLoginCheck(tokenRecord.getApiKey());
 

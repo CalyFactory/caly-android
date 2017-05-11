@@ -1,6 +1,8 @@
 package io.caly.calyandroid;
 
 import android.content.Context;
+
+import io.caly.calyandroid.util.tracker.AnalysisTracker;
 import io.caly.calyandroid.util.Logger;
 
 import com.crashlytics.android.Crashlytics;
@@ -62,6 +64,9 @@ public class CalyApplication extends SugarApp {
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
+
+        //init analysis
+        AnalysisTracker.initTracker(this);
     }
 
     synchronized public Tracker getDefaultTracker() {
