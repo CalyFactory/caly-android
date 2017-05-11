@@ -59,17 +59,12 @@
 
         <!-- Setting Activity -->
         <activity
-            android:name=".activity.LegacySettingActivity"
+            android:name=".activity.SettingActivity"
             android:screenOrientation="portrait">
 
         </activity>
 
         <!-- Setting Activity -->
-        <activity
-            android:name=".activity.SettingActivity"
-            android:screenOrientation="portrait">
-
-        </activity>
 
         <!-- Signup Activity -->
         <activity

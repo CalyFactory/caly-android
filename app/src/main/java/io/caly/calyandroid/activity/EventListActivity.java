@@ -1,9 +1,7 @@
 package io.caly.calyandroid.activity;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,7 +12,6 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -68,7 +65,6 @@ import io.caly.calyandroid.util.tracker.AnalysisTracker;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import uk.co.chrisjenx.calligraphy.TypefaceUtils;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -985,7 +981,7 @@ EventListActivity extends BaseAppCompatActivity {
                 break;
 
             case R.id.menu_eventlist_setting:
-                Intent intent = new Intent(EventListActivity.this, LegacySettingActivity.class);
+                Intent intent = new Intent(EventListActivity.this, SettingActivity.class);
                 startActivityForResult(intent, 1);
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
 
