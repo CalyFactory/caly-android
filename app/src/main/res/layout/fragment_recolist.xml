@@ -20,15 +20,41 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"/>
                 -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_recommandlist"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:clipToPadding="false"
+                    />
+
+                <com.github.ybq.android.spinkit.SpinKitView
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    style="@style/SpinKitView.Large.ThreeBounce"
+                    android:layout_width="123dp"
+                    android:visibility="gone"
+                    android:layout_height="49dp"
+                    android:id="@+id/spinkit_recolist"
+                    android:layout_gravity="center"
+                    app:SpinKit_Color="@color/indicator"/>
+            </FrameLayout>
+            <!--
             <com.cooltechworks.views.shimmer.ShimmerRecyclerView
                 android:id="@+id/recycler_recommandlist"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:shimmer_demo_child_count="2"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:clipToPadding="false"
+                app:shimmer_demo_child_count="1"
                 app:shimmer_demo_layout="@layout/item_recolist_row_demo"
                 app:shimmer_demo_layout_manager_type="linear_vertical"
-                />
+                />-->
         </LinearLayout>
         <TextView
             android:layout_width="wrap_content"

@@ -7,7 +7,13 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="colorControlActivated">@color/dark_peach</item>
+        <item name="actionOverflowMenuStyle">@style/OverflowMenuStyle</item>
     </style>
 
-
+    <!-- PopupMenu Style -->
+    <style name="OverflowMenuStyle" parent="Widget.AppCompat.PopupMenu.Overflow">
+        <item name="android:dropDownHorizontalOffset">-56dp</item>
+        <item name="android:dropDownVerticalOffset">56dp</item>
+    </style>
 </resources>

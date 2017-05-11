@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imv_map_marker"
+        android:layout_width="33dp"
+        android:src="@drawable/ic_place_black_48dp"
+        android:layout_height="33dp" />
+</FrameLayout>
