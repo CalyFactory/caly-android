@@ -269,6 +269,7 @@ EventListActivity extends BaseAppCompatActivity {
                     public void onItemClick(View view, int position) {
                         if(recyclerAdapter.getItemCount()-1 < position) return;
                         EventModel eventModel = recyclerAdapter.getItem(position);
+                        if(eventModel.isHeader) return;
                         // 여기서는 아이템 클릭 이벤트이기 때문에
                         // 추천완료만 처리하고 분석중과 추천불가
                         // EventListAdapter 안에서처리
