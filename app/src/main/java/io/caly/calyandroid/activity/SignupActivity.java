@@ -1,5 +1,6 @@
 package io.caly.calyandroid.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -13,6 +14,7 @@ import io.caly.calyandroid.util.Logger;
 
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -85,6 +87,9 @@ public class SignupActivity extends BaseAppCompatActivity {
 
     @Bind(R.id.tv_progress_title)
     TextView tvProgressTitle;
+
+    @Bind(R.id.linear_signup_edtarea)
+    LinearLayout linearEdtArea;
 
     int selectedGender = -1;
 
@@ -210,6 +215,13 @@ public class SignupActivity extends BaseAppCompatActivity {
                         .setAction(Util.getCurrentMethodName())
                         .build()
         );
+    }
+
+    @OnClick(R.id.linear_signup_edtarea)
+    void onEdtAreaClick(){
+        edtBirth.requestFocus();
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(edtBirth, InputMethodManager.SHOW_IMPLICIT);
     }
 
     void requestSignup(){

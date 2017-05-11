@@ -6,7 +6,13 @@ package io.caly.calyandroid.model.event;
 
 public class SettingLoadingStateChangeEvent {
 
+    public String text;
     public boolean isEnable;
+
+    public SettingLoadingStateChangeEvent(String text, boolean isEnable){
+        this.isEnable = isEnable;
+        this.text = text;
+    }
 
     public SettingLoadingStateChangeEvent(boolean isEnable){
         this.isEnable = isEnable;

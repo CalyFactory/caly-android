@@ -57,6 +57,9 @@ public class SettingActivity extends BaseAppCompatActivity {
     @Bind(R.id.linear_loading_parent)
     LinearLayout linearLoading;
 
+    @Bind(R.id.tv_progress_title)
+    TextView tvProgressTitle;
+
     SettingListAdapter recyclerAdapter;
     RecyclerView.LayoutManager layoutManager;
 
@@ -186,6 +189,7 @@ public class SettingActivity extends BaseAppCompatActivity {
     @Subscribe
     public void onSettingLoadingStateChangeEventListener(SettingLoadingStateChangeEvent event){
         if(event.isEnable){
+            tvProgressTitle.setText(event.text);
             linearLoading.setVisibility(View.VISIBLE);
         }
         else {

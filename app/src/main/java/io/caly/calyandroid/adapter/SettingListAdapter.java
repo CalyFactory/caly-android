@@ -154,7 +154,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.dismiss();
 
-                            BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(true));
+                            BusProvider.getInstance().post(new SettingLoadingStateChangeEvent("로그아웃 중입니다", true));
                             ApiClient.getService().logout(
                                     TokenRecord.getTokenRecord().getApiKey()
                             ).enqueue(new Callback<BasicResponse>() {
@@ -223,7 +223,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
                                 @Override
                                 public void onPositive(WithDrawalDialog dialog, final String content) {
                                     dialog.dismiss();
-                                    BusProvider.getInstance().post(new SettingLoadingStateChangeEvent(true));
+                                    BusProvider.getInstance().post(new SettingLoadingStateChangeEvent("탈퇴처리 중입니다", true));
                                     ApiClient.getService().withdrawal(
                                             TokenRecord.getTokenRecord().getApiKey(),
                                             content

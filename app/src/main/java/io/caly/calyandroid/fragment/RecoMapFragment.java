@@ -258,6 +258,7 @@ public class RecoMapFragment extends BaseFragment {
 
     public RecoMapFragment setData(List<RecoModel> recoList){
         this.recoList = recoList;
+        Logger.d(TAG, "data size : " + recoList.size());
         return this;
     }
 
@@ -371,6 +372,7 @@ public class RecoMapFragment extends BaseFragment {
 
     @Subscribe
     public void recoMapFilterChangeEventCallback(RecoMapFilterChangeEvent event){
+        Logger.d(TAG, "recoMapFilterChangeEventCallback");
         switch (event.index){
             case 0:
 
@@ -450,6 +452,7 @@ public class RecoMapFragment extends BaseFragment {
 
     @Subscribe
     public void recoListLoadStateChangeEvent(RecoListLoadStateChangeEvent doneEvent) {
+        Logger.d(TAG, "recoListLoadStateChangeEvent");
         switch (doneEvent.loadingState) {
             case STATE_LOADING:
                 break;
@@ -472,13 +475,14 @@ public class RecoMapFragment extends BaseFragment {
         }
     }
 
-    void addData(List<RecoModel> recoList){
 
+    //TODO : addData함수를 만들어놓고 안쓰고있다. 정리+수정필요 함수의기능이불명확한게이유인듯
+    void addData(List<RecoModel> recoList){
         if(this.recoList == null) this.recoList = new ArrayList<>();
-        this.recoList.addAll(recoList);
         adapter.addItems(recoList);
         addMarkers(recoList);
     }
+
     void requestSetRecoLog (String apikey, String eventHashkey, int category, int label, int action, long residenseTime, String recoHashkey) {
         ApiClient.getService().setRecoLog(
                 AnalysisTracker.getAppSession().getSessionKey().toString(),
