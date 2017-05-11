@@ -282,6 +282,7 @@ public class RecoMapFragment extends BaseFragment {
         }
         if(adapter.recoList.size()>0) {
             moveCamera(adapter.recoList.get(0));
+            markerList.get(0).showInfoWindow();
         }
     }
 
@@ -449,6 +450,7 @@ public class RecoMapFragment extends BaseFragment {
                 if(doneEvent.category == Category.RESTAURANT) {
                     if (body.payload.data.size() > 0) {
                         moveCamera(body.payload.data.get(0));
+                        markerList.get(0).showInfoWindow();
                     }
                 }
                 break;
