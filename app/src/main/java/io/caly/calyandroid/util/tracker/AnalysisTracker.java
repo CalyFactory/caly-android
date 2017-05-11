@@ -40,5 +40,7 @@ public class AnalysisTracker {
         return session;
     }
 
+    //TODO log 수집 api 만들기
+
 
 }

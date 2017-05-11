@@ -51,6 +51,7 @@ import io.caly.calyandroid.R;
 import io.caly.calyandroid.util.ApiClient;
 import io.caly.calyandroid.util.ConfigClient;
 import io.caly.calyandroid.util.Util;
+import io.caly.calyandroid.util.tracker.AnalysisTracker;
 import io.caly.calyandroid.view.PasswordChangeDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -86,6 +87,8 @@ public class SplashActivity extends BaseAppCompatActivity {
 
     void init(){
 
+        AnalysisTracker.getAppSession().refreshKey();
+
         Util.setStatusBarColor(this, getResources().getColor(R.color.colorPrimaryDark));
 
         splashView = SplashFragment.getInstance();
@@ -97,6 +100,7 @@ public class SplashActivity extends BaseAppCompatActivity {
         presenter = new SplashPresenter(
                 splashView
         );
+
 
     }
 
