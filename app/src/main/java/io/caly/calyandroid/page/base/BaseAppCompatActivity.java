@@ -1,10 +1,12 @@
-package io.caly.calyandroid.activity.base;
+package io.caly.calyandroid.page.base;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
+
 import io.caly.calyandroid.util.Logger;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -86,6 +88,14 @@ public class BaseAppCompatActivity extends AppCompatActivity {
     public void onBackPressed() {
         Logger.i(TAG, "onBackPressed");
         super.onBackPressed();
+    }
+
+    public void showToast(CharSequence text, int duration) {
+        Toast.makeText(this, text, duration).show();
+    }
+
+    public void showToast(int resId, int duration) {
+        Toast.makeText(this, resId, duration).show();
     }
 
     @Override

@@ -1,61 +1,29 @@
 package io.caly.calyandroid.page.account.add;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
-import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
-import io.caly.calyandroid.page.splash.SplashFragment;
-import io.caly.calyandroid.page.splash.SplashPresenter;
 import io.caly.calyandroid.util.Logger;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Scope;
-
-import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.caly.calyandroid.activity.base.BaseAppCompatActivity;
-import io.caly.calyandroid.adapter.AccountAddAdapter;
-import io.caly.calyandroid.CalyApplication;
-import io.caly.calyandroid.model.event.EventListRefreshEvent;
-import io.caly.calyandroid.model.LoginPlatform;
-import io.caly.calyandroid.model.orm.TokenRecord;
-import io.caly.calyandroid.model.response.BasicResponse;
+import io.caly.calyandroid.page.base.BaseAppCompatActivity;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.util.ApiClient;
-import io.caly.calyandroid.util.BusProvider;
-import io.caly.calyandroid.util.eventListener.RecyclerItemClickListener;
-import io.caly.calyandroid.util.StringFormmater;
 import io.caly.calyandroid.util.Util;
-import io.caly.calyandroid.view.LoginDialog;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -141,7 +109,7 @@ public class AccountAddActivity extends BaseAppCompatActivity {
                 Logger.i(TAG, "id : " + acct.getId());
                 Logger.d(TAG, "email : " + acct.getEmail());
 
-                requestAddGoogle(acct.getServerAuthCode());
+                presenter.requestAddGoogle(acct.getServerAuthCode());
 
             } else {
                 switch (result.getStatus().getStatusCode()){
@@ -155,18 +123,16 @@ public class AccountAddActivity extends BaseAppCompatActivity {
                         ).show();*/
                         break;
                     case GoogleSignInStatusCodes.SIGN_IN_FAILED:
-                        Toast.makeText(
-                                getBaseContext(),
-                                getString(R.string.toast_msg_login_fail),
+                        showToast(
+                                (R.string.toast_msg_login_fail),
                                 Toast.LENGTH_LONG
-                        ).show();
+                        );
                         break;
                     default:
-                        Toast.makeText(
-                                getBaseContext(),
+                        showToast(
                                 getString(R.string.toast_msg_unknown_error),
                                 Toast.LENGTH_LONG
-                        ).show();
+                        );
                         break;
                 }
 

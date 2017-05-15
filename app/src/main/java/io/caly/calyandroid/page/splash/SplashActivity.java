@@ -23,7 +23,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
 
-import io.caly.calyandroid.activity.base.BaseAppCompatActivity;
+import io.caly.calyandroid.page.base.BaseAppCompatActivity;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.util.Util;
 import io.caly.calyandroid.util.tracker.AnalysisTracker;

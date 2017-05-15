@@ -30,7 +30,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.caly.calyandroid.activity.base.BaseAppCompatActivity;
+import io.caly.calyandroid.page.base.BaseAppCompatActivity;
 import io.caly.calyandroid.adapter.AccountListAdapter;
 import io.caly.calyandroid.model.dataModel.AccountModel;
 import io.caly.calyandroid.model.event.AccountListLoadingEvent;

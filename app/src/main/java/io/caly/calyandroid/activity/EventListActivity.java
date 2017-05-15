@@ -40,7 +40,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.activity.base.BaseAppCompatActivity;
+import io.caly.calyandroid.page.base.BaseAppCompatActivity;
 import io.caly.calyandroid.adapter.EventListAdapter;
 import io.caly.calyandroid.exception.HttpResponseParsingException;
 import io.caly.calyandroid.exception.UnExpectedHttpStatusException;

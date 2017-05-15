@@ -3,13 +3,11 @@ package io.caly.calyandroid.activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 
-import butterknife.OnClick;
 import io.caly.calyandroid.exception.HttpResponseParsingException;
 import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.model.event.TestEvent;
 import io.caly.calyandroid.util.Logger;
 
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -26,9 +24,8 @@ import com.google.gson.stream.MalformedJsonException;
 import com.squareup.otto.Produce;
 import com.squareup.otto.Subscribe;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.caly.calyandroid.activity.base.BaseAppCompatActivity;
+import io.caly.calyandroid.page.base.BaseAppCompatActivity;
 import io.caly.calyandroid.BuildConfig;
 import io.caly.calyandroid.model.response.BasicResponse;
 import io.caly.calyandroid.R;

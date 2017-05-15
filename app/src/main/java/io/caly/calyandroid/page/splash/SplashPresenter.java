@@ -32,7 +32,7 @@ import net.jspiner.prefer.Prefer;
 import io.caly.calyandroid.BuildConfig;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.activity.base.BaseAppCompatActivity;
+import io.caly.calyandroid.page.base.BaseAppCompatActivity;
 import io.caly.calyandroid.exception.HttpResponseParsingException;
 import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.model.DeviceType;

@@ -32,7 +32,7 @@ import net.jspiner.prefer.Prefer;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.caly.calyandroid.activity.base.BaseAppCompatActivity;
+import io.caly.calyandroid.page.base.BaseAppCompatActivity;
 import io.caly.calyandroid.model.orm.TokenRecord;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.util.ApiClient;

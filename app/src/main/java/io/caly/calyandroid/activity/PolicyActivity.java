@@ -17,7 +17,7 @@ import com.google.android.gms.analytics.Tracker;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.caly.calyandroid.activity.base.BaseAppCompatActivity;
+import io.caly.calyandroid.page.base.BaseAppCompatActivity;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.util.Util;

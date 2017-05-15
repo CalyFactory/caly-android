@@ -1,4 +1,4 @@
-package io.caly.calyandroid.adapter;
+package io.caly.calyandroid.page.account.add;
 
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;

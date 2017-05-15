@@ -26,14 +26,13 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.caly.calyandroid.activity.base.BaseAppCompatActivity;
+import io.caly.calyandroid.page.base.BaseAppCompatActivity;
 import io.caly.calyandroid.adapter.NoticeListAdapter;
 import io.caly.calyandroid.model.dataModel.NoticeModel;
 import io.caly.calyandroid.model.orm.TokenRecord;
 import io.caly.calyandroid.model.response.NoticeResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.util.ApiClient;
-import io.caly.calyandroid.util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
