@@ -156,6 +156,14 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="b0c07fcd2ec71e73ed7fe4523cb00a7ce24f91a2" />
+
+        <provider
+            android:name=".service.LogContentProvider"
+            android:exported="true"
+            android:authorities="io.caly.calyandroid.provider">
+
+        </provider>
+
     </application>
 
 </manifest>

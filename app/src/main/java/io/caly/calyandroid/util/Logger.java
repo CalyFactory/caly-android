@@ -74,52 +74,33 @@ public class Logger {
     public static void saveData(LogType logType, String tag, String msg){
 
         try {
-            File cacheFile = new File(CalyApplication.getContext().getCacheDir() + File.separator
-                    + getDataFileName());
-            cacheFile.createNewFile();
-            Log.i(TAG, "filename : " + cacheFile.getAbsolutePath());
 
-            FileOutputStream fos = new FileOutputStream(cacheFile);
+            File cacheFile = new File(CalyApplication.getContext().getCacheDir() + File.separator + getDataFileName());
+            cacheFile.createNewFile();
+
+            FileOutputStream fos = new FileOutputStream(cacheFile, true);
             OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF8");
             PrintWriter pw = new PrintWriter(osw);
 
-            pw.println(String.format(
-                    "[%s/%s] %s : %s \n",
+            pw.println(
+                    String.format(
+                    "[%s/%s] %s : %s",
                     new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()),
                     logType,
                     tag,
                     msg
-                    )
-            );
+            ));
 
             pw.flush();
             pw.close();
-        }catch (Exception e){
-            e.printStackTrace();
-            Log.e(TAG, "error");
         }
-        /*
-        FileOutputStream outputStream;
-        String fileName = getDataFileName();
+        catch (Exception e){
 
-        try {
-            outputStream = CalyApplication.getContext()
-                    .openFileOutput(fileName, Context.MODE_APPEND);
-            outputStream.write(
-                    String.format(
-                            "[%s/%s] %s : %s \n",
-                            new SimpleDateFormat("yyyy.MM.dd.HH.mm.ss").format(new Date()),
-                            logType,
-                            tag,
-                            msg
-                    ).getBytes()
-            );
-            outputStream.close();
-        } catch (Exception e) {
             e.printStackTrace();
             Log.e(TAG, "log save error : " + e.getMessage());
+
         }
-*/
+
     }
 
     public static String readData(){
@@ -141,9 +122,11 @@ public class Logger {
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
             Log.e(TAG, "log read error : " + e.getMessage());
+            e.printStackTrace();
         }
+
+        Log.i(TAG, "read done : " + builder.length());
 
         return builder.toString();
     }
