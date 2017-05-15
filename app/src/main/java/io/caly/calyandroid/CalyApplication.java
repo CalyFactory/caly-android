@@ -35,10 +35,10 @@ public class CalyApplication extends SugarApp {
 
     @Override
     public void onCreate() {
-        Logger.i(TAG, "onCreate");
         super.onCreate();
 
         init();
+        Logger.i(TAG, "onCreate");
     }
 
     void init(){

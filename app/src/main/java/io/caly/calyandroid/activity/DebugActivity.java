@@ -3,10 +3,14 @@ package io.caly.calyandroid.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import io.caly.calyandroid.util.Logger;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +29,8 @@ import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.common.api.Status;
 
 import net.jspiner.prefer.Prefer;
+
+import java.io.File;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -147,6 +153,12 @@ public class DebugActivity extends BaseAppCompatActivity {
         Logger.d(TAG, "server url : " + Prefer.get("app_server", getString(R.string.app_server)));
         ApiClient.resetService();
         restartApp();
+    }
+
+    @OnClick(R.id.btn_debug_sendlog)
+    void onSendLogClick(){
+        String webHookUrl = "https://hooks.slack.com/services/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";
+        
     }
 
     @OnClick(R.id.btn_debug_logout)
