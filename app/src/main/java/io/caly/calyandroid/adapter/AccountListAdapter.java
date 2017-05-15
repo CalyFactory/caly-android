@@ -31,7 +31,7 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.caly.calyandroid.activity.SplashActivity;
+import io.caly.calyandroid.page.splash.SplashActivity;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.model.dataModel.AccountModel;
 import io.caly.calyandroid.model.event.AccountListLoadingEvent;

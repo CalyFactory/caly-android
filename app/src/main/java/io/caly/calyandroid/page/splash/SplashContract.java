@@ -1,13 +1,12 @@
-package io.caly.calyandroid.contract;
+package io.caly.calyandroid.page.splash;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import io.caly.calyandroid.contract.base.BaseView;
-import io.caly.calyandroid.presenter.base.BasePresenterModel;
+import io.caly.calyandroid.page.base.BaseView;
+import io.caly.calyandroid.page.base.BasePresenterModel;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -21,7 +20,6 @@ public class SplashContract {
 
     public interface View extends BaseView<Presenter> {
         void startSplash();
-        void startLoginActivity();
         void startGuideActivity();
         void startEventActivity();
         void startUpdateMarketPage();

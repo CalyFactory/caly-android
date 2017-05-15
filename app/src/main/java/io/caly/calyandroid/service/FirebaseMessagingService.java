@@ -17,7 +17,7 @@ import net.jspiner.prefer.Prefer;
 
 import java.util.Map;
 
-import io.caly.calyandroid.activity.SplashActivity;
+import io.caly.calyandroid.page.splash.SplashActivity;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.model.event.AccountListRefreshEvent;
 import io.caly.calyandroid.model.event.GoogleSyncDoneEvent;

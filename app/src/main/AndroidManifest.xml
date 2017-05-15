@@ -32,15 +32,8 @@
 
         <!-- Splash Activity -->
         <activity
-            android:name=".activity.SplashActivity"
+            android:name=".page.splash.SplashActivity"
             android:screenOrientation="portrait">
-        </activity>
-
-        <!-- Login Activity -->
-        <activity
-            android:name=".activity.LoginActivity"
-            android:screenOrientation="portrait">
-
         </activity>
 
         <!-- Event List Activity -->
@@ -80,7 +73,7 @@
 
         <!-- AccountAdd Activity -->
         <activity
-            android:name=".activity.AccountAddActivity"
+            android:name=".page.account.add.AccountAddActivity"
             android:screenOrientation="portrait">
 
         </activity>

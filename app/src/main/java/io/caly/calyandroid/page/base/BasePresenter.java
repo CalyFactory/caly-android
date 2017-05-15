@@ -1,4 +1,4 @@
-package io.caly.calyandroid.presenter.base;
+package io.caly.calyandroid.page.base;
 
 import io.caly.calyandroid.CalyApplication;
 

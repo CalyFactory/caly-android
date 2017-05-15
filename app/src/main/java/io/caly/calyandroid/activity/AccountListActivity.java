@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 
 import io.caly.calyandroid.exception.HttpResponseParsingException;
 import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
+import io.caly.calyandroid.page.account.add.AccountAddActivity;
 import io.caly.calyandroid.util.Logger;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,7 +40,6 @@ import io.caly.calyandroid.model.orm.TokenRecord;
 import io.caly.calyandroid.model.response.AccountResponse;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.util.ApiClient;
-import io.caly.calyandroid.util.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

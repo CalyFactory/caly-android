@@ -1,16 +1,9 @@
-package io.caly.calyandroid.fragment;
+package io.caly.calyandroid.page.splash;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,39 +14,26 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.MalformedJsonException;
 
-import net.jspiner.prefer.Prefer;
-
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.caly.calyandroid.BuildConfig;
-import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.activity.EventListActivity;
 import io.caly.calyandroid.activity.GuideActivity;
-import io.caly.calyandroid.activity.LoginActivity;
 import io.caly.calyandroid.activity.SignupActivity;
-import io.caly.calyandroid.activity.SplashActivity;
-import io.caly.calyandroid.contract.SplashContract;
 import io.caly.calyandroid.exception.HttpResponseParsingException;
 import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
-import io.caly.calyandroid.fragment.base.BaseFragment;
+import io.caly.calyandroid.page.base.BaseFragment;
 import io.caly.calyandroid.model.LoginPlatform;
 import io.caly.calyandroid.model.orm.TokenRecord;
 import io.caly.calyandroid.model.response.BasicResponse;
-import io.caly.calyandroid.model.response.SessionResponse;
 import io.caly.calyandroid.util.ApiClient;
-import io.caly.calyandroid.util.ConfigClient;
 import io.caly.calyandroid.util.Logger;
 import io.caly.calyandroid.util.StringFormmater;
 import io.caly.calyandroid.util.Util;
@@ -176,21 +156,6 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
     }
 
     @Override
-    public void showToast(CharSequence text, int duration) {
-        Toast.makeText(getActivity(), text, duration).show();
-    }
-
-    @Override
-    public void showToast(int resId, int duration) {
-        Toast.makeText(getActivity(), resId, duration).show();
-    }
-
-    @Override
-    public void finishActivity() {
-        getActivity().finish();
-    }
-
-    @Override
     public void startSplash(){
         presenter.updateRemoteConfig(getContext());
     }
@@ -226,14 +191,6 @@ public class SplashFragment extends BaseFragment implements SplashContract.View 
         intent.putExtra("authCode", authCode);
         startActivity(intent);
         getActivity().finish();
-    }
-
-    @Override
-    public void startLoginActivity(){
-        Intent intent = new Intent(getActivity(), LoginActivity.class);
-        startActivity(intent);
-        getActivity().finish();
-        getActivity().overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
     }
 
     @Override

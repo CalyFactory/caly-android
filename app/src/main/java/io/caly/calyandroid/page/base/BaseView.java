@@ -1,4 +1,4 @@
-package io.caly.calyandroid.contract.base;
+package io.caly.calyandroid.page.base;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -11,8 +11,5 @@ package io.caly.calyandroid.contract.base;
 public interface BaseView<T> {
 
         void setPresenter(T presenter);
-        void showToast(CharSequence text, int duration);
-        void showToast(int resId, int duration);
-        void finishActivity();
 
 }

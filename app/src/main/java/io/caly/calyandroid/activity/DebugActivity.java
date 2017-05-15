@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+
+import io.caly.calyandroid.page.account.add.AccountAddActivity;
+import io.caly.calyandroid.page.splash.SplashActivity;
 import io.caly.calyandroid.util.Logger;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -1,4 +1,4 @@
-package io.caly.calyandroid.presenter;
+package io.caly.calyandroid.page.splash;
 
 import android.Manifest;
 import android.app.Activity;
@@ -9,7 +9,6 @@ import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.view.View;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -34,7 +33,6 @@ import io.caly.calyandroid.BuildConfig;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.activity.base.BaseAppCompatActivity;
-import io.caly.calyandroid.contract.SplashContract;
 import io.caly.calyandroid.exception.HttpResponseParsingException;
 import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.model.DeviceType;
@@ -42,7 +40,7 @@ import io.caly.calyandroid.model.LoginPlatform;
 import io.caly.calyandroid.model.orm.TokenRecord;
 import io.caly.calyandroid.model.response.BasicResponse;
 import io.caly.calyandroid.model.response.SessionResponse;
-import io.caly.calyandroid.presenter.base.BasePresenter;
+import io.caly.calyandroid.page.base.BasePresenter;
 import io.caly.calyandroid.util.ApiClient;
 import io.caly.calyandroid.util.ConfigClient;
 import io.caly.calyandroid.util.Logger;

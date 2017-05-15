@@ -1,4 +1,4 @@
-package io.caly.calyandroid.presenter.base;
+package io.caly.calyandroid.page.base;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.

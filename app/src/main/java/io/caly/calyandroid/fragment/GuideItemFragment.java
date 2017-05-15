@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,8 +15,8 @@ import com.squareup.picasso.Picasso;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.caly.calyandroid.activity.SplashActivity;
-import io.caly.calyandroid.fragment.base.BaseFragment;
+import io.caly.calyandroid.page.splash.SplashActivity;
+import io.caly.calyandroid.page.base.BaseFragment;
 import io.caly.calyandroid.R;
 
 /**

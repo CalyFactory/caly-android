@@ -6,7 +6,7 @@ import android.os.Message;
 import android.support.v7.widget.LinearLayoutManager;
 
 import io.caly.calyandroid.adapter.RecommendListAdapter;
-import io.caly.calyandroid.fragment.base.BaseFragment;
+import io.caly.calyandroid.page.base.BaseFragment;
 import io.caly.calyandroid.model.Category;
 import io.caly.calyandroid.model.dataModel.EventModel;
 import io.caly.calyandroid.model.dataModel.RecoModel;
@@ -18,7 +18,6 @@ import io.caly.calyandroid.util.BusProvider;
 import io.caly.calyandroid.util.Logger;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

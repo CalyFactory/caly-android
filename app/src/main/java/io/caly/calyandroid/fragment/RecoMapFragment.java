@@ -42,7 +42,7 @@ import io.caly.calyandroid.R;
 import io.caly.calyandroid.adapter.RecoMapListAdapter;
 import io.caly.calyandroid.exception.HttpResponseParsingException;
 import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
-import io.caly.calyandroid.fragment.base.BaseFragment;
+import io.caly.calyandroid.page.base.BaseFragment;
 import io.caly.calyandroid.model.Category;
 import io.caly.calyandroid.model.LogType;
 import io.caly.calyandroid.model.dataModel.RecoModel;

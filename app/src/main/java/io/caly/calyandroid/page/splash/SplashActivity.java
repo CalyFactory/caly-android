@@ -1,4 +1,4 @@
-package io.caly.calyandroid.activity;
+package io.caly.calyandroid.page.splash;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -6,56 +6,27 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.caly.calyandroid.BuildConfig;
-import io.caly.calyandroid.fragment.SplashFragment;
-import io.caly.calyandroid.presenter.SplashPresenter;
 import io.caly.calyandroid.util.Logger;
 
-import android.util.Log;
-import android.view.View;
-import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.auth.api.signin.GoogleSignInStatusCodes;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.messaging.FirebaseMessaging;
-
-import net.jspiner.prefer.Prefer;
 
 import io.caly.calyandroid.activity.base.BaseAppCompatActivity;
-import io.caly.calyandroid.model.response.BasicResponse;
-import io.caly.calyandroid.model.response.SessionResponse;
-import io.caly.calyandroid.model.orm.TokenRecord;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.util.ApiClient;
-import io.caly.calyandroid.util.ConfigClient;
 import io.caly.calyandroid.util.Util;
 import io.caly.calyandroid.util.tracker.AnalysisTracker;
-import io.caly.calyandroid.view.PasswordChangeDialog;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 /**

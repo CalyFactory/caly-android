@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import io.caly.calyandroid.BuildConfig;
+import io.caly.calyandroid.page.splash.SplashActivity;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.

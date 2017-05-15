@@ -1,4 +1,4 @@
-package io.caly.calyandroid.fragment.base;
+package io.caly.calyandroid.page.base;
 
 
 import android.content.Context;
@@ -11,6 +11,7 @@ import io.caly.calyandroid.util.Logger;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import io.caly.calyandroid.CalyApplication;
 
@@ -84,5 +85,17 @@ public class BaseFragment extends Fragment {
     public void onDestroy() {
         Logger.i(TAG, "onDestroy");
         super.onDestroy();
+    }
+
+    public void showToast(CharSequence text, int duration) {
+        Toast.makeText(getActivity(), text, duration).show();
+    }
+
+    public void showToast(int resId, int duration) {
+        Toast.makeText(getActivity(), resId, duration).show();
+    }
+
+    public void finishActivity(){
+        getActivity().finish();
     }
 }
