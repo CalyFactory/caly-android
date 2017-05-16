@@ -4,35 +4,14 @@
     android:layout_height="match_parent">
 
 
-    <LinearLayout
+    <include layout="@layout/toolbar"/>
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:background="@color/white_four"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/frame_accountlist_container"
+        >
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:orientation="vertical"
-                android:layout_height="match_parent">
-
-                <include layout="@layout/toolbar"/>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_accountlist"
-                    android:scrollbars="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
-
-            </LinearLayout>
-
-            <include layout="@layout/progress_loading"/>
-        </FrameLayout>
-
-
-    </LinearLayout>
+    </FrameLayout>
 
 </LinearLayout>

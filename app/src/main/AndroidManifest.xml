@@ -80,7 +80,7 @@
 
         <!-- AccountList Activity -->
         <activity
-            android:name=".activity.AccountListActivity"
+            android:name=".page.account.list.AccountListActivity"
             android:screenOrientation="portrait">
         </activity>
 

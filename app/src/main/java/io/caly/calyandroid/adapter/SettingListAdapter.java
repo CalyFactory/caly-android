@@ -38,7 +38,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import io.caly.calyandroid.page.account.add.AccountAddActivity;
-import io.caly.calyandroid.activity.AccountListActivity;
+import io.caly.calyandroid.page.account.list.AccountListActivity;
 import io.caly.calyandroid.activity.SettingActivity;
 import io.caly.calyandroid.activity.NoticeActivity;
 import io.caly.calyandroid.page.splash.SplashActivity;

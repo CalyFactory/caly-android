@@ -15,4 +15,8 @@ public class BasePresenter {
     //로그에 쓰일 tag
     public final String TAG = CalyApplication.class.getSimpleName() + "/" + this.getClass().getSimpleName();
 
+    public BasePresenter(BaseView view){
+
+    }
+
 }

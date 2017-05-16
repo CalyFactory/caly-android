@@ -1,24 +1,13 @@
-package io.caly.calyandroid.activity;
+package io.caly.calyandroid.page.account.list;
 
-import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-
-import io.caly.calyandroid.exception.HttpResponseParsingException;
-import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
-import io.caly.calyandroid.page.account.add.AccountAddActivity;
-import io.caly.calyandroid.util.Logger;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
@@ -30,35 +19,29 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.caly.calyandroid.page.base.BaseAppCompatActivity;
+import io.caly.calyandroid.R;
 import io.caly.calyandroid.adapter.AccountListAdapter;
+import io.caly.calyandroid.exception.HttpResponseParsingException;
+import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
+import io.caly.calyandroid.model.LoginPlatform;
 import io.caly.calyandroid.model.dataModel.AccountModel;
 import io.caly.calyandroid.model.event.AccountListLoadingEvent;
 import io.caly.calyandroid.model.event.AccountListRefreshEvent;
-import io.caly.calyandroid.model.LoginPlatform;
 import io.caly.calyandroid.model.orm.TokenRecord;
 import io.caly.calyandroid.model.response.AccountResponse;
-import io.caly.calyandroid.R;
+import io.caly.calyandroid.page.account.add.AccountAddFragment;
+import io.caly.calyandroid.page.base.BaseFragment;
 import io.caly.calyandroid.util.ApiClient;
+import io.caly.calyandroid.util.Logger;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Copyright 2017 JSpiner. All rights reserved.
- *
- * @author jspiner (jspiner@naver.com)
- * @project CalyAndroid
- * @since 17. 2. 22
+ * Created by jspiner on 2017. 5. 16..
  */
 
-public class AccountListActivity extends BaseAppCompatActivity {
-
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-
-    @Bind(R.id.tv_toolbar_title)
-    TextView tvToolbarTitle;
+public class AccountListFragment extends BaseFragment {
 
     @Bind(R.id.recycler_accountlist)
     RecyclerView recyclerList;
@@ -69,48 +52,38 @@ public class AccountListActivity extends BaseAppCompatActivity {
     AccountListAdapter recyclerAdapter;
     LinearLayoutManager layoutManager;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_accountlist);
 
-        init();
+    public static AccountListFragment getInstance(){
+        return new AccountListFragment();
     }
 
-    void init(){
-        ButterKnife.bind(this);
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        View view = inflater.inflate(R.layout.fragment_accountlist, container, false);
 
-        //set toolbar
-        tvToolbarTitle.setText("계정 목록");
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                return false;
-            }
-        });
+        ButterKnife.bind(this, view);
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        init();
+        return view;
+    }
 
-        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp);
-        upArrow.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-        getSupportActionBar().setHomeAsUpIndicator(upArrow);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    void init() {
 
         //set recyclerview
         recyclerList.setHasFixedSize(true);
 
-        layoutManager = new LinearLayoutManager(getBaseContext());
+        layoutManager = new LinearLayoutManager(getActivity());
         recyclerList.setLayoutManager(layoutManager);
 
         ArrayList<AccountModel> accountModels = new ArrayList<>();
-        recyclerAdapter = new AccountListAdapter(AccountListActivity.this, accountModels);
+        recyclerAdapter = new AccountListAdapter(getActivity(), accountModels);
         recyclerList.setAdapter(recyclerAdapter);
 
 
         loadAccountList();
+
     }
 
     void loadAccountList(){
@@ -165,11 +138,10 @@ public class AccountListActivity extends BaseAppCompatActivity {
                     default:
                         Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
                         Logger.e(TAG,"status code : " + response.code());
-                        Toast.makeText(
-                                getBaseContext(),
-                                getString(R.string.toast_msg_server_internal_error),
+                        showToast(
+                                (R.string.toast_msg_server_internal_error),
                                 Toast.LENGTH_LONG
-                        ).show();
+                        );
                         break;
                 }
             }
@@ -208,47 +180,5 @@ public class AccountListActivity extends BaseAppCompatActivity {
     public void onAccountLIstRefreshEventCallback(AccountListRefreshEvent event){
         Logger.i(TAG, "onAccountLIstRefreshEventCallback");
         loadAccountList();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        loadAccountList();
-    }
-
-    int responseResult = 2;
-
-    @Override
-    public void onBackPressed() {
-        setResult(responseResult);
-        super.onBackPressed();
-
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_accountlist, menu);
-        return true;
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()){
-            case R.id.menu_accountlist_add:
-                Intent intent = new Intent(getBaseContext(), AccountAddActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_left);
-                break;
-            case android.R.id.home:
-                onBackPressed();
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 }
