@@ -1,19 +1,15 @@
-package io.caly.calyandroid.activity;
+package io.caly.calyandroid.page.setting;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.support.v7.widget.Toolbar;
-import io.caly.calyandroid.util.Logger;
-
-import android.view.MenuItem;
+import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -28,28 +24,29 @@ import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.caly.calyandroid.page.base.BaseAppCompatActivity;
-import io.caly.calyandroid.adapter.SettingListAdapter;
+import butterknife.OnClick;
 import io.caly.calyandroid.BuildConfig;
+import io.caly.calyandroid.R;
+import io.caly.calyandroid.activity.PolicyActivity;
 import io.caly.calyandroid.model.dataModel.SettingItemModel;
 import io.caly.calyandroid.model.event.SettingLoadingStateChangeEvent;
-import io.caly.calyandroid.R;
+import io.caly.calyandroid.page.base.BaseFragment;
+import io.caly.calyandroid.page.signup.SignupContract;
+import io.caly.calyandroid.page.signup.SignupFragment;
+import io.caly.calyandroid.util.Logger;
+import io.caly.calyandroid.util.Util;
+import io.caly.calyandroid.util.eventListener.TextViewLinkHandler;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
  *
  * @author jspiner (jspiner@naver.com)
  * @project CalyAndroid
- * @since 17. 2. 12
+ * @since 17. 5. 16
  */
 
-public class SettingActivity extends BaseAppCompatActivity {
+public class SettingFragment extends BaseFragment implements SettingContract.View{
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-
-    @Bind(R.id.tv_toolbar_title)
-    TextView tvToolbarTitle;
 
     @Bind(R.id.recycler_settinglist)
     RecyclerView recyclerList;
@@ -63,39 +60,28 @@ public class SettingActivity extends BaseAppCompatActivity {
     SettingListAdapter recyclerAdapter;
     RecyclerView.LayoutManager layoutManager;
 
+    SettingContract.Presenter presenter;
+
 
     public static GoogleApiClient mGoogleApiClient;
 
+    public static SettingFragment getInstance(){
+        return new SettingFragment();
+    }
+
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_setting);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.fragment_setting, container, false);
+
+        ButterKnife.bind(this, view);
 
         init();
+        return view;
     }
 
     void init(){
-
-        ButterKnife.bind(this);
-
-
-        //set toolbar
-        tvToolbarTitle.setText("환경 설정");
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                return false;
-            }
-        });
-
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-
-        final Drawable upArrow = getResources().getDrawable(R.drawable.ic_arrow_back_white_24dp);
-        upArrow.setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
-        getSupportActionBar().setHomeAsUpIndicator(upArrow);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //set recycler view
         recyclerList.setHasFixedSize(true);
@@ -135,9 +121,9 @@ public class SettingActivity extends BaseAppCompatActivity {
                                 new Scope("https://www.googleapis.com/auth/calendar.readonly")
                         ).build();
 
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .enableAutoManage(this , onGoogleConnectionFailedListener)
+                .enableAutoManage(getActivity() , onGoogleConnectionFailedListener)
                 .build();;
     }
 
@@ -150,40 +136,8 @@ public class SettingActivity extends BaseAppCompatActivity {
 
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()){
-            case android.R.id.home:
-                onBackPressed();
-                break;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
-    int responseResult = 0;
-
-    @Override
-    public void onBackPressed() {
-        setResult(responseResult);
-        super.onBackPressed();
-        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_right);
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        Logger.d(TAG, "requestCode : " + requestCode);
-        Logger.d(TAG, "resultCode : " + resultCode);
-
-        switch (requestCode){
-            case 1: //accountlistactivity
-                if(resultCode == 2){
-                    responseResult = 2;
-                }
-                break;
-        }
+    public void setPresenter(SettingContract.Presenter presenter) {
+        this.presenter = presenter;
     }
 
     @Subscribe

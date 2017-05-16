@@ -52,7 +52,7 @@
 
         <!-- Setting Activity -->
         <activity
-            android:name=".activity.SettingActivity"
+            android:name=".page.setting.SettingActivity"
             android:screenOrientation="portrait">
 
         </activity>

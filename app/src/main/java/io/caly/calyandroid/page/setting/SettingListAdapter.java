@@ -1,4 +1,4 @@
-package io.caly.calyandroid.adapter;
+package io.caly.calyandroid.page.setting;
 
 import android.app.Activity;
 import android.content.Context;
@@ -39,7 +39,6 @@ import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import io.caly.calyandroid.page.account.add.AccountAddActivity;
 import io.caly.calyandroid.page.account.list.AccountListActivity;
-import io.caly.calyandroid.activity.SettingActivity;
 import io.caly.calyandroid.page.notice.NoticeActivity;
 import io.caly.calyandroid.page.splash.SplashActivity;
 import io.caly.calyandroid.CalyApplication;
@@ -339,7 +338,7 @@ public class SettingListAdapter extends RecyclerView.Adapter<SettingListAdapter.
 
         void signOutGoogle(){
 
-            Auth.GoogleSignInApi.signOut(SettingActivity.mGoogleApiClient).setResultCallback(
+            Auth.GoogleSignInApi.signOut(SettingFragment.mGoogleApiClient).setResultCallback(
                     new ResultCallback<Status>() {
                         @Override
                         public void onResult(Status status) {

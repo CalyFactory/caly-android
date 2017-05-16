@@ -56,6 +56,7 @@ import io.caly.calyandroid.model.orm.TokenRecord;
 import io.caly.calyandroid.model.response.BasicResponse;
 import io.caly.calyandroid.model.response.EventResponse;
 import io.caly.calyandroid.page.notice.NoticeActivity;
+import io.caly.calyandroid.page.setting.SettingActivity;
 import io.caly.calyandroid.util.ApiClient;
 import io.caly.calyandroid.util.ConfigClient;
 import io.caly.calyandroid.util.Logger;
