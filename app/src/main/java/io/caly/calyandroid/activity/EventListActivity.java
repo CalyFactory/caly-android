@@ -61,10 +61,11 @@ import io.caly.calyandroid.util.Logger;
 import io.caly.calyandroid.util.StringFormmater;
 import io.caly.calyandroid.util.Util;
 import io.caly.calyandroid.util.eventListener.RecyclerItemClickListener;
-import io.caly.calyandroid.util.tracker.AnalysisTracker;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static io.caly.calyandroid.util.tracker.AnalysisTracker.getAppSession;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -144,7 +145,7 @@ EventListActivity extends BaseAppCompatActivity {
         init();
 
         Logger.d(TAG, "hashcode : " + EventListActivity.super.hashCode());
-        Logger.d(TAG, "SESSION : " + AnalysisTracker.getAppSession().getSessionKey());
+        Logger.d(TAG, "SESSION : " + getAppSession().getSessionKey());
     }
 
     void init(){
@@ -343,6 +344,13 @@ EventListActivity extends BaseAppCompatActivity {
                 Message message = new Message();
                 message.obj = bannerModel;
                 bannerHandler.sendMessageDelayed(message, 4000);
+                requestSetEventLog (TokenRecord.getTokenRecord().getApiKey(),
+                        null,
+                        LogType.CATEGORY_VIEW.value,
+                        LogType.LABEL_EVENT_BANNER_SHOWING.value,
+                        LogType.ACTION_NONE.value);
+
+
             }
         }
     }
@@ -615,7 +623,7 @@ EventListActivity extends BaseAppCompatActivity {
                         break;
                 }
             }
-            
+
 
             @Override
             public void onFailure(Call<BasicResponse> call, Throwable t) {
@@ -696,7 +704,7 @@ EventListActivity extends BaseAppCompatActivity {
 
     void requestSetEventLog (String apikey, String eventHashkey, int category, int label, int action) {
         ApiClient.getService().setEventLog(
-                AnalysisTracker.getAppSession().getSessionKey().toString(),
+                getAppSession().getSessionKey().toString(),
                 apikey,
                 eventHashkey,
                 category,

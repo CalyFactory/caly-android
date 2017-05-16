@@ -5,15 +5,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import io.caly.calyandroid.util.Logger;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 
 import io.caly.calyandroid.CalyApplication;
+import io.caly.calyandroid.model.LogType;
 import io.caly.calyandroid.util.BusProvider;
+import io.caly.calyandroid.util.Logger;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
+import static io.caly.calyandroid.util.tracker.AnalysisTracker.requestScreenLog;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -47,6 +50,9 @@ public class BaseAppCompatActivity extends AppCompatActivity {
 
         BusProvider.getInstance().register(this);
         GoogleAnalytics.getInstance(this).reportActivityStart(this);
+        requestScreenLog(this.getClass().getName(), LogType.SCREEN_ON_START.value);
+
+
     }
 
     @Override
@@ -56,6 +62,7 @@ public class BaseAppCompatActivity extends AppCompatActivity {
 
         BusProvider.getInstance().unregister(this);
         GoogleAnalytics.getInstance(this).reportActivityStop(this);
+        requestScreenLog(this.getClass().getName(), LogType.SCREEN_ON_STOP.value);
     }
 
     @Override

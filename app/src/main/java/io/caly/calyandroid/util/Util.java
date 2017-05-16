@@ -52,6 +52,7 @@ public class Util {
     public static final int RC_PERMISSION_PHONE_STATE = 10031;
     public static final int RC_PERMISSION_FINE_LOCATION = 10032;
 
+
     public static String requestBodyToString(final RequestBody request) {
         try {
             final RequestBody copy = request;
