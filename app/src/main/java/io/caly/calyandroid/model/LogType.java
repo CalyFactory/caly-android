@@ -17,6 +17,7 @@ public enum LogType {
     CATEGORY_RECO_MAP_CELL(3),
 
     ACTION_CLICK(0),
+    ACTION_NONE(-1),
 
     //Category 가 view일경우
     LABEL_EVENT_CELL(0),
@@ -28,6 +29,7 @@ public enum LogType {
     LABEL_EVENT_BANNER(0),
     LABEL_EVENT_SYNC(1),
     LABEL_EVENT_BANNER_CLOSE(2),
+    LABEL_EVENT_BANNER_SHOWING(3),
 
     //Cell일경우
     LABEL_RECO_DEEPLINK(0),
