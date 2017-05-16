@@ -40,7 +40,7 @@ import butterknife.OnCheckedChanged;
 import io.caly.calyandroid.page.account.add.AccountAddActivity;
 import io.caly.calyandroid.page.account.list.AccountListActivity;
 import io.caly.calyandroid.activity.SettingActivity;
-import io.caly.calyandroid.activity.NoticeActivity;
+import io.caly.calyandroid.page.notice.NoticeActivity;
 import io.caly.calyandroid.page.splash.SplashActivity;
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.model.event.SettingLoadingStateChangeEvent;

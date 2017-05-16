@@ -86,7 +86,7 @@
 
         <!-- Announce Activity -->
         <activity
-            android:name=".activity.NoticeActivity"
+            android:name=".page.notice.NoticeActivity"
             android:screenOrientation="portrait">
 
         </activity>

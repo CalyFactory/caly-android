@@ -13,7 +13,7 @@ import io.caly.calyandroid.page.splash.SplashContract;
 
 public class ContractExample {
 
-    public interface View extends BaseView<SplashContract.Presenter> {
+    public interface View extends BaseView<Presenter> {
 
     }
 
