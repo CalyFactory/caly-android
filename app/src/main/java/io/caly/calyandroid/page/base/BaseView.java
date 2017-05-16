@@ -8,7 +8,7 @@ package io.caly.calyandroid.page.base;
  * @since 17. 5. 2
  */
 
-public interface BaseView<T> {
+public interface BaseView<T extends BasePresenterModel> {
 
         void setPresenter(T presenter);
 

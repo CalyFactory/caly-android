@@ -58,7 +58,6 @@ public class DebugActivity extends BaseAppCompatActivity {
 
     private static final Class[] classList = new Class[]{
             SplashActivity.class,
-            LoginActivity.class,
             SignupActivity.class,
             EventListActivity.class,
             RecoListActivity.class,

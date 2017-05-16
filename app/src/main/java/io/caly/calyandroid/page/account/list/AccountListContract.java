@@ -1,5 +1,8 @@
 package io.caly.calyandroid.page.account.list;
 
+import java.util.ArrayList;
+
+import io.caly.calyandroid.model.dataModel.AccountModel;
 import io.caly.calyandroid.page.base.BasePresenterModel;
 import io.caly.calyandroid.page.base.BaseView;
 import io.caly.calyandroid.page.splash.SplashContract;
@@ -10,11 +13,11 @@ import io.caly.calyandroid.page.splash.SplashContract;
 
 public class AccountListContract {
 
-    public interface View extends BaseView<SplashContract.Presenter> {
-
+    public interface View extends BaseView<AccountListContract.Presenter> {
+        void setListData(ArrayList<AccountModel> accountList);
     }
 
     public interface Presenter extends BasePresenterModel {
-
+        void loadAccountList();
     }
 }

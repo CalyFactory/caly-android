@@ -62,11 +62,11 @@ public class SplashPresenter extends BasePresenter implements SplashContract.Pre
 
     private long startTimeMillisec;
 
-    private SplashContract.View splashView;
+    private SplashFragment splashView;
 
     private GoogleApiClient mGoogleApiClient;
 
-    public SplashPresenter(SplashContract.View splashView){
+    public SplashPresenter(SplashFragment splashView){
         this.splashView = splashView;
 
         splashView.setPresenter(this);

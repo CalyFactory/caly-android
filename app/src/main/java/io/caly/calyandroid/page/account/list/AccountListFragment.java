@@ -31,6 +31,7 @@ import io.caly.calyandroid.model.orm.TokenRecord;
 import io.caly.calyandroid.model.response.AccountResponse;
 import io.caly.calyandroid.page.account.add.AccountAddFragment;
 import io.caly.calyandroid.page.base.BaseFragment;
+import io.caly.calyandroid.page.splash.SplashContract;
 import io.caly.calyandroid.util.ApiClient;
 import io.caly.calyandroid.util.Logger;
 import retrofit2.Call;
@@ -41,7 +42,7 @@ import retrofit2.Response;
  * Created by jspiner on 2017. 5. 16..
  */
 
-public class AccountListFragment extends BaseFragment {
+public class AccountListFragment extends BaseFragment implements AccountListContract.View{
 
     @Bind(R.id.recycler_accountlist)
     RecyclerView recyclerList;
@@ -52,6 +53,7 @@ public class AccountListFragment extends BaseFragment {
     AccountListAdapter recyclerAdapter;
     LinearLayoutManager layoutManager;
 
+    AccountListContract.Presenter presenter;
 
     public static AccountListFragment getInstance(){
         return new AccountListFragment();
@@ -82,89 +84,10 @@ public class AccountListFragment extends BaseFragment {
         recyclerList.setAdapter(recyclerAdapter);
 
 
-        loadAccountList();
+        presenter.loadAccountList();
 
     }
 
-    void loadAccountList(){
-        Logger.i(TAG, "loadAccountList");
-        ApiClient.getService().accountList(
-                TokenRecord.getTokenRecord().getApiKey()
-        ).enqueue(new Callback<AccountResponse>() {
-            @Override
-            public void onResponse(Call<AccountResponse> call, Response<AccountResponse> response) {
-                Logger.d(TAG,"onResponse code : " + response.code());
-
-                switch (response.code()){
-                    case 200:
-                        AccountResponse body = response.body();
-
-                        ArrayList<AccountModel> googleAccountList = new ArrayList<AccountModel>();
-                        ArrayList<AccountModel> naverAccountList = new ArrayList<AccountModel>();
-                        ArrayList<AccountModel> appleAccountList = new ArrayList<AccountModel>();
-
-                        for(AccountModel accountModel : body.payload.data){
-                            switch (LoginPlatform.getInstance(accountModel.loginPlatform)){
-                                case CALDAV_NAVER:
-                                    naverAccountList.add(accountModel);
-                                    break;
-                                case CALDAV_ICAL:
-                                    appleAccountList.add(accountModel);
-                                    break;
-                                case GOOGLE:
-                                    googleAccountList.add(accountModel);
-                                    break;
-                            }
-                        }
-
-                        ArrayList<AccountModel> accountList = new ArrayList<AccountModel>();
-
-                        if(googleAccountList.size()!=0){
-                            accountList.add(new AccountModel("Google Calendar 계정"));
-                            accountList.addAll(googleAccountList);
-                        }
-                        if(naverAccountList.size()!=0){
-                            accountList.add(new AccountModel("Naver Calendar 계정"));
-                            accountList.addAll(naverAccountList);
-                        }
-                        if(appleAccountList.size()!=0){
-                            accountList.add(new AccountModel("Apple Calendar 계정"));
-                            accountList.addAll(appleAccountList);
-                        }
-
-                        recyclerAdapter.setData(accountList);
-                        recyclerAdapter.notifyDataSetChanged();
-                        break;
-                    default:
-                        Crashlytics.logException(new UnExpectedHttpStatusException(call, response));
-                        Logger.e(TAG,"status code : " + response.code());
-                        showToast(
-                                (R.string.toast_msg_server_internal_error),
-                                Toast.LENGTH_LONG
-                        );
-                        break;
-                }
-            }
-
-            @Override
-            public void onFailure(Call<AccountResponse> call, Throwable t) {
-
-                Logger.e(TAG,"onfail : " + t.getMessage());
-                Logger.e(TAG, "fail " + t.getClass().getName());
-
-
-                if(t instanceof MalformedJsonException || t instanceof JsonSyntaxException){
-                    Crashlytics.logException(new HttpResponseParsingException(call, t));
-                }
-
-                Toast.makeText(
-                        getBaseContext(),
-                        getString(R.string.toast_msg_network_error),
-                        Toast.LENGTH_LONG
-                ).show();
-            }
-        });
-    }
 
     @Subscribe
     public void onAccountListLoadingCallback(AccountListLoadingEvent event){
@@ -179,6 +102,19 @@ public class AccountListFragment extends BaseFragment {
     @Subscribe
     public void onAccountLIstRefreshEventCallback(AccountListRefreshEvent event){
         Logger.i(TAG, "onAccountLIstRefreshEventCallback");
-        loadAccountList();
+        presenter.loadAccountList();
+    }
+
+    @Override
+    public void setPresenter(AccountListContract.Presenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Override
+    public void setListData(ArrayList<AccountModel> accountList) {
+
+
+        recyclerAdapter.setData(accountList);
+        recyclerAdapter.notifyDataSetChanged();
     }
 }

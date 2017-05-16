@@ -85,7 +85,7 @@ public class AccountListActivity extends BaseAppCompatActivity {
         accountListView = AccountListFragment.getInstance();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.frame_accountadd_container, accountListView);
+        transaction.add(R.id.frame_accountlist_container, accountListView);
         transaction.commit();
 
         presenter = new AccountListPresenter(
@@ -136,7 +136,7 @@ public class AccountListActivity extends BaseAppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadAccountList();
+        presenter.loadAccountList();
     }
 
 
