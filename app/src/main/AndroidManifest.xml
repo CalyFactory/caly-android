@@ -61,7 +61,7 @@
 
         <!-- Signup Activity -->
         <activity
-            android:name=".activity.SignupActivity"
+            android:name=".page.signup.SignupActivity"
             android:screenOrientation="portrait">
         </activity>
 

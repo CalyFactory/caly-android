@@ -26,7 +26,7 @@ import butterknife.OnClick;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.activity.EventListActivity;
 import io.caly.calyandroid.activity.GuideActivity;
-import io.caly.calyandroid.activity.SignupActivity;
+import io.caly.calyandroid.page.signup.SignupActivity;
 import io.caly.calyandroid.exception.HttpResponseParsingException;
 import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.page.base.BaseFragment;
