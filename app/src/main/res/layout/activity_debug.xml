@@ -36,16 +36,27 @@
                 android:inputType="textUri"
                 android:hint="server url"
                 android:layout_height="wrap_content" />
-            <Button
-                android:layout_width="wrap_content"
-                android:text="서버주소변경"
-                android:id="@+id/btn_debug_apply"
-                android:layout_height="wrap_content" />
-            <Button
-                android:layout_width="wrap_content"
-                android:text="로그아웃"
-                android:id="@+id/btn_debug_logout"
-                android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:text="서버주소변경"
+                    android:id="@+id/btn_debug_apply"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:text="로그아웃"
+                    android:id="@+id/btn_debug_logout"
+                    android:layout_height="wrap_content" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:text="로그전송"
+                    android:id="@+id/btn_debug_sendlog"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
 
         </LinearLayout>
         <LinearLayout
