@@ -1,12 +1,19 @@
 package io.caly.calyandroid.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+
+import io.caly.calyandroid.service.LogContentProvider;
 import io.caly.calyandroid.util.Logger;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +33,9 @@ import com.google.android.gms.common.api.Status;
 
 import net.jspiner.prefer.Prefer;
 
+import java.io.File;
+import java.io.IOException;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -33,6 +43,12 @@ import io.caly.calyandroid.activity.base.BaseAppCompatActivity;
 import io.caly.calyandroid.model.orm.TokenRecord;
 import io.caly.calyandroid.R;
 import io.caly.calyandroid.util.ApiClient;
+import io.caly.calyandroid.util.Util;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.
@@ -147,6 +163,25 @@ public class DebugActivity extends BaseAppCompatActivity {
         Logger.d(TAG, "server url : " + Prefer.get("app_server", getString(R.string.app_server)));
         ApiClient.resetService();
         restartApp();
+    }
+
+    @OnClick(R.id.btn_debug_sendlog)
+    void onSendLogClick(){
+
+        final Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+
+        String body = "App Version : " + Util.getAppVersion() + "\n" +
+                         "Device Info : " + Util.getDeviceInfo() + "\n" +
+                         "UUID : " + Util.getUUID() + "\n" +
+                         "Sdk Level : " + Util.getSdkLevel() + " \n";
+
+        emailIntent.setType("plain/text");
+        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[] { "jspiner@naver.com" });
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Caly App Log Reporting");
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, body);
+        emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("content://" + LogContentProvider.AUTHORITY + "/" + Logger.getDataFileName()));
+
+        startActivity(emailIntent);
     }
 
     @OnClick(R.id.btn_debug_logout)
