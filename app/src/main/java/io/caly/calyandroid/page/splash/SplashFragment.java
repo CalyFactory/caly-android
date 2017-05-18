@@ -24,7 +24,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.activity.EventListActivity;
+import io.caly.calyandroid.page.event.EventListActivity;
 import io.caly.calyandroid.activity.GuideActivity;
 import io.caly.calyandroid.page.signup.SignupActivity;
 import io.caly.calyandroid.exception.HttpResponseParsingException;

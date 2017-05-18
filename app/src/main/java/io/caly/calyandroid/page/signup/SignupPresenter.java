@@ -1,9 +1,7 @@
 package io.caly.calyandroid.page.signup;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
@@ -16,7 +14,6 @@ import com.google.gson.stream.MalformedJsonException;
 
 import io.caly.calyandroid.CalyApplication;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.activity.EventListActivity;
 import io.caly.calyandroid.exception.HttpResponseParsingException;
 import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.model.DeviceType;

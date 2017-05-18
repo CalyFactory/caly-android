@@ -1,4 +1,4 @@
-package io.caly.calyandroid.adapter;
+package io.caly.calyandroid.page.account.list;
 
 import android.app.Activity;
 import android.content.Context;

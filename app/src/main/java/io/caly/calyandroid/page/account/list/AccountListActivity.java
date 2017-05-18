@@ -7,45 +7,18 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
-import io.caly.calyandroid.exception.HttpResponseParsingException;
-import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.page.account.add.AccountAddActivity;
-import io.caly.calyandroid.page.account.add.AccountAddFragment;
-import io.caly.calyandroid.page.account.add.AccountAddPresenter;
-import io.caly.calyandroid.util.Logger;
+
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.crashlytics.android.Crashlytics;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.stream.MalformedJsonException;
-import com.squareup.otto.Subscribe;
-
-import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import io.caly.calyandroid.page.base.BaseAppCompatActivity;
-import io.caly.calyandroid.adapter.AccountListAdapter;
-import io.caly.calyandroid.model.dataModel.AccountModel;
-import io.caly.calyandroid.model.event.AccountListLoadingEvent;
-import io.caly.calyandroid.model.event.AccountListRefreshEvent;
-import io.caly.calyandroid.model.LoginPlatform;
-import io.caly.calyandroid.model.orm.TokenRecord;
-import io.caly.calyandroid.model.response.AccountResponse;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.util.ApiClient;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Copyright 2017 JSpiner. All rights reserved.

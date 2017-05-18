@@ -1,4 +1,4 @@
-package io.caly.calyandroid.activity;
+package io.caly.calyandroid.page;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,6 +7,12 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 
+import io.caly.calyandroid.page.event.EventListActivity;
+import io.caly.calyandroid.activity.GuideActivity;
+import io.caly.calyandroid.activity.PolicyActivity;
+import io.caly.calyandroid.activity.RecoListActivity;
+import io.caly.calyandroid.activity.TestActivity;
+import io.caly.calyandroid.activity.WebViewActivity;
 import io.caly.calyandroid.page.account.add.AccountAddActivity;
 import io.caly.calyandroid.page.account.list.AccountListActivity;
 import io.caly.calyandroid.page.notice.NoticeActivity;

@@ -18,7 +18,7 @@
         android:theme="@style/AppTheme">
 
         <!-- Activity Launcher -->
-        <activity android:name=".activity.ActivityLauncher">
+        <activity android:name=".page.ActivityLauncher">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -27,7 +27,7 @@
         </activity>
 
         <!-- DEBUG Activity -->
-        <activity android:name=".activity.DebugActivity">
+        <activity android:name=".page.DebugActivity">
         </activity>
 
         <!-- Splash Activity -->
@@ -38,7 +38,7 @@
 
         <!-- Event List Activity -->
         <activity
-            android:name=".activity.EventListActivity"
+            android:name=".page.event.EventListActivity"
             android:screenOrientation="portrait">
 
         </activity>

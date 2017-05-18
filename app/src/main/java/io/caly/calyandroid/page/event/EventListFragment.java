@@ -1,4 +1,4 @@
-package io.caly.calyandroid.activity;
+package io.caly.calyandroid.page.event;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,10 +11,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
@@ -40,8 +41,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.caly.calyandroid.R;
-import io.caly.calyandroid.page.base.BaseAppCompatActivity;
-import io.caly.calyandroid.adapter.EventListAdapter;
+import io.caly.calyandroid.activity.RecoListActivity;
 import io.caly.calyandroid.exception.HttpResponseParsingException;
 import io.caly.calyandroid.exception.UnExpectedHttpStatusException;
 import io.caly.calyandroid.model.LogType;
@@ -55,6 +55,8 @@ import io.caly.calyandroid.model.event.TestEvent;
 import io.caly.calyandroid.model.orm.TokenRecord;
 import io.caly.calyandroid.model.response.BasicResponse;
 import io.caly.calyandroid.model.response.EventResponse;
+import io.caly.calyandroid.page.account.list.AccountListFragment;
+import io.caly.calyandroid.page.base.BaseFragment;
 import io.caly.calyandroid.page.notice.NoticeActivity;
 import io.caly.calyandroid.page.setting.SettingActivity;
 import io.caly.calyandroid.util.ApiClient;
@@ -73,24 +75,11 @@ import retrofit2.Response;
  *
  * @author jspiner (jspiner@naver.com)
  * @project CalyAndroid
- * @since 17. 2. 11
+ * @since 17. 5. 16
  */
 
-public class
+public class EventListFragment extends BaseFragment implements EventListContract.View {
 
-EventListActivity extends BaseAppCompatActivity {
-
-    private int currentTailPageNum = 1;
-    private int currentHeadPageNum = -1;
-
-    private boolean isLoading = false;
-    private final int LOADING_THRESHOLD = 2;
-
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
-
-    @Bind(R.id.tv_toolbar_title)
-    TextView tvToolbarTitle;
 
     @Bind(R.id.recycler_eventlist)
     RecyclerView recyclerList;
@@ -119,14 +108,11 @@ EventListActivity extends BaseAppCompatActivity {
     @Bind(R.id.tv_banner_close)
     TextView tvBannerClose;
 
-//    @Bind(R.id.drawer_layout)
-//    DrawerLayout drawerLayout;
-
-    @Bind(R.id.imv_toolbar_logo)
-    ImageView imvLogo;
-
     @Bind(R.id.spinkit_eventlist)
     View spinKitView;
+
+    @Bind(R.id.fab_eventlist_today)
+    FloatingActionButton fabToday;
 
     EventListAdapter recyclerAdapter;
     LinearLayoutManager layoutManager;
@@ -135,83 +121,35 @@ EventListActivity extends BaseAppCompatActivity {
 
     BannerModel bannerModel;
 
-    @Bind(R.id.fab_eventlist_today)
-    FloatingActionButton fabToday;
+    EventListContract.Presenter presenter;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_eventlist);
-
-        init();
-
-        Logger.d(TAG, "hashcode : " + EventListActivity.super.hashCode());
-        Logger.d(TAG, "SESSION : " + AnalysisTracker.getAppSession().getSessionKey());
+    public static EventListFragment getInstance(){
+        return new EventListFragment();
     }
 
-    void init(){
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        ButterKnife.bind(this);
+        View view = inflater.inflate(R.layout.fragment_eventlist, container, false);
 
-        //set toolbar
-        tvToolbarTitle.setText("");
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                return false;
-            }
-        });
+        ButterKnife.bind(this, view);
 
-        imvLogo.setVisibility(View.VISIBLE);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        init();
+        return view;
+    }
 
-        /*
-        ActionBarDrawerToggle mDrawerToggle = new ActionBarDrawerToggle(this,
-                drawerLayout, toolbar, R.string.app_name, R.string.app_name) {
+    void init() {
 
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                Logger.d(TAG, "drawer opened");
-                super.onDrawerOpened(drawerView);
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                Logger.d(TAG, "drawer closed");
-                super.onDrawerClosed(drawerView);
-
-            }
-
-        };
-
-        drawerLayout.setDrawerListener(mDrawerToggle);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        mDrawerToggle.setHomeAsUpIndicator(R.drawable.ic_drawer);
-        mDrawerToggle.setDrawerIndicatorEnabled(false);
-        mDrawerToggle.setToolbarNavigationClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(drawerLayout.isDrawerOpen(Gravity.LEFT)){
-                    drawerLayout.closeDrawer(Gravity.LEFT);
-                }
-                else {
-                    drawerLayout.openDrawer(Gravity.LEFT);
-                }
-            }
-        });
-
-        mDrawerToggle.syncState();*/
 
         //set recyclerview
         recyclerList.setHasFixedSize(true);
 
-        layoutManager = new LinearLayoutManager(getBaseContext());
+        layoutManager = new LinearLayoutManager(getActivity());
         recyclerList.setLayoutManager(layoutManager);
 
 
-        recyclerAdapter = new EventListAdapter(EventListActivity.this, new ArrayList<EventModel>());
+        recyclerAdapter = new EventListAdapter(getActivity(), new ArrayList<EventModel>());
         recyclerList.setAdapter(recyclerAdapter);
 
         recyclerList.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -264,35 +202,35 @@ EventListActivity extends BaseAppCompatActivity {
         });
 
         recyclerList.addOnItemTouchListener(new RecyclerItemClickListener(
-                getBaseContext(),
-                recyclerList,
-                new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        if(recyclerAdapter.getItemCount()-1 < position) return;
-                        EventModel eventModel = recyclerAdapter.getItem(position);
-                        if(eventModel.isHeader) return;
-                        // 여기서는 아이템 클릭 이벤트이기 때문에
-                        // 추천완료만 처리하고 분석중과 추천불가
-                        // EventListAdapter 안에서처리
-                        switch (eventModel.recoState){
-                            case STATE_BEING_RECOMMEND: //추천중
-                               break;
-                            case STATE_DONE_RECOMMEND: //추천완료
-                                startRecommandActivity(eventModel);
-                                break;
-                            case STATE_NOTHING_TO_RECOMMEND: //추천불가
-                                break;
+                        getBaseContext(),
+                        recyclerList,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                if(recyclerAdapter.getItemCount()-1 < position) return;
+                                EventModel eventModel = recyclerAdapter.getItem(position);
+                                if(eventModel.isHeader) return;
+                                // 여기서는 아이템 클릭 이벤트이기 때문에
+                                // 추천완료만 처리하고 분석중과 추천불가
+                                // EventListAdapter 안에서처리
+                                switch (eventModel.recoState){
+                                    case STATE_BEING_RECOMMEND: //추천중
+                                        break;
+                                    case STATE_DONE_RECOMMEND: //추천완료
+                                        startRecommandActivity(eventModel);
+                                        break;
+                                    case STATE_NOTHING_TO_RECOMMEND: //추천불가
+                                        break;
+                                }
+
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+
+                            }
                         }
-
-                    }
-
-                    @Override
-                    public void onLongItemClick(View view, int position) {
-
-                    }
-                }
-            )
+                )
         );
 
         Intent intent = getIntent();
@@ -308,6 +246,12 @@ EventListActivity extends BaseAppCompatActivity {
         checkBanner();
 
         fabToday.hide();
+    }
+
+    @Override
+    public void setPresenter(EventListContract.Presenter presenter) {
+        this.presenter = presenter;
+
     }
 
     void startRecommandActivity(EventModel eventModel){
@@ -337,7 +281,7 @@ EventListActivity extends BaseAppCompatActivity {
         Date todayDate = new Date();
         if(
                 todayDate.after(bannerModel.activationPeriod.startDate) &&
-                todayDate.before(bannerModel.activationPeriod.endDate)) {
+                        todayDate.before(bannerModel.activationPeriod.endDate)) {
             if(!Prefer.get("banner_dismiss_"+bannerModel.banner_id, false)){
 
                 Logger.i(TAG, "active banner");
@@ -355,10 +299,10 @@ EventListActivity extends BaseAppCompatActivity {
             linearBanner.setVisibility(View.VISIBLE);
 
             TranslateAnimation animation = new TranslateAnimation(
-                Animation.RELATIVE_TO_SELF, 0f,
-                Animation.RELATIVE_TO_SELF, 0f,
-                Animation.RELATIVE_TO_SELF, -1.0f,
-                Animation.RELATIVE_TO_SELF, 0f
+                    Animation.RELATIVE_TO_SELF, 0f,
+                    Animation.RELATIVE_TO_SELF, 0f,
+                    Animation.RELATIVE_TO_SELF, -1.0f,
+                    Animation.RELATIVE_TO_SELF, 0f
             );
             animation.setDuration(300);
             linearBanner.startAnimation(animation);
@@ -617,7 +561,7 @@ EventListActivity extends BaseAppCompatActivity {
                         break;
                 }
             }
-            
+
 
             @Override
             public void onFailure(Call<BasicResponse> call, Throwable t) {
@@ -939,10 +883,10 @@ EventListActivity extends BaseAppCompatActivity {
 
 
         requestSetEventLog (TokenRecord.getTokenRecord().getApiKey(),
-                            null,
-                            LogType.CATEGORY_VIEW.value,
-                            LogType.LABEL_EVENT_BANNER.value,
-                            LogType.ACTION_CLICK.value);
+                null,
+                LogType.CATEGORY_VIEW.value,
+                LogType.LABEL_EVENT_BANNER.value,
+                LogType.ACTION_CLICK.value);
 
         switch (bannerModel.action.type){
             case "intent":
@@ -976,10 +920,10 @@ EventListActivity extends BaseAppCompatActivity {
         switch (item.getItemId()){
             case R.id.menu_eventlist_refresh:
                 requestSetEventLog (TokenRecord.getTokenRecord().getApiKey(),
-                                    null,
-                                    LogType.CATEGORY_VIEW.value,
-                                    LogType.LABEL_EVENT_SYNC.value,
-                                    LogType.ACTION_CLICK.value);
+                        null,
+                        LogType.CATEGORY_VIEW.value,
+                        LogType.LABEL_EVENT_SYNC.value,
+                        LogType.ACTION_CLICK.value);
                 refreshEvent();
                 break;
 
@@ -1004,4 +948,6 @@ EventListActivity extends BaseAppCompatActivity {
             hideListLoadAnimation();
         }
     };
+
+
 }

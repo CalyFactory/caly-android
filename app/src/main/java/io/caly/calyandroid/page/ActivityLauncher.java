@@ -1,4 +1,4 @@
-package io.caly.calyandroid.activity;
+package io.caly.calyandroid.page;
 
 import android.app.Activity;
 import android.content.Intent;
