@@ -298,6 +298,18 @@ public interface HttpService {
             @Field("contents") String contents
     );
 
+    /*
+    =============================
+              Log
+    =============================
+     */
+    @FormUrlEncoded
+    @POST("v1.0/log/screen")
+    Call<BasicResponse> setScreenLog(
+            @Field("apikey") String apiKey,
+            @Field("sessionKey") String sessionKey,
+            @Field("screenName") String screenName,
+            @Field("status") int status
 
-
+    );
 }
