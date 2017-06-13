@@ -15,13 +15,7 @@
         android:clickable="true"
         android:layout_height="match_parent">
 
-
-        <com.github.ybq.android.spinkit.SpinKitView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            style="@style/SpinKitView.Large.ThreeBounce"
-            android:layout_width="123dp"
-            android:layout_height="49dp"
-            app:SpinKit_Color="@color/indicator" />
+kil
 
         <TextView
             android:layout_width="wrap_content"

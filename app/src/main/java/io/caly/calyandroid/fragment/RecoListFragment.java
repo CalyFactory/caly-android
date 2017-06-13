@@ -120,7 +120,7 @@ public class RecoListFragment extends BaseFragment {
 
                 Logger.d(TAG,"getPosition"+String.valueOf(tab.getPosition()));
                 int RECO_LOG_LABEL = 0;
-                switch (tab.getPosition()){
+                switch (tab.getPosition()){pa
                     //restaurant
                     case 0:
                         RECO_LOG_LABEL  = LogType.LABEL_RECO_TAP_RESTAURANT.value;
