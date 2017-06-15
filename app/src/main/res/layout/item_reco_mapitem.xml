@@ -37,17 +37,61 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:background="#26b6755d"
+                        android:background="#2e51362c"
                         android:layout_height="match_parent"/>
 
                     <ImageView
-                        android:layout_marginTop="14dp"
-                        android:layout_marginRight="19dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginRight="15dp"
                         android:layout_gravity="right"
-                        android:layout_width="18dp"
+                        android:layout_width="28dp"
                         android:id="@+id/imv_reco_share"
                         android:src="@drawable/ic_share_white_48dp"
-                        android:layout_height="21dp" />
+                        android:layout_height="28dp" />
+
+                    <LinearLayout
+                        android:layout_gravity="bottom"
+                        android:layout_width="match_parent"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="16dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:src="@drawable/instagram"
+                            android:layout_width="14dp"
+                            android:layout_height="13dp" />
+
+                        <TextView
+                            android:layout_marginLeft="5dp"
+                            android:layout_width="wrap_content"
+                            android:text="JSpiner"
+                            android:textColor="@color/white"
+                            android:textSize="11dp"
+                            android:id="@+id/tv_reco_insta"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_gravity="bottom|right"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_marginLeft="5dp"
+                            android:layout_width="wrap_content"
+                            android:text="1인당 가격 : 5000원"
+                            android:textColor="@color/white"
+                            android:textSize="14dp"
+                            android:id="@+id/tv_reco_price"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
 
                 </FrameLayout>
 

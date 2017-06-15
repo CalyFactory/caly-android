@@ -40,7 +40,7 @@
 
                     <View
                         android:layout_width="match_parent"
-                        android:background="#26b6755d"
+                        android:background="#2e51362c"
                         android:layout_height="match_parent"/>
 
                     <ImageView
@@ -76,6 +76,25 @@
                             android:layout_height="wrap_content" />
 
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginRight="15dp"
+                        android:layout_gravity="bottom|right"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_marginLeft="5dp"
+                            android:layout_width="wrap_content"
+                            android:text="1인당 가격 : 5000원"
+                            android:textColor="@color/white"
+                            android:textSize="14dp"
+                            android:id="@+id/tv_reco_price"
+                            android:layout_height="wrap_content" />
+
+                    </LinearLayout>
+
                 </FrameLayout>
 
                 <LinearLayout
