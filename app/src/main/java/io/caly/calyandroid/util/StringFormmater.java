@@ -92,7 +92,7 @@ public class StringFormmater {
 
     public static String priceFormat(int price){
         return String.format(
-                "%d원",
+                "%d원 이상",
                 price
         );
     }
