@@ -80,6 +80,12 @@ public class RecoMapListAdapter extends PagerAdapter{
         @Bind(R.id.imv_reco_share)
         ImageView imvShare;
 
+        @Bind(R.id.tv_reco_price)
+        TextView tvRecoPrice;
+
+        @Bind(R.id.tv_reco_insta)
+        TextView tvInsta;
+
 
         public ViewHolder(View view){
             ButterKnife.bind(this, view);
@@ -112,7 +118,12 @@ public class RecoMapListAdapter extends PagerAdapter{
         holder.tvRecoTitle.setText(recoModel.title);
         holder.tvRecoDistance.setText(recoModel.distance);
         holder.tvRecoHashtag.setText(StringFormmater.hashTagFormat(recoModel.tagNames));
-
+        holder.tvInsta.setText(recoModel.sourceUserId);
+        holder.tvRecoPrice.setText(
+                StringFormmater.priceFormat(
+                        recoModel.price
+                )
+        );
         Picasso.with(context)
                 .load(context.getString(R.string.app_server) + "img/" + recoModel.imgUrl)
                 .error(R.drawable.img_not_found)

@@ -90,6 +90,13 @@ public class StringFormmater {
 
     }
 
+    public static String priceFormat(int price){
+        return String.format(
+                "%d원 이상",
+                price
+        );
+    }
+
     public static String hashTagFormat(String hashtags){
         if(hashtags==null){
             return "";
