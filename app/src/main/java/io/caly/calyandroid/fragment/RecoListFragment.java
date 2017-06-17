@@ -104,9 +104,9 @@ public class RecoListFragment extends BaseFragment {
         Logger.d(TAG, "init ");
 
         //init tab layout
-        tabLayout.addTab(tabLayout.newTab().setText("식당"));
+        tabLayout.addTab(tabLayout.newTab().setText("레스토랑"));
         tabLayout.addTab(tabLayout.newTab().setText("카페"));
-        tabLayout.addTab(tabLayout.newTab().setText("액티비티"));
+        tabLayout.addTab(tabLayout.newTab().setText("플레이스"));
 
 
         pagerAdapter = new RecoTabPagerAdapter(getFragmentManager(), eventData);
@@ -202,13 +202,13 @@ public class RecoListFragment extends BaseFragment {
     public void recoListLoadDoneEvent(RecoListLoadStateChangeEvent doneEvent){
         switch (doneEvent.category){
             case RESTAURANT:
-                tabLayout.getTabAt(0).setText("식당("+doneEvent.dataCount+")");
+                tabLayout.getTabAt(0).setText("레스토랑("+doneEvent.dataCount+")");
                 break;
             case CAFE:
                 tabLayout.getTabAt(1).setText("카페("+doneEvent.dataCount+")");
                 break;
             case PLACE:
-                tabLayout.getTabAt(2).setText("액티비티("+doneEvent.dataCount+")");
+                tabLayout.getTabAt(2).setText("플레이스("+doneEvent.dataCount+")");
                 break;
         }
     }
