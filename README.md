@@ -5,10 +5,8 @@
 
 android caly application
 
-![guide_1](https://github.com/CalyFactory/caly-android/blob/dev-jspiner/imgs/guide_1.png?raw=true)
-![guide_2](https://github.com/CalyFactory/caly-android/blob/dev-jspiner/imgs/guide_2.png?raw=true)
-![guide_3](https://github.com/CalyFactory/caly-android/blob/dev-jspiner/imgs/guide_3.png?raw=true)
-
-
+<img src="https://github.com/CalyFactory/caly-android/blob/dev-jspiner/imgs/guide_1.png?raw=true" width="50%">
+<img src="https://github.com/CalyFactory/caly-android/blob/dev-jspiner/imgs/guide_2.png?raw=true" width="50%">
+<img src="https://github.com/CalyFactory/caly-android/blob/dev-jspiner/imgs/guide_3.png?raw=true" width="50%">
 
 you can download CALY in [here](http://bit.ly/calyapp)
