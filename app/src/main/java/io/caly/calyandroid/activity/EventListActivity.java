@@ -658,9 +658,13 @@ EventListActivity extends BaseAppCompatActivity {
                         loadEventList();
                         break;
                     case 201: //추천중
+                        linearRecoProgress.setVisibility(View.GONE);
+                        linearSyncProgress.setVisibility(View.GONE);
+                        refreshEvent();
+                        /*
                         Logger.d(TAG, "201 hashcode : " + EventListActivity.super.hashCode());
                         linearRecoProgress.setVisibility(View.VISIBLE);
-                        linearSyncProgress.setVisibility(View.GONE);
+                        linearSyncProgress.setVisibility(View.GONE);*/
                         break;
                     case 202: //동기화중
                         linearRecoProgress.setVisibility(View.GONE);
