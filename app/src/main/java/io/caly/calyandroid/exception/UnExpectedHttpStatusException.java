@@ -48,7 +48,7 @@ public class UnExpectedHttpStatusException extends Exception {
         builder.append("\r\n");
         try {
             builder.append("response body : " + httpResponse.errorBody().string());
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             builder.append("response body : read error("+e.getMessage());
         }
