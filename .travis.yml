@@ -1,21 +1,44 @@
 language: android
 jdk: oraclejdk8
-android:
-  components:
-  - tools
-  - platform-tools
-  - tools
-  - build-tools-23.0.2
-  - android-23
-  - extra-android-m2repository
-  - extra-google-m2repository
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    - $HOME/android-sdk-dl
+    - $HOME/android-sdk
+
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+
+    - $HOME/.android/build-cache
+
+install:
+  - if test ! -e $HOME/android-sdk-dl/sdk-tools.zip ; then curl https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip > $HOME/android-sdk-dl/sdk-tools.zip ; fi
+  - unzip -qq -n $HOME/android-sdk-dl/sdk-tools.zip -d $HOME/android-sdk
+
+  - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'tools' > /dev/null
+  - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'platform-tools' > /dev/null
+  - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'build-tools;23.0.2' > /dev/null
+  - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'platforms;android-23' > /dev/null
+  - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'extras;google;m2repository' > /dev/null
+  - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'extras;android;m2repository' > /dev/null
+
+env:
+  - ANDROID_HOME=$HOME/android-sdk
+
 before_install:
 - sh script/decrypt.sh
 - chmod +x gradlew
 - chmod +rx app
+
 skip_cleanup: true
+
 script:
 - sh script/build.sh
+
 deploy:
   provider: script
   skip_cleanup: true
@@ -24,6 +47,7 @@ deploy:
     branch:
     - dev
     - master
+    
 env:
   global:
   - secure: fZdzfpe9yNbFLbZr/pV/7k1MkjA5BNJw5VAi8X/Q/0fKwuuQITjSMtAyWE3tP53JP3KIDyI+QrdX2GnFLHxTwPaSmYF41/+6/QIjRsvhH1kZaQ0cLQwNwLoGOLSKyPOCm3t8TJCFzpekEXKP3EemizPpDksVd8MBpDx2k8scxaE9JEJtxG8vKNQW5KGq7mzn0txgcLKyz6K23yJ2hHlGxusNRKDxc9F+YnjLp944/CFLToufUqN+01G+NxJYdqSSxDkMkd9NgEs+eoooSfrCHm/S2wTilzKNON7dX+f0ZVcgSlH2ObBR4xB1zvY/LMvt8pqckNB8nd9r/eSIoBmJbrcXvlnal8GuYF0epfm2df5GNjwvOR8lXTsK+t1EFral66yw+fDrCv87OuDXsBmXLyTg4sasg3dspUip5kArDKAtPaiAoRbfmo7E4/VDDQb347vn6eN6T/rTu5nwzz9SyVaD5w/YOoYsTPT6buHvNd+0F4bu/U2i8bLc5XplZKmyHHfzGG0mJMH5MAqhDMHB8QJCSqiT+h0dmc0YMejqWDmXi3as5unrBElOTuzZrVyllyLXco2rom6Z+vg5lk4TwCBu4Jz+J94TXM9tvjjehUY9xTarzBD9mqoEAhoitijCHk2k8fRP4QnQ5KCwjm7U+pL3imovXkryvbZtYlsaSag=
