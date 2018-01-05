@@ -113,6 +113,9 @@ dependencies {
     //fab lib
     compile 'io.github.yavski:fab-speed-dial:1.0.6'
 
+    //stream
+    compile 'com.annimon:stream:1.1.9'
+
     testCompile 'junit:junit:4.12'
 }
 
