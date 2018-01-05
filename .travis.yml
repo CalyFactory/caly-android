@@ -24,13 +24,17 @@ android:
   - android-23
   - extra-android-m2repository
   - extra-google-m2repository
+
 before_install:
 - sh script/decrypt.sh
 - chmod +x gradlew
 - chmod +rx app
+
 skip_cleanup: true
+
 script:
 - sh script/build.sh
+
 deploy:
   provider: script
   skip_cleanup: true
