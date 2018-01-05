@@ -15,15 +15,15 @@ cache:
 
     - $HOME/.android/build-cache
 
-android:
-  components:
-  - tools
-  - platform-tools
-  - tools
-  - build-tools-23.0.2
-  - android-23
-  - extra-android-m2repository
-  - extra-google-m2repository
+#android:
+#  components:
+#  - tools
+#  - platform-tools
+#  - tools
+#  - build-tools-23.0.2
+#  - android-23
+#  - extra-android-m2repository
+#  - extra-google-m2repository
 
 before_install:
 - sh script/decrypt.sh
