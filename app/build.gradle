@@ -109,6 +109,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.6@aar') {
         transitive = true;
     }
+    
 
     //fab lib
     compile 'io.github.yavski:fab-speed-dial:1.0.6'
